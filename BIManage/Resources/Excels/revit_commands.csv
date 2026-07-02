@@ -1,0 +1,1053 @@
+Command_Name,PostableCommandName,Description,CanHaveBinding,NeedBinding,CanWorkWithSelection,Code
+Acquire Coordinates,AcquireCoordinates,Acquires the coordinate system from a linked model,TRUE,TRUE,FALSE,
+ACRD Content Conversion,ACRDContentConversion,Converts ACRD content for use in the current project,TRUE,FALSE,FALSE,ID_ACRD_CONTENT_CONVERSION
+Activate Controls and Dimensions,ActivateControlsAndDimensions,Activates controls and dimensions for element editing,TRUE,FALSE,FALSE,
+Activate View,ActivateView,Activates a view on a sheet for editing,TRUE,FALSE,FALSE,
+Add Compressed Fabrication Configuration,AddFabricationConfigZip,Adds a compressed fabrication configuration from a zip file,TRUE,FALSE,FALSE,ID_ADD_FABRICATION_CONFIGURATION_ZIP
+Add Elements (Analytical),AnalyticalAddElements,Adds elements to the analytical model automation,TRUE,FALSE,FALSE,ID_ANALYTICAL_AUTOMATION_EDIT_MODE_ADD
+Add Fabrication Configuration Folder,AddFabricationConfigFolder,Adds a fabrication configuration from a local folder,TRUE,FALSE,FALSE,ID_ADD_FABRICATION_CONFIGURATION
+Add Landings,AddLandings,Adds landings at each level to a multi-story stair,TRUE,FALSE,FALSE,ID_ADD_ALL_LEVEL_LANDINGS
+Add Leader,AddLeader,Adds a leader line to a selected annotation element,TRUE,FALSE,TRUE,ID_FAMINST_ADDLEADER
+Add Non-Planar Sketch,AddNonPlanarSketch,Adds a non-planar sketch to the current element,TRUE,FALSE,FALSE,ID_ADD_NON_PLANAR_SKETCH
+Add Point,AddPoint,Adds a shape editing point to a slab or roof,TRUE,FALSE,FALSE,ID_DRAW_SLAB_SHAPE_VERTEX
+Add Spline Control,AddSplineControl,Adds a control point to a spline curve,TRUE,FALSE,FALSE,IDC_SPLINE_ADD_CONTROL
+Add Split Line,AddSplitLine,Adds a split line to a slab or roof for shape editing,TRUE,FALSE,FALSE,ID_DRAW_SLAB_SHAPE_LINES
+Add Swept Blend Profile,AddSweptBlendProfile,Adds a profile to a swept blend form,TRUE,FALSE,FALSE,ID_ADD_SWEPT_BLEND_PROFILE
+Add to Analytical Relation,AddToAnalyticalRelation,Adds selected elements to an analytical relation,TRUE,FALSE,TRUE,ID_ANALYTICAL_RELATIONSHIP_EDIT_MODE_ADD
+Add to Displacement,AddToDisplacement,Adds elements to a displacement set for exploded views,TRUE,FALSE,TRUE,ID_DISPLACEMENT_ADD_ELEMENT
+Add to Group,AddToGroup,Adds selected elements to an existing group,TRUE,TRUE,TRUE,ID_EDITGROUP_ADD_TO_GROUP
+Add to Light Group,AddToLightGroup,Adds a light fixture to a light group,TRUE,FALSE,FALSE,ID_ADD_LIGHT_TO_GROUP
+Add to Mechanical Equipment Set,AddToMechanicalEquipmentSet,Adds equipment to a mechanical equipment set,TRUE,FALSE,FALSE,ID_MECHANICAL_EQUIPMENT_SET_ADD
+Add to Set,AddToSet,Adds selected elements to the current selection set,TRUE,FALSE,TRUE,
+Add User Comment,AddUserComment,Adds a user comment to the model,TRUE,FALSE,FALSE,ID_USER_COMMENT
+Add Vertical,AddVertical,Adds a vertical segment to a duct or pipe run,TRUE,FALSE,FALSE,ID_RBS_BTN_MAINTAIN_SLOPE
+Adjust Analytical Model,AdjustAnalyticalModel,Adjusts the analytical model to match physical elements,TRUE,FALSE,TRUE,
+Air Terminal,AirTerminal,Places an air terminal (diffuser or register) in a duct system,TRUE,TRUE,FALSE,ID_RBS_MECHANICAL_AIR_TERMINAL
+Align,Align,Aligns one or more elements with a selected element,TRUE,TRUE,TRUE,ID_ALIGN
+Align Elements Bottom,AlignElementsBottom,Aligns selected elements to the bottommost element,TRUE,FALSE,FALSE,ID_TEXTNOTE_BOTTOM_ALIGN
+Align Elements Center Horizontal,AlignElementsCenterHorizontal,Aligns selected elements to their horizontal center,TRUE,FALSE,FALSE,ID_TEXTNOTE_CENTER_HOR_ALIGN
+Align Elements Left,AlignElementsLeft,Aligns selected elements to the leftmost element,TRUE,FALSE,FALSE,ID_TEXTNOTE_LEFT_ALIGN
+Align Elements Middle Vertical,AlignElementsMiddleVertical,Aligns selected elements to their vertical middle,TRUE,FALSE,FALSE,ID_TEXTNOTE_CENTER_VERT_ALIGN
+Align Elements Right,AlignElementsRight,Aligns selected elements to the rightmost element,TRUE,FALSE,FALSE,ID_TEXTNOTE_RIGHT_ALIGN
+Align Elements Top,AlignElementsTop,Aligns selected elements to the topmost element,TRUE,FALSE,FALSE,ID_TEXTNOTE_TOP_ALIGN
+Align Text Bottom,AlignTextBottom,Sets text vertical alignment to bottom,TRUE,FALSE,FALSE,ID_ALIGN_BOTTOM
+Align Text Center,AlignTextCenter,Sets text horizontal alignment to center,TRUE,FALSE,FALSE,ID_ALIGN_CENTER
+Align Text Left,AlignTextLeft,Sets text horizontal alignment to left,TRUE,FALSE,FALSE,ID_ALIGN_LEFT
+Align Text Middle,AlignTextMiddle,Sets text vertical alignment to middle,TRUE,FALSE,FALSE,ID_ALIGN_MIDDLE
+Align Text Right,AlignTextRight,Sets text horizontal alignment to right,TRUE,FALSE,FALSE,ID_ALIGN_RIGHT
+Align Text Top,AlignTextTop,Sets text vertical alignment to top,TRUE,FALSE,FALSE,ID_ALIGN_TOP
+Aligned Dimension,AlignedDimension,Places a dimension aligned to the selected references,TRUE,TRUE,FALSE,
+Aligned Multi-Rebar Annotation,AlignedMultiRebarAnnotation,Places an aligned annotation for multiple rebar sets,TRUE,FALSE,FALSE,
+Alignment Bottom Center,AlignmentBottomCenter,Sets element alignment to bottom center,TRUE,FALSE,FALSE,ID_JUSTIFY_BOTTOM_CENTER
+Alignment Bottom Left,AlignmentBottomLeft,Sets element alignment to bottom left,TRUE,FALSE,FALSE,ID_JUSTIFY_BOTTOM_LEFT
+Alignment Middle Center,AlignmentMiddleCenter,Sets element alignment to middle center,TRUE,FALSE,FALSE,ID_JUSTIFY_MIDDLE_CENTER
+Alignment Middle Left,AlignmentMiddleLeft,Sets element alignment to middle left,TRUE,FALSE,FALSE,ID_JUSTIFY_MIDDLE_LEFT
+Alignment Middle Right,AlignmentMiddleRight,Sets element alignment to middle right,TRUE,FALSE,FALSE,ID_JUSTIFY_MIDDLE_RIGHT
+Alignment Station,AlignmentStation,Places an alignment station marker on an infrastructure alignment,TRUE,FALSE,FALSE,
+Alignment Station Label Types,AlignmentStationLabelTypes,Manages label types for alignment station markers,TRUE,FALSE,FALSE,
+Alignment Station Set,AlignmentStationSet,Creates a set of alignment station markers along an alignment,TRUE,FALSE,FALSE,
+Alignment Top Center,AlignmentTopCenter,Sets element alignment to top center,TRUE,FALSE,FALSE,ID_JUSTIFY_TOP_CENTER
+Alignment Top Left,AlignmentTopLeft,Sets element alignment to top left,TRUE,FALSE,FALSE,ID_JUSTIFY_TOP_LEFT
+Alignment Top Right,AlignmentTopRight,Sets element alignment to top right,TRUE,FALSE,FALSE,ID_JUSTIFY_TOP_RIGHT
+Allow Wall Join,AllowWallJoin,Allows walls to automatically join at their ends,TRUE,FALSE,TRUE,IDC_WALL_END_JOINABLE
+Allowable Bar Types,AllowableBarTypes,Specifies which rebar bar types are allowed for selected elements,TRUE,FALSE,TRUE,
+Analysis Display Styles,AnalysisDisplayStyles,Manages display styles for analysis result visualization,TRUE,FALSE,FALSE,
+Analytical Automation,AnalyticalAutomation,Automates the creation and adjustment of analytical models,TRUE,FALSE,FALSE,
+Analytical Consistency Checks,AnalyticalConsistencyChecks,Checks analytical model consistency with the physical model,TRUE,FALSE,TRUE,
+Analytical Link,AnalyticalLink,Creates an analytical link element in the structural model,TRUE,FALSE,FALSE,
+Analytical Member,AnalyticalMember,Creates an analytical member element in the structural model,TRUE,FALSE,FALSE,
+Anchors,Anchors,Places post-installed anchor elements on structural connections,TRUE,TRUE,TRUE,
+Angular Dimension,AngularDimension,Places a dimension that measures the angle between references,TRUE,TRUE,FALSE,
+Angular Dimension Types,AngularDimensionTypes,Manages angular dimension type settings,TRUE,FALSE,FALSE,
+Apply Coping,ApplyCoping,Applies a coping cut to a steel beam at a column connection,TRUE,TRUE,TRUE,
+Apply Hide/Isolate to View,ApplyHideIsolateToView,Makes temporary hide/isolate settings permanent in the view,TRUE,TRUE,FALSE,ID_TEMPHIDE_MAKEPERM
+Apply Template Properties to Current View,ApplyTemplatePropertiesToCurrentView,Applies a view template to the current view,TRUE,TRUE,FALSE,ID_APPLY_VIEW_TEMPLATE
+Arc Length Dimension,ArcLengthDimension,Places a dimension measuring the arc length of a curved element,TRUE,TRUE,FALSE,
+Arc Wire,ArcWire,Draws an arc-shaped electrical wire,TRUE,FALSE,FALSE,
+Architectural Column,ArchitecturalColumn,Places an architectural column in the building model,TRUE,TRUE,FALSE,ID_OBJECTS_COLUMN
+Architectural Floor,ArchitecturalFloor,Creates an architectural floor element by sketching its boundary,TRUE,TRUE,FALSE,ID_OBJECTS_FLOOR
+Architectural Wall,ArchitecturalWall,Creates an architectural wall in the building model,TRUE,TRUE,FALSE,
+Area,Area,Places an area element in an area plan view,TRUE,TRUE,FALSE,ID_OBJECTS_AREA
+Area and Volume Computations,AreaAndVolumeComputations,Configures area and volume computation methods for rooms and areas,TRUE,TRUE,FALSE,
+Area Based Load Boundary,AreaBasedLoadBoundary,Defines the boundary for an area-based structural load,TRUE,FALSE,FALSE,
+Area Boundary,AreaBoundary,Draws boundary lines that define area regions,TRUE,TRUE,FALSE,ID_AREA_BOUNDARY
+Area Plan,AreaPlan,Creates a new area plan view for the project,TRUE,TRUE,FALSE,ID_VIEW_NEW_AREAPLAN
+Area Reinforcement Symbol,AreaReinforcementSymbol,Manages area reinforcement annotation symbols,TRUE,FALSE,FALSE,
+Area Tag,AreaTag,Places a tag that displays area information,TRUE,TRUE,FALSE,ID_AREA_TAG
+Array,Array,Creates a linear or radial array of selected elements,TRUE,TRUE,TRUE,ID_EDIT_ARRAY
+Arrowheads,Arrowheads,Manages arrowhead styles for leaders and dimensions,TRUE,FALSE,FALSE,ID_SETTINGS_ANNOTATIONS_LEADERS
+Assembly Code,AssemblyCode,Configures assembly code classification settings,TRUE,FALSE,FALSE,ID_SETTINGS_ASSEMBLY_CODE
+Assisted Association,AssistedAssociation,Enables assisted association mode for analytical model elements,TRUE,FALSE,FALSE,ID_ENABLE_ANALYTICAL_ASSISTED_ASSOCIATION
+Attach Detail Group,AttachDetailGroup,Attaches a detail group to a model group,TRUE,TRUE,TRUE,ID_EDITGROUP_ATTACH_TO_GROUP
+Attach to Structure (Fabrication),AttachToStructureFabrication,Attaches a fabrication hanger to a structural element,TRUE,FALSE,FALSE,ID_FABRICATION_HANGER_ATTACH
+Auto Ceiling,AutoCeiling,Automatically creates a ceiling in an enclosed room,TRUE,TRUE,FALSE,ID_AUTO_CEILING
+Auto Clip Elevation,AutoClipElevation,Automatically clips the elevation view extents,TRUE,FALSE,FALSE,ID_AUTO_CLIP_ELEV
+Automatic Beam System,AutomaticBeamSystem,Creates a beam system by automatically detecting boundaries,TRUE,TRUE,FALSE,
+Automatic Ceiling,AutomaticCeiling,Places a ceiling by automatically detecting room boundaries,TRUE,TRUE,FALSE,ID_OBJECTS_CEILING
+Automatically Connect,AutomaticallyConnect,Automatically connects selected MEP elements,TRUE,FALSE,FALSE,ID_RBS_BTNAUTOCONNECT
+Axis Line,AxisLine,Draws an axis line for revolve or sweep operations,TRUE,FALSE,FALSE,ID_OBJECTS_AXIS
+Background Processes,BackgroundProcesses,Shows the status of background processes running in Revit,FALSE,FALSE,FALSE,ID_PARALLEL_INDICATOR
+Batch Print,BatchPrint,Prints multiple sheets or views in a single batch operation,TRUE,TRUE,FALSE,
+Beam,Beam,Places a structural beam in the building model,TRUE,TRUE,FALSE,ID_OBJECTS_BEAM
+Beam Annotations,BeamAnnotations,Places beam annotation symbols on structural framing,TRUE,TRUE,FALSE,
+Beam System Symbol,BeamSystemSymbol,Manages beam system annotation symbols,TRUE,FALSE,FALSE,
+Beam/Column Joins,BeamOrColumnJoins,Manages join conditions between beams and columns,TRUE,TRUE,TRUE,
+Bolts,Bolts,Places bolt connections on steel structural elements,TRUE,TRUE,TRUE,
+Bottom Chord,BottomChord,Selects the bottom chord of a structural truss for editing,TRUE,FALSE,FALSE,
+Boundary Conditions,BoundaryConditions,Defines boundary conditions for structural analysis,TRUE,FALSE,FALSE,
+Boundary Conditions Settings,BoundaryConditionsSettings,Configures settings for structural boundary conditions,TRUE,FALSE,FALSE,
+Brace,Brace,Places a structural brace in the building model,TRUE,TRUE,FALSE,ID_OBJECTS_BRACE
+Browser Organization,BrowserOrganization,Configures how views and sheets are organized in the Project Browser,TRUE,TRUE,FALSE,ID_BROWSER_ORGANIZATION
+Building Elevation,BuildingElevation,Creates a new building elevation view,TRUE,TRUE,FALSE,ID_VIEW_NEW_ELEVATION
+Building Operating Schedules,BuildingOperatingSchedules,Defines operating schedules for energy analysis,TRUE,FALSE,FALSE,ID_OPERATING_SCHEDULES
+Building Pad,BuildingPad,Creates a building pad on a toposolid or toposurface,TRUE,TRUE,FALSE,
+Building/Space Type Settings,BuildingOrSpaceTypeSettings,Configures building and space type settings for energy analysis,TRUE,FALSE,FALSE,
+Cable Tray,CableTray,Places a cable tray in the electrical system,TRUE,TRUE,FALSE,
+Cable Tray Connector,CableTrayConnector,Places a connector on a cable tray family,TRUE,FALSE,FALSE,
+Cable Tray Fitting,CableTrayFitting,Places a fitting on a cable tray run,TRUE,TRUE,FALSE,
+Callout,Callout,Creates a callout view to show a detail of a larger view,TRUE,TRUE,FALSE,ID_VIEW_NEW_CALLOUT
+Callout Sketch,CalloutSketch,Creates a callout view with a custom sketch boundary,TRUE,TRUE,FALSE,ID_VIEW_NEW_CALLOUT_SKETCH
+Callout Tags,CalloutTags,Manages callout tag annotation styles,TRUE,FALSE,FALSE,
+Camera,Camera,Creates a 3D perspective view from a camera position,TRUE,TRUE,FALSE,ID_VIEW_NEW_3D_WALKTHROUGH
+Cancel Analytical Automation,AnalyticalCancel,Cancels the current analytical automation operation,TRUE,FALSE,FALSE,ID_ANALYTICAL_AUTOMATION_EDIT_MODE_CANCEL
+Cancel Analytical Relation,CancelAnalyticalRelation,Cancels the current analytical relation editing session,TRUE,FALSE,FALSE,ID_ANALYTICAL_RELATIONSHIP_EDIT_MODE_CANCEL
+Cancel Area Load Dividing,CancelAreaLoadDividing,Cancels the area-based load dividing operation,TRUE,FALSE,FALSE,ID_RBS_CANCEL_AREA_BASED_LOAD_DIVIDE_MODE
+Cancel Displacement Edit,CancelDisplacementEdit,Cancels the current displacement set editing session,TRUE,FALSE,FALSE,ID_DISPLACEMENT_CANCEL_EDIT
+Cancel Edit Mode,CancelEditMode,Cancels the current sketch or edit mode without saving,TRUE,FALSE,FALSE,ID_CANCEL_SKETCH
+Cancel Group Edit,CancelGroupEdit,Cancels group editing without saving changes,TRUE,FALSE,FALSE,ID_CANCEL_GROUP_EDIT_MODE
+Cancel Level Landings Edit,CancelLevelLandingsEdit,Cancels level landings editing without saving,TRUE,FALSE,FALSE,ID_QUIT_LEVEL_LANDINGS_EDIT
+Cancel Light Group Edit,CancelLightGroupEdit,Cancels light group editing without saving,TRUE,FALSE,FALSE,ID_CANCEL_LIGHT_GROUP_EDIT
+Cancel Paste,CancelPaste,Cancels the current paste operation,TRUE,FALSE,FALSE,ID_QUIT_PASTE
+Cancel Paste Edit Mode,CancelPasteEditMode,Cancels the paste edit mode without applying changes,TRUE,FALSE,FALSE,ID_QUIT_PASTE_EDIT_MODE
+Cancel Profile Edit Mode,CancelProfileEditMode,Cancels profile editing without saving changes,TRUE,FALSE,FALSE,ID_QUIT_SKETCH_PROFILE
+Cancel Rebar Edit,CancelRebarEdit,Cancels the current rebar editing session,TRUE,FALSE,FALSE,ID_REBAR_CANCEL_EDIT_BARS
+Cancel Splice Rebar,CancelSpliceRebar,Cancels the current rebar splice operation,TRUE,FALSE,FALSE,ID_SPLICE_REBAR_CANCEL
+Cancel Stairs Edit Mode,CancelStairsEditMode,Cancels stairs editing without saving changes,TRUE,FALSE,FALSE,ID_STAIRSEDITMODE_QUIT
+Canvas Theme,CanvasTheme,Switches between light and dark canvas themes,TRUE,FALSE,FALSE,ID_CANVAS_THEME_SWITCH
+Cap Open Ends,CapOpenEnds,Caps the open ends of selected duct or pipe runs,TRUE,FALSE,FALSE,ID_RBS_CAP_OPEN_ENDS
+Cascade Windows,CascadeWindows,Arranges open view windows in a cascading layout,TRUE,FALSE,FALSE,
+Catalog Organization,CatalogOrganization,Organizes the fabrication parts catalog,TRUE,FALSE,FALSE,ID_CATALOG_ORGANIZATION
+Center of Rotation on Selection,CenterRotationOnSelection,Sets the 3D orbit center to the selected element,TRUE,FALSE,FALSE,ID_DEFAULT_ROTATION_CENTER
+Chamfered Wire,ChamferedWire,Draws a chamfered electrical wire with angled bends,TRUE,FALSE,FALSE,
+Change Slope,ChangeSlope,Changes the slope direction of a duct or pipe segment,TRUE,FALSE,FALSE,ID_RBS_BTN_CHANGE_SLOPE
+Check Circuits,CheckCircuits,Checks electrical circuits for errors and warnings,TRUE,FALSE,FALSE,
+Check Duct Systems,CheckDuctSystems,Checks duct systems for connectivity and sizing errors,TRUE,FALSE,FALSE,
+Check Member Supports,CheckMemberSupports,Checks structural member support conditions,TRUE,FALSE,FALSE,
+Check Pipe Systems,CheckPipeSystems,Checks pipe systems for connectivity and sizing errors,TRUE,FALSE,FALSE,
+Check Spelling,CheckSpelling,Checks spelling of text notes and annotations,TRUE,FALSE,FALSE,ID_CHECK_SPELLING
+Circle,Circle,Draws a circle shape in sketch mode,TRUE,FALSE,FALSE,IDC_RADIO_CIRCLE
+Circumscribed Polygon,CircumscribedPolygon,Draws a polygon circumscribed around a circle,TRUE,FALSE,FALSE,ID_OBJECTS_CURVE_POLY_CIRCUMSCRIBED
+Circumscribed Polygon (Radio),CircumscribedPolygonRadio,Selects circumscribed polygon as the active drawing tool,TRUE,FALSE,FALSE,IDC_RADIO_CIRCUMSCRIBED_POLYGON
+Close,Close,Closes the current document,TRUE,FALSE,FALSE,
+Close Hidden Windows,CloseHiddenWindows,Closes all hidden view windows to free memory,TRUE,FALSE,FALSE,ID_VIEW_CLOSE_INACTIVE
+Close Text Editor,CloseTextEditor,Closes the text editor and saves changes,TRUE,FALSE,FALSE,ID_TEXTEDITOR_CLOSE
+Collaborate,Collaborate,Enables collaboration features for the project,TRUE,TRUE,FALSE,
+Collaborate in Cloud,CollaborateInCloud,Enables cloud-based collaboration through BIM 360 or ACC,TRUE,TRUE,FALSE,
+Color Fill Legend,ColorFillLegend,Places a color fill legend showing room or area color schemes,TRUE,TRUE,FALSE,ID_OBJECTS_ROOM_FILL
+Color Schemes,ColorSchemes,Manages color scheme settings for rooms; areas; and spaces,TRUE,TRUE,FALSE,
+Communication,Communication,Opens the communication center for project collaboration,TRUE,FALSE,FALSE,
+Conduit,Conduit,Places electrical conduit in the building model,TRUE,TRUE,FALSE,
+Conduit Connector,ConduitConnector,Places a connector on a conduit family,TRUE,FALSE,FALSE,
+Conduit Fitting,ConduitFitting,Places a fitting on a conduit run,TRUE,TRUE,FALSE,
+Connect as Tap,ConnectAsTap,Connects a fabrication part as a tap connection,TRUE,FALSE,FALSE,ID_FABRICATION_PART_CONNECT_AS_TAP
+Connect Levels,ConnectLevels,Connects stair runs across multiple levels,TRUE,FALSE,FALSE,ID_PICK_LEVELS_ON_STAIRS_CREATION
+Connection Settings,ConnectionSettings,Configures steel connection design settings,TRUE,FALSE,FALSE,
+Content Tree Browser,ContentTreeBrowser,Opens the content tree browser for fabrication parts,TRUE,FALSE,FALSE,ID_CONTENT_TREE
+Continuous Orbit,ContinuousOrbit,Spins the 3D view continuously in the specified direction,TRUE,FALSE,FALSE,ID_CONTINUOUS_ORBIT
+Contour Cut,ContourCut,Applies a contour cut to selected elements,TRUE,FALSE,TRUE,
+Control,Control,Places a control element on a family or detail component,TRUE,TRUE,FALSE,ID_OBJECTS_CONTROL
+Controls on Base,ControlsOnBase,Shows shape editing controls on the base of a floor or roof,TRUE,FALSE,FALSE,IDC_VTX_CTRL_ON_LOOP_0
+Controls on Top,ControlsOnTop,Shows shape editing controls on the top of a floor or roof,TRUE,FALSE,FALSE,IDC_VTX_CTRL_ON_LOOP_1
+Convert Old Railings,ConvertOldRailings,Converts legacy railings to the current railing system,TRUE,TRUE,TRUE,ID_CONVERT_OLD_RAILING_INTO_NEW_TYPE
+Convert Stairs to Sketch-Based,ConvertStairsToSketchBased,Converts component-based stairs to sketch-based stairs,TRUE,TRUE,TRUE,ID_STAIRS_CONVERT_TO_CUSTOM
+Convert to Component,ConvertToComponent,Converts a sketch-based element to a component-based element,TRUE,FALSE,TRUE,ID_CONVERT_T
+Convert to Flex Duct,ConvertToFlexDuct,Converts a rigid duct segment to flexible duct,TRUE,TRUE,TRUE,
+Coordination - Select Link,CoordinationSelectLink,Selects a linked model for coordination review,TRUE,FALSE,FALSE,
+Coordination Check Changes,CoordinationCheckChanges,Checks for changes between coordination models,TRUE,FALSE,FALSE,ID_COORDINATION_CHECK_CHANGES
+Coordination Model - Autodesk Docs,CoordinationModelAutodeskDocs,Links a coordination model from Autodesk Docs,TRUE,FALSE,FALSE,
+Coordination Model - Local,CoordinationModelLocal,Links a local coordination model file,TRUE,FALSE,FALSE,
+Coordination Review - Use Current Project,CoordinationReviewUseCurrentProject,Starts a coordination review using the current project,TRUE,FALSE,FALSE,
+Coordination Settings,CoordinationSettings,Configures coordination review settings,TRUE,FALSE,FALSE,
+Cope,Cope,Applies a coping cut to a steel beam,TRUE,TRUE,TRUE,
+Cope Skewed,CopeSkewed,Applies a skewed coping cut to a steel beam,TRUE,TRUE,TRUE,
+Copy,Copy,Copies selected elements and places them at a new location,TRUE,TRUE,TRUE,ID_EDIT_COPY
+Copy Selection to New File,CopySelectionToNewFile,Copies selected elements to a new Revit file,TRUE,TRUE,TRUE,ID_EDIT_COPY_TO_NEW_FILE
+Copy to Clipboard,CopyToClipboard,Copies selected elements to the clipboard,TRUE,TRUE,TRUE,ID_EDIT_COPY
+Copy/Monitor - Select Link,CopyMonitorSelectLink,Selects a linked model for copy/monitor operations,TRUE,TRUE,FALSE,
+Copy/Monitor - Use Current Project,CopyMonitorUseCurrentProject,Starts copy/monitor using elements in the current project,TRUE,TRUE,FALSE,
+Corner Cut,CornerCut,Applies a corner cut to a steel member,TRUE,TRUE,TRUE,
+Create Alignment,CreateAlignment,Creates an infrastructure alignment element,TRUE,FALSE,FALSE,ID_INFRASTRUCTURE_CREATE_ALIGNMENT
+Create an Area Based Load,CreateAnAreaBasedLoad,Creates a structural load distributed over an area,TRUE,FALSE,FALSE,
+Create Assembly,CreateAssembly,Creates an assembly from selected elements,TRUE,TRUE,TRUE,
+Create Assembly (Ribbon),CreateAssemblyCommand,Creates an assembly from the ribbon interface,TRUE,TRUE,FALSE,ID_CREATE_ASSEMBLY
+Create Connected Duct/Pipe,CreateConnectedDuctPipe,Creates duct or pipe connected to existing connectors,TRUE,FALSE,FALSE,ID_CREATE_DUCT_PIPE_FOR_CONNECTORS
+Create Contour,CreateContour,Draws a contour line on a toposolid surface,TRUE,FALSE,FALSE,ID_EXT_ENTITY_CONTOUR
+Create Contour - Arc Center Ends,CreateContourArcCenterEnds,Draws a contour arc defined by center and end points,TRUE,FALSE,FALSE,ID_EXT_ENTITY_CONTOUR_ARC_CENTER_ENDS
+Create Contour - Arc Three Points,CreateContourArcThreePoints,Draws a contour arc passing through three points,TRUE,FALSE,FALSE,ID_EXT_ENTITY_CONTOUR_ARC_THREE_PNT
+Create Contour - Circumscribed Polygon,CreateContourPolygonCircumscribed,Draws a circumscribed polygon contour on a toposolid,TRUE,FALSE,FALSE,ID_EXT_ENTITY_CONTOUR_POLY_CIRCUMSCRIBED
+Create Contour - Fillet Arc,CreateContourFilletArc,Draws a fillet arc contour on a toposolid,TRUE,FALSE,FALSE,ID_EXT_ENTITY_CONTOUR_ARC_FILLET
+Create Contour - Inscribed Polygon,CreateContourPolygonInscribed,Draws an inscribed polygon contour on a toposolid,TRUE,FALSE,FALSE,ID_EXT_ENTITY_CONTOUR_POLY_INSCRIBED
+Create Contour - Line,CreateContourLine,Draws a straight line contour on a toposolid,TRUE,FALSE,FALSE,ID_EXT_ENTITY_CONTOUR_LINE
+Create Contour - Rectangle,CreateContourRectangle,Draws a rectangular contour on a toposolid,TRUE,FALSE,FALSE,ID_EXT_ENTITY_CONTOUR_RECT
+Create Energy Model,CreateEnergyModel,Creates an energy analytical model for simulation,TRUE,FALSE,FALSE,
+Create Fabrication Element,CreateFabricationElement,Creates a fabrication part from a design element,TRUE,FALSE,FALSE,ID_CREATE_FABRICATIONPART
+Create Fabrication Job,CreateFabricationJob,Creates a new fabrication job for manufacturing,TRUE,FALSE,FALSE,ID_CREATE_FABRICATION_JOB
+Create Fabrication Spool,CreateFabricationSpool,Creates a fabrication spool for field installation,TRUE,FALSE,FALSE,ID_CREATE_FABPATS_SPOOL
+Create Footing at Grid Intersection,CreateFootingAtGrid,Creates a structural footing at a grid intersection,TRUE,FALSE,FALSE,ID_CREATE_FOOTING_BY_GRID_INTERSECTION
+Create Footing at Structural Column,CreateFootingAtColumn,Creates a structural footing under a column,TRUE,FALSE,FALSE,ID_CREATE_FOOTING_FROM_STRUCTURAL_COLUMN
+Create Group,CreateGroup,Creates a group from selected elements,TRUE,TRUE,TRUE,ID_EDIT_GROUP
+Create Layer by Face,CreateLayerByFace,Creates a toposolid layer by picking a face,TRUE,FALSE,FALSE,ID_CREATE_LAYER_BY_FACE
+Create Layer by Sketch,CreateLayerBySketch,Creates a toposolid layer by sketching a boundary,TRUE,FALSE,FALSE,ID_CREATE_LAYER_BY_SKETCH
+Create Parameter,CreateParameter,Creates a new project or shared parameter,TRUE,TRUE,FALSE,ID_ADD_PARAMETER
+Create Parts,CreateParts,Creates individual parts from compound elements like walls and floors,TRUE,TRUE,TRUE,
+Create Plan View,CreatePlanView,Creates a new plan view for the project,TRUE,FALSE,FALSE,ID_MAKE_PLAN_VIEW
+Create Similar,CreateSimilar,Starts placing a new element of the same type as selected,TRUE,TRUE,TRUE,ID_EDIT_CREATE_SIMILAR
+Create Template from Current View,CreateTemplateFromCurrentView,Creates a view template based on the current view settings,TRUE,TRUE,FALSE,ID_CREATE_VIEW_TEMPLATE
+Create Toposolid from CSV,CreateToposolidFromCSV,Creates a toposolid by importing elevation points from a CSV file,TRUE,TRUE,FALSE,ID_SITE_TOPO_SOLID_IMPORT_POINTS
+Create Toposolid from Import,CreateToposolidFromImport,Creates a toposolid from an imported CAD file,TRUE,TRUE,FALSE,ID_SITE_TOPO_SOLID_FROM_IMPORT
+Create Vertical,CreateVertical,Creates a vertical duct or pipe segment,TRUE,FALSE,FALSE,ID_RBS_BTNADDVERTICAL
+CSV File Into Family Size Table,CSVFileIntoFamilySizeTable,Imports a CSV file into a family size lookup table,TRUE,FALSE,FALSE,ID_RBS_CSVFILE_INTO_FAMILY_SIZETABLE
+Curtain Grid,CurtainGrid,Places a curtain grid line on a curtain wall or system,TRUE,TRUE,FALSE,ID_OBJECTS_CURTAINGRID
+Curtain Grid Add/Remove Segments,CurtainGridAddRemoveSegments,Adds or removes segments from a curtain grid,TRUE,FALSE,FALSE,IDC_CURTA_GRID_LINE_ADD_REMOVE_SEGS
+Curtain System by Face,CurtainSystemByFace,Creates a curtain system on a selected face,TRUE,TRUE,FALSE,ID_OBJECTS_CURTA_SURFACE_SYSTEM
+Curtain System by Mesh,CurtainSystemByMesh,Creates a curtain system on a mesh surface,TRUE,TRUE,FALSE,ID_OBJECTS_CURTA_MESH_SYSTEM
+Curtain Wall Mullion,CurtainWallMullion,Places a mullion on a curtain wall grid,TRUE,TRUE,FALSE,ID_OBJECTS_CURTAMULLION
+Cut By,CutBy,Cuts a steel element using another element as the cutting shape,TRUE,TRUE,TRUE,
+Cut Geometry,CutGeometry,Cuts the geometry of one element using another element,TRUE,TRUE,TRUE,
+Cut Profile,CutProfile,Edits the cut profile of an element in a section or detail view,TRUE,TRUE,TRUE,ID_EDIT_CUT_BOUNDARY
+Cut Through,CutThrough,Cuts through a steel element completely,TRUE,TRUE,TRUE,
+Cut to Clipboard,CutToClipboard,Cuts selected elements to the clipboard,TRUE,TRUE,TRUE,ID_EDIT_CUT
+Data,Data,Opens the data panel for element information,TRUE,FALSE,FALSE,
+Deactivate View,DeactivateView,Deactivates an activated view on a sheet,TRUE,FALSE,FALSE,
+Decal Types,DecalTypes,Manages decal type settings for placing images on surfaces,TRUE,FALSE,FALSE,
+Decrease Walk Speed,DecreaseWalkSpeed,Decreases the walking speed in walkthrough mode,TRUE,FALSE,FALSE,ID_NAVWHEEL_DECREASEWALKSPEED
+Default 3D View,Default3DView,Opens or creates the default 3D orthographic view,TRUE,TRUE,FALSE,ID_VIEW_DEFAULT_3DVIEW
+Delete,Delete,Removes selected elements from the building model,TRUE,TRUE,TRUE,ID_BUTTON_DELETE
+Delete Energy Model,DeleteEnergyModel,Deletes the energy analytical model,TRUE,FALSE,FALSE,
+Delete Inner Segment,DeleteInnerSegment,Deletes the inner segment of a split wall or line,TRUE,FALSE,FALSE,ID_DEL_INNER_SEG
+Delete Rows,DeleteRows,Deletes selected rows from a schedule,TRUE,FALSE,FALSE,ID_DELETE_ROWS
+Delete Spline Control,DeleteSplineControl,Removes a control point from a spline curve,TRUE,FALSE,FALSE,IDC_SPLINE_DELETE_CONTROL
+Delete Unused Families and Symbols,DeleteUnusedFamiliesSymbols,Removes all unused families and types from the project,TRUE,TRUE,FALSE,ID_DELETE_UNUSED_FAMS_AND_SYMBOLS
+Demand Factors,DemandFactors,Configures electrical demand factor settings,TRUE,FALSE,FALSE,
+Demolish,Demolish,Marks selected elements as demolished in a demolition phase,TRUE,TRUE,TRUE,ID_DEMOLISH
+Design Options,DesignOptions,Manages design options and option sets,TRUE,TRUE,FALSE,ID_DESIGN_OPTIONS
+Detail Component,DetailComponent,Places a 2D detail component in a view,TRUE,TRUE,FALSE,ID_DETAIL_COMPONENT
+Detail Level,DetailLevel,Sets the detail level (coarse; medium; fine) of the current view,TRUE,TRUE,FALSE,ID_DETAIL_LEVEL
+Detail Line,DetailLine,Draws a view-specific detail line,TRUE,TRUE,FALSE,ID_OBJECTS_DETAIL_CURVES
+Diameter Dimension,DiameterDimension,Places a dimension measuring the diameter of a circular element,TRUE,TRUE,FALSE,
+Diameter Dimension Types,DiameterDimensionTypes,Manages diameter dimension type settings,TRUE,FALSE,FALSE,
+Dimension Options,DimensionOptions,Opens the dimension editing options panel,TRUE,TRUE,FALSE,ID_DIM_OPTIONS
+Disallow Wall Join,DisallowWallJoin,Prevents walls from automatically joining at their ends,TRUE,FALSE,TRUE,IDC_WALL_END_NOTJOINABLE
+Displace Elements,DisplaceElements,Creates a displacement set for exploded view visualization,TRUE,FALSE,TRUE,
+Distribute Horizontally,DistributeHorizontally,Evenly distributes selected elements horizontally,TRUE,FALSE,FALSE,ID_TEXTNOTE_HOR_DISTRIBUTE
+Distribute Vertically,DistributeVertically,Evenly distributes selected elements vertically,TRUE,FALSE,FALSE,ID_TEXTNOTE_VERT_DISTRIBUTE
+Door,Door,Places a door in a wall,TRUE,TRUE,FALSE,ID_OBJECTS_DOOR
+Dormer Opening,DormerOpening,Creates a dormer opening in a roof element,TRUE,TRUE,TRUE,
+Double Horizontal Arrow,DoubleHorizontalArrow,Selects the double horizontal arrow cursor mode,TRUE,FALSE,FALSE,ID_RADIO_HOR_ARROW2
+Double Vertical Arrow,DoubleVerticalArrow,Selects the double vertical arrow cursor mode,TRUE,FALSE,FALSE,ID_RADIO_VER_ARROW2
+Drafting View,DraftingView,Creates a new drafting view for 2D detailing,TRUE,TRUE,FALSE,ID_VIEW_NEW_DRAFTING
+Drag Elements on Selection,DragElementsOnSelection,Toggles whether elements can be dragged when selected,TRUE,TRUE,FALSE,ID_TOGGLE_ALLOW_DRAG_ON_SELECTION
+Draw on Face,DrawOnFace,Sets the drawing plane to a selected face,TRUE,FALSE,FALSE,IDC_DRAW_ON_FACE
+Draw on Work Plane,DrawOnWorkPlane,Sets the drawing plane to the active work plane,TRUE,FALSE,FALSE,IDC_DRAW_ON_WORKPLANE
+Duct,Duct,Places a duct element in the HVAC system,TRUE,TRUE,FALSE,ID_RBS_DUCT
+Duct Accessory,DuctAccessory,Places a duct accessory such as a damper or louver,TRUE,TRUE,FALSE,ID_RBS_DUCT_ACCESSORY
+Duct Connector,DuctConnector,Places a connector on a duct family,TRUE,FALSE,FALSE,
+Duct Fitting,DuctFitting,Places a fitting on a duct run,TRUE,TRUE,FALSE,ID_RBS_DUCT_FITTING
+Duct Legend,DuctLegend,Manages duct legend settings for documentation,TRUE,FALSE,FALSE,
+Duct Placeholder,DuctPlaceholder,Places a duct placeholder for schematic layouts,TRUE,TRUE,FALSE,
+Duct Pressure Loss Report,DuctPressureLossReport,Generates a pressure loss report for duct systems,TRUE,FALSE,FALSE,
+Duplicate as Dependent,DuplicateAsDependent,Duplicates the current view as a dependent view,TRUE,TRUE,FALSE,
+Duplicate Sheet with Views,DuplicateSheetWithViews,Duplicates a sheet along with all placed views,TRUE,TRUE,FALSE,ID_DUPLICATE_SHEET_WITH_VIEWS
+Duplicate View,DuplicateView,Duplicates the current view without detailing elements,TRUE,TRUE,FALSE,
+Duplicate with Detailing,DuplicateWithDetailing,Duplicates the current view including all detailing elements,TRUE,TRUE,FALSE,
+DWF Markup,DWFMarkup,Links a DWF markup file for review,TRUE,FALSE,FALSE,
+Dynamo,Dynamo,Opens the Dynamo visual programming environment,TRUE,TRUE,FALSE,ID_VISUAL_PROGRAMMING_DYNAMO
+Dynamo Player,DynamoPlayer,Opens the Dynamo Player to run Dynamo scripts,TRUE,TRUE,FALSE,ID_DYNAMO_PLAYER
+Dynamo Player for Steel,DynamoPlayerForSteel,Opens the Dynamo Player with steel-specific scripts,TRUE,TRUE,FALSE,
+Edit a Template,EditATemplate,Opens a view template for editing,TRUE,FALSE,FALSE,
+Edit Bend Profile Sketch,EditBendProfileSketch,Edits the bend profile sketch of a rebar shape,TRUE,FALSE,FALSE,ID_EDIT_SKETCH_BENDPROFILE
+Edit Group,EditGroup,Opens a group for editing its members,TRUE,TRUE,TRUE,ID_EDITGROUP_GROUP_EDIT
+Edit Layer Profile,EditLayerProfile,Edits the layer profile of a compound wall or floor,TRUE,FALSE,FALSE,ID_EDIT_LAYER_SKETCH
+Edit Profile,EditProfile,Edits the elevation profile of a wall or other element,TRUE,TRUE,TRUE,ID_EDIT_ELEVATION_SKETCH
+Edit Railing Joins,EditRailingJoins,Edits the join conditions between railing segments,TRUE,FALSE,FALSE,ID_RAILING_EDIT_JOINS
+Edit Rebar Cover,EditRebarCover,Edits the concrete cover distance for reinforcement,TRUE,TRUE,TRUE,
+Edit Selection,EditSelection,Modifies the current element selection,TRUE,TRUE,TRUE,
+Edit Sketch,EditSketch,Edits the sketch of a sketch-based element,TRUE,TRUE,TRUE,ID_EDIT_SKETCH
+Edit Stairs,EditStairs,Opens stairs for component editing,TRUE,FALSE,TRUE,ID_EXIT_PICK_LEVELS_EDITOR
+Edit Surface Boundary,EditSurfaceBoundary,Edits the boundary sketch of a toposolid surface,TRUE,FALSE,FALSE,ID_SURFACE_EDIT_SKETCH
+Edit Witness Lines,EditWitnessLines,Edits dimension witness lines by adding or removing references,TRUE,FALSE,FALSE,IDC_EDIT_WITNESS_REFS
+Editing Requests,EditingRequests,Shows pending editing requests in a workshared project,TRUE,FALSE,FALSE,
+Electrical Analytical Load Type Settings,ElectricalAnalyticalLoadTypeSettings,Configures electrical analytical load type parameters,TRUE,FALSE,FALSE,
+Electrical Connector,ElectricalConnector,Places an electrical connector on a family,TRUE,FALSE,FALSE,
+Electrical Equipment,ElectricalEquipment,Places electrical equipment such as panels and switchboards,TRUE,TRUE,FALSE,ID_ELECTRICAL_EQUIPMENT
+Electrical Fixture,ElectricalFixture,Places an electrical fixture such as outlets and switches,TRUE,TRUE,FALSE,ID_ELECTRICAL_FIXTURE
+Electrical Settings,ElectricalSettings,Configures electrical system settings and parameters,TRUE,FALSE,FALSE,
+Element Count,ElementCount,Displays the total count of elements in the model,TRUE,FALSE,FALSE,ID_HVE_ELEMENT_COUNT
+Element Count of Categories,ElementCountOfCategories,Displays element counts grouped by category,TRUE,FALSE,FALSE,ID_HVE_ELEMENT_COUNT_CATEGORIES
+Element Keynote,ElementKeynote,Places a keynote tag that references an element type,TRUE,TRUE,TRUE,ID_KEYNOTE_ELEMENT
+Element Size,ElementSize,Displays the memory size of selected elements,TRUE,FALSE,FALSE,ID_HVE_ELEMENT_SIZE
+Elevation Tags,ElevationTags,Manages elevation tag annotation styles,TRUE,FALSE,FALSE,
+Ellipse,Ellipse,Draws an ellipse shape in sketch mode,TRUE,FALSE,FALSE,ID_OBJECTS_CURVE_ELLIPSE
+Ellipse (Radio),EllipseRadio,Selects ellipse as the active drawing tool,TRUE,FALSE,FALSE,IDC_RADIO_FULL_ELLIPSE
+Enable Raster Image Snaps,EnableRasterImageSnaps,Enables snapping to raster image points,TRUE,FALSE,FALSE,ID_ENABLE_RASTER_IMAGE_SNAPS
+Enable Temporary View Properties,EnableTemporaryViewProperties,Enables temporary view property overrides for the current view,TRUE,TRUE,FALSE,ID_ENABLE_TEMPORARY_VIEW_PROPERTIES
+Energy Settings,EnergySettings,Configures energy analysis settings,TRUE,FALSE,FALSE,
+Equipment Load,EquipmentLoad,Places an electrical equipment load in the model,TRUE,TRUE,FALSE,
+Excavate Toposolid,ExcavateToposolid,Creates an excavation in a toposolid element,TRUE,TRUE,TRUE,ID_TOPOSOLID_EXCAVATION
+Exclude Group Members,ExcludeGroupMembers,Excludes selected members from a group instance,TRUE,TRUE,TRUE,ID_EXCLUDE_GROUP_MEMBERS
+Exit Revit,ExitRevit,Closes the Revit application,FALSE,FALSE,FALSE,ID_APP_EXIT
+Export Building Site,ExportBuildingSite,Exports building site data for external use,TRUE,TRUE,FALSE,
+Export CAD - ACIS/SAT,ExportCADFormatsACIS_SAT,Exports the model to ACIS SAT format,TRUE,TRUE,FALSE,
+Export CAD - DGN,ExportCADFormatsDGN,Exports the model to MicroStation DGN format,TRUE,TRUE,FALSE,ID_EXPORT_DGN
+Export CAD - DWG,ExportCADFormatsDWG,Exports the model to AutoCAD DWG format,TRUE,TRUE,FALSE,ID_EXPORT_DWG
+Export CAD - DXF,ExportCADFormatsDXF,Exports the model to AutoCAD DXF format,TRUE,TRUE,FALSE,ID_EXPORT_DXF
+Export CAD - OBJ,ExportCADFormatsOBJ,Exports the model to Wavefront OBJ format,TRUE,TRUE,FALSE,ID_EXPORT_OBJ
+Export CAD - STL,ExportCADFormatsSTL,Exports the model to STL format for 3D printing,TRUE,TRUE,FALSE,ID_EXPORT_STL
+Export DWF/DWFx,ExportDWFOrDWFx,Exports the model to DWF or DWFx format,TRUE,TRUE,FALSE,ID_EXPORT_DWF
+Export Fabrication Data,ExportFabricationData,Exports fabrication element data for manufacturing,TRUE,TRUE,FALSE,ID_FABRICATION_RUN_EXPORT_DATA
+Export Fabrication PCF,ExportFabricationPCF,Exports fabrication data in PCF (Piping Component File) format,TRUE,TRUE,FALSE,ID_EXPORT_FABRICATION_PCF
+Export Family Types,ExportFamilyTypes,Exports family type parameters to a text file,TRUE,TRUE,FALSE,ID_EXPORT_FAM_TYPES
+Export Family Types to TXT,ExportFamilyTypesToTXT,Exports family types to a TXT file from the family editor,TRUE,TRUE,FALSE,ID_FAMILY_EXPORT_TO_TXT_FILE
+Export FBX,ExportFBX,Exports the model to Autodesk FBX format,TRUE,TRUE,FALSE,ID_EXPORT_FBX
+Export gbXML,ExportGBXML,Exports the energy model to gbXML format,TRUE,TRUE,FALSE,ID_EXPORT_GBXML
+Export IFC,ExportIFC,Exports the model to Industry Foundation Classes (IFC) format,TRUE,TRUE,FALSE,ID_EXPORT_IFC
+Export Image,ExportImagesandAnimationsImage,Exports the current view as an image file,TRUE,TRUE,FALSE,ID_FILE_PRINT_TO_IMAGE
+Export Job File,ExportJobFile,Exports a fabrication job file for manufacturing,TRUE,TRUE,FALSE,ID_EXPORT_FAB_MAJ
+Export Mass Model gbXML,ExportMassModelGBXML,Exports the conceptual mass energy model to gbXML format,TRUE,TRUE,FALSE,
+Export ODBC Database,ExportODBCDatabase,Exports model data to an ODBC database,TRUE,TRUE,FALSE,
+Export Options - IFC,ExportOptionsIFCOptions,Configures IFC export options and settings,TRUE,TRUE,FALSE,
+Export PDF,ExportPDF,Exports views and sheets to PDF format,TRUE,TRUE,FALSE,ID_EXPORT_PDF
+Export Room/Area Report,ExportReportsRoomOrAreaReport,Exports a room or area report to a file,TRUE,TRUE,FALSE,ID_ROOM_AREA_REPORT
+Export Schedule Report,ExportReportsSchedule,Exports a schedule view to a delimited text file,TRUE,TRUE,FALSE,ID_FILE_EXPORT_SCHEDULE
+Export Setup - DGN,ExportOptionsExportSetupsDGN,Configures DGN export setup options,TRUE,TRUE,FALSE,ID_SETTINGS_EXPORT_SETUPS_DGN
+Export Setup - DWG/DXF,ExportOptionsExportSetupsDWGOrDXF,Configures DWG and DXF export setup options,TRUE,TRUE,FALSE,ID_SETTINGS_EXPORT_SETUPS_DWGDXF
+Export Solar Study,ExportImagesandAnimationsSolarStudy,Exports a solar study animation to a video file,TRUE,TRUE,FALSE,
+Export Template Information,ExportTemplateInformation,Exports template configuration data to a file,TRUE,TRUE,FALSE,ID_EXPORT_TEMPLATE_INFORMATION
+Export Types,ExportExportTypes,Manages export type configurations,TRUE,TRUE,FALSE,
+Export Walkthrough,ExportImagesandAnimationsWalkthrough,Exports a walkthrough animation to a video file,TRUE,TRUE,FALSE,ID_RM_ANIMATION
+Fabric Reinforcement Symbol,FabricReinforcementSymbol,Manages fabric reinforcement annotation symbols,TRUE,FALSE,FALSE,
+Fabrication About,FabricationAbout,Displays version information about the fabrication module,TRUE,FALSE,FALSE,ID_FABRICATION_ABOUT
+Fabrication Part,FabricationPart,Places a fabrication part from the catalog,TRUE,TRUE,TRUE,
+Fabrication Settings,FabricationSettings,Opens fabrication configuration and settings,TRUE,TRUE,FALSE,ID_FABRICATION_SETTINGS
+Family Category and Parameters,FamilyCategoryAndParameters,Assigns the family category and configures shared parameters,TRUE,FALSE,FALSE,ID_OBJECTS_FAMILYHOST
+Family Delete,FamilyDelete,Deletes selected elements within the family editor,TRUE,FALSE,FALSE,ID_FAMILY_DELETE
+Family Types,FamilyTypes,Opens the family types dialog to manage type parameters,TRUE,FALSE,FALSE,ID_FAMILY_TYPE
+Family Types Dialog,FamilyTypesDialog,Opens the expanded family types dialog,TRUE,FALSE,FALSE,ID_FAMILY_TYPE_2
+Fascia,Fascia,Creates a fascia element along a roof edge,TRUE,TRUE,FALSE,ID_CREATE_FASCIA_TB
+Fill Patterns,FillPatterns,Manages fill pattern definitions for materials and regions,TRUE,TRUE,FALSE,ID_SETTINGS_FILLPATTERNS
+Filled Region,FilledRegion,Creates a filled region with a specified pattern in a view,TRUE,TRUE,FALSE,ID_OBJECTS_FILLED_REGION
+Filter Loaded Addins,FilterLoadedAddins,Filters which add-ins are loaded in Revit,TRUE,TRUE,FALSE,ID_FILTER_LOADED_ADDINS
+Filter MEP Components,FilterMEPComponents,Filters MEP components in the current selection,TRUE,FALSE,FALSE,ID_FILTER_MEPCOMPONENTS
+Filter Selection,FilterSelection,Filters the current selection by category or other criteria,TRUE,FALSE,TRUE,ID_BTN_FILTER_SELECTION
+Filters,Filters,Manages view filters for controlling element visibility,TRUE,TRUE,FALSE,ID_VIEW_FILTERS
+Finalize Selected Elements,FinalizeSelectedElements,Finalizes selected elements to prevent further changes,TRUE,FALSE,FALSE,ID_FINALIZE_SELECTED_ELEMENTS
+Find in Project Browser,FindInProjectBrowser,Locates the selected element in the Project Browser,TRUE,FALSE,TRUE,ID_FIND_IN_PROJECT_BROWSER
+Find Referring Views,FindReferringViews,Finds views that reference or display the selected element,TRUE,FALSE,TRUE,ID_FIND_VIEW_GENERATOR
+Find/Replace,FindOrReplace,Finds and replaces text in text notes and annotations,TRUE,FALSE,FALSE,ID_FIND_REPLACE
+Finish Analytical Automation,AnalyticalFinish,Completes the analytical automation operation and applies changes,TRUE,FALSE,FALSE,ID_ANALYTICAL_AUTOMATION_EDIT_MODE_FINISH
+Finish Analytical Relation,FinishAnalyticalRelation,Completes the analytical relation editing session,TRUE,FALSE,FALSE,ID_ANALYTICAL_RELATIONSHIP_EDIT_MODE_FINISH
+Finish Area Load Dividing,FinishAreaLoadDividing,Completes the area load dividing operation,TRUE,FALSE,FALSE,ID_RBS_FINISH_AREA_BASED_LOAD_DIVIDE_MODE
+Finish Displacement Edit,FinishDisplacementEdit,Completes the displacement set editing and applies changes,TRUE,FALSE,FALSE,ID_DISPLACEMENT_FINISH_EDIT
+Finish Edit Mode,FinishEditMode,Completes the current sketch or edit mode and applies changes,TRUE,FALSE,FALSE,ID_FINISH_SKETCH
+Finish Group Edit,FinishGroupEdit,Completes group editing and saves changes,TRUE,FALSE,FALSE,ID_FINISH_GROUP_EDIT_MODE
+Finish Level Landings Edit,FinishLevelLandingsEdit,Completes level landings editing and saves changes,TRUE,FALSE,FALSE,ID_FINISH_LEVEL_LANDINGS_EDIT
+Finish Light Group Edit,FinishLightGroupEdit,Completes light group editing and saves changes,TRUE,FALSE,FALSE,ID_FINISH_LIGHT_GROUP_EDIT
+Finish Paste,FinishPaste,Completes the paste operation,TRUE,FALSE,FALSE,ID_FINISH_PASTE
+Finish Paste Edit Mode,FinishPasteEditMode,Completes the paste edit mode and applies changes,TRUE,FALSE,FALSE,ID_FINISH_PASTE_EDIT_MODE
+Finish Profile Edit Mode,FinishProfileEditMode,Completes profile editing and applies changes,TRUE,FALSE,FALSE,ID_FINISH_SKETCH_PROFILE
+Finish Rebar Edit,FinishRebarEdit,Completes the rebar editing session and applies changes,TRUE,FALSE,FALSE,ID_REBAR_FINISH_EDIT_BARS
+Finish Splice Rebar,FinishSpliceRebar,Completes the rebar splice operation,TRUE,FALSE,FALSE,ID_SPLICE_REBAR_FINISH
+Finish Stairs Edit Mode,FinishStairsEditMode,Completes stairs editing and applies changes,TRUE,FALSE,FALSE,ID_STAIRSEDITMODE_FINISH
+Finish Walkthrough,FinishWalkthrough,Completes the walkthrough path creation,TRUE,FALSE,FALSE,ID_CANCEL_EDITOR
+Fire Alarm,FireAlarm,Places a fire alarm device in the building model,TRUE,TRUE,FALSE,
+Fit to Window,FitToWindow,Zooms the view to fit all visible elements in the window,TRUE,FALSE,FALSE,ID_NAVWHEEL_FITTOWINDOW
+Flex Duct,FlexDuct,Places a flexible duct element in the HVAC system,TRUE,TRUE,FALSE,
+Flex Pipe,FlexPipe,Places a flexible pipe element in the plumbing system,TRUE,TRUE,FALSE,
+Flip Rebar Set,FlipRebarSet,Flips the distribution direction of a rebar set,TRUE,TRUE,TRUE,ID_FLIP_REBAR_SET
+Flip Stairs Direction,FlipStairsDirection,Reverses the up direction of a stair element,TRUE,TRUE,TRUE,ID_FLIP_STAIRS_DIRECTION
+Flip X Axis,FlipXAxis,Flips the local X axis of an analytical member,TRUE,TRUE,TRUE,ID_FLIP_ANALYTICAL_MEMBER
+Floor by Face,FloorByFaceFloor,Creates a floor by selecting a mass or generic model face,TRUE,TRUE,FALSE,ID_FLOOR_BY_FACE
+Floor Plan,FloorPlan,Creates a new floor plan view,TRUE,TRUE,FALSE,ID_VIEW_NEW_FLOORPLAN
+Fly Mode (3D Mouse),FlyMode3DMouse,Activates fly navigation mode with a 3D mouse,TRUE,FALSE,FALSE,ID_NAVBAR_3DCONTROLLER_FLY
+Form Work Plane View,FormWorkPlaneView,Creates a view of the work plane for a form,TRUE,FALSE,FALSE,
+Framing Elevation,FramingElevation,Creates an elevation view oriented to a structural framing element,TRUE,TRUE,FALSE,ID_VIEW_NEW_FRAMING_ELEVATION
+Full Navigation Wheel,FullNavigationWheel,Displays the full navigation wheel for 3D navigation,TRUE,FALSE,FALSE,ID_NAVWHEEL_FULL_WHEEL
+Full Regeneration,FullRegeneration,Forces a full regeneration of all elements in the model,TRUE,FALSE,FALSE,ID_REGEN_ALL
+Generate,Generate,Generates content based on current settings,TRUE,FALSE,FALSE,
+Generate Analysis,GenerateAnalysis,Generates analytical results for the current model,TRUE,FALSE,FALSE,
+Global Parameters,GlobalParameters,Manages global parameters that can drive dimensions and properties,TRUE,TRUE,FALSE,
+Graded Region,GradedRegion,Creates a graded region on a toposolid surface,TRUE,TRUE,FALSE,ID_SITE_GRADE
+Graphical Column Schedule,GraphicalColumnSchedule,Creates a graphical column schedule view,TRUE,TRUE,FALSE,
+Gray Inactive Worksets,GrayInactiveWorksets,Displays inactive workset elements in gray,TRUE,TRUE,FALSE,
+Grid,Grid,Places a column grid line in the building model,TRUE,TRUE,FALSE,ID_OBJECTS_GRID
+Grid Arc Center-Ends,GridArcCenterEnds,Creates an arc-shaped grid line by center and end points,TRUE,FALSE,FALSE,ID_GRID_ARC_CENTER_ENDS
+Grid Arc Start-End-Radius,GridArcStartEndRadius,Creates an arc-shaped grid line by three points,TRUE,FALSE,FALSE,ID_GRID_ARC_THREE_PNT
+Guide Grid,GuideGrid,Creates a guide grid for aligning views on sheets,TRUE,FALSE,FALSE,
+Gutter,Gutter,Creates a gutter element along a roof edge,TRUE,TRUE,FALSE,ID_CREATE_GUTTER_TB
+Halftone/Underlay,HalftoneOrUnderlay,Configures halftone and underlay display settings,TRUE,FALSE,FALSE,
+Heating and Cooling Loads,HeatingAndCoolingLoads,Calculates heating and cooling loads for the building,TRUE,FALSE,FALSE,
+Hidden Line,HiddenLine,Sets the view visual style to hidden line mode,TRUE,TRUE,FALSE,ID_IMAGE_HIDDENLINE
+Hide Boundary Open Ends,HideBoundaryOpenEnds,Hides the open end indicators of room boundaries,TRUE,FALSE,FALSE,
+Hide Category,HideCategory,Temporarily hides elements of the selected category in the view,TRUE,TRUE,TRUE,ID_TEMPHIDE_HIDE_CATEGORY
+Hide Columns,HideColumns,Hides selected columns in a schedule view,TRUE,FALSE,FALSE,ID_HIDE_COLUMNS
+Hide Element,HideElement,Temporarily hides the selected element in the view,TRUE,TRUE,TRUE,ID_TEMPHIDE_HIDE
+Hide Elements,HideElements,Temporarily hides selected elements in the view,TRUE,TRUE,TRUE,ID_TEMPHIDE_HIDE_ELEMENT
+Holes,Holes,Creates holes in steel structural elements,TRUE,TRUE,TRUE,
+HTML View Element Initialize,HTMLViewElementInit,Initializes the HTML view element for web content display,TRUE,FALSE,FALSE,ID_HTML_VIEW_ELEMENT_INIT
+IDs of Selection,IdsOfSelection,Displays the element IDs of the current selection,TRUE,FALSE,TRUE,ID_IDS_OF_SELECTION
+Import CAD,ImportCAD,Imports a CAD file (DWG; DXF; DGN; SAT) into the project,TRUE,TRUE,FALSE,ID_IMPORT_CAD
+Import Family Types,ImportFamilyTypes,Imports family type parameters from a text file,TRUE,TRUE,FALSE,ID_IMPORT_FAM_TYPES
+Import Family Types from TXT,ImportFamilyTypesFromTXT,Imports family types from a TXT file in the family editor,TRUE,TRUE,FALSE,ID_FAMILY_IMPORT_FROM_TXT_FILE
+Import gbXML,ImportGBXML,Imports an energy model from a gbXML file,TRUE,TRUE,FALSE,ID_IMPORT_GBXML
+Import Image,ImportImage,Imports a raster image file into the current view,TRUE,TRUE,FALSE,
+Import PDF,ImportPDF,Imports a PDF file into the current view,TRUE,TRUE,FALSE,
+Import Types,ImportTypes,Imports type definitions from an external file,TRUE,TRUE,FALSE,
+Increase Walk Speed,IncreaseWalkSpeed,Increases the walking speed in walkthrough mode,TRUE,FALSE,FALSE,ID_NAVWHEEL_INCREASEWALKSPEED
+Inherit Elevation,InheritElevation,Inherits the elevation from an adjacent duct or pipe,TRUE,FALSE,FALSE,ID_RBS_BTNINHERITELEVATION
+Inherit Size,InheritSize,Inherits the size from an adjacent duct or pipe,TRUE,FALSE,FALSE,ID_RBS_BTNINHERITSIZE
+In-Place Mass,InPlaceMass,Creates an in-place conceptual mass element,TRUE,TRUE,FALSE,
+In-Place Wall,InPlaceWall,Creates an in-place wall using the family editor,TRUE,TRUE,FALSE,ID_INPLACE_WALL
+Inscribed Polygon (Radio),InscribedPolygonRadio,Selects inscribed polygon as the active drawing tool,TRUE,FALSE,FALSE,IDC_RADIO_INSCRIBED_POLYGON
+Insert 2D Elements from File,Insert2DElementsFromFile,Inserts 2D drafting elements from another Revit file,TRUE,TRUE,FALSE,
+Insert 3D from File,Insert3DFromFile,Inserts 3D elements from another Revit file,TRUE,TRUE,FALSE,ID_INSERT_3D_ELEMENTS_FROM_FILE
+Insert Coupler,InsertCoupler,Inserts a mechanical coupler on a rebar element,TRUE,TRUE,TRUE,
+Insert Data Row,InsertDataRow,Inserts a new data row in a schedule,TRUE,FALSE,FALSE,ID_INSERT_ROW
+Insert Part,InsertPart,Inserts a fabrication part into an existing run,TRUE,FALSE,FALSE,ID_FABRICATION_PART_INSERT
+Insert Views from File,InsertViewsFromFile,Inserts views from another Revit file into the project,TRUE,TRUE,FALSE,
+Instance Properties,InstanceProperties,Displays and edits properties for the selected element instance,TRUE,FALSE,FALSE,ID_EDIT
+Insulation,Insulation,Adds insulation to duct or pipe elements,TRUE,TRUE,FALSE,ID_OBJECTS_INSULATION
+Isolate Category,IsolateCategory,Temporarily isolates elements of the selected category in the view,TRUE,TRUE,TRUE,ID_TEMPHIDE_ISOLATECAT
+Isolate Element,IsolateElement,Temporarily isolates the selected element in the view,TRUE,TRUE,TRUE,ID_TEMPHIDE_ISOLATE
+Isolate in Room Schedule,IsolateInRoomSchedule,Isolates rooms in a schedule based on selection,TRUE,FALSE,FALSE,ID_ROOM_SCHEDULE_FILTER_ISOLATE
+Isolated,Isolated,Creates a new isolated 3D view,TRUE,FALSE,FALSE,ID_VIEW_NEW_3DVIEW
+Join Geometry,JoinGeometry,Joins the geometry of two overlapping elements,TRUE,TRUE,TRUE,
+Join/Unjoin Roof,JoinOrUnjoinRoof,Joins or unjoins a roof element with walls,TRUE,TRUE,TRUE,
+Keyboard Shortcuts,KeyboardShortcuts,Opens the keyboard shortcuts configuration dialog,TRUE,FALSE,FALSE,ID_KEYBOARD_SHORTCUT_DIALOG
+Keynote Legend,KeynoteLegend,Creates a keynote legend view showing all keynotes used,TRUE,TRUE,FALSE,
+Keynoting Settings,KeynotingSettings,Configures keynote file and numbering settings,TRUE,TRUE,FALSE,ID_SETTINGS_KEYNOTING
+Label,Label,Places a label parameter in a family or annotation,TRUE,FALSE,FALSE,ID_OBJECTS_TAG_NOTE
+Label Contours,LabelContours,Adds elevation labels to toposolid contour lines,TRUE,FALSE,FALSE,ID_SITE_LABEL_CONTOURS
+Layer Auto Butt Join,LayerAutoButtJoin,Sets automatic butt join behavior for wall layers,TRUE,FALSE,FALSE,ID_LAYER_AUTO_BUTT_JOIN
+Layer Auto Miter Join,LayerAutoMiterJoin,Sets automatic miter join behavior for wall layers,TRUE,FALSE,FALSE,ID_LAYER_AUTO_MITER_JOIN
+Layer Butt Join by Face,LayerButtJoinByFace,Creates a butt join at wall layers by picking a face,TRUE,FALSE,FALSE,ID_LAYER_BUTT_JOIN
+Layer Miter Join by Face,LayerMiterJoinByFace,Creates a miter join at wall layers by picking a face,TRUE,FALSE,FALSE,ID_LAYER_MITER_JOIN
+Legend,Legend,Creates a new legend view for symbol documentation,TRUE,TRUE,FALSE,ID_VIEW_NEW_LEGEND
+Legend Component,LegendComponent,Places a legend component in a legend view,TRUE,TRUE,FALSE,ID_OBJECTS_LEGEND_COMPONENT
+Level,Level,Creates a level line that defines a building story,TRUE,TRUE,FALSE,ID_OBJECTS_LEVEL
+Light Source Definition,LightSourceDefinition,Defines light source properties for a lighting family,TRUE,FALSE,FALSE,ID_LIGHTSOURCE_DEFINITION
+Lighting,Lighting,Opens lighting analysis settings,TRUE,FALSE,FALSE,
+Lighting Fixture,LightingFixture,Places a lighting fixture in the building model,TRUE,TRUE,FALSE,ID_LIGHTING_FIXTURE
+Line,Line,Draws a straight line in sketch mode,TRUE,FALSE,FALSE,ID_OBJECTS_CURVE_LINE
+Line (Radio),LineRadio,Selects line as the active drawing tool,TRUE,FALSE,FALSE,IDC_RADIO_LINE
+Line Patterns,LinePatterns,Manages line pattern definitions (dash; dot; etc.),TRUE,TRUE,FALSE,ID_SETTINGS_PEN_FONTS
+Line Styles,LineStyles,Manages line style settings including weight; color; and pattern,TRUE,TRUE,FALSE,ID_SETTINGS_LINE_STYLES
+Line Weights,LineWeights,Configures line weight values for different scales,TRUE,TRUE,FALSE,ID_SETTINGS_PENS
+Linear Dimension,LinearDimension,Places a horizontal or vertical linear dimension,TRUE,TRUE,FALSE,ID_ANNOTATIONS_DIMENSION_LINEAR
+Linear Dimension Types,LinearDimensionTypes,Manages linear dimension type settings,TRUE,FALSE,FALSE,
+Linear Multi-Rebar Annotation,LinearMultiRebarAnnotation,Places a linear annotation for multiple rebar sets,TRUE,FALSE,FALSE,
+Linework,Linework,Overrides the line style of element edges in the current view,TRUE,TRUE,TRUE,ID_EDIT_LINEWORK
+Link CAD,LinkCAD,Links a CAD file as a reference without importing geometry,TRUE,TRUE,FALSE,ID_LINK_DWG
+Link IFC,LinkIFC,Links an IFC file as a reference model,TRUE,TRUE,FALSE,ID_LINK_IFC
+Link Image,LinkImage,Links a raster image file to the current view,TRUE,TRUE,FALSE,ID_LINK_IMAGE
+Link PDF,LinkPDF,Links a PDF file to the current view,TRUE,TRUE,FALSE,ID_LINK_PDF
+Link Revit,LinkRevit,Links another Revit model into the current project,TRUE,TRUE,FALSE,ID_LINK_REVIT
+Link Topography,LinkTopography,Links topography data from an external source,TRUE,TRUE,FALSE,
+Load as Group,LoadAsGroup,Loads a Revit file as a group into the current project,TRUE,TRUE,FALSE,ID_LOAD_AS_GROUP
+Load as Group into Open Projects,LoadAsGroupIntoOpenProjects,Loads a file as a group into all open projects,TRUE,TRUE,FALSE,
+Load Cases,LoadCases,Defines structural load cases for analysis,TRUE,FALSE,FALSE,
+Load Catalog,LoadCatalog,Loads a fabrication parts catalog,TRUE,FALSE,FALSE,ID_LOAD_CATALOG
+Load Classifications,LoadClassifications,Loads classification system data for elements,TRUE,FALSE,FALSE,
+Load Combinations,LoadCombinations,Defines structural load combinations for analysis,TRUE,FALSE,FALSE,
+Load Family into Project and Close,LoadFamilyIntoProjectAndClose,Loads the family into the project and closes the family editor,TRUE,FALSE,FALSE,ID_LOAD_INTO_PROJECTS_CLOSE
+Load from Disk,LoadFromDisk,Loads a UI layout or configuration from disk,TRUE,FALSE,FALSE,ID_LOAD_XAML_BROWSE
+Load into Project,LoadIntoProject,Loads the current family into an open project,TRUE,FALSE,FALSE,ID_LOAD_INTO_PROJECTS
+Load Rebar Shape into Project,LoadRebarShapeIntoProject,Loads a rebar shape family into an open project,TRUE,FALSE,FALSE,ID_LOAD_INTO_PROJECTS_REBAR_SHAPE
+Load Rebar Shape into Project and Close,LoadRebarShapeIntoProjectAndClose,Loads the rebar shape into the project and closes the editor,TRUE,FALSE,FALSE,ID_LOAD_INTO_PROJECTS_CLOSE_REBAR_SHAPE
+Load Selection,LoadSelection,Loads a previously saved selection set,TRUE,FALSE,TRUE,
+Load Shapes,LoadShapes,Loads rebar shape definitions into the project,TRUE,FALSE,FALSE,
+Loaded Tags and Symbols,LoadedTagsAndSymbols,Manages which tag and symbol families are loaded,TRUE,TRUE,FALSE,ID_SETTINGS_TAGS
+Loads,Loads,Opens the structural loads configuration panel,TRUE,FALSE,FALSE,
+Locally Unload Link Is Set,LocallyUnloadLinkIsSet,Checks if a linked model is set to locally unloaded,TRUE,TRUE,FALSE,ID_RVT_LINK_LOCALLY_UNLOAD_LINK_IS_SET
+Locally Unload Link Toggle,LocallyUnloadLinkToggle,Toggles local unload state for a linked model,TRUE,TRUE,FALSE,ID_RVT_LINK_LOCALLY_UNLOAD_LINK_TOGGLE
+Locally Unload New Links Is Set,LocallyUnloadNewLinksIsSet,Checks if new links are set to locally unloaded by default,TRUE,TRUE,FALSE,ID_RVT_LINK_LOCALLY_UNLOAD_NEW_LINKS_IS_SET
+Locally Unload New Links Toggle,LocallyUnloadNewLinksToggle,Toggles the default local unload state for new links,TRUE,TRUE,FALSE,ID_RVT_LINK_LOCALLY_UNLOAD_NEW_LINKS_TOGGLE
+Location,Location,Sets the geographic location of the project,TRUE,TRUE,FALSE,ID_GEO_LOCATION
+Macro Manager,MacroManager,Opens the macro manager to create and run macros,TRUE,TRUE,FALSE,ID_MACRO_MANAGER
+Macro Security,MacroSecurity,Configures macro security settings,TRUE,TRUE,FALSE,ID_MACRO_SECURITY
+Major Segment,MajorSegment,Selects the major segment of a split element,TRUE,FALSE,FALSE,ID_MAJOR_SEGMENT
+Manage Catalogs,ManageCatalogs,Manages fabrication parts catalogs,TRUE,FALSE,FALSE,ID_MANAGE_CATALOGS
+Manage Images,ManageImages,Manages raster images linked or imported in the project,TRUE,TRUE,FALSE,ID_MANAGE_IMAGES
+Manage Links,ManageLinks,Manages all linked files including Revit; CAD; and IFC links,TRUE,TRUE,FALSE,ID_MANAGE_LINKS
+Manage Revit Server Accelerator,ManageConnectionToARevitServerAccelerator,Configures the Revit Server accelerator connection,TRUE,TRUE,FALSE,
+Manage Templates,ManageTemplates,Manages project and family templates,TRUE,TRUE,FALSE,
+Manage View Templates,ManageViewTemplates,Creates and modifies view templates for consistent view settings,TRUE,TRUE,FALSE,ID_SETTINGS_VIEWTEMPLATES
+Masking Region,MaskingRegion,Creates a region that masks elements behind it in a view,TRUE,TRUE,FALSE,ID_OBJECTS_MASKING_REGION
+Match Type Properties,MatchTypeProperties,Applies the type properties of one element to other elements,TRUE,TRUE,TRUE,ID_OBJECTS_PAINTBUCKET
+Matchline,Matchline,Places a matchline to define where dependent views split,TRUE,TRUE,FALSE,ID_MATCHLINE
+Material Assets,MaterialAssets,Manages material appearance; physical; and thermal assets,TRUE,TRUE,FALSE,
+Material Keynote,MaterialKeynote,Places a keynote tag that references a material,TRUE,TRUE,TRUE,ID_KEYNOTE_MATERIAL
+Material Tag,MaterialTag,Places a tag that identifies a material on an element face,TRUE,TRUE,TRUE,ID_TAG_MATERIAL
+Material Takeoff,MaterialTakeoff,Creates a material takeoff schedule listing quantities,TRUE,TRUE,FALSE,ID_VIEW_NEW_MATERIAL_TAKEOFF
+Materials,Materials,Opens the materials browser to manage project materials,TRUE,TRUE,FALSE,ID_SETTINGS_MATERIALS
+Measure Along an Element,MeasureAlongAnElement,Measures the distance along an element edge or curve,TRUE,FALSE,FALSE,ID_MEASURE_PICK_LINES
+Measure Between Two References,MeasureBetweenTwoReferences,Measures the distance between two points or references,TRUE,FALSE,FALSE,ID_MEASURE_LINE
+Mechanical Control Device,MechanicalControlDevice,Places a mechanical control device in the HVAC system,TRUE,FALSE,FALSE,
+Mechanical Equipment,MechanicalEquipment,Places mechanical equipment such as boilers and chillers,TRUE,TRUE,FALSE,ID_RBS_MECHANICAL_EQUIPMENT
+Mechanical Settings,MechanicalSettings,Configures mechanical system settings and parameters,TRUE,FALSE,FALSE,
+Medium Detail Level,MediumDetailLevel,Sets the current view to medium detail level,TRUE,TRUE,FALSE,ID_DETAIL_LEVEL_MEDIUM
+Merge Surfaces,MergeSurfaces,Merges adjacent toposolid surfaces into one,TRUE,TRUE,TRUE,
+Mesh Parquets,MeshParquets,Manages mesh and tile pattern settings,TRUE,FALSE,FALSE,ID_SETTINGS_TILE_PATTERNS
+Mirror - Draw Axis,MirrorDrawAxis,Mirrors selected elements about a drawn axis line,TRUE,TRUE,TRUE,ID_EDIT_MIRROR_LINE
+Mirror - Pick Axis,MirrorPickAxis,Mirrors selected elements about a picked axis element,TRUE,TRUE,TRUE,ID_EDIT_MIRROR
+Mirror Project,MirrorProject,Mirrors the entire project about a selected axis,TRUE,TRUE,FALSE,
+Miter,Miter,Applies a miter cut to steel structural elements,TRUE,TRUE,TRUE,
+Miter Horizontal,MiterHorizontal,Sets the miter direction to horizontal,TRUE,FALSE,FALSE,IDC_MITER_HORIZONTAL
+Miter Perpendicular,MiterPerpendicular,Sets the miter direction perpendicular to the sweep path,TRUE,FALSE,FALSE,IDC_MITER_NORMAL_TO_PATH
+Miter Vertical,MiterVertical,Sets the miter direction to vertical,TRUE,FALSE,FALSE,IDC_MITER_VERTICAL
+Model In-Place,ModelInPlace,Opens the in-place family editor to create unique geometry,TRUE,TRUE,FALSE,
+Model Line,ModelLine,Draws a 3D model line that appears in all views,TRUE,TRUE,FALSE,ID_OBJECTS_CURVE
+Model Text,ModelText,Creates 3D text in the building model,TRUE,TRUE,FALSE,ID_OBJECTS_MODELTEXT
+Modify,Modify,Activates the selection/modify tool,TRUE,FALSE,FALSE,ID_BUTTON_SELECT
+Modify Mitering,ModifyMitering,Modifies the miter settings of a sweep element,TRUE,FALSE,FALSE,IDC_MITER_SWEEP_HOST
+Modify Rebar Bars,ModifyRebarBars,Modifies individual bars within a rebar set,TRUE,TRUE,TRUE,ID_REBAR_MODIFY_SET
+Modify Returns,ModifyReturns,Modifies the return conditions of a sweep element,TRUE,FALSE,FALSE,IDC_CHANGE_SWEEP_RETURNS
+Modify Splices,ModifySplices,Modifies rebar splice locations and properties,TRUE,FALSE,FALSE,ID_SPLICE_MODIFY_SPLICE
+Modify Sub Elements,ModifySubElements,Edits sub-elements of a floor or roof for shape modification,TRUE,FALSE,TRUE,ID_MODIFY_SLAB_SHAPE_SUBS
+Move,Move,Moves selected elements to a new location,TRUE,TRUE,TRUE,ID_EDIT_MOVE
+Multi-Category Tag,MultiCategoryTag,Places a tag that can identify elements of multiple categories,TRUE,TRUE,TRUE,ID_TAG_MULTI
+Multi-planar,Multiplanar,Enables multi-planar mode for rebar shape creation,TRUE,FALSE,FALSE,ID_TURN_ON_MULTI_PLANAR_SHAPE
+Multiple Paths,MultiplePaths,Creates multiple routing paths for MEP elements,TRUE,FALSE,FALSE,
+Multiple Values Indication,MultipleValuesIndication,Shows indication when a parameter has multiple values,TRUE,FALSE,FALSE,
+Multi-Point Routing,MultiPointRouting,Routes MEP elements through multiple specified points,TRUE,FALSE,FALSE,
+Navigation Bar,NavigationBar,Toggles the navigation bar visibility,TRUE,FALSE,FALSE,ID_NAVIGATION_BAR
+Navigation Wheel Options,NavigationWheelOptions,Configures navigation wheel display and behavior settings,TRUE,FALSE,FALSE,ID_NAVWHEEL_OPTIONS
+Nested Family Circle Packing,NestedFamilyCirclePacking,Displays nested family instances in a circle packing layout,TRUE,FALSE,FALSE,ID_HVE_NESTED_FAMILY_PACKING
+Nested Family Collapsible,NestedFamilyCollapsible,Displays nested family instances in a collapsible tree,TRUE,FALSE,FALSE,ID_HVE_NESTED_FAMILY_COLLAPSIBLE
+Nested Family Radial,NestedFamilyRadial,Displays nested family instances in a radial layout,TRUE,FALSE,FALSE,ID_HVE_NESTED_FAMILY_RADIAL
+New Annotation Symbol,NewAnnotationSymbol,Creates a new annotation symbol family,TRUE,FALSE,FALSE,ID_ANNOTATION_SYMBOL_NEW
+New Conceptual Mass,NewConceptualMass,Creates a new conceptual mass family,TRUE,FALSE,FALSE,ID_CONCEPTUAL_MASS_NEW
+New Family,NewFamily,Creates a new family document from a template,TRUE,FALSE,FALSE,ID_FAMILY_NEW
+New File Default Template 2,NewFileDefaultTemplate2,Creates a new file using the second default template,TRUE,FALSE,FALSE,ID_FILE_NEW_WITH_TEMPLATE2
+New File Default Template 5,NewFileDefaultTemplate5,Creates a new file using the fifth default template,TRUE,FALSE,FALSE,ID_FILE_NEW_WITH_TEMPLATE5
+New Project,NewProject,Creates a new Revit project from a template,TRUE,FALSE,FALSE,ID_FILE_NEW_CHOOSE_TEMPLATE
+New Sheet,NewSheet,Creates a new sheet for documentation,TRUE,TRUE,FALSE,ID_VIEW_NEW_SHEET
+New Title Block,NewTitleBlock,Creates a new title block family,TRUE,FALSE,FALSE,ID_TITLEBLOCK_NEW
+Next Join,NextJoin,Navigates to the next wall join configuration,TRUE,FALSE,FALSE,IDC_NEXT_JOIN
+Next Pan/Zoom,NextPanZoom,Goes to the next saved pan/zoom state in the view history,TRUE,FALSE,FALSE,ID_VIEW_ZOOMANDPAN_NEXTVIEW
+Note Block,NoteBlock,Creates a note block schedule view,TRUE,TRUE,FALSE,ID_VIEW_NEW_NOTE_BLOCK
+Nurse Call,NurseCall,Places a nurse call device in the building model,TRUE,TRUE,FALSE,
+Object Styles,ObjectStyles,Configures line weight; color; and pattern for object categories,TRUE,TRUE,FALSE,ID_SETTINGS_OBJECTSTYLES
+Offset,Offset,Creates a copy of an element at a specified offset distance,TRUE,TRUE,TRUE,ID_OFFSET
+One-Way Indicator,OneWayIndicator,Shows the direction indicator for one-way structural slabs,TRUE,FALSE,FALSE,
+Open Building Component,OpenBuildingComponent,Opens a building component for editing,TRUE,FALSE,FALSE,
+Open Cloud Model,OpenCloudModel,Opens a model stored in the cloud (BIM 360 or ACC),TRUE,FALSE,FALSE,ID_FILE_OPEN_CLOUD_MODEL
+Open Fabrication Job,OpenFabricationJob,Opens an existing fabrication job file,TRUE,FALSE,FALSE,ID_OPEN_FABRICATION_JOB
+Open Family,OpenFamily,Opens a family file for editing in the family editor,TRUE,FALSE,FALSE,ID_FAMILY_OPEN
+Open IFC,OpenIFC,Opens an IFC file and converts it to a Revit model,TRUE,FALSE,FALSE,ID_IMPORT_IFC
+Open IFC Options,OpenIFCOptions,Configures options for opening IFC files,TRUE,FALSE,FALSE,ID_IFC_IMPORT_OPTIONS
+Open Project,OpenProject,Opens an existing Revit project file,TRUE,FALSE,FALSE,ID_APPMENU_PROJECT_OPEN
+Open Revit File,OpenRevitFile,Opens any Revit file format,TRUE,FALSE,FALSE,ID_REVIT_FILE_OPEN
+Open Sample Files,OpenSampleFiles,Opens the sample files directory,TRUE,FALSE,FALSE,ID_SAMPLES_OPEN
+Opening,Opening,Creates an opening in a floor; roof; or ceiling element,TRUE,TRUE,FALSE,ID_OBJECTS_OPENING
+Opening by Face,OpeningByFace,Creates an opening by selecting a face on an element,TRUE,TRUE,TRUE,
+Optimize,Optimize,Optimizes MEP system routing for efficiency,TRUE,FALSE,FALSE,
+Options,Options,Opens the Revit application options dialog,TRUE,FALSE,FALSE,ID_OPTIONS
+Orient to Back,OrientToBack,Orients the 3D view to look at the model from the back,TRUE,FALSE,FALSE,ID_ORIENT_TO_BACK
+Orient to Back Left,OrientToBackLeft,Orients the 3D view to look at the model from the back left,TRUE,FALSE,FALSE,ID_ORIENT_TO_BACK_LEFT
+Orient to Front Left,OrientToFrontLeft,Orients the 3D view to look at the model from the front left,TRUE,FALSE,FALSE,ID_ORIENT_TO_FRONT_LEFT
+Orient to North,OrientToNorth,Orients the 3D view to look at the model from the north,TRUE,FALSE,FALSE,ID_ORIENT_NORTH_DIRECTION
+Orient to Plane,OrientToPlane,Orients the 3D view perpendicular to a selected plane,TRUE,FALSE,FALSE,ID_ORIENT_PLANE
+Orient to Southeast,OrientToSoutheast,Orients the 3D view to look from the southeast,TRUE,FALSE,FALSE,ID_ORIENT_SOUTHEAST_DIRECTION
+Orient to Southwest,OrientToSouthwest,Orients the 3D view to look from the southwest,TRUE,FALSE,FALSE,ID_ORIENT_SOUTHWEST_DIRECTION
+Orient to Top,OrientToTop,Orients the 3D view to look at the model from above,TRUE,FALSE,FALSE,ID_ORIENT_TO_TOP
+Override by Category,OverrideByCategory,Overrides graphic display settings for an element category,TRUE,TRUE,TRUE,ID_VIEW_OVERRIDE_CATEGORY
+Override by Element,OverrideByElement,Overrides graphic display settings for a specific element,TRUE,TRUE,TRUE,ID_VIEW_OVERRIDE_ELEMENT
+Override by Filter,OverrideByFilter,Overrides graphic display settings using view filters,TRUE,TRUE,FALSE,ID_VIEW_OVERRIDE_FILTER
+P&ID Modeler,PAndIDModeler,Opens the P&ID (Piping and Instrumentation Diagram) modeler,TRUE,FALSE,FALSE,
+P&ID Settings,PAndIDSettings,Configures P&ID modeler settings,TRUE,FALSE,FALSE,
+Paint,Paint,Applies a material to a selected face of an element,TRUE,TRUE,TRUE,ID_PAINT
+Panel by Boundary,PanelByBoundary,Creates a curtain wall panel defined by boundary curves,TRUE,FALSE,FALSE,
+Panel by Extrusion,PanelByExtrusion,Creates a curtain wall panel by extruding a profile,TRUE,FALSE,FALSE,
+Panel Schedules,PanelSchedules,Creates or edits electrical panel schedules,TRUE,FALSE,FALSE,
+Parallel Conduits,ParallelConduits,Places conduits parallel to an existing conduit run,TRUE,FALSE,FALSE,
+Parallel Pipes,ParallelPipes,Places pipes parallel to an existing pipe run,TRUE,FALSE,FALSE,
+Parameters Service,ParametersService,Manages shared parameters through the Autodesk cloud service,TRUE,TRUE,FALSE,ID_SETTINGS_FORGE_PARAMETERS
+Parking Component,ParkingComponent,Places a site parking component,TRUE,TRUE,FALSE,ID_SITE_PARKING_COMPONENT
+Partial Ellipse,PartialEllipse,Draws a partial ellipse arc in sketch mode,TRUE,FALSE,FALSE,ID_OBJECTS_CURVE_ELLIPSE_PARTIAL
+Partial Ellipse (Radio),PartialEllipseRadio,Selects partial ellipse as the active drawing tool,TRUE,FALSE,FALSE,IDC_RADIO_PARTIAL_ELLIPSE
+Partial Regeneration,PartialRegeneration,Performs a partial regeneration of modified elements only,TRUE,FALSE,FALSE,ID_REGEN_ALL_LITE
+Paste Aligned to Current View,AlignedToCurrentView,Pastes clipboard elements aligned to the current view,TRUE,FALSE,FALSE,
+Paste Aligned to Picked Level,AlignedToPickedLevel,Pastes clipboard elements aligned to a picked level,TRUE,FALSE,FALSE,
+Paste Aligned to Same Place,AlignedToSamePlace,Pastes clipboard elements at their original location,TRUE,FALSE,FALSE,
+Paste Aligned to Selected Levels,AlignedToSelectedLevels,Pastes clipboard elements aligned to multiple selected levels,TRUE,FALSE,FALSE,
+Paste Aligned to Selected Views,AlignedToSelectedViews,Pastes clipboard elements into multiple selected views,TRUE,FALSE,FALSE,
+Paste from Clipboard,PasteFromClipboard,Pastes elements from the clipboard into the current view,TRUE,FALSE,FALSE,ID_EDIT_CLIPBOARD_PASTE
+Path of Travel,PathOfTravel,Creates a path of travel analysis between two points,TRUE,FALSE,FALSE,
+Path Reinforcement Symbol,PathReinforcementSymbol,Manages path reinforcement annotation symbols,TRUE,FALSE,FALSE,
+People Content,PeopleContent,Manages people (entourage) content for rendering,TRUE,FALSE,FALSE,
+Performance Adviser,PerformanceAdviser,Runs performance checks and suggests model improvements,TRUE,FALSE,FALSE,ID_PERFORMANCE_ADVISER
+Phases,Phases,Manages project phases for construction sequencing,TRUE,TRUE,FALSE,ID_SETTINGS_PHASES
+Pick Alignment Line,PickAlignmentLine,Picks an alignment line for MEP routing,TRUE,FALSE,FALSE,ID_RBS_PICKALIGNMENT_LINE
+Pick Connector Host,PickConnectorHost,Picks a host element for a connector in the family editor,TRUE,FALSE,FALSE,ID_CONNECTOR_PICK_HOST
+Pick Lines,PickLines,Creates sketch lines by picking existing edges or lines,TRUE,FALSE,FALSE,ID_OBJECTS_CURVE_PICK_LINES
+Pick Lines (Radio),PickLinesRadio,Selects pick lines as the active drawing tool,TRUE,FALSE,FALSE,IDC_RADIO_COPY_CURVE
+Pick New Host (Insert),PickNewHostInsert,Moves a hosted element to a new host,TRUE,FALSE,FALSE,ID_EDIT_INSERT_REHOST
+Pick New Host (Point Element),PickNewHostPointElement,Moves a point-hosted element to a new host,TRUE,FALSE,FALSE,ID_POINTELEMENT_REHOST
+Pick New Railing Host,PickNewRailingHost,Assigns a railing to a new host element,TRUE,FALSE,FALSE,ID_RAILING_SET_HOST
+Pick Splice Line,PickSpliceLine,Picks a line location for a rebar splice,TRUE,FALSE,FALSE,ID_REBAR_SPLICE_BY_POINT
+Pick Supports,PickSupports,Picks structural elements to define floor or slab supports,TRUE,FALSE,FALSE,ID_PICK_SLAB_SH
+Pick to Edit,PickToEdit,Picks an element to enter its edit mode,TRUE,TRUE,TRUE,
+Pin,Pin,Locks an element in place to prevent accidental movement,TRUE,TRUE,TRUE,ID_LOCK_ELEMENTS
+Pipe,Pipe,Places a pipe element in the plumbing or piping system,TRUE,TRUE,FALSE,ID_RBS_PIPE
+Pipe Accessory,PipeAccessory,Places a pipe accessory such as a valve or strainer,TRUE,TRUE,FALSE,ID_RBS_PIPE_ACCESSORY
+Pipe Connector,PipeConnector,Places a connector on a pipe family,TRUE,FALSE,FALSE,
+Pipe Fitting,PipeFitting,Places a fitting on a pipe run,TRUE,TRUE,FALSE,ID_RBS_PIPE_FITTING
+Pipe Legend,PipeLegend,Manages pipe legend settings for documentation,TRUE,FALSE,FALSE,
+Pipe Placeholder,PipePlaceholder,Places a pipe placeholder for schematic layouts,TRUE,TRUE,FALSE,
+Pipe Pressure Loss Report,PipePressureLossReport,Generates a pressure loss report for pipe systems,TRUE,FALSE,FALSE,
+Place a Component,PlaceAComponent,Places a family instance component in the model,TRUE,TRUE,FALSE,ID_OBJECTS_FAMSYM
+Place Decal,PlaceDecal,Places a decal image on a surface in the model,TRUE,TRUE,FALSE,
+Place Detail Group,PlaceDetailGroup,Places an instance of a detail group in the view,TRUE,TRUE,FALSE,
+Place Mass,PlaceMass,Places a mass family instance in the model,TRUE,TRUE,FALSE,ID_OBJECTS_MASS
+Place Model Group,PlaceModelGroup,Places an instance of a model group in the project,TRUE,TRUE,FALSE,ID_OBJECTS_PLACE_GROUP
+Place on Face,PlaceOnFace,Sets placement mode to place elements on a face,TRUE,FALSE,FALSE,IDC_PLACE_BY_XFACE
+Place on Host,PlaceOnHost,Places a hosted element on a selected host,TRUE,TRUE,TRUE,
+Place on Stair or Ramp,PlaceOnStairOrRamp,Places a railing on a stair or ramp element,TRUE,TRUE,TRUE,
+Place on Vertical Face,PlaceOnVerticalFace,Sets placement mode to place elements on a vertical face,TRUE,FALSE,FALSE,IDC_PLACE_BY_INSERT
+Place on Work Plane,PlaceOnWorkPlane,Sets placement mode to place elements on the work plane,TRUE,FALSE,FALSE,IDC_PLACE_BY_WORKPLANE
+Place Railing,PlaceRailing,Places a railing element along a path or on a host,TRUE,TRUE,FALSE,ID_OBJECTS_RAILINGSYSTEM
+Place View,PlaceView,Places a view from the Project Browser onto a sheet,TRUE,TRUE,FALSE,ID_VIEW_PLACE_VIEW
+Plan Region,PlanRegion,Creates a plan region with a different view range in a plan view,TRUE,TRUE,FALSE,ID_PLAN_REGION
+Plan View Types,PlanViewTypes,Manages the available plan view types,TRUE,FALSE,FALSE,ID_PLAN_VIEW_TYPES
+Plate,Plate,Places a steel plate on structural elements,TRUE,TRUE,TRUE,
+Plumbing Equipment,PlumbingEquipment,Places plumbing equipment in the building model,TRUE,TRUE,FALSE,
+Plumbing Fixture,PlumbingFixture,Places a plumbing fixture such as sinks and toilets,TRUE,TRUE,FALSE,ID_RBS_PLUMBING_FIXTURE
+Point Cloud,PointCloud,Links a point cloud file for as-built reference,TRUE,TRUE,FALSE,ID_LINK_POINTCLOUD
+Previous Join,PreviousJoin,Navigates to the previous wall join configuration,TRUE,FALSE,FALSE,IDC_PREV_JOIN
+Previous Pan/Zoom,PreviousPanZoom,Returns to the previous pan/zoom state in the view history,TRUE,FALSE,FALSE,ID_VIEW_ZOOMANDPAN_PREVIOUSVIEW
+Print,Print,Prints the current view or selected sheets,TRUE,TRUE,FALSE,ID_REVIT_FILE_PRINT
+Print Preview,PrintPreview,Shows a preview of the print output,TRUE,FALSE,FALSE,
+Print Reports,PrintReports,Prints fabrication reports,TRUE,FALSE,FALSE,ID_FABRICATION_PRINT_REPORTS
+Print Setup,PrintSetup,Configures print settings including paper size and orientation,TRUE,TRUE,FALSE,
+Printer Setup,PrinterSetup,Configures the printer for fabrication output,TRUE,FALSE,FALSE,ID_FABRICATION_PRINTER_SETUP
+Project Browser,ProjectBrowser,Toggles the Project Browser panel visibility,TRUE,FALSE,FALSE,ID_VIEW_PROJECTEXPLORER
+Project Information,ProjectInformation,Edits general project information such as name and address,TRUE,TRUE,FALSE,ID_PROJECT_INFORMATION
+Project Parameters,ProjectParameters,Manages project-specific parameters,TRUE,TRUE,FALSE,
+Project Units,ProjectUnits,Configures measurement units for the project,TRUE,TRUE,FALSE,ID_SETTINGS_UNITS
+Property Line,PropertyLine,Creates a property line on the site plan,TRUE,TRUE,FALSE,ID_SITE_PROPERTYLINE
+Property Line Data,PropertyLineData,Edits property line segment data and coordinates,TRUE,FALSE,FALSE,ID_PROPERTY_LINE_DATA
+Publish Coordinates,PublishCoordinates,Publishes shared coordinates to a linked model,TRUE,TRUE,FALSE,
+Publish DGN to Buzzsaw,PublishDGNToAutodeskBuzzsaw,Publishes DGN export to Autodesk Buzzsaw,TRUE,TRUE,FALSE,
+Publish DWF to Buzzsaw,PublishDWFToAutodeskBuzzsaw,Publishes DWF export to Autodesk Buzzsaw,TRUE,TRUE,FALSE,
+Publish DWG to Buzzsaw,PublishDWGToAutodeskBuzzsaw,Publishes DWG export to Autodesk Buzzsaw,TRUE,TRUE,FALSE,
+Publish DXF to Buzzsaw,PublishDXFToAutodeskBuzzsaw,Publishes DXF export to Autodesk Buzzsaw,TRUE,TRUE,FALSE,
+Publish SAT to Buzzsaw,PublishSATToAutodeskBuzzsaw,Publishes SAT export to Autodesk Buzzsaw,TRUE,TRUE,FALSE,
+Publish Settings,PublishSettings,Configures publish settings for cloud collaboration,TRUE,TRUE,FALSE,
+Purge Unused,PurgeUnused,Removes unused families; types; and other definitions from the project,TRUE,TRUE,FALSE,ID_PURGE_UNUSED
+Radial Dimension,RadialDimension,Places a dimension measuring the radius of a curved element,TRUE,TRUE,FALSE,
+Radial Dimension Types,RadialDimensionTypes,Manages radial dimension type settings,TRUE,FALSE,FALSE,
+Railing,Railing,Creates a railing element by sketching a path,TRUE,TRUE,FALSE,ID_OBJECTS_RAILING
+Ramp,Ramp,Creates a ramp element in the building model,TRUE,TRUE,FALSE,ID_OBJECTS_RAMP
+Rebar Bending Detail,RebarBendingDetail,Creates a bending detail schedule for reinforcement bars,TRUE,FALSE,FALSE,
+Rebar Cover Settings,RebarCoverSettings,Configures rebar cover distance settings,TRUE,FALSE,FALSE,
+Rebar Line,RebarLine,Places reinforcement bars along a line in a structural element,TRUE,TRUE,TRUE,
+Rebar Select All,RebarSelectAll,Selects all bars in a rebar set for editing,TRUE,FALSE,FALSE,ID_REBAR_SELECT_SHOW_ALL_BARS
+Rebar Select None,RebarSelectNone,Deselects all individual bars in a rebar set,TRUE,FALSE,FALSE,ID_REBAR_SELECT_HIDE_ALL_BARS
+Recent Files,RecentFiles,Opens the recent files list,TRUE,FALSE,FALSE,
+Reclaim Memory,ReclaimMemory,Frees unused memory to improve Revit performance,TRUE,FALSE,FALSE,ID_RECLAIM_MEMORY
+Reconcile Hosting,ReconcileHosting,Resolves hosting issues for elements that lost their host,TRUE,FALSE,TRUE,
+Rectangle,Rectangle,Draws a rectangle shape in sketch mode,TRUE,FALSE,FALSE,ID_OBJECTS_CURVE_RECT
+Rectangle (Radio),RectangleRadio,Selects rectangle as the active drawing tool,TRUE,FALSE,FALSE,IDC_RADIO_RECT
+Redo Text Edit,RedoTextEdit,Redoes the last undone text editing action,TRUE,FALSE,FALSE,ID_EDIT_REDO
+Reference Line,ReferenceLine,Creates a reference line for constraining geometry in families,TRUE,TRUE,FALSE,ID_OBJECTS_REFERENCE_CURVE
+Reference Plane,ReferencePlane,Creates a reference plane for constraining geometry,TRUE,TRUE,FALSE,ID_OBJECTS_REFERENCE_PLANE
+Reflected Ceiling Plan,ReflectedCeilingPlan,Creates a new reflected ceiling plan view,TRUE,TRUE,FALSE,ID_VIEW_NEW_CEILING_PLAN
+Reinforcement Numbers,ReinforcementNumbers,Manages reinforcement numbering settings,TRUE,FALSE,FALSE,
+Reinforcement Settings,ReinforcementSettings,Configures reinforcement placement and display settings,TRUE,FALSE,FALSE,
+Relinquish All Mine,RelinquishAllMine,Releases all borrowed elements back to the central model,TRUE,TRUE,FALSE,ID_RELINQUISH_ALL_MINE
+Reload from Disk,ReloadFromDisk,Reloads a UI layout or configuration from disk,TRUE,FALSE,FALSE,ID_LOAD_XAML_RELOAD
+Reload Latest,ReloadLatest,Reloads the latest version of the central model,TRUE,TRUE,FALSE,
+Relocate Project,RelocateProject,Moves the project to a new geographic location,TRUE,TRUE,FALSE,
+Remove All Fabrication Configurations,RemoveAllFabricationConfigurations,Removes all fabrication configurations from the project,TRUE,TRUE,FALSE,ID_REMOVE_ALL_FABRICATION_CONFIGURATION
+Remove Coping,RemoveCoping,Removes a coping cut from a steel beam,TRUE,TRUE,TRUE,
+Remove Duct and Pipe Offsets,RemoveDuctPipeOffsets,Removes offset segments from duct and pipe runs,TRUE,FALSE,FALSE,ID_MEP_REMOVE_DUCT_PIPE_OFFSETS
+Remove Elements (Analytical),AnalyticalRemoveElements,Removes elements from the analytical model automation,TRUE,FALSE,FALSE,ID_ANALYTICAL_AUTOMATION_EDIT_MODE_REMOVE
+Remove Excavation,RemoveExcavation,Removes an excavation from a toposolid element,TRUE,FALSE,FALSE,ID_TOPOSOLID_UNEXCAVATION
+Remove Fabrication Configuration,RemoveFabricationConfiguration,Removes a specific fabrication configuration,TRUE,FALSE,FALSE,ID_REMOVE_FABRICATION_CONFIGURATION
+Remove from Analytical Relation,RemoveFromAnalyticalRelation,Removes selected elements from an analytical relation,TRUE,FALSE,TRUE,ID_ANALYTICAL_RELATIONSHIP_EDIT_MODE_REMOVE
+Remove from Displacement,RemoveFromDisplacement,Removes elements from a displacement set,TRUE,FALSE,TRUE,ID_DISPLACEMENT_REMOVE_ELEMENT
+Remove from Group,RemoveFromGroup,Removes selected elements from a group,TRUE,TRUE,TRUE,ID_EDITGROUP_REMOVE_FROM_GROUP
+Remove from Light Group,RemoveFromLightGroup,Removes a light fixture from a light group,TRUE,FALSE,FALSE,ID_REMOVE_LIGHT_FROM_GROUP
+Remove from Mechanical Equipment Set,RemoveFromMechanicalEquipmentSet,Removes equipment from a mechanical equipment set,TRUE,FALSE,FALSE,ID_MECHANICAL_EQUIPMENT_SET_REMOVE
+Remove Hidden Lines by Element,RemoveHiddenLinesByElement,Removes line overrides applied by Show Hidden Lines,TRUE,TRUE,TRUE,ID_UNHIDE_ELEMENTS_EDITOR
+Remove Landings,RemoveLandings,Removes all level landings from a multi-story stair,TRUE,FALSE,FALSE,ID_REMOVE_ALL_LEVEL_LANDINGS
+Remove Leader,RemoveLeader,Removes a leader line from an annotation element,TRUE,FALSE,TRUE,ID_FAMINST_RMVLEADER
+Remove Paint,RemovePaint,Removes a painted material from an element face,TRUE,TRUE,TRUE,ID_REMOVE_PAINT
+Remove Rebar Bar,RemoveRebarBar,Removes individual bars from a rebar set,TRUE,TRUE,TRUE,ID_REBAR_REMOVE_BARS
+Remove Rebar Splice,RemoveRebarSplice,Removes a splice from a rebar element,TRUE,TRUE,TRUE,ID_REBAR_REMOVE_SPLICE
+Render,Render,Renders the current 3D view to create a photorealistic image,TRUE,FALSE,FALSE,ID_PHOTO_RENDER
+Render Gallery,RenderGallery,Opens the render gallery to view completed renderings,TRUE,FALSE,FALSE,ID_PHOTO_RENDER_GALLERY
+Render in Cloud,RenderInCloud,Sends the current view to the cloud for rendering,TRUE,FALSE,FALSE,ID_PHOTO_RENDER_IN_CLOUD
+Repair Central Model,RepairCentralModel,Repairs a corrupted central workshared model,TRUE,TRUE,FALSE,
+Repeat Component,RepeatComponent,Repeats a component along a divided surface or path,TRUE,FALSE,TRUE,
+Repeat Last Command,RepeatLastCommand,Repeats the most recently executed command,TRUE,TRUE,TRUE,ID_REPEAT_LASTCOMMAND
+Repeating Detail Component,RepeatingDetailComponent,Places a repeating pattern of detail components,TRUE,TRUE,FALSE,ID_OBJECTS_REPEATING_DETAIL
+Replace with Link,ReplaceWithLink,Replaces a group with a linked Revit file,TRUE,TRUE,FALSE,ID_EDIT_REPLACE_WITH_LINK
+Replicate Window,ReplicateWindow,Creates a duplicate of the current view window,TRUE,FALSE,FALSE,
+Report Shared Coordinates,ReportSharedCoordinates,Reports the shared coordinate values at a picked point,TRUE,FALSE,FALSE,
+Reposition to Internal Origin,RepositionToInternalOrigin,Repositions a linked model to the host internal origin,TRUE,TRUE,TRUE,ID_REPOSITION_LINK_ORIGIN_TO_HOST
+Reposition to Project Base Point,RepositionToProjectBasePoint,Repositions a linked model to the host project base point,TRUE,TRUE,TRUE,ID_REPOSITION_LINK_BASEPOINT_TO_HOST
+Reset All Rebar Bars,ResetAllRebarBars,Resets all modified rebar bars to their default positions,TRUE,TRUE,FALSE,ID_REBAR_RESET_ALL_BARS
+Reset Analytical Model,ResetAnalyticalModel,Resets the analytical model to match the physical model,TRUE,FALSE,TRUE,
+Reset Layer Profile,ResetLayerProfile,Resets a modified layer profile to its default state,TRUE,FALSE,FALSE,ID_REMOVE_LAYER_SKETCH
+Reset Rebar Position,ResetRebarPosition,Resets modified rebar bars to their default positions,TRUE,TRUE,TRUE,ID_REBAR_RESET_BARS
+Reset Shared Coordinates,ResetSharedCoordinates,Resets shared coordinates to the default state,TRUE,TRUE,FALSE,
+Reset to Default,ResetToDefault,Resets the UI layout or configuration to default settings,TRUE,FALSE,FALSE,ID_LOAD_XAML_RESET
+Reset Vertex Connect,ResetVertexConnect,Resets vertex connections to their default state,TRUE,FALSE,FALSE,IDC_RESET_VTX_CONNECTIONS
+Restart Slab Edge,RestartSlabEdge,Restarts slab edge placement from a new location,TRUE,FALSE,FALSE,IDC_FINISH_SWEEP_HOST
+Restart Wall Sweep,RestartWallSweep,Restarts wall sweep placement from a new location,TRUE,FALSE,FALSE,IDC_FINISH_CORNICE_REVEAL
+Restore Backup,RestoreBackup,Restores a Revit project from a backup file,TRUE,TRUE,FALSE,
+Restore Excluded Member,RestoreExcludedMember,Restores a previously excluded member back to a group,TRUE,TRUE,TRUE,ID_ELEM_GROUP_EXCLUDED_MEMBER
+Results and Compare,ResultsAndCompare,Views and compares energy analysis results,TRUE,FALSE,FALSE,
+Return,Return,Selects the return end condition for a sweep,TRUE,FALSE,FALSE,IDC_RADIO_RETURN
+Reveal Obstacles,RevealObstacles,Highlights obstacles along a path of travel,TRUE,FALSE,FALSE,
+Reveal Wall,RevealWall,Creates a reveal (groove) in a wall surface,TRUE,TRUE,TRUE,ID_OBJECTS_REVEAL
+Review Warnings,ReviewWarnings,Reviews and resolves model warnings and errors,TRUE,FALSE,FALSE,ID_REVIEW_WARNINGS
+Revision Cloud,RevisionCloud,Draws a revision cloud to mark changes on a sheet,TRUE,TRUE,FALSE,ID_OBJECTS_CLOUD
+Revision Schedule,RevisionSchedule,Creates a schedule tracking sheet revisions,TRUE,TRUE,FALSE,ID_VIEW_NEW_REVISION_SCHEDULE
+Roof by Extrusion,RoofByExtrusion,Creates a roof by extruding a profile along a path,TRUE,TRUE,FALSE,ID_ROOF_EXTRUSION
+Roof by Face,RoofByFace,Creates a roof by selecting a mass or surface face,TRUE,TRUE,FALSE,ID_ROOF_BY_FACE
+Roof by Footprint,RoofByFootprint,Creates a roof by sketching its footprint boundary,TRUE,TRUE,FALSE,ID_ROOF_FOOTPRINT
+Room,Room,Places a room element to define an enclosed space,TRUE,TRUE,FALSE,ID_OBJECTS_ROOM
+Room Separator,RoomSeparator,Draws a room separation line to divide spaces,TRUE,TRUE,FALSE,ID_OBJECTS_ROOMSEPARATION
+Room Tag,RoomTag,Places a tag that displays room name and number,TRUE,TRUE,FALSE,ID_OBJECTS_ROOMTAG
+Rotate,Rotate,Rotates selected elements around a center point,TRUE,TRUE,TRUE,ID_EDIT_ROTATE
+Rotate 180 Degrees,Rotate180Degrees,Rotates a fabrication part 180 degrees,TRUE,FALSE,FALSE,ID_FABRICATION_PART_ROTATE_180DEGREES
+Rotate 45 Degrees,Rotate45Degrees,Rotates a fabrication part 45 degrees,TRUE,FALSE,FALSE,ID_FABRICATION_PART_ROTATE_45DEGREES
+Rotate 90 Degrees,Rotate90Degrees,Rotates a fabrication part 90 degrees,TRUE,FALSE,FALSE,ID_FABRICATION_PART_ROTATE_90DEGREES
+Rotate Project North,RotateProjectNorth,Rotates the project north direction,TRUE,TRUE,FALSE,
+Rotate True North,RotateTrueNorth,Rotates the true north direction relative to project north,TRUE,TRUE,FALSE,
+Routing Preference Manager,RoutingPreferenceManager,Manages routing preferences for pipe and duct types,TRUE,FALSE,FALSE,ID_ROUTING_PREFERENCE_MANAGE
+Run,Run,Runs the current operation or stair run creation,TRUE,FALSE,FALSE,ID_RUN
+Run Analytical Automation,RunAnalyticalAutomation,Executes the analytical automation process,TRUE,FALSE,FALSE,ID_ANALYTICAL_AUTOMATION_RUN
+Run Arc Center-Ends,RunArcCenterEnds,Creates a stair run using an arc defined by center and ends,TRUE,FALSE,FALSE,ID_RUN_ARC_CENTER_ENDS
+Run Content Creation Commands,RunContentCreationCommands,Runs automated content creation commands for families,TRUE,FALSE,FALSE,ID_FAMILY_CONTENTTOOL
+Run Energy Simulation,RunEnergySimulation,Executes the energy simulation for the building,TRUE,FALSE,FALSE,
+Run Interference Check,RunInterferenceCheck,Runs a clash detection check between elements,TRUE,FALSE,TRUE,
+Run Line,RunLine,Creates a stair run using a straight line path,TRUE,FALSE,FALSE,ID_RUN_LINE
+Save,Save,Saves the current document,TRUE,FALSE,FALSE,ID_REVIT_FILE_SAVE
+Save and Lock 3D View,SaveAndLock3DView,Saves the current 3D view orientation and locks it,TRUE,FALSE,FALSE,ID_LOCKUNLOCK3DVIEW_LOCKANDSAVE
+Save As Cloud Model,SaveAsCloudModel,Saves the project as a cloud model to BIM 360 or ACC,TRUE,TRUE,FALSE,ID_REVIT_FILE_SAVE_AS_CLOUD_MODEL
+Save As Family,SaveAsFamily,Saves the current family to a new file,TRUE,FALSE,FALSE,ID_REVIT_SAVE_AS_FAMILY
+Save As Library - Family,SaveAsLibraryFamily,Saves a family to the library location,TRUE,FALSE,FALSE,ID_SAVE_FAMILY_ANY
+Save As Library - Group,SaveAsLibraryGroup,Saves a group as a separate Revit file to the library,TRUE,FALSE,FALSE,ID_SAVE_GROUP
+Save As Library - View,SaveAsLibraryView,Saves views to separate files in the library,TRUE,FALSE,FALSE,ID_SAVE_VIEWS_TO_FILE
+Save As Project,SaveAsProject,Saves the current project with a new name or location,TRUE,TRUE,FALSE,ID_REVIT_FILE_SAVE_AS
+Save As Template,SaveAsTemplate,Saves the current project as a project template,TRUE,TRUE,FALSE,ID_REVIT_SAVE_AS_TEMPLATE
+Save Configuration Locally,SaveConfigurationLocally,Saves the fabrication configuration to a local folder,TRUE,FALSE,FALSE,ID_SAVE_CONFIG_TO
+Save Selection,SaveSelection,Saves the current element selection as a named set,TRUE,FALSE,TRUE,
+Save View,SaveView,Saves the current view orientation for the navigation wheel,TRUE,FALSE,FALSE,ID_NAVWHEEL_SAVEVIEW
+Saw Cut Flange,SawCutFlange,Applies a saw cut to a steel beam flange,TRUE,TRUE,TRUE,
+Saw Cut Web,SawCutWeb,Applies a saw cut to a steel beam web,TRUE,TRUE,TRUE,
+Scale,Scale,Scales selected elements by a specified factor,TRUE,TRUE,TRUE,ID_EDIT_SCALE
+Scale Graphical,ScaleGraphical,Scales elements graphically by picking reference points,TRUE,FALSE,FALSE,IDC_SCALE_GRAPH
+Scale Numerical,ScaleNumerical,Scales elements by entering a numerical scale factor,TRUE,FALSE,FALSE,IDC_SCALE_NUM
+Schedule Align Bottom,ScheduleAlignBottom,Aligns text to the bottom in schedule cells,TRUE,FALSE,FALSE,ID_SCHEDULE_TEXT_VERTICAL_ALIGN_BOTTOM
+Schedule Align Center,ScheduleAlignCenter,Aligns text to center horizontally in schedule cells,TRUE,FALSE,FALSE,ID_SCHEDULE_TEXT_HORIZONTAL_ALIGN_CENTER
+Schedule Align Left,ScheduleAlignLeft,Aligns text to the left in schedule cells,TRUE,FALSE,FALSE,ID_SCHEDULE_TEXT_HORIZONTAL_ALIGN_LEFT
+Schedule Align Middle,ScheduleAlignMiddle,Aligns text to the middle vertically in schedule cells,TRUE,FALSE,FALSE,ID_SCHEDULE_TEXT_VERTICAL_ALIGN_MIDDLE
+Schedule Align Right,ScheduleAlignRight,Aligns text to the right in schedule cells,TRUE,FALSE,FALSE,ID_SCHEDULE_TEXT_HORIZONTAL_ALIGN_RIGHT
+Schedule Align Top,ScheduleAlignTop,Aligns text to the top in schedule cells,TRUE,FALSE,FALSE,ID_SCHEDULE_TEXT_VERTICAL_ALIGN_TOP
+Schedule Calculated Parameter,ScheduleCalculatedParameter,Creates a calculated parameter in a schedule,TRUE,FALSE,FALSE,ID_SCHEDULE_PARAM_CALCULATE
+Schedule Cell Borders,ScheduleCellBorders,Edits the border style of schedule cells,TRUE,FALSE,FALSE,ID_SCHEDULE_CELL_EDIT_BORDER
+Schedule Cell Shading,ScheduleCellShading,Edits the background shading of schedule cells,TRUE,FALSE,FALSE,ID_SCHEDULE_CELL_EDIT_SHADING
+Schedule Clear Cell,ScheduleClearCell,Clears the content of a schedule cell,TRUE,FALSE,FALSE,ID_SCHEDULE_CLEAR_CELL
+Schedule Combine Parameters,ScheduleCombineParameters,Combines multiple parameters into a single schedule column,TRUE,FALSE,FALSE,ID_SCHEDULE_PARAM_COMBINE
+Schedule Delete Column,ScheduleDeleteColumn,Deletes a column from the schedule,TRUE,FALSE,FALSE,ID_SCHEDULE_COLUMN_DELETE
+Schedule Explain Error,ScheduleExplainError,Shows an explanation for a schedule cell error,TRUE,FALSE,FALSE,ID_SCHEDULE_EXPLAIN_ERROR
+Schedule Font,ScheduleFont,Changes the font settings for schedule text,TRUE,FALSE,FALSE,ID_SCHEDULE_TEXT_EDIT_FONT
+Schedule Format Unit,ScheduleFormatUnit,Formats the display units for a schedule parameter,TRUE,FALSE,FALSE,ID_SCHEDULE_PARAM_FORMATUNITS
+Schedule Freeze Header,ScheduleFreezeHeader,Freezes the schedule header rows for scrolling,TRUE,FALSE,FALSE,ID_SCHEDULE_HEADER_FREEZE
+Schedule Insert Column,ScheduleInsertColumn,Inserts a new column to the right in a schedule,TRUE,FALSE,FALSE,ID_SCHEDULE_COLUMN_INSERT_RIGHT
+Schedule Insert Image,ScheduleInsertImage,Inserts an image into a schedule cell,TRUE,FALSE,FALSE,ID_SCHEDULE_CELL_INSERT_GRAPHIC
+Schedule Insert Row Above,ScheduleInsertRowAbove,Inserts a new row above the selected row in a schedule,TRUE,FALSE,FALSE,ID_SCHEDULE_ROW_INSERT_ABOVE
+Schedule Insert Row Below,ScheduleInsertRowBelow,Inserts a new row below the selected row in a schedule,TRUE,FALSE,FALSE,ID_SCHEDULE_ROW_INSERT_BELOW
+Schedule Merge Cells,ScheduleMergeCells,Merges or unmerges selected schedule cells,TRUE,FALSE,FALSE,ID_SCHEDULE_CELL_MERGE_UNMERGE
+Schedule Reset Override,ScheduleResetOverride,Resets formatting overrides on schedule cells,TRUE,FALSE,FALSE,ID_SCHEDULE_RESET_OVERRIDE
+Schedule Resize Column,ScheduleResizeColumn,Resizes a column width in a schedule,TRUE,FALSE,FALSE,ID_SCHEDULE_COLUMN_RESIZE
+Schedule Resize Row,ScheduleResizeRow,Resizes a row height in a schedule,TRUE,FALSE,FALSE,ID_SCHEDULE_ROW_RESIZE
+Schedule Split and Place,ScheduleSplitAndPlace,Splits a schedule by height and places segments on sheets,TRUE,FALSE,FALSE,ID_SCHEDULE_SPLIT_BY_HEIGHT
+Schedule Zoom In,ScheduleZoomIn,Zooms in on the schedule view,TRUE,FALSE,FALSE,ID_SCHEDULE_VIEW_ZOOM_IN
+Schedule Zoom Out,ScheduleZoomOut,Zooms out on the schedule view,TRUE,FALSE,FALSE,ID_SCHEDULE_VIEW_ZOOM_OUT
+Schedule/Quantities,ScheduleOrQuantities,Creates a new schedule or quantities view,TRUE,TRUE,FALSE,ID_VIEW_NEW_SCHEDULE
+Scope Box,ScopeBox,Creates a scope box to control datum and view extents,TRUE,TRUE,FALSE,ID_VOLUME_OF_INTEREST
+Scope Box (3D),ScopeBoxCommand,Creates a scope box in a 3D view,TRUE,FALSE,FALSE,ID_VOLU
+Section,Section,Creates a section view through the building model,TRUE,TRUE,FALSE,ID_VIEW_NEW_SECTION
+Section Tags,SectionTags,Manages section tag annotation styles,TRUE,FALSE,FALSE,ID_VIEWTAGSTYLES_SECTIONTAGS
+Security,Security,Opens security settings for the project,TRUE,FALSE,FALSE,
+Select All in Project,SelectAllInProject,Selects all instances of the same type in the entire project,TRUE,FALSE,TRUE,ID_SEL_ALL_IN_PRJ
+Select All Pasted,SelectAllPasted,Selects all elements that were pasted,TRUE,FALSE,FALSE,ID_SELECT_ALL_PASTED
+Select All Reinforcement in Host,SelectAllReinforcementInHost,Selects all reinforcement elements within a structural host,TRUE,FALSE,TRUE,ID_SELECT_IN_HOST_ALL_REINFORCEMENT
+Select All Visible in View,SelectAllVisibleInView,Selects all visible elements of the same type in the view,TRUE,FALSE,TRUE,ID_SEL_ALL_IN_VIEW
+Select All Visible in View (in Option),SelectAllVisibleInViewInOption,Selects all visible elements within the active design option,TRUE,FALSE,TRUE,ID_SEL_ALL_IN_VIEW_IN_OPTION
+Select by ID,SelectById,Selects elements by entering their element IDs,TRUE,FALSE,TRUE,ID_SELECT_BY_ID
+Select Elements (Analytical),AnalyticalSelectElements,Selects elements for analytical automation processing,TRUE,FALSE,FALSE,ID_ANALYTICAL_AUTOMATION_EDIT_SELECTION
+Select Elements by Face,SelectElementsByFace,Toggles the ability to select elements by clicking their faces,TRUE,TRUE,FALSE,ID_TOGGLE_ALLOW_FACE_SELECTION
+Select Levels (Analytical),AnalyticalSelectLevels,Selects levels for analytical automation processing,TRUE,FALSE,FALSE,ID_ANALYTICAL_AUTOMATION_EDIT_LEVELS
+Select Link,SelectLink,Selects a linked model for coordination operations,TRUE,FALSE,FALSE,
+Select Links,SelectLinks,Toggles the ability to select linked model elements,TRUE,TRUE,FALSE,ID_TOGGLE_ALLOW_LINK_SELECTION
+Select Pinned Elements,SelectPinnedElements,Toggles the ability to select pinned elements,TRUE,TRUE,FALSE,ID_TOGGLE_ALLOW_PINNED_SELECTION
+Select Planes (Analytical),AnalyticalSelectPlanes,Selects planes for analytical automation processing,TRUE,FALSE,FALSE,ID_ANALYTICAL_AUTOMATION_EDIT_PLANES
+Select Previous,SelectPrevious,Restores the previous element selection,TRUE,FALSE,TRUE,ID_EDIT_SELECT_PREVIOUS
+Select Underlay Elements,SelectUnderlayElements,Toggles the ability to select elements shown as underlay,TRUE,TRUE,FALSE,ID_TOGGLE_ALLOW_UNDERLAY_SELECTION
+Selection Box,SelectionBox,Creates a section box around the selected elements in a 3D view,TRUE,FALSE,TRUE,ID_VIEW_APPLY_SELECTION_BOX
+Set Front to Current View,SetFrontToCurrentView,Sets the ViewCube front orientation to the current view,TRUE,FALSE,FALSE,ID_SET_FRONT_TO_CURRENT_VIEW
+Set Locally Unload All Links,SetLocallyUnloadAllLinks,Sets all linked models to locally unloaded state,TRUE,TRUE,FALSE,ID_RVT_LINK_SET_LOCALLY_UNLOAD_ALL_LINKS
+Set Railing Type,SetRailingType,Changes the type of an existing railing,TRUE,FALSE,FALSE,ID_SET_RAILINGS_TYPE
+Set View Scale for Families,SetViewScaleForFamilies,Configures the default view scale for family editor views,TRUE,FALSE,FALSE,ID_FAMILY_VIEWSCALEOFFAMILIES
+Set Work Plane,SetWorkPlane,Sets the active work plane for sketch-based operations,TRUE,FALSE,FALSE,
+Setup Ancillary Data Export,SetupAncillaryDataExport,Configures ancillary data export settings for fabrication,TRUE,FALSE,FALSE,ID_FABRICATION_ANCILLARY_EXPORT
+Setup Ancillary Reports,SetupAncillaryReports,Configures ancillary report settings for fabrication,TRUE,FALSE,FALSE,ID_FABRICATION_ANCILLARY_REPORT
+Setup Item Data Export,SetupItemDataExport,Configures item data export settings for fabrication,TRUE,FALSE,FALSE,ID_FABRICATION_ITEM_EXPORT
+Setup Item Reports,SetupItemReports,Configures item report settings for fabrication,TRUE,FALSE,FALSE,ID_FABRICATION_ITEM_REPORT
+Setup Linear Nest Data Export,SetupLinearNestDataExport,Configures linear nest data export for fabrication,TRUE,FALSE,FALSE,ID_FABRICATION_LINEAR_NEST_EXPORT
+Setup Linear Nest Reports,SetupLinearNestReports,Configures linear nest report settings for fabrication,TRUE,FALSE,FALSE,ID_FABRICATION_LINEAR_NEST_REPORT
+Setup Worksheets,SetupWorksheets,Configures fabrication worksheet settings,TRUE,FALSE,FALSE,ID_FABRICATION_WORKSHEET
+Shaded,Shaded,Sets the view visual style to shaded mode,TRUE,TRUE,FALSE,ID_IMAGE_SHADING
+Shaded with Edges,ShadedWithEdges,Sets the view visual style to shaded with visible edges,TRUE,TRUE,FALSE,ID_IMAGE_SHADING_WITH_EDGES
+Shadows Off,ShadowsOff,Turns off shadow display in the current view,TRUE,TRUE,FALSE,ID_IMAGE_SHADOW_OFF
+Shadows On,ShadowsOn,Turns on shadow display in the current view,TRUE,TRUE,FALSE,ID_IMAGE_SHADOW_ON
+Shaft Opening,ShaftOpening,Creates a vertical opening that cuts through multiple floors,TRUE,TRUE,TRUE,
+Shape Status,ShapeStatus,Shows the shape editing status of a floor or roof,TRUE,FALSE,FALSE,ID_SHAPE_STATUS
+Shared Parameters,SharedParameters,Manages shared parameter definitions used across projects,TRUE,TRUE,FALSE,ID_FILE_EXTERNAL_PARAMETERS
+Shared Views,SharedViews,Manages shared views for cloud collaboration,TRUE,FALSE,FALSE,
+Shear Studs,ShearStuds,Places shear stud connectors on steel elements,TRUE,TRUE,TRUE,
+Sheet Issues/Revisions,SheetIssuesOrRevisions,Manages sheet issue dates and revision tracking,TRUE,TRUE,FALSE,
+Sheet List,SheetList,Creates a schedule listing all sheets in the project,TRUE,TRUE,FALSE,ID_VIEW_NEW_DRAWING_LIST
+Shorten,Shorten,Shortens a steel structural member,TRUE,TRUE,TRUE,
+Show All Tag Leaders,ShowAllTagLeaders,Shows all leader lines for selected tags,TRUE,FALSE,TRUE,ID_SHOW_ALL_TAG_LEADERS
+Show Border When Editing,ShowBorderWhenEditing,Toggles text note border visibility during editing,TRUE,FALSE,FALSE,ID_TEXTEDITOR_SHOWBORDER
+Show Boundary Open Ends,ShowBoundaryOpenEnds,Shows open end indicators on room boundaries,TRUE,FALSE,FALSE,
+Show Compass,ShowCompass,Toggles the compass display in 3D views,TRUE,FALSE,FALSE,ID_SHOW_COMPASS
+Show Disconnects,ShowDisconnects,Highlights disconnected MEP system elements,TRUE,FALSE,FALSE,
+Show Energy Model,ShowEnergyModel,Displays the energy analytical model in the view,TRUE,FALSE,FALSE,
+Show Help Tooltip,ShowHelpTooltip,Shows the help tooltip for a fabrication part,TRUE,FALSE,FALSE,ID_FABRICATION_PART_SHOW_TOOLTIP
+Show Hidden Lines by Element,ShowHiddenLinesByElement,Shows hidden lines of a selected element in the view,TRUE,TRUE,TRUE,ID_HIDE_ELEMENTS_EDITOR
+Show History,ShowHistory,Shows the revision history of the model,TRUE,FALSE,FALSE,
+Show Last Report,ShowLastReport,Shows the most recently generated report,TRUE,FALSE,FALSE,
+Show Mass by View Settings,ShowMassByViewSettings,Shows mass elements according to view display settings,TRUE,FALSE,FALSE,
+Show Mass Form and Floors,ShowMassFormAndFloors,Toggles visibility of mass forms and mass floors,TRUE,FALSE,FALSE,
+Show Mass Surface Types,ShowMassSurfaceTypes,Shows mass surface type categorization,TRUE,FALSE,FALSE,
+Show Mass Zones and Shades,ShowMassZonesAndShades,Shows mass zones and shading analysis visualization,TRUE,FALSE,FALSE,
+Show Opaque Background When Editing,ShowOpaqueBackgroundWhenEditing,Shows an opaque background behind text during editing,TRUE,FALSE,FALSE,ID_TEXTEDITOR_SHOWOPAQUEBK
+Show Properties Palette,ShowPropertiesPalette,Opens the Properties palette panel,TRUE,FALSE,TRUE,ID_SHOW_PROPERTIES_PALETTE
+Show Related Dimensions,ShowRelatedDimensions,Highlights dimensions related to the selected element,TRUE,FALSE,TRUE,ID_SHOW_RELATED_DIMENSION
+Show Related Elements,ShowRelatedElements,Shows elements related to the current selection,TRUE,FALSE,FALSE,ID_SHOW_RELATED
+Show Removed Rebar Bars,ShowRemovedRebarBars,Shows bars that were removed from a rebar set,TRUE,FALSE,TRUE,ID_REBAR_ADD_REMOVE_BARS
+Show Warnings in Views,ShowWarningsInViews,Highlights elements with warnings in the current view,TRUE,FALSE,FALSE,
+Show Work Plane,ShowWorkPlane,Toggles the visibility of the active work plane,TRUE,FALSE,FALSE,
+Show Worksharing Make Editable Controls,ShowWorksharingMakeEditableControls,Toggles visibility of make-editable controls for worksharing,TRUE,TRUE,FALSE,
+Show/Hide Analytical Model,ShowHideAnalyticalModel,Toggles the visibility of the analytical model in the view,TRUE,FALSE,FALSE,ID_VIEW_FRAME_TOGGLE_ANALYTICAL_MODEL_VISIBILITY
+Simplify Toposolid,SimplifyToposolid,Reduces the number of points in a toposolid for performance,TRUE,TRUE,TRUE,ID_TOPOSOLID_SIMPLIFY
+Single Fabric Sheet Placement,SingleFabricSheetPlacement,Places a single fabric reinforcement sheet,TRUE,FALSE,FALSE,
+Single Horizontal Arrow,SingleHorizontalArrow,Selects the single horizontal arrow cursor mode,TRUE,FALSE,FALSE,ID_RADIO_HOR_ARROW
+Single Vertical Arrow,SingleVerticalArrow,Selects the single vertical arrow cursor mode,TRUE,FALSE,FALSE,ID_RADIO_VER_ARROW
+Site Component,SiteComponent,Places a site component such as trees and vehicles,TRUE,TRUE,FALSE,ID_SITE_COMPONENT
+Sketch Visibility Settings,SketchVisibilitySettings,Configures visibility of sketch elements during editing,TRUE,FALSE,FALSE,ID_EDIT_SKETCH_VISIBILITY
+Slab,Slab,Creates a structural slab (floor) in the building model,TRUE,TRUE,FALSE,ID_OBJECTS_STRUCT_SLAB
+Slab Edge - Floor,SlabEdgeFloor,Creates a slab edge (perimeter fascia) on a floor,TRUE,TRUE,FALSE,
+Slope Arrow,SlopeArrow,Places a slope arrow to define the slope of a floor or roof,TRUE,TRUE,FALSE,ID_SKETCH_DEFINE_SLOPE
+Smart Snapping,SmartSnapping,Toggles smart snapping for fabrication part placement,TRUE,FALSE,FALSE,ID_FABRICATION_PART_SMART_SNAPPING
+Snap to Centers,SnapToCenters,Enables snapping to center points of elements,TRUE,FALSE,FALSE,ID_SNAP_OVERRIDE_CENTER
+Snap to Midpoints,SnapToMidpoints,Enables snapping to midpoints of element edges,TRUE,FALSE,FALSE,ID_SNAP_OVERRIDE_MID
+Snap to Nearest,SnapToNearest,Enables snapping to the nearest point on an element,TRUE,FALSE,FALSE,ID_SNAP_OVERRIDE_INTERIOR
+Snap to Quadrants,SnapToQuadrants,Enables snapping to quadrant points of arcs and circles,TRUE,FALSE,FALSE,ID_SNAP_OVERRIDE_QUADRANT
+Snap to Tangents,SnapToTangents,Enables snapping to tangent points on curves,TRUE,FALSE,FALSE,ID_SNAP_OVERRIDE_TANGENT
+Snaps,Snaps,Configures snap settings and increments,TRUE,FALSE,FALSE,ID_SETTINGS_SNAPPING
+Soffit,Soffit,Creates a soffit element along a roof edge,TRUE,TRUE,FALSE,ID_CREATE_SOFFIT_TB
+Solid Blend,SolidBlend,Creates a solid blend form between two profiles,TRUE,FALSE,FALSE,ID_OBJECTS_BLEND
+Solid Extrusion,SolidExtrusion,Creates a solid form by extruding a sketch profile,TRUE,FALSE,FALSE,ID_OBJECTS_EXTRUSION
+Solid Revolve,SolidRevolve,Creates a solid form by revolving a profile around an axis,TRUE,FALSE,FALSE,ID_OBJECTS_REVOLUTION
+Solid Sweep,SolidSweep,Creates a solid form by sweeping a profile along a path,TRUE,FALSE,FALSE,ID_OBJECTS_SWEEP
+Solid Swept Blend,SolidSweptBlend,Creates a solid form by blending profiles along a path,TRUE,FALSE,FALSE,ID_OBJECTS_SWEPTBLEND
+Space,Space,Places a space element for MEP analysis,TRUE,TRUE,FALSE,
+Space Naming,SpaceNaming,Configures automatic space naming rules,TRUE,FALSE,FALSE,
+Space Separator,SpaceSeparator,Draws a space separation line for MEP zones,TRUE,TRUE,FALSE,
+Space Tag,SpaceTag,Places a tag that displays space information,TRUE,TRUE,FALSE,
+Span Direction Symbol,SpanDirectionSymbol,Places a span direction symbol on a structural floor,TRUE,TRUE,FALSE,ID_OBJECTS_SPANDIRECTION
+Spatial Grid,SpatialGrid,Creates a spatial grid for infrastructure layouts,TRUE,FALSE,FALSE,
+Specify Coordinates at Point,SpecifyCoordinatesAtPoint,Specifies shared coordinates at a picked point,TRUE,TRUE,FALSE,
+Splice by Length,SpliceByLength,Creates rebar splices at regular intervals by length,TRUE,FALSE,FALSE,ID_REBAR_SPLICE_BY_RULES
+Spline,Spline,Draws a spline curve through picked points,TRUE,FALSE,FALSE,ID_OBJECTS_CURVE_SPLINE
+Spline (Radio),SplineRadio,Selects spline as the active drawing tool,TRUE,FALSE,FALSE,IDC_RADIO_SPLINE
+Spline Wire,SplineWire,Draws a spline-shaped electrical wire,TRUE,FALSE,FALSE,
+Split Element,SplitElement,Splits an element into two separate elements at a point,TRUE,TRUE,TRUE,ID_SPLIT
+Split Face,SplitFace,Splits a face of an element to apply different materials,TRUE,TRUE,TRUE,ID_SPLIT_FACE_IN_NEW_FAMILIES
+Split Surface,SplitSurface,Splits a toposolid surface into separate regions,TRUE,TRUE,TRUE,
+Split with Gap,SplitWithGap,Splits an element with a specified gap between the parts,TRUE,TRUE,TRUE,ID_SPLIT_WITH_GAP
+Spot Coordinate,SpotCoordinate,Places a spot coordinate annotation showing X; Y; Z values,TRUE,TRUE,TRUE,ID_SPOT_COORDINATE
+Spot Coordinate Types,SpotCoordinateTypes,Manages spot coordinate annotation type settings,TRUE,FALSE,FALSE,ID_SETTINGS_SPOT_COORDINATE
+Spot Elevation,SpotElevation,Places a spot elevation annotation showing height values,TRUE,TRUE,TRUE,ID_SPOT_ELEVATION
+Spot Elevation Types,SpotElevationTypes,Manages spot elevation annotation type settings,TRUE,FALSE,FALSE,ID_SETTINGS_SPOT_ELEVATION
+Spot Slope,SpotSlope,Places a spot slope annotation showing slope values,TRUE,TRUE,TRUE,ID_SPOT_SLOPE
+Spot Slope Types,SpotSlopeTypes,Manages spot slope annotation type settings,TRUE,FALSE,FALSE,ID_SETTINGS_SPOT_SLOPE
+Sprinkler,Sprinkler,Places a fire sprinkler in the building model,TRUE,TRUE,FALSE,ID_RBS_SPRINKLER
+Stair,Stair,Creates a stair element using the component-based editor,TRUE,TRUE,FALSE,ID_OBJECTS_STAIRS
+Stair by Sketch,StairBySketch,Creates a stair element using sketch-based boundary lines,TRUE,TRUE,FALSE,
+Stair Path,StairPath,Places a stair path annotation showing travel direction,TRUE,TRUE,FALSE,ID_OBJECTS_STAIRS_PATH
+Stair Tread/Riser Number,StairTreadOrRiserNumber,Places tread or riser number annotations on stairs,TRUE,FALSE,TRUE,ID_STAIRS_TRISER_NUMBER
+Stairs Boundary,StairsBoundary,Draws the boundary lines for a sketch-based stair,TRUE,TRUE,FALSE,ID_BUTTON_STAIRS_BOUNDARY
+Stairs Landing,StairsLanding,Creates a landing component in the stairs editor,TRUE,TRUE,FALSE,ID_STAIRS_LANDING
+Stairs Riser,StairsRiser,Draws riser lines for a sketch-based stair,TRUE,TRUE,FALSE,ID_BUTTON_STAIRS_RISER
+Stairs Run,StairsRun,Creates a run component in the stairs editor,TRUE,TRUE,FALSE,ID_STAIRS_RUN
+Stairs Run Boundary,StairsRunBoundary,Edits the boundary of a stair run component,TRUE,FALSE,FALSE,ID_BUTTON_STAIRS_RUN_BOUNDARY
+Stairs Support,StairsSupport,Creates a structural support for stairs,TRUE,TRUE,FALSE,ID_STAIRS_SUPPORT
+Starting View,StartingView,Sets the view that opens when the project is first loaded,TRUE,TRUE,FALSE,
+Status Bar,StatusBar,Toggles the status bar visibility at the bottom of the screen,FALSE,FALSE,FALSE,ID_VIEW_STATUS_BAR
+Status Bar - Design Options,StatusBarDesignOptions,Toggles design option display in the status bar,FALSE,FALSE,FALSE,
+Status Bar - Worksets,StatusBarWorksets,Toggles workset display in the status bar,FALSE,FALSE,FALSE,
+Steel Connection Alignment Bottom Center,SteelConnAlignBottomCenter,Sets steel connection offset reference to bottom center,TRUE,FALSE,FALSE,ID_STRUCT_CONN_OFFSET_REF_BOTTOM_CENTER
+Steel Connection Alignment Bottom Left,SteelConnAlignBottomLeft,Sets steel connection offset reference to bottom left,TRUE,FALSE,FALSE,ID_STRUCT_CONN_OFFSET_REF_BOTTOM_LEFT
+Steel Connection Alignment Bottom Right,SteelConnAlignBottomRight,Sets steel connection offset reference to bottom right,TRUE,FALSE,FALSE,ID_STRUCT_CONN_OFFSET_REF_BOTTOM_RIGHT
+Steel Connection Alignment Middle Center,SteelConnAlignMiddleCenter,Sets steel connection offset reference to middle center,TRUE,FALSE,FALSE,ID_STRUCT_CONN_OFFSET_REF_MIDDLE_CENTER
+Steel Connection Alignment Middle Left,SteelConnAlignMiddleLeft,Sets steel connection offset reference to middle left,TRUE,FALSE,FALSE,ID_STRUCT_CONN_OFFSET_REF_MIDDLE_LEFT
+Steel Connection Alignment Middle Right,SteelConnAlignMiddleRight,Sets steel connection offset reference to middle right,TRUE,FALSE,FALSE,ID_STRUCT_CONN_OFFSET_REF_MIDDLE_RIGHT
+Steel Connection Alignment Top Center,SteelConnAlignTopCenter,Sets steel connection offset reference to top center,TRUE,FALSE,FALSE,ID_STRUCT_CONN_OFFSET_REF_TOP_CENTER
+Steel Connection Alignment Top Left,SteelConnAlignTopLeft,Sets steel connection offset reference to top left,TRUE,FALSE,FALSE,ID_STRUCT_CONN_OFFSET_REF_TOP_LEFT
+Steel Connection Alignment Top Right,SteelConnAlignTopRight,Sets steel connection offset reference to top right,TRUE,FALSE,FALSE,ID_STRUCT_CONN_OFFSET_REF_TOP_RIGHT
+Straight Cut,StraightCut,Sets the sweep profile cut to straight,TRUE,FALSE,FALSE,IDC_RADIO_STRAIGHT_CUT
+Structural Area Reinforcement,StructuralAreaReinforcement,Places area reinforcement in a structural element,TRUE,TRUE,TRUE,
+Structural Column,StructuralColumn,Places a structural column in the building model,TRUE,TRUE,FALSE,ID_OBJECTS_STRUCTURAL_COLUMN
+Structural Connection,StructuralConnection,Creates a connection between structural steel elements,TRUE,TRUE,TRUE,
+Structural Fabric Area,StructuralFabricArea,Places fabric reinforcement over an area,TRUE,TRUE,FALSE,
+Structural Floor,StructuralFloor,Creates a structural floor with analytical properties,TRUE,TRUE,FALSE,ID_OBJECTS_SLAB
+Structural Path Reinforcement,StructuralPathReinforcement,Places path-based reinforcement in a structural element,TRUE,TRUE,TRUE,
+Structural Plan,StructuralPlan,Creates a new structural plan view,TRUE,TRUE,FALSE,ID_VIEW_NEW_STRUCTURAL_PLAN
+Structural Rebar,StructuralRebar,Places individual reinforcement bars in structural elements,TRUE,FALSE,TRUE,ID_OBJECTS_REBAR
+Structural Settings,StructuralSettings,Configures structural analysis settings and parameters,TRUE,TRUE,FALSE,
+Structural Trusses,StructuralTrusses,Places a structural truss in the building model,TRUE,TRUE,FALSE,
+Structural Wall,StructuralWall,Creates a structural wall with analytical properties,TRUE,TRUE,FALSE,ID_OBJECTS_STRUCTURAL_WALL
+Sub-divide Toposolid,SubdivideToposolid,Creates a subregion within a toposolid element,TRUE,TRUE,FALSE,ID_TOPOSOLID_SUBREGION
+Subregion,Subregion,Creates a subregion on a toposolid or toposurface,TRUE,TRUE,FALSE,
+Sun Settings,SunSettings,Configures sun position and shadow settings for the view,TRUE,TRUE,FALSE,ID_SETTINGS_SUNANDSHADOWSSETTINGS
+Sweep Add/Remove Segments,SweepAddRemoveSegments,Adds or removes wall segments for a wall sweep,TRUE,FALSE,FALSE,IDC_EDIT_SWEEP_HOST
+Sweep Wall,SweepWall,Creates a wall sweep (molding or reveal) on a wall,TRUE,TRUE,TRUE,ID_OBJECTS_CORNICE
+Switch Join Order,SwitchJoinOrder,Changes the join priority order of overlapping elements,TRUE,TRUE,TRUE,
+Symbol,Symbol,Places an annotation symbol in a view,TRUE,TRUE,FALSE,ID_OBJECTS_SYMBOL
+Symbolic Line,SymbolicLine,Draws a symbolic line visible only in the current view,TRUE,FALSE,FALSE,
+Symbolic Line (Sketch),SymbolicLineSketch,Draws a symbolic line for a shaft opening sketch,TRUE,FALSE,FALSE,ID_SKETCH_SHAFTOPENING_SYMBOL
+Synchronize and Modify Settings,SynchronizeAndModifySettings,Synchronizes with central and allows modifying sync settings,TRUE,TRUE,FALSE,ID_SYNCHRONIZE_AND_MODIFY_SETTINGS
+Synchronize Now,SynchronizeNow,Synchronizes local changes with the central model immediately,TRUE,TRUE,FALSE,ID_SYNCHRONIZE_NOW
+System Browser,SystemBrowser,Opens the system browser for MEP system management,TRUE,FALSE,FALSE,
+System Schedule View,SystemScheduleView,Creates a schedule view for an MEP system,TRUE,FALSE,FALSE,ID_MEP_SYSTEM_SCHEDULE_VIEW
+System Zone,SystemZone,Creates a zone for HVAC system analysis,TRUE,TRUE,FALSE,
+Systems Analysis,SystemsAnalysis,Runs analysis on MEP systems for sizing and performance,TRUE,FALSE,FALSE,
+Tab Views,TabViews,Toggles between tabbed and windowed view display,TRUE,FALSE,FALSE,ID_VIEW_TAB
+Tag All Not Tagged,TagAllNotTagged,Places tags on all untagged elements in the current view,TRUE,TRUE,TRUE,
+Tag by Category,TagByCategory,Places a category-specific tag on a selected element,TRUE,TRUE,TRUE,ID_BUTTON_TAG
+Tag on Placement,TagOnPlacement,Toggles automatic tagging when placing elements,TRUE,TRUE,FALSE,ID_TAG_ON_PLACEMENT
+Tangent End Arc,TangentEndArc,Draws an arc tangent to an existing line or arc,TRUE,FALSE,FALSE,IDC_RADIO_ARC_TAN_END
+Telephone,Telephone,Places a telephone device in the building model,TRUE,TRUE,FALSE,
+Temporarily Apply Template Properties,TemporarilyApplyTemplateProperties,Temporarily applies a view template without permanent changes,TRUE,TRUE,FALSE,ID_TEMPORARILY_APPLY_TEMPLATE_PROPERTIES
+Temporary Dimensions,TemporaryDimensions,Configures temporary dimension display settings,TRUE,TRUE,FALSE,ID_SETTINGS_DIMENSIONS
+Text,Text,Places a text note annotation in the current view,TRUE,TRUE,FALSE,ID_OBJECTS_TEXTNOTE
+Text All Caps,TextAllCaps,Toggles all caps formatting for selected text,TRUE,FALSE,FALSE,ID_TEXT_ALL_CAPS
+Text Bold,TextBold,Toggles bold formatting for selected text,TRUE,FALSE,FALSE,ID_TEXT_BOLD
+Text Bullets,TextBullets,Applies bullet list formatting to text,TRUE,FALSE,FALSE,ID_TEXT_PARA_BULLET
+Text Decrease Indent,TextDecreaseIndent,Decreases the indent level of text,TRUE,FALSE,FALSE,ID_TEXT_DECREASE_INDENT
+Text Decrement List Value,TextDecrementListValue,Decrements the starting value of a numbered list,TRUE,FALSE,FALSE,ID_TEXT_DECREMENT_LIST_START
+Text Increase Indent,TextIncreaseIndent,Increases the indent level of text,TRUE,FALSE,FALSE,ID_TEXT_INCREASE_INDENT
+Text Increment List Value,TextIncrementListValue,Increments the starting value of a numbered list,TRUE,FALSE,FALSE,ID_TEXT_INCREMENT_LIST_START
+Text Italic,TextItalic,Toggles italic formatting for selected text,TRUE,FALSE,FALSE,ID_TEXT_ITALIC
+Text List None,TextListNone,Removes list formatting from text,TRUE,FALSE,FALSE,ID_TEXT_PARA_NONE
+Text Lowercase Letters,TextLowercaseLetters,Applies lowercase letter list formatting to text,TRUE,FALSE,FALSE,ID_TEXT_PARA_LOWERCASE
+Text Numbers,TextNumbers,Applies numbered list formatting to text,TRUE,FALSE,FALSE,ID_TEXT_PARA_NUMBER
+Text Subscript,TextSubscript,Toggles subscript formatting for selected text,TRUE,FALSE,FALSE,ID_TEXT_SUBSCRIPT
+Text Superscript,TextSuperscript,Toggles superscript formatting for selected text,TRUE,FALSE,FALSE,ID_TEXT_SUPERSCRIPT
+Text Underline,TextUnderline,Toggles underline formatting for selected text,TRUE,FALSE,FALSE,ID_TEXT_UNDERLINE
+Text Uppercase Letters,TextUppercaseLetters,Applies uppercase letter list formatting to text,TRUE,FALSE,FALSE,ID_TEXT_PARA_UPPERCASE
+Thin Lines,ThinLines,Toggles thin line display mode for all elements,TRUE,TRUE,FALSE,ID_THIN_LINES
+Tile Views,TileViews,Arranges open view windows in a tiled layout,TRUE,FALSE,FALSE,ID_WINDOW_TILE_VERT
+Tile Windows,TileWindows,Tiles all open windows in the Revit workspace,TRUE,FALSE,FALSE,
+Toggle Category Halftone,ToggleCategoryHalftone,Toggles halftone display for elements of the selected category,TRUE,FALSE,FALSE,ID_VIEW_OVERRIDE_CATEGORY_HALFTONE
+Toggle Crop Region Visibility,ToggleCropRegionVisibility,Shows or hides the crop region boundary in the view,TRUE,TRUE,FALSE,IDC_VIEW_FRAME_CROPREGION_VISIBILITY
+Toggle Crop View,ToggleCropView,Enables or disables crop view for the current view,TRUE,TRUE,FALSE,IDC_VIEW_FRAME_CROPREGION_ACTIVITY
+Toggle Free Form Rebar Auto-Close,ToggleFreeFormRebarAutoClose,Toggles automatic closing of free-form rebar shapes,TRUE,FALSE,FALSE,ID_TOGGLE_REBAR_CONSTRAINT_CLOSE_LOOP_KEYSHORTCUT
+Toggle Home,ToggleHome,Toggles the Revit Home screen,TRUE,FALSE,FALSE,
+Toggle P&ID Modeler Browser,TogglePAndIDModelerBrowser,Toggles the P&ID modeler browser panel,TRUE,FALSE,FALSE,
+Toggle Properties Palette,TogglePropertiesPalette,Toggles the Properties palette visibility,TRUE,FALSE,FALSE,ID_TOGGLE_PROPERTIES_PALETTE
+Toggle Railing Preview,ToggleRailingPreview,Toggles the 3D preview while editing railings,TRUE,FALSE,FALSE,ID_RAILING_EDIT_MODE_TOGGLE_PREVIEW
+Toggle Rebar Clear Distance,ToggleRebarClearDistance,Toggles between center-to-center and clear spacing for rebar,TRUE,FALSE,FALSE,ID_TOGGLE_REBAR_CONSTRAINT_CLEAR_SPACING_KEYSHORTCUT
+Toggle Rebar Two-Way Constraint,ToggleRebarTwoWayConstraint,Toggles bi-directional constraint mode for rebar placement,TRUE,FALSE,FALSE,ID_TOGGLE_REBAR_TOGGLE_BI_DIRECTIONAL_KEYSHORTCUT
+Toggle Rebar Visibility,ToggleRebarVisibility,Toggles the visibility of rebar in the current view,TRUE,FALSE,TRUE,ID_TOGGLE_REBAR_VISIBILITY
+Toggle Reveal Constraints Mode,ToggleRevealConstraintsMode,Shows or hides constraints applied to elements,TRUE,FALSE,FALSE,ID_TOGGLE_REVEAL_CONSTRAINTS
+Toggle Reveal Hidden Elements Mode,ToggleRevealHiddenElementsMode,Shows or hides elements that are hidden in the view,TRUE,FALSE,FALSE,
+Toggle System Propagation,ToggleSystemPropagation,Toggles automatic system type propagation for MEP elements,TRUE,FALSE,FALSE,ID_TOGGLE_SYSTEM_PROPAGATION
+Toggle Toposolid Smooth Shading,ToggleToposolidSmoothShading,Toggles smooth shading display for toposolid elements,TRUE,FALSE,FALSE,ID_TOGGLE_SMOOTH_TOPOSOLID
+Top Chord,TopChord,Selects the top chord of a structural truss for editing,TRUE,FALSE,FALSE,
+Toposurface,Toposurface,Creates a toposolid element representing site terrain,TRUE,TRUE,FALSE,ID_SITE_TOPO_SOLID
+Transfer Project Standards,TransferProjectStandards,Transfers settings and styles from another project,TRUE,TRUE,FALSE,ID_TRANSFER_PROJECT_STANDARDS
+Trim/Extend Multiple Elements,TrimOrExtendMultipleElements,Trims or extends multiple elements to a selected boundary,TRUE,TRUE,TRUE,ID_TRIM_EXTEND_MULTIPLE
+Trim/Extend Single Element,TrimOrExtendSingleElement,Trims or extends a single element to a selected boundary,TRUE,TRUE,TRUE,ID_TRIM_EXTEND_SINGLE
+Trim/Extend to Corner,TrimOrExtendToCorner,Trims or extends two elements to meet at a corner,TRUE,TRUE,TRUE,ID_TRIM_EXTEND_CORNER
+Turn Snap Override Off,TurnSnapOverrideOff,Disables all snap override settings,TRUE,FALSE,FALSE,ID_SETTINGS_SNAPS_NOOVERRIDE
+Twist Left,TwistLeft,Rotates a fabrication part counter-clockwise,TRUE,FALSE,FALSE,IDC_SHIFT_CCW
+Twist Right,TwistRight,Rotates a fabrication part clockwise,TRUE,FALSE,FALSE,IDC_SHIFT_CW
+Type Properties,TypeProperties,Opens the type properties dialog for the selected element,TRUE,TRUE,TRUE,ID_EDIT_TYPE
+Uncut Geometry,UncutGeometry,Reverses a geometry cut between two elements,TRUE,TRUE,TRUE,
+Undo Text Edit,UndoTextEdit,Undoes the last text editing action,TRUE,FALSE,FALSE,ID_EDIT_UNDO
+Ungroup,Ungroup,Dissolves a group back into individual elements,TRUE,TRUE,TRUE,ID_EDITGROUP_UNGROUP
+Unhide All Columns,UnhideAllColumns,Shows all hidden columns in a schedule view,TRUE,FALSE,FALSE,ID_UNHIDE_ALL_COLUMNS
+Unjoin Geometry,UnjoinGeometry,Reverses a geometry join between two elements,TRUE,TRUE,TRUE,
+Unpin,Unpin,Unlocks a pinned element to allow movement,TRUE,TRUE,TRUE,ID_UNLOCK_ELEMENTS
+Unset Locally Unload All Links,UnsetLocallyUnloadAllLinks,Removes the locally unloaded state from all links,TRUE,TRUE,FALSE,ID_RVT_LINK_UNSET_LOCALLY_UNLOAD_ALL_LINKS
+Update Alignment,UpdateAlignment,Updates an infrastructure alignment with new data,TRUE,FALSE,FALSE,ID_INFRASTRUCTURE_UPDATE_ALIGNMENT
+Upgrade Beam Joins,UpgradeBeamJoins,Upgrades beam join definitions to the current format,TRUE,FALSE,FALSE,ID_BEAM_JOINS_UPGRADE
+Upgrade Family Sketch Structure,UpgradeFamilySketchStructure,Upgrades the internal sketch structure of a family,TRUE,FALSE,FALSE,ID_UPGRADE_SKETCHES_IN_FAMILY
+Upgrade Join Geometry,UpgradeJoinGeometry,Upgrades join geometry definitions to the current format,TRUE,FALSE,FALSE,ID_JOIN_GEOMETRY_WITH_SNAPSHOT
+Use Current Project,UseCurrentProject,Uses the current project for copy/monitor operations,TRUE,FALSE,FALSE,
+Use Default Printer Setup,UseDefaultPrinterSetup,Resets fabrication printer to the default setup,TRUE,FALSE,FALSE,ID_FABRICATION_USE_DEFAULT_PRINTER_SETUP
+User Keynote,UserKeynote,Places a user-defined keynote annotation,TRUE,TRUE,TRUE,ID_KEYNOTE_USER
+Vertical Opening,VerticalOpening,Creates a vertical opening through a floor or roof,TRUE,TRUE,TRUE,
+Vertical Opening (Edit),VerticalOpeningEdit,Edits the sketch of a vertical opening,TRUE,TRUE,FALSE,ID_EDIT_ROOF_SKETCH
+View Analysis,ViewAnalysis,Views structural or energy analysis results,TRUE,FALSE,FALSE,
+View List,ViewList,Creates a schedule listing all views in the project,TRUE,TRUE,FALSE,ID_NEW_VIEWLIST
+View Object Wheel,ViewObjectWheel,Displays the view object navigation wheel,TRUE,FALSE,FALSE,ID_NAVWHEEL_EXTERIOR_WHEEL
+View Properties,ViewProperties,Opens the properties dialog for the current view,TRUE,FALSE,FALSE,ID_VIEW_PROPERTIES
+View Range,ViewRange,Configures the view range (cut plane and depth) settings,TRUE,TRUE,FALSE,
+View Range (Edit),ViewRangeEdit,Opens the view range dialog for editing,TRUE,TRUE,FALSE,ID_EDIT_VIEW_RANGE
+View Reference,ViewReference,Places a reference to another view in the current view,TRUE,FALSE,FALSE,ID_NEW_REFERENCE_VIEWER
+View Rotation Trackball,ViewRotationTrackball,Sets 3D view rotation to trackball mode,TRUE,FALSE,FALSE,ID_VIEW_ROTATION_TECHNIQUE_TRACKBALL
+View Rotation Turntable,ViewRotationTurntable,Sets 3D view rotation to turntable mode,TRUE,FALSE,FALSE,ID_VIEW_ROTATION_TECHNIQUE_TURNTABLE
+ViewCube,ViewCube,Toggles the ViewCube display in the view,TRUE,FALSE,FALSE,ID_SHOW_VIEWCUBE
+ViewCube Go Home,ViewCubeGoHome,Returns the 3D view to the saved home orientation,TRUE,FALSE,FALSE,ID_VIEWCUBE_HOME
+ViewCube Help,ViewCubeHelp,Opens help documentation for the ViewCube,TRUE,FALSE,FALSE,ID_VIEWCUBE_HELP
+ViewCube Options,ViewCubeOptions,Configures ViewCube display and behavior options,TRUE,FALSE,FALSE,ID_VIEWCUBE_OPTIONS
+ViewCube Reset Front,ViewCubeResetFront,Resets the ViewCube front orientation to default,TRUE,FALSE,FALSE,ID_VIEWCUBE_RESET_FRONT
+Visibility/Graphics,VisibilityOrGraphics,Opens the Visibility/Graphics overrides dialog for the view,TRUE,TRUE,FALSE,
+Void Blend,VoidBlend,Creates a void blend form to cut through solid geometry,TRUE,FALSE,FALSE,ID_OBJECTS_BLEND_CUT
+Void Extrusion,VoidExtrusion,Creates a void extrusion form to cut through solid geometry,TRUE,FALSE,FALSE,ID_OBJECTS_EXTRUSION_CUT
+Void Revolve,VoidRevolve,Creates a void revolve form to cut through solid geometry,TRUE,FALSE,FALSE,ID_OBJECTS_REVOLUTION_CUT
+Void Sweep,VoidSweep,Creates a void sweep form to cut through solid geometry,TRUE,FALSE,FALSE,ID_OBJECTS_SWEEP_CUT
+Void Swept Blend,VoidSweptBlend,Creates a void swept blend form to cut through solid geometry,TRUE,FALSE,FALSE,ID_OBJECTS_SWEPTBLEND_CUT
+Wall,Wall,Creates a wall in the building model,TRUE,TRUE,FALSE,ID_OBJECTS_WALL
+Wall by Face,WallByFaceWall,Creates a wall on a selected mass or surface face,TRUE,TRUE,FALSE,ID_WALL_BY_FACE
+Wall Join Butt,WallJoinButt,Sets the wall join style to butt,TRUE,FALSE,FALSE,IDC_WALL_JOIN_BUTT
+Wall Join Miter,WallJoinMiter,Sets the wall join style to miter,TRUE,FALSE,FALSE,IDC_WALL_JOIN_MITER
+Wall Join Square Off,WallJoinSquareOff,Sets the wall join style to square off,TRUE,FALSE,FALSE,IDC_WALL_JOIN_SQUARE_OFF
+Wall Joins,WallJoins,Edits wall join conditions at intersections,TRUE,TRUE,TRUE,
+Wall Opening,WallOpening,Creates a rectangular opening in a wall,TRUE,TRUE,TRUE,
+Wall Sweep Add/Remove Walls,WallSweepAddRemoveWalls,Adds or removes walls from a wall sweep element,TRUE,FALSE,FALSE,IDC_EDIT_WALL_SWEEP
+Walls Define Beam System Slope,WallsDefineBeamSystemSlope,Uses walls to define the slope of a beam system,TRUE,FALSE,FALSE,IDC_WALLS_DEFINE_BEAM_SYSTEM_SLOPE
+Web,Web,Selects the web of a structural truss for editing,TRUE,FALSE,FALSE,
+Welds,Welds,Places weld annotations on steel connections,TRUE,TRUE,TRUE,
+Window,Window,Places a window in a wall,TRUE,TRUE,FALSE,ID_OBJECTS_WINDOW
+WireFrame,WireFrame,Sets the view visual style to wireframe mode,TRUE,TRUE,FALSE,ID_IMAGE_WIREFRAME
+Worksets,Worksets,Manages worksets for worksharing in a collaborative project,TRUE,TRUE,FALSE,ID_WORKSETS
+Worksharing Monitor,WorksharingMonitor,Opens the worksharing monitor to track user activity,TRUE,FALSE,FALSE,
+Zone,Zone,Creates an HVAC zone for energy analysis,TRUE,TRUE,FALSE,
+Zoom All to Fit,ZoomAllToFit,Zooms all open views to fit their contents,TRUE,FALSE,FALSE,ID_ZOOM_ALL_ALL
+Zoom in Region,ZoomInRegion,Zooms into a rectangular region drawn on the view,TRUE,FALSE,FALSE,ID_ZOOM_IN
+Zoom Out 2x,ZoomOut2x,Zooms out the view by a factor of two,TRUE,FALSE,FALSE,ID_ZOOM_OUT_X2
+Zoom Sheet Size,ZoomSheetSize,Zooms the view to match the actual sheet size,TRUE,FALSE,FALSE,ID_ZOOM_SHEET
+Zoom to Fit,ZoomToFit,Zooms the current view to fit all visible elements,TRUE,FALSE,FALSE,ID_ZOOM_FIT

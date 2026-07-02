@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "BIManageRevit": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Program Files\\Autodesk\\Revit 2024\\Revit.exe",
+      "commandLineArgs": "/language ENG"
+    }
+  }
+}

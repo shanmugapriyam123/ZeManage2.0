@@ -1,0 +1,28 @@
+﻿{
+    "scanDate":  "2026-06-15T10:33:21Z",
+    "buildUser":  "Jenish",
+    "project":  "BIManageRevit",
+    "configuration":  "Release R27",
+    "tool":  ".NET Roslyn Security Analyzers",
+    "toolVersion":  "10.0.300",
+    "analyzers":  [
+                      "Microsoft.CodeAnalysis.NetAnalyzers (built-in)",
+                      "SecurityCodeScan.VS2019 (NuGet)"
+                  ],
+    "summary":  {
+                    "totalWarnings":  0,
+                    "securityFindings":  0,
+                    "qualityFindings":  0,
+                    "categories":  0
+                },
+    "securityFindings":  [
+
+                         ],
+    "categorized":  {
+
+                    },
+    "qualitySummary":  {
+                           "totalQualityWarnings":  0,
+                           "note":  "Quality warnings are non-security code analysis findings"
+                       }
+}

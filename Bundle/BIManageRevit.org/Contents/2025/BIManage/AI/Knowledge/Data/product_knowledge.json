@@ -1,0 +1,210 @@
+{
+  "_comment_purpose": "User-facing knowledge about what each ZeManage feature DOES — not how it's implemented. Source-controlled here so changes survive clean builds. Loaded by JsonKnowledgeProvider; see ProductEntry.cs for schema.",
+  "_comment_authoring_rules": "Every entry should answer 'what does this do for me?' and 'why would I use it?' — never 'how is it built?'. Keep content concise (3-8 sentences). Keywords should cover natural-language phrasings, not just feature names.",
+  "_comment_access": "Use access=admin ONLY for entries that describe admin-exclusive workflows (e.g. how to generate an OTP). Descriptive 'what is X' entries should be visible to all users (omit access field).",
+  "_comment_source": "Derived from docs/ZeManage_Detailed_Functionality.md (May 2026).",
+
+  "entries": [
+
+    {
+      "title": "What is ZeManage",
+      "keywords": ["zemanage", "ze manage", "what is", "what does", "this plugin", "this tool", "this addin", "this add-in", "overview", "about zemanage", "purpose", "what for"],
+      "content": "ZeManage is a BIM governance plugin for Autodesk Revit (versions 2021-2026) by ZestineTech. It sits inside Revit and helps teams manage shared models by intercepting risky actions, monitoring activity and model health, automating background sync, and providing an AI assistant. The four headline modules are Protection (stop accidental changes), Activity Tracker (see who did what), Health Monitor (catch model problems early), and Sync Control (automate worksharing). Add-ons include batch NWC export and Revit Link remapping. Everything works offline and syncs to the cloud when reconnected."
+    },
+
+    {
+      "title": "Why use ZeManage",
+      "keywords": ["why zemanage", "why use", "benefit", "value", "what for", "what problem", "purpose"],
+      "content": "Without governance, Revit models on collaborative projects accumulate problems: critical elements get accidentally deleted, files bloat with imported CAD or unused families, non-compliant files slip through, and there's no audit trail when something breaks. ZeManage prevents the first problems and gives you a record of everything that happens for the rest. It saves rework, protects deadlines, and gives BIM managers visibility into what their teams are doing."
+    },
+
+    {
+      "title": "Protection System Overview",
+      "keywords": ["protection", "model protection", "stop changes", "prevent edit", "lock model", "governance", "control changes"],
+      "content": "ZeManage offers four layers of protection that you can mix and match:\n\n1. Pin Protection — lock individual elements (grids, levels, key components) so they can't be moved or deleted by accident.\n2. Command Protection — control specific Revit commands (Delete, Move, Cut, Copy, Mirror, etc.) on protected elements.\n3. Event Restriction — block document-level events like opening a central file directly, importing/exploding CAD, or saving over earlier versions.\n4. Rule-Based Protection — write custom rules targeting elements by category, family, or parameter, scoped to your company, project, or single model.\n\nEvery layer uses three escalating modes: Notify (logs only), Assist (warns and asks), Protect (blocks until an admin approves)."
+    },
+
+    {
+      "title": "Protection Modes (Notify / Assist / Protect)",
+      "keywords": ["mode", "notify", "assist", "protect mode", "green", "yellow", "red", "escalation", "protection level"],
+      "content": "Every protection feature uses the same three modes:\n\n• Notify — the action is allowed silently. The event is recorded in the audit trail. Good for tracking actions you want to monitor but not block.\n\n• Assist — a guidance dialog appears explaining the concern. The user can choose to proceed or cancel. Their decision is logged. Good for actions you want users to think twice about.\n\n• Protect — the action is fully blocked. A dialog requires an admin OTP or admin password to override. Override and reason are audit-logged. Good for high-risk actions.\n\nWhen multiple rules match the same action, the strictest mode wins — Protect overrides Assist overrides Notify."
+    },
+
+    {
+      "title": "Pin Protection",
+      "keywords": ["pin", "pinned", "unpin", "pin protection", "lock element", "protect element", "grid lock", "level lock"],
+      "content": "Pin Protection lets administrators mark individual elements as protected. Once pinned, normal users can't unpin, move, delete, or modify that element without getting authorization. This is most useful for elements other parts of the model depend on — structural grids, reference levels, site boundaries, shared coordination elements. The protection sits inside the model file itself, so it travels with the model wherever it goes."
+    },
+
+    {
+      "title": "Command Restriction",
+      "keywords": ["command restriction", "command protection", "command restrict", "block delete", "block move", "block copy", "delete protection", "command rule"],
+      "content": "Command Restriction intercepts specific Revit commands when they're applied to protected elements or when defined conditions are met. Supported commands include Delete, Move, Rotate, Mirror, Copy, Cut, Group, Ungroup, and Unpin. Each command can be set to Notify, Assist, or Protect mode independently. So you might let users move walls freely but require admin approval before they delete one."
+    },
+
+    {
+      "title": "Event Restriction",
+      "keywords": ["event restriction", "event protection", "open central", "cad import", "model upgrade", "save over", "block event", "event rule", "file open restriction"],
+      "content": "Event Restriction governs file-level events that happen outside individual element commands — things that aren't covered by Command Protection. Examples: opening a file from a non-approved location, opening a central file directly (instead of a local copy), upgrading a model to a newer Revit version, importing or exploding CAD files, loading families from unapproved sources. Each event can be set to Notify, Assist, or Protect mode. Catching these prevents the most common compliance failures BIM teams see."
+    },
+
+    {
+      "title": "Rule-Based Protection",
+      "keywords": ["rule", "rule-based", "rule based", "custom rule", "rule engine", "parameter rule", "category rule", "rule scope"],
+      "content": "Rule-Based Protection is the most flexible layer. Admins write rules that target elements by category (e.g. all structural columns), by family or type name, or by parameter conditions (e.g. fire-rated walls, elements above a certain height). Each rule applies to a chosen set of Revit commands and runs in one of the three protection modes.\n\nRules are scoped — a single rule can apply company-wide (every project), project-wide (every model in a project), or model-specific (just one model). Rules from all three scopes stack, with the strictest mode winning when they overlap.\n\nOptional rule features: capture before/after screenshots, require the user to type a comment, send an email notification, or allow admin override."
+    },
+
+    {
+      "title": "Admin Override (OTP and Password)",
+      "keywords": ["override", "admin override", "otp", "one time password", "one-time password", "admin password", "bypass protection", "approve action"],
+      "content": "When a user hits a Protect-mode block, an administrator can authorize the action two ways:\n\n• OTP (One-Time Password) — a 6-digit code generated by an admin, valid for 5 minutes, used once and then expires. Best for occasional approvals where you don't want to share a permanent password.\n\n• Admin Password — direct password entry. Faster when an admin is sitting next to the user.\n\nEvery override is recorded with the override method, who approved, who used it, and what action was taken. Optional: automatic before/after screenshots are captured for evidence."
+    },
+
+    {
+      "title": "Activity Tracker",
+      "keywords": ["activity", "activity tracker", "session", "session info", "who is in", "active users", "model activity", "user activity"],
+      "content": "The Activity Tracker records every Revit session and shows you what's happening across your team:\n\n• Session Information — see your current session: user, machine, model, Revit version, connection status, duration.\n• Model Activities — live view of who else is in the same model right now, including chat for quick coordination.\n• Crash Register — history of every crash with timestamps and probable causes (parsed from Revit's journal files), so you can spot patterns and recover work.\n\nUseful for debugging issues, coordinating teams, and reviewing what happened on a model after the fact."
+    },
+
+    {
+      "title": "Crash Register",
+      "keywords": ["crash", "crash register", "revit crash", "journal", "crash history", "recover crash"],
+      "content": "The Crash Register lists every Revit session that ended unexpectedly, with timestamps and where possible the cause (parsed from Revit's own journal files). Use it to spot patterns (e.g. a specific command consistently crashing on a specific model), to recover from a crash by knowing exactly what was being worked on, and to share evidence with Autodesk support."
+    },
+
+    {
+      "title": "Health Monitor",
+      "keywords": ["health", "health monitor", "model health", "dashboard", "metrics", "performance", "model performance", "complexity", "warnings count", "file size"],
+      "content": "The Health Monitor is a dashboard showing 30+ live metrics about your model, with a single A-F performance grade so you can see at a glance whether the model needs attention. Metrics cover file size, element counts, warnings, oversized families, imported DWGs, in-place families, disconnected elements, view-to-sheet ratios, and more. Trend charts show how key metrics change over time so you catch problems before they become serious. Use it to keep models lean, find what's slowing Revit down, and decide what to fix first."
+    },
+
+    {
+      "title": "Health Alerts",
+      "keywords": ["health alert", "alert", "warning threshold", "model warning", "critical alert"],
+      "content": "Health Alerts are automatic notifications when a model metric crosses a threshold — for example, more than 200 warnings (critical), file size over 500MB (critical), or any oversized family above 5MB (warning). Alerts appear in the Health Monitor dashboard and can be queried by the AI assistant. Catching these early prevents performance degradation that compounds over weeks of project work."
+    },
+
+    {
+      "title": "Analyze Model",
+      "keywords": ["analyze model", "model analysis", "deep scan", "purgeable", "oversized families", "manual scan"],
+      "content": "Analyze Model is an on-demand button that runs the most expensive health checks — full element walks to find oversized families (over 5MB), purgeable elements, and other deep insights. These checks are too slow to run automatically on every save, so they're behind a manual trigger. Run it before major milestones (model handover, design freeze) to get a thorough cleanup picture."
+    },
+
+    {
+      "title": "Sync Control",
+      "keywords": ["sync", "sync control", "background sync", "auto sync", "sync schedule", "compact model", "relinquish"],
+      "content": "Sync Control automates Revit's worksharing synchronization so users don't have to remember to sync manually. Options:\n\n• Background Sync — sync automatically on a timer, or only when the user is idle.\n• Schedule Window — restrict auto-sync to a chosen time window (e.g. 21:00–09:00 only).\n• Compact Model — automatically compact the central model on the first sync of each day to keep file size down.\n• Auto-Relinquish — release the user's checked-out worksets automatically when they go idle, so other team members aren't blocked.\n• Auto-Exit — close Revit after a configurable idle period.\n\nResult: fewer sync conflicts, smaller central models, less time waiting on a colleague who left for lunch with their worksets locked."
+    },
+
+    {
+      "title": "Sync Queue",
+      "keywords": ["sync queue", "pending sync", "sync history", "sync status"],
+      "content": "The Sync Queue is a panel showing sync operations — pending, in progress, and recently completed — with the model name, status, timestamp, and duration. Use it to see whether background sync is keeping up, manually trigger a sync, or inspect why a previous sync failed."
+    },
+
+    {
+      "title": "Manage Projects (Model Registration)",
+      "keywords": ["project", "manage projects", "register model", "model registration", "project setup"],
+      "content": "Manage Projects is where you register a Revit model with ZeManage so its protection, audit, and health features start working server-side. Registration captures the model's GUID (a stable identifier that survives file renames), central model path, and project metadata. Once registered, the model appears in the web dashboard, rules can target it, and audit history is attributed to it correctly. Done once per model."
+    },
+
+    {
+      "title": "OTP Generator",
+      "keywords": ["otp generator", "generate otp", "create otp", "issue otp", "make otp"],
+      "access": "admin",
+      "content": "The OTP Generator (admin-only) creates a 6-digit single-use code valid for 5 minutes that authorizes one Protect-mode override. Used when you want to approve a user's action without giving them a permanent password. Each OTP is traceable: you can see who generated it, who used it, and what action it authorized. Open the OTP Generator from the ribbon when an admin profile is signed in."
+    },
+
+    {
+      "title": "Ze AI Assistant",
+      "keywords": ["ze ai", "zedai", "ai", "ai assistant", "chat", "ai chat", "ask ai", "ai help"],
+      "content": "Ze AI is an in-Revit chat assistant that answers questions about the open model and about Revit/BIM in general. It can read live model data — element counts, view info, room data, material quantities, ZeManage feature explanations, and more — and use it to give specific answers instead of generic advice. For complex questions it can write and execute custom read-only Revit API queries on the spot. Ze AI never modifies your model: it's strictly read-only."
+    },
+
+    {
+      "title": "AI Terminal Tools",
+      "keywords": ["ai tool", "ai capabilities", "ai functions", "ai terminal", "what ai can do", "ai features"],
+      "content": "Ze AI has access to live tools that query your open model:\n\n• ai_element_filter — count and list elements by category and other filters\n• analyze_model_statistics — totals across categories, types, families, views, sheets\n• list_categories_with_elements — discover which categories have elements\n• get_selected_elements — see what's currently selected\n• get_current_view_info — info about the active view\n• export_room_data — full room schedule with areas and volumes\n• get_material_quantities — material take-off (area + volume per material)\n• get_available_family_types — list family types in the model\n• color_splash — color-code elements in the active view by parameter value\n• send_code_to_revit — write and execute custom read-only Revit API code for questions other tools can't answer\n\nAll tools are strictly read-only. Modifications are refused both by the AI and by a code-safety analyzer."
+    },
+
+    {
+      "title": "AI Safety (read-only enforcement)",
+      "keywords": ["ai safety", "is ai safe", "ai modify", "ai delete", "ai security", "ai sandbox"],
+      "content": "Ze AI cannot modify your Revit model. There are three independent safety layers:\n\n1. The AI itself is instructed never to attempt destructive actions (delete, transaction, parameter writes) and refuses such requests upfront.\n2. When the AI writes custom code, a static analyzer rejects any code containing mutation patterns (Transaction, Delete, parameter Set, file I/O, network calls, reflection) before it ever compiles.\n3. The compiler's reference list excludes file system, network, and reflection assemblies entirely, so unsafe types simply can't be referenced.\n\nEvery code execution attempt is recorded in a local audit log with the full code, who ran it, and what happened."
+    },
+
+    {
+      "title": "NWC Export Add-on",
+      "keywords": ["nwc", "nwc export", "navisworks", "export navisworks", "batch nwc"],
+      "content": "The NWC Export add-on batch-exports 3D Revit views to Navisworks NWC format. Pick multiple models or views at once, configure export options (lights, linked CAD, room geometry, faceting, internal vs shared coordinates), pick an output folder, and run. Source files can come from local disk or from Autodesk Construction Cloud (BIM 360 / ACC) projects. Use it for coordination workflows where Navisworks clash detection needs the latest geometry from every discipline."
+    },
+
+    {
+      "title": "Link Remapper Add-on",
+      "keywords": ["link remapper", "remap links", "broken link", "fix link", "revit link reload", "link path"],
+      "content": "The Link Remapper add-on lists every Revit link in the open model with its load status (Loaded, Unloaded, Missing, Nested) and lets you bulk-reassign them to new file paths. Useful when a project's files have moved (server migration, folder reorganization, BIM 360/ACC path change) and many links broke at once. Filter by name, multi-select, then point them at the new location in one operation."
+    },
+
+    {
+      "title": "Authentication and User Roles",
+      "keywords": ["sign in", "login", "auth", "user role", "role", "permission", "access level", "company admin", "project admin", "normal user"],
+      "content": "ZeManage supports three user roles:\n\n• Company Administrator — full access across every project. Configures rules, generates OTPs, registers models, manages users.\n• Project Administrator — administers only the projects they're assigned to. Can do everything within those projects but not across the whole company.\n• Normal User — works within whatever protections the admins have configured. Can request OTP-based overrides for blocked actions.\n\nSign in is required for ZeManage's cloud-backed features (real-time updates, server-side audit, OTP). Sign-in uses your company email and a password. Devices are also registered with a license key for background features that run without an interactive admin session."
+    },
+
+    {
+      "title": "Device Registration",
+      "keywords": ["device", "register device", "device registration", "license key", "machine"],
+      "content": "Device Registration ties this Revit installation to your company's ZeManage license. Enter your license key and the device gets a token that lets it sync with the cloud, run background sync, and receive real-time updates — all without needing an admin to sign in interactively. Done once per machine."
+    },
+
+    {
+      "title": "Audit and Compliance",
+      "keywords": ["audit", "audit log", "audit trail", "compliance", "history", "who did what", "track changes", "evidence"],
+      "content": "Every protection-related action ZeManage handles produces an audit log entry: who did what, when, on which model, on which elements, under which rule, what the outcome was, and (if a rule required it) before/after screenshots and the user's typed reason. The log records both blocks and overrides, and which method was used to override (OTP or admin password). Audit data syncs to the cloud, where company admins can review it across all projects. Useful for compliance reporting, incident investigation, and demonstrating due diligence to clients."
+    },
+
+    {
+      "title": "Evidence Capture (Screenshots)",
+      "keywords": ["evidence", "screenshot", "capture", "before after", "screenshot capture", "visual record"],
+      "content": "When a protection rule has screenshot capture enabled, ZeManage automatically takes a before-screenshot when the user attempts the action and an after-screenshot when it completes (or is cancelled). Screenshots are stored locally, sent to the server alongside the audit log entry, and verified with a SHA-256 hash so they can't be tampered with after the fact. Used for high-stakes rules where a written log isn't enough — you want visual proof of what changed."
+    },
+
+    {
+      "title": "Offline Mode and Cloud Sync",
+      "keywords": ["offline", "offline mode", "no internet", "sync when online", "queue", "cloud sync"],
+      "content": "ZeManage works offline. When you're disconnected, all features keep working — protection rules apply, audit entries are written, the dashboard updates. Anything that needs to sync to the cloud (audit logs, evidence, model registrations) is queued locally and uploaded automatically the moment connectivity is restored. Important if you work on construction sites or in offices with unreliable internet."
+    },
+
+    {
+      "title": "Real-Time Updates (SignalR)",
+      "keywords": ["real time", "real-time", "live update", "instant update", "signalr", "push notification"],
+      "content": "When a company admin changes a rule or registers a new model, every connected ZeManage client receives the update instantly — no need to restart Revit or refresh manually. The same channel delivers active-user presence (who else is in the same model), chat messages, and admin-initiated session events like force-logout."
+    },
+
+    {
+      "title": "Settings Import / Export (.ze files)",
+      "keywords": ["import settings", "export settings", "ze file", ".ze", "share settings", "settings file"],
+      "content": "Most ZeManage configuration can be exported to a .ze file — a small JSON file with your sync settings, NWC export options, and link mappings. Hand it to a colleague and they import it to instantly use the same configuration. Used to onboard new team members or to keep a whole team aligned on the same defaults."
+    },
+
+    {
+      "title": "Web Dashboard",
+      "keywords": ["web dashboard", "dashboard", "web portal", "browser dashboard", "online dashboard", "manage online"],
+      "access": "admin",
+      "content": "The web dashboard is a browser-based admin console for ZeManage. From there, company and project admins manage rules, users, projects, OTPs, and review audit history across every model in the company — without needing to be in Revit. Open it from the ribbon (admin button) or directly in your browser using your sign-in credentials."
+    },
+
+    {
+      "title": "Supported Revit Versions",
+      "keywords": ["revit version", "supported version", "compatibility", "revit 2021", "revit 2022", "revit 2023", "revit 2024", "revit 2025", "revit 2026"],
+      "content": "ZeManage supports Revit 2021, 2022, 2023, 2024, 2025, and 2026 on Windows. Each Revit version uses a separately built version of the plugin under the hood, but the user experience is identical across versions."
+    },
+
+    {
+      "title": "Support Module (ribbon panel)",
+      "keywords": ["help", "support", "support module", "support panel", "support group", "status button", "account button", "contact support", "how do i", "report bug", "report issue", "documentation", "docs"],
+      "content": "The Support panel is the last group on the ZeManage ribbon tab. It contains three buttons:\n\n• Status — shows your current ZeManage connection state (online/offline, last sync time, license validity).\n• Account — opens your ZestineTech account page (device registration, license info, profile).\n• Support — opens a dialog to contact Zestine support. Pre-fills your environment details (Revit version, plugin version, machine name) so you don't have to type them. From here you can email support@zestinetech.com or open the documentation at https://zestinetech.com/zemanage/docs.\n\nUse the Support button for bugs, licensing issues, or anything Ze AI can't answer. The Activity Tracker's Crash Register is also useful when reporting Revit crashes — attach its journal evidence to your support email."
+    }
+
+  ]
+}

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZeManage - Product Documentation</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:#f8fafc;color:#1e293b;line-height:1.7;}
+a{color:#002a54;text-decoration:none;}a:hover{text-decoration:underline;}
+
+/* Sidebar */
+.sidebar{position:fixed;top:0;left:0;width:280px;height:100vh;background:#002a54;color:white;overflow-y:auto;z-index:100;padding:24px 0;}
+.sidebar::-webkit-scrollbar{width:4px;}.sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.2);border-radius:4px;}
+.sidebar-brand{padding:0 24px 24px;border-bottom:1px solid rgba(255,255,255,0.1);}
+.sidebar-brand img{width:36px;height:36px;border-radius:8px;margin-bottom:8px;}
+.sidebar-brand h2{font-size:18px;font-weight:800;letter-spacing:-0.5px;}
+.sidebar-brand p{font-size:11px;opacity:0.6;margin-top:2px;}
+.nav-group{padding:16px 0;}
+.nav-group-title{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,0.4);padding:0 24px;margin-bottom:8px;}
+.nav-link{display:block;padding:7px 24px;font-size:13px;color:rgba(255,255,255,0.7);transition:all .15s;cursor:pointer;}
+.nav-link:hover{background:rgba(255,255,255,0.08);color:white;text-decoration:none;}
+.nav-link.active{background:rgba(255,255,255,0.12);color:white;border-right:3px solid #fc424f;font-weight:600;}
+
+/* Main */
+.main{margin-left:280px;padding:40px 60px 80px;max-width:900px;}
+.hero{background:linear-gradient(135deg,#002a54,#003d7a);color:white;border-radius:16px;padding:48px;margin-bottom:40px;}
+.hero h1{font-size:32px;font-weight:800;margin-bottom:8px;}
+.hero p{font-size:15px;opacity:0.8;max-width:600px;}
+.hero-badges{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;}
+.hero-badge{background:rgba(255,255,255,0.15);padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;}
+
+h2{font-size:22px;font-weight:800;color:#002a54;margin:48px 0 16px;padding-bottom:8px;border-bottom:2px solid #e2e8f0;}
+h2:first-of-type{margin-top:0;}
+h3{font-size:16px;font-weight:700;color:#1e293b;margin:24px 0 8px;}
+p,li{font-size:14px;color:#475569;}
+ul{padding-left:20px;margin:8px 0 16px;}
+li{margin-bottom:4px;}
+
+/* Feature cards */
+.features{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0 32px;}
+.feature-card{background:white;border:1px solid #e2e8f0;border-radius:12px;padding:20px;transition:all .2s;}
+.feature-card:hover{border-color:#002a54;box-shadow:0 4px 12px rgba(0,42,84,0.08);}
+.feature-card h4{font-size:13px;font-weight:700;color:#002a54;margin-bottom:6px;display:flex;align-items:center;gap:8px;}
+.feature-card p{font-size:12px;color:#64748b;margin:0;line-height:1.5;}
+.feature-icon{font-size:18px;}
+
+/* Table */
+table{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:13px;}
+th{background:#f1f5f9;text-align:left;padding:10px 14px;font-weight:700;color:#002a54;border:1px solid #e2e8f0;}
+td{padding:10px 14px;border:1px solid #e2e8f0;color:#475569;}
+tr:hover td{background:#f8fafc;}
+
+/* Code */
+code{background:#f1f5f9;padding:2px 6px;border-radius:4px;font-size:12px;font-family:'Consolas',monospace;color:#002a54;}
+
+/* Mode badges */
+.mode{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:700;}
+.mode-green{background:#dcfce7;color:#166534;}
+.mode-yellow{background:#fef9c3;color:#854d0e;}
+.mode-red{background:#fee2e2;color:#991b1b;}
+
+/* Footer */
+.footer{margin-top:60px;padding:24px 0;border-top:1px solid #e2e8f0;text-align:center;font-size:12px;color:#94a3b8;}
+.footer a{color:#002a54;}
+
+@media(max-width:900px){.sidebar{display:none;}.main{margin-left:0;padding:24px;}.features{grid-template-columns:1fr;}.hero{padding:32px;}}
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<nav class="sidebar">
+    <div class="sidebar-brand">
+        <h2>ZeManage</h2>
+        <p>Product Documentation</p>
+    </div>
+    <div class="nav-group">
+        <div class="nav-group-title">Getting Started</div>
+        <a class="nav-link active" href="#overview">Overview</a>
+        <a class="nav-link" href="#installation">Installation</a>
+        <a class="nav-link" href="#roles">User Roles</a>
+    </div>
+    <div class="nav-group">
+        <div class="nav-group-title">Features</div>
+        <a class="nav-link" href="#protection">Protection</a>
+        <a class="nav-link" href="#activity">Activity Tracker</a>
+        <a class="nav-link" href="#health">Health Monitor</a>
+        <a class="nav-link" href="#sync">Sync Control</a>
+        <a class="nav-link" href="#ai">AI Assistant</a>
+        <a class="nav-link" href="#addons">Addons</a>
+    </div>
+    <div class="nav-group">
+        <div class="nav-group-title">Administration</div>
+        <a class="nav-link" href="#audit">Audit & Compliance</a>
+        <a class="nav-link" href="#api">API Sync</a>
+        <a class="nav-link" href="#settings">Settings</a>
+    </div>
+    <div class="nav-group">
+        <div class="nav-group-title">Help</div>
+        <a class="nav-link" href="#support">Support</a>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<div class="main">
+
+<!-- Hero -->
+<div class="hero" id="overview">
+    <h1>ZeManage for Revit</h1>
+    <p>Enterprise BIM governance plugin — model protection, real-time monitoring, AI-powered analysis, and cloud synchronization for Autodesk Revit.</p>
+    <div class="hero-badges">
+        <span class="hero-badge">Revit 2021 – 2026</span>
+        <span class="hero-badge">Cloud Sync</span>
+        <span class="hero-badge">Real-time SignalR</span>
+        <span class="hero-badge">Offline Capable</span>
+    </div>
+</div>
+
+<!-- Features Overview -->
+<div class="features">
+    <div class="feature-card"><h4><span class="feature-icon">🔒</span> Protection</h4><p>Pin, command, event & rule-based protection with admin override (OTP/password).</p></div>
+    <div class="feature-card"><h4><span class="feature-icon">📊</span> Health Monitor</h4><p>Real-time model health dashboard with 30+ metrics and trend analysis.</p></div>
+    <div class="feature-card"><h4><span class="feature-icon">🔄</span> Sync Control</h4><p>Background sync, relinquish, scheduling, and compact model automation.</p></div>
+    <div class="feature-card"><h4><span class="feature-icon">🤖</span> AI Assistant</h4><p>Ze AI chat for BIM workflows, model context, and best practice guidance.</p></div>
+    <div class="feature-card"><h4><span class="feature-icon">📋</span> Activity Tracker</h4><p>Session monitoring, crash detection, and model activity logging.</p></div>
+    <div class="feature-card"><h4><span class="feature-icon">🔌</span> Addons</h4><p>NWC batch export and Revit link remapper utilities.</p></div>
+</div>
+
+<!-- Installation -->
+<h2 id="installation">Installation</h2>
+<h3>System Requirements</h3>
+<ul>
+    <li>Autodesk Revit 2021, 2022, 2023, 2024, 2025, or 2026</li>
+    <li>Windows 10/11 (64-bit)</li>
+    <li>.NET Framework 4.8 (Revit 2021–2024) or .NET 8.0 (Revit 2025–2026)</li>
+    <li>Internet connection for API sync (offline mode available)</li>
+</ul>
+<h3>Install Steps</h3>
+<ol style="padding-left:20px;margin:8px 0 16px;">
+    <li>Run <code>ZeManageSetup.exe</code></li>
+    <li>Accept the Privacy Policy</li>
+    <li>Enter your license key (provided by your administrator)</li>
+    <li>Select Revit versions to install for</li>
+    <li>Complete installation and restart Revit</li>
+</ol>
+
+<!-- User Roles -->
+<h2 id="roles">User Roles</h2>
+<table>
+    <tr><th>Role</th><th>Access Level</th><th>Capabilities</th></tr>
+    <tr><td><strong>Company Administrator</strong></td><td>Full access</td><td>All features across all projects. Configure protection, rules, commands, events.</td></tr>
+    <tr><td><strong>Project Administrator</strong></td><td>Project-scoped</td><td>Manage assigned projects. Configure protection within project scope.</td></tr>
+    <tr><td><strong>Normal User</strong></td><td>Standard</td><td>Work within protections. View session info, health dashboard, sync settings.</td></tr>
+</table>
+
+<!-- Protection -->
+<h2 id="protection">Protection</h2>
+
+<h3>Pin Protection</h3>
+<p>Lock individual elements to prevent accidental modification. Protected elements cannot be moved, deleted, or modified without admin authorization.</p>
+
+<h3>Command Protection</h3>
+<p>Control which Revit commands can be executed on protected elements.</p>
+<table>
+    <tr><th>Supported Commands</th><th>Protection Modes</th></tr>
+    <tr><td>Delete, Cut, Copy, Move, Rotate, Mirror, Group, Unpin</td>
+        <td>
+            <span class="mode mode-green">Notify</span>
+            <span class="mode mode-yellow">Assist</span>
+            <span class="mode mode-red">Protect</span>
+        </td>
+    </tr>
+</table>
+<ul>
+    <li><span class="mode mode-green">Notify</span> — Log the action, allow user to proceed</li>
+    <li><span class="mode mode-yellow">Assist</span> — Show guidance dialog, user decides</li>
+    <li><span class="mode mode-red">Protect</span> — Block action entirely, require OTP or admin password</li>
+</ul>
+
+<h3>Event Restriction</h3>
+<p>Restrict Revit-level events based on company policies:</p>
+<ul>
+    <li>Open file from non-approved location</li>
+    <li>Open central file directly</li>
+    <li>Model upgrade protection</li>
+    <li>Save over earlier file version</li>
+    <li>CAD import/explode protection</li>
+    <li>Sync conflict detection</li>
+    <li>Family loading/version mismatch</li>
+    <li>Revit Link pin prompt</li>
+</ul>
+
+<h3>Rule-Based Protection</h3>
+<p>Define custom rules based on parameters, categories, or element types.</p>
+<table>
+    <tr><th>Scope</th><th>Description</th></tr>
+    <tr><td>Company-wide</td><td>Applied to all projects and models</td></tr>
+    <tr><td>Project-wide</td><td>Applied to all models within a project</td></tr>
+    <tr><td>Model-specific</td><td>Applied to a single model only</td></tr>
+</table>
+
+<h3>Admin Override</h3>
+<ul>
+    <li><strong>OTP (One-Time Password)</strong> — Generated by admin, single-use override code</li>
+    <li><strong>Admin Password</strong> — Direct password entry for immediate override</li>
+    <li><strong>Evidence Capture</strong> — Automatic screenshots before/after protected operations</li>
+</ul>
+
+<!-- Activity Tracker -->
+<h2 id="activity">Activity Tracker</h2>
+<div class="features">
+    <div class="feature-card"><h4>Session Information</h4><p>View current Revit session: user, machine, model, connection status, duration.</p></div>
+    <div class="feature-card"><h4>Crash Register</h4><p>View crash history with timestamps, journal file analysis, and recovery info.</p></div>
+    <div class="feature-card"><h4>Model Activities</h4><p>Track all model changes per session with user attribution and timestamps.</p></div>
+</div>
+
+<!-- Health Monitor -->
+<h2 id="health">Health Monitor</h2>
+<h3>Model Health Dashboard</h3>
+<p>Comprehensive dashboard with 30+ real-time metrics:</p>
+<div class="features">
+    <div class="feature-card"><h4>General Statistics</h4><p>File size, linked Revit models, project information, shared coordinates.</p></div>
+    <div class="feature-card"><h4>Element Breakdown</h4><p>Model elements, other elements, annotative elements with donut chart.</p></div>
+    <div class="feature-card"><h4>Comparisons</h4><p>Levels vs Grids, Views vs Sheets, Worksets vs Families.</p></div>
+    <div class="feature-card"><h4>Performance Impacts</h4><p>Warnings count, duplicates, imported DWGs with threshold goals.</p></div>
+    <div class="feature-card"><h4>Best Practice</h4><p>Groups, linked DWGs, raster images, regions with gauge charts.</p></div>
+    <div class="feature-card"><h4>Warnings Trend</h4><p>Historical warning count over time with goal line.</p></div>
+</div>
+
+<h3>Project Complexity Score</h3>
+<p>Overall project health percentage based on warnings, best practices, and element analysis. Scores below 50% show "Needs Attention".</p>
+
+<!-- Sync Control -->
+<h2 id="sync">Sync Control</h2>
+<h3>Background Sync</h3>
+<table>
+    <tr><th>Feature</th><th>Description</th></tr>
+    <tr><td>Continuous Mode</td><td>Syncs on a fixed interval (default: 30 min)</td></tr>
+    <tr><td>When Paused Mode</td><td>Only syncs when user is idle (default: 15 min idle)</td></tr>
+    <tr><td>Schedule</td><td>Restrict sync to a time window (e.g., 21:00 – 09:00)</td></tr>
+    <tr><td>Compact Model</td><td>Auto-compact on first sync of each day</td></tr>
+    <tr><td>Relinquish</td><td>Auto-release workset ownership when idle (default: 60 min)</td></tr>
+    <tr><td>Exit on Idle</td><td>Close Revit after configurable idle period with countdown</td></tr>
+</table>
+<h3>Import / Export</h3>
+<p>Export and import sync settings as <code>.ze</code> files (JSON format) for sharing configurations across machines or projects.</p>
+
+<!-- AI -->
+<h2 id="ai">AI Assistant</h2>
+<p>Ze AI is an AI-powered chat assistant integrated directly into Revit:</p>
+<ul>
+    <li>Ask questions about Revit commands, BIM workflows, and best practices</li>
+    <li>Get context-aware suggestions based on your current model</li>
+    <li>Conversation history saved per session</li>
+    <li>Follow-up question suggestions for guided workflows</li>
+</ul>
+
+<!-- Addons -->
+<h2 id="addons">Addons</h2>
+<div class="features">
+    <div class="feature-card"><h4><span class="feature-icon">📦</span> NWC Export</h4><p>Batch export 3D views to Navisworks NWC format. Select views, configure settings, and export all at once.</p></div>
+    <div class="feature-card"><h4><span class="feature-icon">🔗</span> Link Remapper</h4><p>Remap and reload Revit links from local or cloud paths. Fix broken links after file moves.</p></div>
+</div>
+
+<!-- Audit -->
+<h2 id="audit">Audit & Compliance</h2>
+<p>Complete audit trail of all protection actions:</p>
+<table>
+    <tr><th>Tracked Data</th><th>Details</th></tr>
+    <tr><td>User</td><td>Email, name, role (Company Admin / Project Admin / User)</td></tr>
+    <tr><td>Action</td><td>Allowed, Blocked, Cancelled, Override, Detected</td></tr>
+    <tr><td>Element</td><td>Category, type, element ID, before/after state</td></tr>
+    <tr><td>Override</td><td>Method used (OTP / Admin Password), override code</td></tr>
+    <tr><td>Evidence</td><td>Automatic screenshots before/after operation</td></tr>
+    <tr><td>Session</td><td>Linked to Revit session with timestamps</td></tr>
+</table>
+
+<!-- API -->
+<h2 id="api">API Sync</h2>
+<p>All data syncs to the cloud via REST API with offline queue fallback:</p>
+<ul>
+    <li><strong>HTTP REST</strong> — POST (create), PATCH (update), PUT (replace), DELETE</li>
+    <li><strong>SignalR</strong> — Real-time push notifications for protection changes, chat, presence</li>
+    <li><strong>Offline Queue</strong> — Failed operations queued locally, auto-retried when connection restored</li>
+    <li><strong>Device Auth</strong> — License key registration, token-based authentication</li>
+</ul>
+
+<!-- Settings -->
+<h2 id="settings">Settings</h2>
+<h3>Sync Settings</h3>
+<p>Configure background sync, relinquish, scheduling, compact model, and exit-on-idle from the Sync Settings dialog.</p>
+<h3>Model Registration</h3>
+<p>Register models for tracking. Each model gets a unique GUID for identification across sessions.</p>
+<h3>OTP Management</h3>
+<p>Administrators can generate one-time passwords for users who need to override protection temporarily.</p>
+
+<!-- Support -->
+<h2 id="support">Support</h2>
+<table>
+    <tr><th>Channel</th><th>Details</th></tr>
+    <tr><td>Website</td><td><a href="https://zestinetech.com" target="_blank">zestinetech.com</a></td></tr>
+    <tr><td>Email</td><td><a href="mailto:support@zestinetech.com">support@zestinetech.com</a></td></tr>
+    <tr><td>In-app</td><td>Support button in Revit ribbon → Report Issue (auto-gathers system info)</td></tr>
+</table>
+
+<div class="footer">
+    <p>ZeManage by <a href="https://zestinetech.com" target="_blank">ZestineTech</a> — BIM Plugin for Autodesk Revit</p>
+    <p style="margin-top:4px;">Supports Revit 2021 – 2026</p>
+</div>
+
+</div>
+
+<script>
+// Active nav link on scroll
+document.addEventListener('scroll',function(){
+    var sections=document.querySelectorAll('h2[id],.hero[id]');
+    var links=document.querySelectorAll('.nav-link');
+    var current='';
+    sections.forEach(function(s){if(window.scrollY>=s.offsetTop-100)current=s.id;});
+    links.forEach(function(l){
+        l.classList.remove('active');
+        if(l.getAttribute('href')==='#'+current)l.classList.add('active');
+    });
+});
+// Smooth scroll
+document.querySelectorAll('.nav-link').forEach(function(l){
+    l.addEventListener('click',function(e){
+        e.preventDefault();
+        var t=document.querySelector(this.getAttribute('href'));
+        if(t)t.scrollIntoView({behavior:'smooth',block:'start'});
+    });
+});
+</script>
+</body>
+</html>

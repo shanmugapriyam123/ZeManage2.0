@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en" class="js canvas canvastext no-touch hashchange history draganddrop rgba multiplebgs borderimage boxshadow textshadow cssgradients csstransitions sessionstorage">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="./Resources/appstore-combined.min.css">
+
+    <!-- Comprehensive Enhanced CSS -->
+    <style>
+        /* CSS Reset for Consistency Across Browsers */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Root Variables for Easy Customization */
+        :root {
+            --primary-color: #1A1A1A;
+            --secondary-color: #FF5500;
+            --background-color: #F5F7FA;
+            --text-color: #333333;
+            --heading-font: 'Montserrat', sans-serif;
+            --body-font: 'Roboto', sans-serif;
+            --link-color: #FF5500;
+            --link-hover-color: #CC4400;
+            --border-color: #E0E0E0;
+            --max-width: 1200px;
+        }
+
+        /* Body Styles */
+        body {
+            font-family: var(--body-font);
+            color: var(--text-color);
+            background-color: var(--background-color);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        /* Container */
+        #main {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            background-color: #FFFFFF;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        /* Header Section */
+        #helpdoc-head {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            background-color: #F2F2F2;
+            color: var(--primary-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        #helpdoc-head-icon {
+            width: 100px;
+            height: auto;
+            margin-right: 20px;
+        }
+
+        #helpdoc-head-description {
+            flex: 1;
+        }
+
+        #helpdoc-product-title {
+            font-family: var(--heading-font);
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        #helpdoc-head-description hr {
+            border: none;
+            border-top: 1px solid #D0D0D0;
+            margin: 8px 0;
+        }
+
+        #helpdoc-head-description .seller {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--secondary-color);
+        }
+
+        #helpdoc-head-description .description {
+            font-size: 1rem;
+            color: #444444;
+        }
+
+        /* Breadcrumb Navigation */
+        #helpdoc-tag {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 10px 20px;
+            background-color: #ECF0F1;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .helpdoc-breadcrumb {
+            margin-right: 15px;
+            text-decoration: none;
+            color: var(--link-color);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .helpdoc-breadcrumb:hover {
+            color: var(--link-hover-color);
+        }
+
+        .clear {
+            clear: both;
+        }
+
+        /* Helpdoc Elements */
+        .helpdoc-element {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .helpdoc-element:last-child {
+            border-bottom: none;
+        }
+
+        .helpdoc-element h1 {
+            font-family: var(--heading-font);
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .helpdoc-element h2 {
+            font-family: var(--heading-font);
+            font-size: 1.3rem;
+            color: var(--secondary-color);
+            margin-top: 18px;
+            margin-bottom: 10px;
+        }
+
+        .helpdoc-element h3 {
+            font-family: var(--heading-font);
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            margin-top: 14px;
+            margin-bottom: 8px;
+        }
+
+        .helpdoc-text p {
+            margin-bottom: 15px;
+            font-size: 1rem;
+            color: var(--text-color);
+        }
+
+        .helpdoc-text strong {
+            color: var(--secondary-color);
+        }
+
+        .helpdoc-text ul {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        .helpdoc-text ul li {
+            margin-bottom: 6px;
+        }
+
+        /* Tables */
+        .helpdoc-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .helpdoc-table th,
+        .helpdoc-table td {
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        .helpdoc-table th {
+            background-color: var(--secondary-color);
+            color: #FFFFFF;
+            font-family: var(--heading-font);
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .helpdoc-table tr:nth-child(even) {
+            background-color: #F2F2F2;
+        }
+
+        .helpdoc-table tr:hover {
+            background-color: #FFE4D3;
+        }
+
+        .helpdoc-table img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+        }
+
+        /* Screenshots Section */
+        .screenshot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .toolkit-pair {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 25px;
+        }
+
+        .toolkit-pair .toolkit-block h2 {
+            margin-top: 0;
+        }
+
+        .toolkit-pair .screenshot-grid {
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 900px) {
+            .toolkit-pair {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .helpdoc-screenshot {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            background: #FFFFFF;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            max-width: 560px;
+        }
+
+        .helpdoc-screenshot:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(255, 85, 0, 0.18);
+        }
+
+        .helpdoc-screenshot a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .helpdoc-img-container {
+            position: relative;
+            background: #F8F8F8;
+            overflow: hidden;
+            aspect-ratio: 16 / 10;
+        }
+
+        .helpdoc-img-container img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            cursor: zoom-in;
+        }
+
+        .screenshot-caption {
+            display: none;
+        }
+
+        #video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .helpdoc-screenshot:hover #video-overlay {
+            opacity: 1;
+        }
+
+        #video-overlay::before {
+            content: '▶';
+            font-size: 2rem;
+            color: #FFFFFF;
+        }
+
+        /* Contact Section */
+        #contactinfo div {
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        #contactinfo a {
+            color: var(--link-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        #contactinfo a:hover {
+            color: var(--link-hover-color);
+        }
+
+        /* Version History Section */
+        .helpdoc-version table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .helpdoc-version th,
+        .helpdoc-version td {
+            padding: 12px 15px;
+            text-align: left;
+            border: 1px solid var(--border-color);
+        }
+
+        .helpdoc-version th {
+            background-color: var(--secondary-color);
+            color: #FFFFFF;
+            font-family: var(--heading-font);
+            font-weight: 600;
+        }
+
+        .helpdoc-version tr:nth-child(even) {
+            background-color: #F9F9F9;
+        }
+
+        .helpdoc-version tr:hover {
+            background-color: #FFE4D3;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            #helpdoc-head {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            #helpdoc-head-icon {
+                margin-bottom: 15px;
+            }
+
+            #helpdoc-tag {
+                flex-direction: column;
+            }
+
+            .helpdoc-breadcrumb {
+                margin-bottom: 10px;
+            }
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.8);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            position: relative;
+            background-color: #fefefe;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 90%;
+            max-height: 90%;
+            overflow: auto;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            color: #aaa;
+            font-size: 30px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-modal:hover,
+        .close-modal:focus {
+            color: #000;
+            text-decoration: none;
+        }
+    </style>
+
+    <title>Autodesk App Store - Ze'Manage</title>
+</head>
+<body>
+    <div id="main" class="detail-page helpdoc-page clearfix" style="min-height: 532px;">
+        <div id="content">
+            <!-- Header Section -->
+            <div id="helpdoc-head">
+                <img id="helpdoc-head-icon" src="./Resources/ZeManageLogo.png" alt="Ze'Manage">
+                <div id="helpdoc-head-description">
+                    <h1 id="helpdoc-product-title">Ze'Manage</h1>
+                    <div class="clear"></div>
+                    <hr>
+                    <div class="seller">ZestineTech</div>
+                    <div class="description" style="text-align: justify;">
+                        Complete BIM Execution Intelligence inside Autodesk Revit. Ze'Manage simplifies BIM workflow management by giving teams improved project visibility, workflow control, and centralized governance across organizations and projects through secure, role-based access.
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="clear"></div>
+
+            <!-- Breadcrumb Navigation -->
+            <div id="helpdoc-tag">
+                <a href="#description" class="helpdoc-breadcrumb">Description</a>
+                <a href="#generalinfo" class="helpdoc-breadcrumb">General Usage Instructions</a>
+                <a href="#screensinfo" class="helpdoc-breadcrumb">Screenshots</a>
+                <a href="#commandinfo" class="helpdoc-breadcrumb">Commands</a>
+                <a href="#inunininfo" class="helpdoc-breadcrumb">Installation/Uninstallation</a>
+                <a href="#contactinfo" class="helpdoc-breadcrumb">Contact</a>
+                <a href="#versionhistoryinfo" class="helpdoc-breadcrumb">Version History</a>
+                <div class="clear"></div>
+            </div>
+
+            <!-- Description Section -->
+            <div class="helpdoc-element description">
+                <div class="clear"></div>
+                <h1 id="description">Description</h1>
+                <div class="helpdoc-text" style="text-align: justify;">
+                    <p>Ze'Manage is a BIM workflow management platform built for Autodesk Revit. It supports secure authentication, workflow governance, access management, and centralized BIM workflow monitoring across organizations and projects. Ze'Manage operates through a subscription-based access model with role-based access control for Company Admins, Project Admins, and Users.</p>
+
+                    <p>The platform brings eight integrated toolkits directly into Revit to streamline daily BIM operations:</p>
+
+                    <p><strong>Protection Toolkit</strong></p>
+                    <p>Controls how elements, commands, and events are used within the model through Pin Protection, Command Protection, Event Restriction, and Rule Management — reducing accidental changes and improving project governance.</p>
+
+                    <p><strong>Activity Tracker Toolkit</strong></p>
+                    <p>Provides centralized session monitoring and user activity tracking through Session Information, Crash Register, and Model Activities — improving coordination and visibility into project workflows.</p>
+
+                    <p><strong>Health Monitor Toolkit</strong></p>
+                    <p>Brings hidden model conditions into view through Deep Analysis and Model Health — helping teams identify risks early and maintain cleaner, more efficient BIM data.</p>
+
+                    <p><strong>Sync Control Toolkit</strong></p>
+                    <p>Manages synchronization behavior through Sync Settings and Sync Queue — reducing sync conflicts and maintaining stable collaborative workflows across shared models.</p>
+
+                    <p><strong>Projects Toolkit</strong></p>
+                    <p>Centralizes project registration, secure authorization, and dashboard access through Register Model, Generate One Time Access Code, and Dashboard tools for streamlined administrative control.</p>
+
+                    <p><strong>Addons Toolkit</strong></p>
+                    <p>Automates repetitive BIM tasks through NWC Export (Navisworks coordination) and Link Remapper (reconnects missing links) — saving time and improving coordination preparation.</p>
+
+                    <p><strong>Ze AI Toolkit</strong></p>
+                    <p>Provides an integrated AI Assistant directly inside Revit, allowing users to ask BIM and workflow questions without leaving the modeling environment.</p>
+
+                    <p><strong>Support Toolkit</strong></p>
+                    <p>Centralizes account management, device registration, and support communication through Status, Account, and Support tools — keeping users connected and issues resolved quickly.</p>
+                </div>
+            </div>
+
+            <!-- General Usage Instructions Section -->
+            <div class="helpdoc-element">
+                <div class="clear"></div>
+                <h1 id="generalinfo">General Usage Instructions</h1>
+                <div class="helpdoc-text" style="text-align: justify;">
+                    <h2>Platform Overview</h2>
+                    <p>Ze'Manage operates on a structured access system with three roles: <strong>Company Admin</strong> (manages licensing, organization access, company settings and admin onboarding), <strong>Project Admin</strong> (manages projects and organises models within projects), and <strong>User</strong> (works within assigned projects directly through the Ze'Manage integration in Revit, no separate platform login required).</p>
+
+                    <p>After installation and login, the dashboard becomes accessible inside Revit, modules are enabled based on role and license, and workflow tools are ready for use.</p>
+
+                    <h2>Toolkit Descriptions</h2>
+
+                    <h3>Protection Toolkit</h3>
+                    <p>Includes four connected tools:</p>
+                    <ul>
+                        <li><strong>Pin Protection</strong> — keeps important BIM elements fixed so they do not move or get edited by mistake.</li>
+                        <li><strong>Command Protection</strong> — controls how selected Revit commands are used through Notify, Assist, or Protect modes.</li>
+                        <li><strong>Event Restriction</strong> — validates important project actions such as CAD Import or Sync with Central before completion.</li>
+                        <li><strong>Rule Management</strong> — applies consistent control settings across multiple elements and actions.</li>
+                    </ul>
+
+                    <h3>Activity Tracker Toolkit</h3>
+                    <p>Includes three connected tools:</p>
+                    <ul>
+                        <li><strong>Session Information</strong> — displays current Revit session details, environment information, and opened documents.</li>
+                        <li><strong>Crash Register</strong> — tracks session history and provides crash analysis through journal-based diagnostics.</li>
+                        <li><strong>Model Activities</strong> — shows active users connected to the project and monitors shared model participation.</li>
+                    </ul>
+
+                    <h3>Health Monitor Toolkit</h3>
+                    <p>Includes two connected tools:</p>
+                    <ul>
+                        <li><strong>Deep Analysis</strong> — performs a detailed scan to identify technical model issues such as duplicates, unused elements, and warnings.</li>
+                        <li><strong>Model Health</strong> — provides a visual dashboard to monitor overall model condition and cleanup opportunities.</li>
+                    </ul>
+
+                    <h3>Sync Control Toolkit</h3>
+                    <p>Includes two connected tools:</p>
+                    <ul>
+                        <li><strong>Sync Settings</strong> — defines and controls when and how model synchronization occurs through configurable rules for timing, user activity, and model maintenance.</li>
+                        <li><strong>Sync Queue</strong> — provides real-time visibility of synchronization activity, showing which users are syncing, waiting, or have completed sync operations.</li>
+                    </ul>
+
+                    <h3>Projects Toolkit</h3>
+                    <p>Includes three connected tools:</p>
+                    <ul>
+                        <li><strong>Register Model</strong> — confirms the model is ready for tracking.</li>
+                        <li><strong>Generate One Time Access Code</strong> — provides secure approval for protected actions such as removing locked elements or using restricted commands.</li>
+                        <li><strong>Dashboard</strong> — enables centralized project and user management directly inside Revit.</li>
+                    </ul>
+
+                    <h3>Addons Toolkit</h3>
+                    <p>Includes two connected tools:</p>
+                    <ul>
+                        <li><strong>NWC Export</strong> — converts Revit models for Navisworks coordination workflows.</li>
+                        <li><strong>Link Remapper</strong> — reconnects missing or broken Revit links quickly and efficiently.</li>
+                    </ul>
+
+                    <h3>Ze AI Toolkit</h3>
+                    <p>Includes one connected tool:</p>
+                    <ul>
+                        <li><strong>AI Assistant (Ze AI)</strong> — an integrated chat-based environment that allows users to ask BIM, Revit, and workflow questions directly inside Revit without leaving the modeling environment.</li>
+                    </ul>
+
+                    <h3>Support Toolkit</h3>
+                    <p>Includes three connected tools:</p>
+                    <ul>
+                        <li><strong>Status</strong> — displays system and registration details, license allocation, seat usage, and enabled modules.</li>
+                        <li><strong>Account</strong> — manages admin account information and access.</li>
+                        <li><strong>Support</strong> — enables direct communication with the Ze'Manage support team.</li>
+                    </ul>
+
+                    <h2>Getting Started</h2>
+                    <p>1. The organization shares its administrative structure (Company Admins, Project Admins, Users) and primary Company Admin email with ZestineTech.</p>
+                    <p>2. ZestineTech configures the organization account and sends the onboarding invitation. The setup link is valid for 72 hours.</p>
+                    <p>3. The primary Company Admin completes account setup, signs in to the Ze'Manage web portal, and invites additional Company Admins and Project Admins.</p>
+                    <p>4. The Company Admin generates a license key from the Devices tab. License keys remain valid for 24 hours.</p>
+                    <p>5. Users install Ze'Manage in Revit using the license key, select Revit versions, and optionally enable ZeConnect add-ons.</p>
+                    <p>6. Inside Revit, users open the Ze'Manage tab and access modules based on their assigned role.</p>
+                </div>
+            </div>
+
+            <!-- Screenshots Section -->
+            <div id="helpdoc-element-screenshot" class="helpdoc-element">
+                <div class="clear"></div>
+                <h1 id="screensinfo">Screenshots</h1>
+
+                <h2>Protection Toolkit</h2>
+                <div class="screenshot-grid">
+                    <div class="helpdoc-screenshot">
+                        <a href="#" title="Command Protection" data-mime="Image">
+                            <div id="video-overlay"></div>
+                            <div class="helpdoc-img-container">
+                                <img class="helpdoc-screenshot-img" src="./Resources/Screenshots/Command Protection.png" alt="Command Protection">
+                            </div>
+                            <div class="screenshot-caption">Command Protection</div>
+                        </a>
+                    </div>
+                    <div class="helpdoc-screenshot">
+                        <a href="#" title="Rule Management" data-mime="Image">
+                            <div id="video-overlay"></div>
+                            <div class="helpdoc-img-container">
+                                <img class="helpdoc-screenshot-img" src="./Resources/Screenshots/Rule Management.png" alt="Rule Management">
+                            </div>
+                            <div class="screenshot-caption">Rule Management</div>
+                        </a>
+                    </div>
+                </div>
+
+                <h2>Activity Tracker Toolkit</h2>
+                <div class="screenshot-grid">
+                    <div class="helpdoc-screenshot">
+                        <a href="#" title="Session Information" data-mime="Image">
+                            <div id="video-overlay"></div>
+                            <div class="helpdoc-img-container">
+                                <img class="helpdoc-screenshot-img" src="./Resources/Screenshots/Session Information.png" alt="Session Information">
+                            </div>
+                            <div class="screenshot-caption">Session Information</div>
+                        </a>
+                    </div>
+                    <div class="helpdoc-screenshot">
+                        <a href="#" title="Crash Register" data-mime="Image">
+                            <div id="video-overlay"></div>
+                            <div class="helpdoc-img-container">
+                                <img class="helpdoc-screenshot-img" src="./Resources/Screenshots/Crash Register.png" alt="Crash Register">
+                            </div>
+                            <div class="screenshot-caption">Crash Register</div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="toolkit-pair">
+                    <div class="toolkit-block">
+                        <h2>Health Monitor Toolkit</h2>
+                        <div class="screenshot-grid">
+                            <div class="helpdoc-screenshot">
+                                <a href="#" title="Health Monitor" data-mime="Image">
+                                    <div id="video-overlay"></div>
+                                    <div class="helpdoc-img-container">
+                                        <img class="helpdoc-screenshot-img" src="./Resources/Screenshots/Health Monitor.png" alt="Health Monitor">
+                                    </div>
+                                    <div class="screenshot-caption">Model Health Dashboard</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="toolkit-block">
+                        <h2>Sync Control Toolkit</h2>
+                        <div class="screenshot-grid">
+                            <div class="helpdoc-screenshot">
+                                <a href="#" title="Sync Control" data-mime="Image">
+                                    <div id="video-overlay"></div>
+                                    <div class="helpdoc-img-container">
+                                        <img class="helpdoc-screenshot-img" src="./Resources/Screenshots/Sync Control.png" alt="Sync Control">
+                                    </div>
+                                    <div class="screenshot-caption">Sync Settings &amp; Queue</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Addons Toolkit</h2>
+                <div class="screenshot-grid">
+                    <div class="helpdoc-screenshot">
+                        <a href="#" title="NWC Export" data-mime="Image">
+                            <div id="video-overlay"></div>
+                            <div class="helpdoc-img-container">
+                                <img class="helpdoc-screenshot-img" src="./Resources/Screenshots/NWC Export.png" alt="NWC Export">
+                            </div>
+                            <div class="screenshot-caption">NWC Export</div>
+                        </a>
+                    </div>
+                    <div class="helpdoc-screenshot">
+                        <a href="#" title="Link Remapper" data-mime="Image">
+                            <div id="video-overlay"></div>
+                            <div class="helpdoc-img-container">
+                                <img class="helpdoc-screenshot-img" src="./Resources/Screenshots/Link Remapper.jpg" alt="Link Remapper">
+                            </div>
+                            <div class="screenshot-caption">Link Remapper</div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="toolkit-pair">
+                    <div class="toolkit-block">
+                        <h2>Projects Toolkit</h2>
+                        <div class="screenshot-grid">
+                            <div class="helpdoc-screenshot">
+                                <a href="#" title="Register Model" data-mime="Image">
+                                    <div id="video-overlay"></div>
+                                    <div class="helpdoc-img-container">
+                                        <img class="helpdoc-screenshot-img" src="./Resources/Screenshots/Register Model.png" alt="Register Model">
+                                    </div>
+                                    <div class="screenshot-caption">Register Model</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="toolkit-block">
+                        <h2>Ze AI Toolkit</h2>
+                        <div class="screenshot-grid">
+                            <div class="helpdoc-screenshot">
+                                <a href="#" title="Ze AI Assistant" data-mime="Image">
+                                    <div id="video-overlay"></div>
+                                    <div class="helpdoc-img-container">
+                                        <img class="helpdoc-screenshot-img" src="./Resources/Screenshots/Ze AI.png" alt="Ze AI">
+                                    </div>
+                                    <div class="screenshot-caption">AI Assistant (Ze AI)</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Support Toolkit</h2>
+                <div class="screenshot-grid">
+                    <div class="helpdoc-screenshot">
+                        <a href="#" title="Account" data-mime="Image">
+                            <div id="video-overlay"></div>
+                            <div class="helpdoc-img-container">
+                                <img class="helpdoc-screenshot-img" src="./Resources/Screenshots/Account.png" alt="Account">
+                            </div>
+                            <div class="screenshot-caption">Account</div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="clear"></div>
+            </div>
+
+            <!-- Commands Section -->
+            <div class="helpdoc-command helpdoc-element">
+                <div class="clear"></div>
+                <h1 id="commandinfo">Commands</h1>
+                <div>
+                    <table class="helpdoc-table" id="helpdoc-table-command">
+                        <colgroup>
+                            <col style="width:150px">
+                            <col style="width:200px">
+                            <col style="width:530px">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>Ribbon/Toolbar Icon</th>
+                                <th>Command</th>
+                                <th>Command Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><div><img src="./Resources/PinProtection.png" alt="Pin Protection Icon"></div></td>
+                                <td><p>Pin Protection</p></td>
+                                <td><p>Prevents important BIM elements from being moved or edited accidentally during coordination work.</p></td>
+                            </tr>
+                            <tr>
+                                <td><div><img src="./Resources/CommandProtection.png" alt="Command Protection Icon"></div></td>
+                                <td><p>Command Protection</p></td>
+                                <td><p>Controls how selected Revit commands are used through Notify, Assist, or Protect validation modes.</p></td>
+                            </tr>
+                            <tr>
+                                <td><div><img src="./Resources/EventRestriction.png" alt="Event Restriction Icon"></div></td>
+                                <td><p>Event Restriction</p></td>
+                                <td><p>Manages important project actions such as CAD Import or Sync with Central before they are executed.</p></td>
+                            </tr>
+                            <tr>
+                                <td><div><img src="./Resources/RuleManagement.png" alt="Rule Management Icon"></div></td>
+                                <td><p>Rule Management</p></td>
+                                <td><p>Applies consistent control settings across multiple elements, commands, or events to simplify workflows.</p></td>
+                            </tr>
+                            <tr>
+                                <td><div><img src="./Resources/SessionInformation.png" alt="Session Information Icon"></div></td>
+                                <td><p>Session Information</p></td>
+                                <td><p>Displays current Revit session details, environment information, and opened documents.</p></td>
+                            </tr>
+                            <tr>
+                                <td><div><img src="./Resources/CrashRegister.png" alt="Crash Register Icon"></div></td>
+                                <td><p>Crash Register</p></td>
+                                <td><p>Tracks session history and provides crash analysis through journal-based diagnostics.</p></td>
+                            </tr>
+                            <tr>
+                                <td><div><img src="./Resources/ModelActivities.png" alt="Model Activities Icon"></div></td>
+                                <td><p>Model Activities</p></td>
+                                <td><p>Shows active users connected to the project and monitors shared model participation.</p></td>
+                            </tr>
+                            <tr>
+                                <td><div><img src="./Resources/DeepAnalysis.png" alt="Deep Analysis Icon"></div></td>
+                                <td><p>Deep Analysis</p></td>
+                                <td><p>Performs a detailed scan to identify technical model issues such as duplicates, unused content, and warnings.</p></td>
+                            </tr>
+                            <tr>
+                                <td><div><img src="./Resources/ModelHealth.png" alt="Model Health Icon"></div></td>
+                                <td><p>Model Health</p></td>
+                                <td><p>Provides a visual dashboard to monitor overall model condition and identify cleanup opportunities.</p></td>
+                            </tr>
+                            <tr>
+                                <td><div><img src="./Resources/SyncSettings.png" alt="Sync Settings Icon"></div></td>
+                                <td><p>Sync Settings</p></td>
+                                <td><p>Defines and controls when and how model synchronization occurs through configurable timing and activity rules.</p></td>
+                            </tr>
+                            <tr>
+                                <td><div><img src="./Resources/SyncQueue.png" alt="Sync Queue Icon"></div></td>
+                                <td><p>Sync Queue</p></td>
+                                <td><p>Provides real-time visibility of synchronization activity across users — syncing, waiting, or completed.</p></td>
+                            </tr>
+                            <tr>
+                                <td><div><img src="./Resources/RegisterModel.png" alt="Register Model Icon"></div></td>
+                                <td><p>Register Model</p></td>
+                                <td><p>Confirms the model is registered with Ze'Manage and ready for tracking and governance.</p></td>
+                            </tr>
+                            <tr>
+                                <td><div><img src="./Resources/GenerateOTP.png" alt="Generate OTP Icon"></div></td>
+                                <td><p>Generate OTP</p></td>
+                                <td><p>Generates a One Time Access Code required to approve protected actions such as restricted commands or pinned elements.</p></td>
+                            </tr>
+                            <tr>
+                                <td><div><img src="./Resources/Dashboard.png" alt="Dashboard Icon"></div></td>
+                                <td><p>Dashboard</p></td>
+                                <td><p>Opens the Ze'Manage dashboard directly inside Revit for centralized project and user management.</p></td>
+                            </tr>
+                            <tr>
+                                <td><div><img src="./Resources/NWCExport.png" alt="NWC Export Icon"></div></td>
+                                <td><p>NWC Export</p></td>
+                                <td><p>Exports Revit models to NWC format for Navisworks coordination workflows.</p></td>
+                            </tr>
+                            <tr>
+                                <td><div><img src="./Resources/LinkRemapper.png" alt="Link Remapper Icon"></div></td>
+                                <td><p>Link Remapper</p></td>
+                                <td><p>Reconnects missing or broken Revit links quickly and efficiently.</p></td>
+                            </tr>
+                            <tr>
+                                <td><div><img src="./Resources/ZeAI.png" alt="Ze AI Icon"></div></td>
+                                <td><p>Ze AI</p></td>
+                                <td><p>Opens the AI Assistant chat directly inside Revit for instant BIM, Revit, and workflow guidance.</p></td>
+                            </tr>
+                            <tr>
+                                <td><div><img src="./Resources/Status.png" alt="Status Icon"></div></td>
+                                <td><p>Status</p></td>
+                                <td><p>Displays Ze'Manage registration details, license allocation, seat usage, and enabled modules.</p></td>
+                            </tr>
+                            <tr>
+                                <td><div><img src="./Resources/Account.png" alt="Account Icon"></div></td>
+                                <td><p>Account</p></td>
+                                <td><p>Manages admin account information, login, and access for the Ze'Manage platform.</p></td>
+                            </tr>
+                            <tr>
+                                <td><div><img src="./Resources/Support.png" alt="Support Icon"></div></td>
+                                <td><p>Support</p></td>
+                                <td><p>Enables direct communication with the Ze'Manage support team for issue submission and resolution.</p></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Installation/Uninstallation Section -->
+            <div class="helpdoc-element">
+                <div class="clear"></div>
+                <h1 id="inunininfo">Installation/Uninstallation</h1>
+                <div class="helpdoc-text" style="text-align: justify;">
+                    <p>Before installing Ze'Manage, ensure Autodesk Revit is fully closed, a valid Ze'Manage license key has been received from your Company Admin, internet connectivity is enabled for activation, and a supported Autodesk Revit version is installed on your system.</p>
+                    <p>To install, double-click the Ze'Manage Setup installer, accept the Privacy Policy, enter the license key provided by your administrator, choose the Revit version(s) you want to install for, optionally enable the ZeConnect add-ons (NWC Export, Link Remapper), and click Install. Once installation is complete, open Revit and click "Always Load" on the security dialog so the Ze'Manage add-in loads automatically.</p>
+                    <p>To uninstall this plug-in, exit Autodesk Revit if it is currently running, simply rerun the installer and select the "Uninstall" button. OR, click Control Panel &gt; Programs &gt; Programs and Features (Windows 7/8.1/10/11) and uninstall as you would any other application from your system.</p>
+                </div>
+            </div>
+
+            <!-- Additional Information Section (Hidden) -->
+            <div class="helpdoc-element helpdoc-element-hidden">
+                <div class="clear"></div>
+                <h1 id="addinfo">Additional Information</h1>
+                <div class="helpdoc-text"></div>
+            </div>
+
+            <!-- Known Issues Section (Hidden) -->
+            <div class="helpdoc-element helpdoc-element-hidden">
+                <div class="clear"></div>
+                <h1 id="knownissueinfo">Known Issues</h1>
+                <div class="helpdoc-text"></div>
+            </div>
+
+            <!-- Contact Section -->
+            <div class="helpdoc-element">
+                <div class="clear"></div>
+                <h1 id="contactinfo">Contact</h1>
+                <div>
+                    <div>
+                        <div>Company Name: ZestineTech</div>
+                        <div>Company URL: <a href="https://zestinetech.com/" target="_blank">https://zestinetech.com/</a></div>
+                        <div>Support Contact: <a href="mailto:support@zestinetech.com">support@zestinetech.com</a></div>
+                    </div>
+
+                    <div class="helpdoc-block">
+                        <div class="clear"></div>
+                        <h1 id="authorinfo">Author/Company Information</h1>
+                        <div class="helpdoc-text">ZestineTech</div>
+                    </div>
+
+                    <div class="helpdoc-block">
+                        <div class="clear"></div>
+                        <h1 id="supportinfo">Support Information</h1>
+                        <div class="helpdoc-text">
+                            <p><a href="https://zestinetech.com/" target="_blank">https://zestinetech.com/</a></p>
+                            <p><a href="mailto:support@zestinetech.com">support@zestinetech.com</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Version History Section -->
+            <div class="helpdoc-version helpdoc-element">
+                <div class="clear"></div>
+                <h1 id="versionhistoryinfo">Version History</h1>
+                <div>
+                    <table class="helpdoc-table" id="helpdoc-table-version">
+                        <colgroup>
+                            <col style="width:150px">
+                            <col style="width:680px">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>Version Number</th>
+                                <th>Version Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><p>1.0.0</p></td>
+                                <td style="white-space: pre-wrap;">Published</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Structure -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <!-- Enhanced JavaScript for Modal Functionality -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const screenshotLinks = document.querySelectorAll('.helpdoc-screenshot a');
+            const modal = document.getElementById('modal');
+            const modalBody = document.getElementById('modal-body');
+            const closeModal = document.querySelector('.close-modal');
+
+            screenshotLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const href = this.getAttribute('href');
+                    const title = this.getAttribute('title') || '';
+                    modalBody.innerHTML = '';
+
+                    if (href.includes('youtube.com')) {
+                        const iframe = document.createElement('iframe');
+                        iframe.width = "100%";
+                        iframe.height = "500px";
+                        iframe.src = href;
+                        iframe.frameBorder = "0";
+                        iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+                        iframe.allowFullscreen = true;
+                        modalBody.appendChild(iframe);
+                    } else {
+                        const img = document.createElement('img');
+                        const imgSrc = this.querySelector('img').getAttribute('src');
+                        img.src = (href === '#' || !href) ? imgSrc : href;
+                        img.alt = title;
+                        img.style.width = "100%";
+                        img.style.height = "auto";
+                        modalBody.appendChild(img);
+                    }
+
+                    modal.style.display = 'flex';
+                });
+            });
+
+            closeModal.addEventListener('click', function() {
+                modal.style.display = 'none';
+                modalBody.innerHTML = '';
+            });
+
+            window.addEventListener('click', function(event) {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                    modalBody.innerHTML = '';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

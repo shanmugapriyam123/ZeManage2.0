@@ -1,0 +1,120 @@
+[
+  {
+    "ruleId": "TEST-MONITOR-001",
+    "name": "Test Monitor Mode - Door Changes",
+    "description": "Track all door modifications for audit testing",
+    "mode": 1,
+    "priority": 50,
+    "isEnabled": true,
+    "categoryId": -2000023,
+    "categoryName": "Doors",
+    "message": "Door modification logged for audit purposes",
+    "captureBeforeScreenshot": true,
+    "captureAfterScreenshot": true,
+    "requireComment": false,
+    "allowAdminOverride": false,
+    "commandIds": [32778, 33066, 33129],
+    "parameters": {},
+    "builtInParameters": {}
+  },
+  {
+    "ruleId": "TEST-GUIDE-001",
+    "name": "Test Guide Mode - Wall Modifications",
+    "description": "Show warning dialog when modifying walls",
+    "mode": 2,
+    "priority": 70,
+    "isEnabled": true,
+    "categoryId": -2000032,
+    "categoryName": "Walls",
+    "message": "You are about to modify a wall element. Please confirm this action is intentional and coordinated.",
+    "captureBeforeScreenshot": true,
+    "captureAfterScreenshot": true,
+    "requireComment": true,
+    "allowAdminOverride": true,
+    "commandIds": [32778, 33066, 33068],
+    "parameters": {},
+    "builtInParameters": {}
+  },
+  {
+    "ruleId": "TEST-PREVENT-001",
+    "name": "Test Prevent Mode - Level Deletion",
+    "description": "Block level deletion with password override",
+    "mode": 3,
+    "priority": 100,
+    "isEnabled": true,
+    "categoryId": -2000240,
+    "categoryName": "Levels",
+    "message": "Level deletion is restricted and requires administrator authorization. Levels are critical project datums and should not be deleted without proper approval.",
+    "captureBeforeScreenshot": true,
+    "captureAfterScreenshot": false,
+    "requireComment": false,
+    "allowAdminOverride": true,
+    "commandIds": [32778],
+    "parameters": {},
+    "builtInParameters": {}
+  },
+  {
+    "ruleId": "TEST-PREVENT-002",
+    "name": "Test Prevent Mode - Pinned Element Protection",
+    "description": "Prevent modifications to pinned elements with password override",
+    "mode": 3,
+    "priority": 95,
+    "isEnabled": true,
+    "message": "This element is pinned and cannot be modified. Administrator override required to proceed.",
+    "captureBeforeScreenshot": true,
+    "captureAfterScreenshot": false,
+    "requireComment": false,
+    "allowAdminOverride": true,
+    "commandIds": [33066, 33068, 32936, 32778],
+    "parameters": {
+      "Pinned": {
+        "value": "true",
+        "operator": 0,
+        "ignoreCase": false
+      }
+    },
+    "builtInParameters": {}
+  },
+  {
+    "ruleId": "TEST-GUIDE-002",
+    "name": "Test Guide Mode - Structural Elements",
+    "description": "Warn users when modifying structural elements",
+    "mode": 2,
+    "priority": 90,
+    "isEnabled": true,
+    "categoryId": -2001330,
+    "categoryName": "Structural Framing",
+    "message": "You are modifying a structural element. Ensure this change has been coordinated with the structural engineer. Please provide a comment explaining this modification.",
+    "captureBeforeScreenshot": true,
+    "captureAfterScreenshot": true,
+    "requireComment": true,
+    "allowAdminOverride": true,
+    "commandIds": [32778, 33066, 33068, 32936],
+    "parameters": {},
+    "builtInParameters": {
+      "-1100228": {
+        "value": "true",
+        "operator": 0,
+        "ignoreCase": false
+      }
+    }
+  },
+  {
+    "ruleId": "TEST-MONITOR-002",
+    "name": "Test Monitor Mode - View Deletions",
+    "description": "Track view deletion operations",
+    "mode": 1,
+    "priority": 50,
+    "isEnabled": true,
+    "categoryId": -2000101,
+    "categoryName": "Views",
+    "message": "View deletion monitored",
+    "captureBeforeScreenshot": true,
+    "captureAfterScreenshot": false,
+    "requireComment": false,
+    "allowAdminOverride": false,
+    "commandIds": [32778],
+    "parameters": {},
+    "builtInParameters": {}
+  }
+]

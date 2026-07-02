@@ -1,0 +1,3392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ze AI — Current Code Flow & RAG Implementation Plan</title>
+<style>
+  @page {
+    size: A4;
+    margin: 18mm 16mm 20mm 16mm;
+    @bottom-right {
+      content: counter(page) " / " counter(pages);
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 9pt;
+      color: #666;
+    }
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+    color: #1a202c;
+    line-height: 1.6;
+    font-size: 10.5pt;
+    background: #ffffff;
+  }
+
+  .container {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 32px 40px;
+  }
+
+  /* Title block */
+  .doc-header {
+    border-bottom: 4px solid #063970;
+    padding-bottom: 16px;
+    margin-bottom: 28px;
+  }
+
+  .doc-title-bar {
+    background: linear-gradient(135deg, #063970 0%, #2196F3 100%);
+    color: white;
+    padding: 24px 28px;
+    border-radius: 8px 8px 0 0;
+    margin-bottom: 0;
+  }
+
+  .doc-title-bar h1 {
+    margin: 0;
+    border: none;
+    padding: 0;
+    color: white;
+    font-size: 22pt;
+    font-weight: 600;
+  }
+
+  .doc-meta {
+    background: #f6f8fb;
+    padding: 14px 28px;
+    border-radius: 0 0 8px 8px;
+    border: 1px solid #e2e8f0;
+    border-top: none;
+    font-size: 10pt;
+    color: #475569;
+    margin-bottom: 28px;
+  }
+
+  /* Headings */
+  h1, h2, h3, h4, h5, h6 {
+    color: #063970;
+    font-weight: 600;
+    line-height: 1.3;
+    margin-top: 1.6em;
+    margin-bottom: 0.6em;
+    page-break-after: avoid;
+  }
+
+  h1 {
+    font-size: 20pt;
+    border-bottom: 2px solid #063970;
+    padding-bottom: 8px;
+    margin-top: 1.2em;
+  }
+
+  h2 {
+    font-size: 16pt;
+    border-bottom: 1px solid #cbd5e1;
+    padding-bottom: 6px;
+    color: #063970;
+    page-break-before: auto;
+  }
+
+  h3 {
+    font-size: 13pt;
+    color: #1e40af;
+  }
+
+  h4 {
+    font-size: 11.5pt;
+    color: #1e40af;
+  }
+
+  /* Paragraphs and inline */
+  p { margin: 0.6em 0; }
+  strong { color: #0f172a; font-weight: 600; }
+  em { color: #475569; }
+
+  /* Links */
+  a {
+    color: #2196F3;
+    text-decoration: none;
+    border-bottom: 1px dotted #2196F3;
+  }
+  a:hover { color: #063970; border-bottom-style: solid; }
+
+  /* Lists */
+  ul, ol { padding-left: 24px; margin: 0.6em 0; }
+  li { margin: 0.25em 0; }
+
+  /* Inline code */
+  code {
+    background: #f1f5f9;
+    color: #c7254e;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 9.5pt;
+  }
+
+  /* Code blocks */
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 14px 18px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 9pt;
+    line-height: 1.45;
+    margin: 1em 0;
+    page-break-inside: avoid;
+    border-left: 4px solid #2196F3;
+  }
+
+  pre code {
+    background: transparent;
+    color: #e2e8f0;
+    padding: 0;
+    font-size: 9pt;
+  }
+
+  /* highlight.js token colors for the dark code block */
+  .hljs-keyword, .hljs-selector-tag, .hljs-built_in { color: #c792ea; }
+  .hljs-string, .hljs-attr { color: #a5d6a7; }
+  .hljs-number, .hljs-literal { color: #ffcb6b; }
+  .hljs-comment { color: #94a3b8; font-style: italic; }
+  .hljs-function, .hljs-title { color: #82aaff; }
+  .hljs-variable, .hljs-name { color: #f07178; }
+  .hljs-type, .hljs-class { color: #ffcb6b; }
+
+  /* Blockquotes */
+  blockquote {
+    border-left: 4px solid #2196F3;
+    background: #eff6ff;
+    padding: 10px 18px;
+    margin: 1em 0;
+    color: #1e40af;
+    font-style: italic;
+    border-radius: 0 4px 4px 0;
+  }
+
+  /* Tables */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1em 0;
+    font-size: 10pt;
+    page-break-inside: avoid;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  table th {
+    background: #063970;
+    color: white;
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 10pt;
+  }
+
+  table td {
+    padding: 9px 12px;
+    border-bottom: 1px solid #e2e8f0;
+    vertical-align: top;
+  }
+
+  table tr:nth-child(even) td {
+    background: #f8fafc;
+  }
+
+  table tr:last-child td {
+    border-bottom: none;
+  }
+
+  /* Horizontal rule */
+  hr {
+    border: none;
+    border-top: 1px solid #cbd5e1;
+    margin: 2em 0;
+  }
+
+  /* Images */
+  img {
+    max-width: 100%;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  /* Print-specific */
+  @media print {
+    body { font-size: 10pt; }
+    h2 { page-break-before: auto; }
+    pre, table, blockquote { page-break-inside: avoid; }
+    a { color: #2196F3; }
+  }
+
+  /* Cover page */
+  .cover {
+    page-break-after: always;
+    text-align: center;
+    padding: 100px 40px 60px;
+    background: linear-gradient(135deg, #063970 0%, #2196F3 100%);
+    color: white;
+    border-radius: 12px;
+    margin-bottom: 40px;
+  }
+
+  .cover h1 {
+    border: none;
+    color: white;
+    font-size: 28pt;
+    margin: 20px 0;
+    padding: 0;
+  }
+
+  .cover .subtitle {
+    font-size: 14pt;
+    opacity: 0.9;
+    margin: 12px 0;
+  }
+
+  .cover .meta {
+    margin-top: 50px;
+    font-size: 11pt;
+    opacity: 0.85;
+  }
+
+  .cover-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 11pt;
+    margin: 4px;
+  }
+
+  /* TOC styling */
+  .toc-section ol, .toc-section ul {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  /* Callout boxes from emojis */
+  p:has(strong:first-child:contains("⚠️")) {
+    background: #fef3c7;
+    border-left: 4px solid #f59e0b;
+    padding: 10px 14px;
+    border-radius: 0 4px 4px 0;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="cover">
+  <div style="font-size: 11pt; opacity: 0.85; letter-spacing: 2px;">ZestineTech</div>
+  <h1>Ze AI</h1>
+  <div class="subtitle">Current Code Flow &amp; RAG Implementation Plan</div>
+  <div style="margin-top: 30px;">
+    <span class="cover-badge">RAG</span>
+    <span class="cover-badge">MCP</span>
+    <span class="cover-badge">C# Terminal</span>
+    <span class="cover-badge">Azure OpenAI</span>
+  </div>
+  <div class="meta">
+    <div>Document Version 2.0</div>
+    <div>Last Updated: 7 May 2026</div>
+    <div style="margin-top: 16px; font-size: 9.5pt;">ZeManage AI Architecture Documentation</div>
+  </div>
+</div>
+
+<h1>Ze AI — Current Code Flow &amp; RAG Implementation Plan</h1>
+<p><strong>ZeManage AI Architecture Documentation</strong>
+<em>Covers: how Ze AI works today, where every piece lives in the code, how RAG fits in, and what it costs on the existing Azure infrastructure.</em></p>
+<hr>
+<h2>Table of Contents</h2>
+<ol>
+<li><a href="#part-1--how-ze-ai-works-today">Part 1 — How Ze AI Works Today</a></li>
+<li><a href="#part-2--code-walkthrough-every-step-of-a-user-query">Part 2 — Code Walkthrough: Every Step of a User Query</a></li>
+<li><a href="#part-3--where-each-piece-lives">Part 3 — Where Each Piece Lives</a></li>
+<li><a href="#part-4--rag-what-it-adds-and-how-it-plugs-into-the-current-flow">Part 4 — RAG: What It Adds and How It Plugs Into the Current Flow</a></li>
+<li><a href="#part-5--azure-resources-what-you-have-today">Part 5 — Azure Resources: What You Have Today</a></li>
+<li><a href="#part-6--rag-cost-on-your-existing-azure-plan">Part 6 — RAG Cost on Your Existing Azure Plan</a></li>
+<li><a href="#part-7--implementation-steps-mapped-to-your-setup">Part 7 — Implementation Steps Mapped to Your Setup</a></li>
+<li><a href="#part-8--azure-openai-quotas-batch-limits-rate-limits">Part 8 — Azure OpenAI: Quotas, Batch Limits, Rate Limits</a></li>
+<li><a href="#part-9--mcp-server-what-it-is-what-it-costs-why-it-matters">Part 9 — MCP Server: What It Is, What It Costs, Why It Matters</a></li>
+<li><a href="#part-10--existing-c-terminal-analysis-revitpythonshell-based">Part 10 — Existing C# Terminal Analysis (RevitPythonShell-Based)</a></li>
+<li><a href="#part-11--unified-roadmap-rag--mcp--terminal">Part 11 — Unified Roadmap: RAG + MCP + Terminal</a></li>
+<li><a href="#part-12--locked-plan-ai-terminal--mcp-phase-3-in-progress">Part 12 — Locked Plan: AI Terminal + MCP (Phase 3, In Progress)</a></li>
+</ol>
+<hr>
+<h2>Part 1 — How Ze AI Works Today</h2>
+<p>Ze AI is a chat assistant inside the Revit plugin that combines:</p>
+<ul>
+<li><strong>An LLM</strong> (OpenAI GPT-4o-mini) for natural language reasoning</li>
+<li><strong>A keyword classifier</strong> that decides what kind of question is being asked</li>
+<li><strong>Live model context</strong> fetched from the backend (file size, element counts, warnings, alerts)</li>
+<li><strong>Three diagnostic engines</strong> for visibility, warnings, and database queries</li>
+<li><strong>A knowledge base</strong> of best practices, errors, performance tips, workflows, and product info</li>
+<li><strong>Persistent chat history</strong> in SQLite</li>
+</ul>
+<p>The user types a message. Behind the scenes, Ze AI assembles a rich system prompt with the right knowledge and live data, sends it to OpenAI, and streams back the answer.</p>
+<hr>
+<h2>Part 2 — Code Walkthrough: Every Step of a User Query</h2>
+<p>This is what happens, step by step, when a user types <em>&quot;why is my model so slow?&quot;</em> and presses send.</p>
+<h3>Step 1 — UI Input</h3>
+<p><strong>File:</strong> <a href="BIManage/Views/AI/ZestAiDialog.xaml">BIManage/Views/AI/ZestAiDialog.xaml</a></p>
+<p>The user types into a <code>TextBox</code> bound to <code>UserMessage</code> on the ViewModel. The &quot;Send&quot; button binds to <code>SendMessageCommand</code>.</p>
+<h3>Step 2 — Command Triggered</h3>
+<p><strong>File:</strong> <a href="BIManage/ViewModels/AI/ZestAiViewModel.cs">BIManage/ViewModels/AI/ZestAiViewModel.cs</a></p>
+<p><code>SendMessageCommand</code> calls <code>SendMessageAsync()</code>. This is the orchestration entry point.</p>
+<pre><code>SendMessageAsync() does:
+  1. Add the user&#39;s message to the Messages collection (shows in chat)
+  2. Save the user message to SQLite via ChatRepository
+  3. Set IsThinking = true (animated dots appear)
+  4. Run the prompt pipeline (steps 3-9 below)
+  5. Add the AI response to Messages
+  6. Save the AI response to SQLite
+  7. Set IsThinking = false
+</code></pre>
+<h3>Step 3 — Off-Topic / Identity Filter (zero-cost guardrail)</h3>
+<p><strong>File:</strong> <code>ZestAiViewModel.GetPreformedAnswerIfOffTopic(userText)</code></p>
+<p>Before any tokens are spent, the message is checked for:</p>
+<ul>
+<li>Identity questions (<em>&quot;Who are you?&quot;</em>) → pre-canned reply, no LLM call</li>
+<li>Off-topic questions (politics, weather, recipes) → block + redirect message</li>
+<li>Bypass attempts (<em>&quot;how do I uninstall ZeManage?&quot;</em>) → admin contact reply</li>
+</ul>
+<p>If matched, the answer is returned immediately. No tokens used. No knowledge fetched.</p>
+<h3>Step 4 — Intent Classification</h3>
+<p><strong>File:</strong> <a href="BIManage/AI/Knowledge/IntentClassifier.cs">BIManage/AI/Knowledge/IntentClassifier.cs</a></p>
+<p>The query is analyzed by keyword matching to decide what kind of question it is:</p>
+<table>
+<thead>
+<tr>
+<th>Detected Intent</th>
+<th>Knowledge Sections Loaded</th>
+<th>Special Action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Errors keywords (&quot;crash&quot;, &quot;fail&quot;)</td>
+<td>Errors</td>
+<td>None</td>
+</tr>
+<tr>
+<td>Best practice keywords (&quot;standards&quot;, &quot;naming&quot;)</td>
+<td>BestPractices</td>
+<td>None</td>
+</tr>
+<tr>
+<td>Performance keywords (&quot;slow&quot;, &quot;purge&quot;, &quot;optimize&quot;)</td>
+<td>Performance</td>
+<td>None</td>
+</tr>
+<tr>
+<td>Workflow keywords (&quot;how to&quot;, &quot;export&quot;)</td>
+<td>Workflows</td>
+<td>None</td>
+</tr>
+<tr>
+<td>Product keywords (&quot;ZeManage&quot;, &quot;protection mode&quot;)</td>
+<td>Product</td>
+<td>None</td>
+</tr>
+<tr>
+<td>Visibility query (regex matches &quot;not visible&quot;, element ID)</td>
+<td>None</td>
+<td>Run <code>ElementVisibilityService</code></td>
+</tr>
+<tr>
+<td>Warning query (&quot;warnings&quot;, &quot;resolve warning&quot;)</td>
+<td>None</td>
+<td>Run <code>WarningResolutionService</code></td>
+</tr>
+<tr>
+<td>Local DB query (&quot;sync history&quot;, &quot;audit log&quot;)</td>
+<td>None</td>
+<td>Run <code>LocalDbQueryService</code></td>
+</tr>
+</tbody></table>
+<p>For our example <em>&quot;why is my model so slow?&quot;</em>, the classifier matches <strong>Performance</strong> keywords and adds the Performance knowledge section.</p>
+<h3>Step 5 — Knowledge Retrieval</h3>
+<p><strong>File:</strong> <a href="BIManage/AI/Knowledge/ApiKnowledgeProvider.cs">BIManage/AI/Knowledge/ApiKnowledgeProvider.cs</a> (with <a href="BIManage/AI/Knowledge/JsonKnowledgeProvider.cs">JsonKnowledgeProvider.cs</a> as fallback)</p>
+<p><code>GetRelevantKnowledgeAsync(query, sections)</code> is called:</p>
+<ol>
+<li>First tries the API: <code>GET /api/v1/master/ai-training</code> — fetches the latest training data from your backend</li>
+<li>If API fails, falls back to local JSON files in <code>BIManage/AI/Knowledge/Data/</code></li>
+<li>Returns only the sections matched in step 4 (filters out the rest to save tokens)</li>
+<li>Filters out admin-only entries if user is not admin</li>
+</ol>
+<p>The full Performance section gets loaded — every performance tip in the JSON, regardless of how relevant it is to this specific query. <strong>This is the limitation RAG will fix.</strong></p>
+<h3>Step 6 — Live Model Context Fetch</h3>
+<p><strong>File:</strong> <a href="BIManage/AI/ModelContextService.cs">BIManage/AI/ModelContextService.cs</a></p>
+<p>In parallel, <code>ModelContextService.GetModelContextAsync(modelGuid)</code> calls three endpoints simultaneously:</p>
+<table>
+<thead>
+<tr>
+<th>Endpoint</th>
+<th>Returns</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>/api/v1/Revit/metrics/manual</code></td>
+<td>Latest manual deep analysis (oversized families, purgeable elements)</td>
+</tr>
+<tr>
+<td><code>/api/v1/Revit/metrics/periodic</code></td>
+<td>24-hour health snapshots (rooms, disconnections, in-place families)</td>
+</tr>
+<tr>
+<td><code>/api/v1/Revit/metrics/syncsave</code></td>
+<td>File state at last sync/save (file size, warnings, levels, grids)</td>
+</tr>
+</tbody></table>
+<p>Results are cached per <code>modelGuid</code> for the session — fetched once, reused.</p>
+<h3>Step 7 — Health Alerts</h3>
+<p><strong>File:</strong> <a href="BIManage/AI/ModelHealthAlertService.cs">BIManage/AI/ModelHealthAlertService.cs</a></p>
+<p><code>ModelHealthAlertService.GetHealthAlertsAsync()</code> evaluates the metrics from step 6 against threshold rules:</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Critical</th>
+<th>Warning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Warnings count</td>
+<td>&gt; 200</td>
+<td>&gt; 50</td>
+</tr>
+<tr>
+<td>File size (MB)</td>
+<td>&gt; 500</td>
+<td>&gt; 200</td>
+</tr>
+<tr>
+<td>Imported DWGs</td>
+<td>—</td>
+<td>&gt; 5</td>
+</tr>
+<tr>
+<td>Purgeable elements</td>
+<td>—</td>
+<td>&gt; 100</td>
+</tr>
+<tr>
+<td>Oversized families</td>
+<td>—</td>
+<td>&gt; 0</td>
+</tr>
+</tbody></table>
+<p>Returns a list of alerts that get formatted into a system prompt block.</p>
+<h3>Step 8 — System Prompt Assembly</h3>
+<p><strong>File:</strong> <code>ZestAiViewModel.InjectModelContextAsync()</code> and the OpenAI provider&#39;s prompt builder</p>
+<p>The full system prompt is constructed by concatenating these blocks in order:</p>
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│ 1. Base system prompt (from JsonKnowledgeProvider)          │
+│    &quot;You are Ze AI, an assistant for BIM and Revit users...&quot; │
+├─────────────────────────────────────────────────────────────┤
+│ 2. Knowledge sections (from step 5)                         │
+│    Full Performance tips JSON dump — ALL tips, not filtered │
+├─────────────────────────────────────────────────────────────┤
+│ 3. Live model context (from step 6)                         │
+│    &quot;Current model: 480 MB, 187 warnings, 23 imported DWGs&quot;  │
+├─────────────────────────────────────────────────────────────┤
+│ 4. Health alerts (from step 7)                              │
+│    &quot;⚠️ Warning: 187 warnings exceeds threshold of 50&quot;       │
+├─────────────────────────────────────────────────────────────┤
+│ 5. Formatting + style instructions                          │
+│    &quot;Be conversational, suggest 2-4 follow-up questions...&quot;  │
+└─────────────────────────────────────────────────────────────┘
+</code></pre>
+<p>This prompt can be <strong>2,000–8,000 tokens</strong> depending on knowledge section size. Most of those tokens are unused content.</p>
+<h3>Step 9 — Conversation History Management</h3>
+<p><strong>File:</strong> <a href="BIManage/AI/Providers/OpenAIProvider.cs">BIManage/AI/Providers/OpenAIProvider.cs</a></p>
+<p>The last 6 messages from the chat are added as user/assistant turns. Assistant responses longer than 300 chars are truncated to manage token cost.</p>
+<h3>Step 10 — OpenAI API Call</h3>
+<p><strong>File:</strong> <code>OpenAIProvider.SendMessageAsync()</code> or <code>StreamMessageAsync()</code></p>
+<p>The full payload is sent to <code>https://api.openai.com/v1/chat/completions</code>:</p>
+<pre><code class="language-json">{
+  &quot;model&quot;: &quot;gpt-4o-mini&quot;,
+  &quot;messages&quot;: [
+    {&quot;role&quot;: &quot;system&quot;, &quot;content&quot;: &quot;&lt;assembled system prompt&gt;&quot;},
+    {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;&lt;previous turn&gt;&quot;},
+    {&quot;role&quot;: &quot;assistant&quot;, &quot;content&quot;: &quot;&lt;previous reply (compressed)&gt;&quot;},
+    ...
+    {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;why is my model so slow?&quot;}
+  ],
+  &quot;temperature&quot;: 0.7,
+  &quot;max_tokens&quot;: 1500,
+  &quot;stream&quot;: true
+}
+</code></pre>
+<h3>Step 11 — Response Streaming</h3>
+<p>OpenAI streams back tokens via Server-Sent Events. <code>StreamMessageAsync()</code> parses each chunk and updates the message&#39;s <code>Text</code> property in real time → user sees the answer typing out word by word.</p>
+<p>If the API returns:</p>
+<ul>
+<li><strong>429 (rate limit)</strong> → retry with exponential backoff (0ms, 1s, 3s)</li>
+<li><strong>Quota exceeded</strong> → throws <code>AiQuotaExceededException</code> → user sees &quot;limit reached, contact support&quot;</li>
+<li><strong>5xx error</strong> → retry up to 3 times</li>
+</ul>
+<h3>Step 12 — Follow-up Extraction</h3>
+<p><strong>File:</strong> <code>ZestAiViewModel.ExtractFollowUpQuestions()</code></p>
+<p>The AI&#39;s response is regex-parsed for a numbered list at the end (<code>1. ... 2. ... 3. ...</code>). If 2-4 questions are found, they&#39;re displayed as clickable pills below the response.</p>
+<p>If extraction fails, contextual follow-ups are generated from the model metrics:</p>
+<ul>
+<li><em>&quot;How do I resolve the 187 warnings in my model?&quot;</em></li>
+<li><em>&quot;Your model is 480 MB — how do I reduce it?&quot;</em></li>
+</ul>
+<h3>Step 13 — Persistence</h3>
+<p><strong>File:</strong> <a href="BIManage/Data/SQLite/ChatRepository.cs">BIManage/Data/SQLite/ChatRepository.cs</a></p>
+<p>The exchange is saved to local SQLite:</p>
+<ul>
+<li><code>chat_sessions</code> table — session metadata</li>
+<li><code>chat_messages</code> table — every message with role, content, timestamp, response time, feedback rating</li>
+</ul>
+<h3>Step 14 — Diagnostic Logging</h3>
+<p><strong>File:</strong> <a href="BIManage/AI/AiDiagLog.cs">BIManage/AI/AiDiagLog.cs</a></p>
+<p>The full pipeline is logged to <code>%LOCALAPPDATA%\BIManageRevit\AI\Logs\</code>:</p>
+<ul>
+<li><code>ai_diag_YYYYMMDD.log</code> — every step&#39;s outcome with timing</li>
+<li><code>ai_conversations_YYYYMMDD.log</code> — full untruncated Q&amp;A</li>
+</ul>
+<hr>
+<h2>Part 3 — Where Each Piece Lives</h2>
+<h3>Plugin (Revit-Side) Code</h3>
+<pre><code>BIManage/
+├── ViewModels/AI/
+│   └── ZestAiViewModel.cs              [orchestrates the chat — ~800 lines]
+│
+├── Views/AI/
+│   └── ZestAiDialog.xaml                [chat window UI]
+│
+├── AI/
+│   ├── Providers/
+│   │   ├── OpenAIProvider.cs            [GPT-4o-mini API calls, streaming, retry]
+│   │   └── AIProviderFactory.cs         [provider selection]
+│   │
+│   ├── Interfaces/
+│   │   ├── IAIProvider.cs               [chat provider contract]
+│   │   ├── IKnowledgeProvider.cs        [knowledge contract]
+│   │   └── AIProviderConfig.cs          [API key, model name config]
+│   │
+│   ├── Knowledge/
+│   │   ├── IntentClassifier.cs          [keyword-based query routing]
+│   │   ├── JsonKnowledgeProvider.cs     [local JSON files — fallback]
+│   │   ├── ApiKnowledgeProvider.cs      [calls /api/v1/master/ai-training]
+│   │   └── Data/                        [the JSON knowledge files]
+│   │       ├── errors.json
+│   │       ├── best_practices.json
+│   │       ├── performance_tips.json
+│   │       ├── workflows.json
+│   │       ├── product_knowledge.json
+│   │       ├── off_topic_config.json
+│   │       └── system_prompt.txt
+│   │
+│   ├── ModelContextService.cs           [fetches live model metrics]
+│   ├── ModelHealthAlertService.cs       [generates threshold-based alerts]
+│   ├── LocalDbQueryService.cs           [SQL queries for AI questions]
+│   ├── ElementVisibilityService.cs      [17+ checks for &quot;why can&#39;t I see X&quot;]
+│   ├── WarningResolutionService.cs      [Revit warning analyzer]
+│   └── AiDiagLog.cs                     [diagnostic logging]
+│
+├── Data/SQLite/
+│   └── ChatRepository.cs                [chat sessions + messages persistence]
+│
+└── Models/AI/
+    ├── ChatMessage.cs                   [message model with feedback]
+    └── SessionInfo.cs                   [session metadata]
+</code></pre>
+<h3>Backend (Server-Side) Code</h3>
+<pre><code>Backend/
+└── Controllers/
+    ├── AiTrainingController.cs          [/api/v1/master/ai-training]
+    └── MetricsController.cs             [/api/v1/Revit/metrics/{manual,periodic,syncsave}]
+</code></pre>
+<h3>What Each File&#39;s Responsibility Is</h3>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ZestAiViewModel.cs</code></td>
+<td>The conductor — wires UI → providers → storage</td>
+</tr>
+<tr>
+<td><code>OpenAIProvider.cs</code></td>
+<td>The translator — speaks HTTP to OpenAI&#39;s API</td>
+</tr>
+<tr>
+<td><code>IntentClassifier.cs</code></td>
+<td>The router — decides what&#39;s being asked</td>
+</tr>
+<tr>
+<td><code>JsonKnowledgeProvider.cs</code></td>
+<td>Knowledge from local JSON (offline fallback)</td>
+</tr>
+<tr>
+<td><code>ApiKnowledgeProvider.cs</code></td>
+<td>Knowledge from your backend API</td>
+</tr>
+<tr>
+<td><code>ModelContextService.cs</code></td>
+<td>Live metrics fetcher</td>
+</tr>
+<tr>
+<td><code>ModelHealthAlertService.cs</code></td>
+<td>Threshold-based alert generator</td>
+</tr>
+<tr>
+<td><code>LocalDbQueryService.cs</code></td>
+<td>&quot;How many sessions today?&quot; type queries</td>
+</tr>
+<tr>
+<td><code>ElementVisibilityService.cs</code></td>
+<td>&quot;Why can&#39;t I see this element?&quot; diagnosis</td>
+</tr>
+<tr>
+<td><code>WarningResolutionService.cs</code></td>
+<td>Revit warning categorizer + fix instructions</td>
+</tr>
+<tr>
+<td><code>ChatRepository.cs</code></td>
+<td>Persistence layer</td>
+</tr>
+<tr>
+<td><code>AiDiagLog.cs</code></td>
+<td>Debug log writer</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>Part 4 — RAG: What It Adds and How It Plugs Into the Current Flow</h2>
+<h3>What&#39;s Wrong with the Current Knowledge Step</h3>
+<p><strong>Today&#39;s Step 5 (Knowledge Retrieval):</strong></p>
+<ul>
+<li>Query: <em>&quot;why is my model so slow?&quot;</em></li>
+<li>Classifier picks <code>Performance</code> section</li>
+<li><strong>Loads the entire Performance JSON</strong> — every single tip, even ones about meshes, materials, view templates, families, none of which match the user&#39;s question</li>
+<li>Sends ~3,000 tokens of mostly-irrelevant content to OpenAI</li>
+<li>LLM has to filter through it all to find the relevant 2-3 tips</li>
+</ul>
+<p><strong>Problems:</strong></p>
+<ol>
+<li>Wastes tokens (cost)</li>
+<li>Slows down responses (latency)</li>
+<li>Misses content phrased differently — <em>&quot;federated coordination model is huge&quot;</em> doesn&#39;t match keyword &quot;slow&quot;</li>
+<li>Synonyms break it — <em>&quot;purge&quot;</em> vs <em>&quot;clean up&quot;</em> vs <em>&quot;remove unused&quot;</em></li>
+<li>Multilingual queries fail</li>
+<li>Adding new knowledge means editing JSON files and shipping a new plugin version</li>
+</ol>
+<h3>What RAG Changes</h3>
+<p><strong>New Step 5 (Knowledge Retrieval with RAG):</strong></p>
+<ul>
+<li>Query: <em>&quot;why is my model so slow?&quot;</em></li>
+<li>Convert query to a <strong>1,536-dimensional embedding vector</strong> via Azure OpenAI</li>
+<li>Send vector to <strong>Qdrant</strong> vector DB → returns top 5 chunks with similarity scores</li>
+<li>Inject <strong>only those 5 chunks</strong> (~500 tokens) into the prompt</li>
+<li>LLM gets exactly the relevant info, nothing else</li>
+</ul>
+<h3>What Stays Exactly the Same</h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Ze AI chat dialog</td>
+<td>Unchanged</td>
+</tr>
+<tr>
+<td>OpenAI provider, streaming, retry</td>
+<td>Unchanged</td>
+</tr>
+<tr>
+<td>ModelContextService</td>
+<td>Unchanged</td>
+</tr>
+<tr>
+<td>LocalDbQueryService</td>
+<td>Unchanged</td>
+</tr>
+<tr>
+<td>ElementVisibilityService</td>
+<td>Unchanged</td>
+</tr>
+<tr>
+<td>WarningResolutionService</td>
+<td>Unchanged</td>
+</tr>
+<tr>
+<td>ChatRepository</td>
+<td>Unchanged</td>
+</tr>
+<tr>
+<td>Authentication, RBAC, audit</td>
+<td>Unchanged</td>
+</tr>
+<tr>
+<td>User experience (chat UI, follow-ups, feedback)</td>
+<td>Unchanged</td>
+</tr>
+</tbody></table>
+<h3>What Gets Replaced</h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>IntentClassifier.cs</code></td>
+<td>Demoted to fallback hint — RAG search replaces routing</td>
+</tr>
+<tr>
+<td><code>ApiKnowledgeProvider.cs</code></td>
+<td>Replaced by new <code>RagKnowledgeProvider.cs</code></td>
+</tr>
+<tr>
+<td><code>JsonKnowledgeProvider.cs</code></td>
+<td>Stays as offline fallback</td>
+</tr>
+</tbody></table>
+<h3>What Gets Added</h3>
+<p><strong>Plugin Side:</strong></p>
+<ul>
+<li><code>RagKnowledgeProvider.cs</code> — implements <code>IKnowledgeProvider</code>, calls new search endpoint</li>
+</ul>
+<p><strong>Backend Side (NEW):</strong></p>
+<ul>
+<li><code>EmbeddingService</code> — wraps Azure OpenAI embedding API</li>
+<li><code>QdrantVectorStore</code> — talks to Qdrant</li>
+<li><code>KnowledgeIndexer</code> — chunks docs, creates embeddings, upserts to Qdrant</li>
+<li><code>RagSearchService</code> — query → embedding → vector search → ranked chunks</li>
+<li><code>KnowledgeSearchController</code> — exposes <code>POST /api/v1/Revit/ai/knowledge-search</code></li>
+<li><code>KnowledgeAdminController</code> — admin upload/re-index endpoints</li>
+<li>Admin UI for knowledge management</li>
+</ul>
+<h3>The Updated Flow Diagram</h3>
+<pre><code>User types &quot;why is my model so slow?&quot;
+              │
+              ▼
+┌────────────────────────────────────────┐
+│ Step 3: Off-topic filter (UNCHANGED)   │
+└──────────────────┬─────────────────────┘
+                   ▼
+┌────────────────────────────────────────┐
+│ Step 4: IntentClassifier (DEMOTED)     │
+│ Now only used to detect special modes: │
+│  - Visibility query → diagnostic       │
+│  - Warning query → diagnostic          │
+│  - Local DB query → SQL                │
+│ Otherwise: skip directly to RAG        │
+└──────────────────┬─────────────────────┘
+                   ▼
+┌────────────────────────────────────────┐
+│ Step 5: RAG Knowledge Search (NEW)     │
+│                                        │
+│  RagKnowledgeProvider:                 │
+│    POST /api/v1/Revit/ai/knowledge-    │
+│         search                         │
+│    body: { query, top_k: 5, filters }  │
+│                                        │
+│  Backend RagSearchService:             │
+│    1. Embed query (Azure OpenAI)       │
+│    2. Search Qdrant for top 5          │
+│    3. Apply company_id filter          │
+│    4. Re-rank (optional)               │
+│    5. Return top chunks                │
+│                                        │
+│  Plugin receives:                      │
+│    [chunk 1, chunk 2, chunk 3,         │
+│     chunk 4, chunk 5]                  │
+│    ~500 tokens vs ~3,000 today         │
+└──────────────────┬─────────────────────┘
+                   ▼
+┌────────────────────────────────────────┐
+│ Step 6-7: Live model context +         │
+│ health alerts (UNCHANGED)              │
+└──────────────────┬─────────────────────┘
+                   ▼
+┌────────────────────────────────────────┐
+│ Step 8: System prompt assembly         │
+│ Same structure, but knowledge block    │
+│ is ~6x smaller and ~10x more relevant  │
+└──────────────────┬─────────────────────┘
+                   ▼
+┌────────────────────────────────────────┐
+│ Step 9-14: OpenAI call, streaming,     │
+│ follow-ups, persistence (UNCHANGED)    │
+└────────────────────────────────────────┘
+</code></pre>
+<h3>Indexing Pipeline (Runs Separately, Not Per-Query)</h3>
+<pre><code>Knowledge sources (admin uploads or scheduled job)
+    │
+    ├─── existing JSON files (best_practices, errors, etc.)
+    ├─── docs/*.md (your documentation)
+    ├─── PDFs uploaded by company admins (BIM standards)
+    └─── DOCX SOPs uploaded
+              │
+              ▼
+       Chunker (~500 tokens per chunk, semantic boundaries)
+              │
+              ▼
+       Azure OpenAI text-embedding-3-small
+              │
+              ▼
+       Qdrant vector DB (with metadata: company_id, audience, category)
+              │
+              ▼
+       Searchable. Done.
+</code></pre>
+<p>When new knowledge is added, only the new chunks get embedded — incremental indexing.</p>
+<hr>
+<h2>Part 5 — Azure Resources: What You Have Today</h2>
+<p>Based on the screenshots you shared, here&#39;s an inventory:</p>
+<h3>Resource Group: ZeManage Production</h3>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>Type</th>
+<th>Region</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>bimanage-tenant-staging</code></td>
+<td>App Service</td>
+<td>Central US</td>
+<td>Staging tenant API</td>
+</tr>
+<tr>
+<td><code>bimanage-tenant-staging</code></td>
+<td>Application Insights</td>
+<td>Central US</td>
+<td>Telemetry for staging</td>
+</tr>
+<tr>
+<td><code>bimanagestorage</code></td>
+<td>Storage Account</td>
+<td>East US</td>
+<td>Storage</td>
+</tr>
+<tr>
+<td><code>Failure Anomalies - bimanage-tenant-sta</code></td>
+<td>Smart Detector Alert</td>
+<td>Global</td>
+<td>Error detection</td>
+</tr>
+<tr>
+<td><code>oidc-msi-8b6f</code></td>
+<td>Managed Identity</td>
+<td>Central US</td>
+<td>OIDC auth</td>
+</tr>
+<tr>
+<td><code>oidc-msi-97c2</code></td>
+<td>Managed Identity</td>
+<td>Central US</td>
+<td>OIDC auth</td>
+</tr>
+<tr>
+<td><code>oidc-msi-b92c</code></td>
+<td>Managed Identity</td>
+<td>South India</td>
+<td>OIDC auth</td>
+</tr>
+<tr>
+<td><code>zemanage.com (Bimanage-Email/zemana...)</code></td>
+<td>Email Communication</td>
+<td>Global</td>
+<td>Email service</td>
+</tr>
+<tr>
+<td><code>zemanageblob</code></td>
+<td>Storage Account</td>
+<td>Central US</td>
+<td>Blob storage</td>
+</tr>
+<tr>
+<td><code>zemanageemailservice</code></td>
+<td>Communication Service</td>
+<td>Global</td>
+<td>Email sender</td>
+</tr>
+<tr>
+<td><code>ASP-bimanagerg-87ea</code></td>
+<td>App Service Plan</td>
+<td>Central US</td>
+<td>Hosts your App Services</td>
+</tr>
+<tr>
+<td><code>bimanage-api</code></td>
+<td>Application Insights</td>
+<td>South India</td>
+<td>Production API telemetry</td>
+</tr>
+<tr>
+<td><code>bimanage-api-staging</code></td>
+<td>App Service</td>
+<td>Central US</td>
+<td>Staging API</td>
+</tr>
+<tr>
+<td><code>bimanage-api-staging</code></td>
+<td>Application Insights</td>
+<td>Central US</td>
+<td>Staging telemetry</td>
+</tr>
+<tr>
+<td><code>bimanage-builds</code></td>
+<td>Key Vault</td>
+<td>East US</td>
+<td>Build secrets</td>
+</tr>
+<tr>
+<td><code>Bimanage-Email</code></td>
+<td>Email Communication</td>
+<td>Global</td>
+<td>Email</td>
+</tr>
+<tr>
+<td><code>bimanage-kv-staging</code></td>
+<td>Key Vault</td>
+<td>Central US</td>
+<td>Staging secrets</td>
+</tr>
+<tr>
+<td><strong><code>bimanage-postgres</code></strong></td>
+<td><strong>Azure Database for PostgreSQL</strong></td>
+<td><strong>Central US</strong></td>
+<td><strong>🎯 KEY FINDING</strong></td>
+</tr>
+<tr>
+<td><strong><code>bimanage-redis-staging</code></strong></td>
+<td><strong>Azure Managed Redis</strong></td>
+<td><strong>Central US</strong></td>
+<td><strong>🎯 KEY FINDING</strong></td>
+</tr>
+<tr>
+<td><code>bimanage-tenant--id-8170</code></td>
+<td>Managed Identity</td>
+<td>Central US</td>
+<td>Tenant identity</td>
+</tr>
+</tbody></table>
+<h3>Critical Findings for RAG</h3>
+<h4>✅ Finding 1 — You Have PostgreSQL!</h4>
+<p><code>bimanage-postgres</code> in Central US.</p>
+<p><strong>This is huge.</strong> It means we can use the <strong><code>pgvector</code> extension</strong> for vector storage instead of running a separate Qdrant instance. This <strong>eliminates ~$35/month</strong> in additional infrastructure cost.</p>
+<h4>✅ Finding 2 — You Have Redis (Staging)</h4>
+<p><code>bimanage-redis-staging</code> in Central US.</p>
+<p>We can use this for embedding cache. You&#39;ll likely want a production Redis too — minor cost addition.</p>
+<h4>✅ Finding 3 — Most Resources in Central US</h4>
+<p>Your primary region is <strong>Central US</strong>.</p>
+<p><strong>Azure OpenAI Service availability in Central US:</strong> ⚠️ Limited availability — <code>text-embedding-3-small</code> deployment may require <strong>East US 2</strong> or <strong>South Central US</strong> (cross-region call adds ~20-40ms latency, perfectly acceptable).</p>
+<h4>⚠️ Finding 4 — Mixed Regions</h4>
+<p>Some resources are in South India, East US, and Global. This is fine, but for RAG resources we&#39;ll standardize on <strong>Central US</strong> (with possible Azure OpenAI in East US 2 if needed).</p>
+<h4>✅ Finding 5 — Key Vaults Exist</h4>
+<p><code>bimanage-kv-staging</code> and <code>bimanage-builds</code> — we&#39;ll use these to store the Azure OpenAI API keys securely.</p>
+<h4>✅ Finding 6 — Storage Accounts Exist</h4>
+<p><code>zemanageblob</code> and <code>bimanagestorage</code> — we&#39;ll add a new container for knowledge document uploads (PDFs, DOCX). No new storage account needed.</p>
+<hr>
+<h2>Part 6 — RAG Cost on Your Existing Azure Plan</h2>
+<h3>Revised Architecture (Using Your Existing Resources)</h3>
+<p>Given what you already have, the optimal RAG stack is:</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Approach</th>
+<th>Cost Impact</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Vector DB</td>
+<td><strong>pgvector on existing <code>bimanage-postgres</code></strong></td>
+<td>$0 incremental</td>
+</tr>
+<tr>
+<td>Embeddings</td>
+<td><strong>Azure OpenAI Service</strong> (new deployment)</td>
+<td>Pay-per-token</td>
+</tr>
+<tr>
+<td>Cache</td>
+<td><strong>Existing <code>bimanage-redis-staging</code></strong> + new prod Redis</td>
+<td>~$17/mo for prod</td>
+</tr>
+<tr>
+<td>Storage</td>
+<td><strong>Existing <code>zemanageblob</code></strong> (new container)</td>
+<td>~$1/mo</td>
+</tr>
+<tr>
+<td>Backend API</td>
+<td><strong>Existing App Service Plan</strong></td>
+<td>$0 incremental</td>
+</tr>
+<tr>
+<td>Telemetry</td>
+<td><strong>Existing Application Insights</strong></td>
+<td>~$5/mo additional ingestion</td>
+</tr>
+<tr>
+<td>Secrets</td>
+<td><strong>Existing <code>bimanage-kv-staging</code></strong></td>
+<td>$0 incremental</td>
+</tr>
+</tbody></table>
+<h3>What You Need to Add</h3>
+<table>
+<thead>
+<tr>
+<th>New Resource</th>
+<th>Why</th>
+<th>Cost</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Azure OpenAI Service resource</td>
+<td>Host embedding + chat models</td>
+<td>$0 to provision</td>
+</tr>
+<tr>
+<td><code>text-embedding-3-small</code> deployment</td>
+<td>Embedding generation</td>
+<td>$0.02 per 1M tokens</td>
+</tr>
+<tr>
+<td><code>gpt-4o-mini</code> deployment (optional)</td>
+<td>Migrate Ze AI from OpenAI direct</td>
+<td>$0.15/$0.60 per 1M tokens (input/output)</td>
+</tr>
+<tr>
+<td>pgvector extension on Postgres</td>
+<td>Vector storage in existing DB</td>
+<td>$0</td>
+</tr>
+<tr>
+<td>New Redis (production)</td>
+<td>Embedding cache</td>
+<td>~$17/mo (Basic C0)</td>
+</tr>
+<tr>
+<td>Blob container <code>knowledge-docs</code></td>
+<td>Doc uploads</td>
+<td>~$1/mo</td>
+</tr>
+</tbody></table>
+<h3>Monthly Cost Breakdown — Your Setup</h3>
+<h4>At 500 active users (~30,000 queries/month):</h4>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Cost</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Existing infra (no change)</td>
+<td>$0 incremental</td>
+</tr>
+<tr>
+<td>Azure OpenAI embeddings (~30K queries × ~50 tokens avg)</td>
+<td>~$3</td>
+</tr>
+<tr>
+<td>Azure OpenAI re-indexing (occasional, full corpus)</td>
+<td>~$2</td>
+</tr>
+<tr>
+<td>Production Redis Basic C0</td>
+<td>$17</td>
+</tr>
+<tr>
+<td>Application Insights extra ingestion</td>
+<td>$5</td>
+</tr>
+<tr>
+<td>Storage (knowledge docs)</td>
+<td>$1</td>
+</tr>
+<tr>
+<td><strong>NEW MONTHLY COST</strong></td>
+<td><strong>~$28/month</strong></td>
+</tr>
+</tbody></table>
+<p>If you also migrate Ze AI chat completions from OpenAI direct → Azure OpenAI:</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Cost</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Azure OpenAI gpt-4o-mini (~30K queries × 4K input + 500 output tokens)</td>
+<td>~$25</td>
+</tr>
+<tr>
+<td><strong>Total with full Azure OpenAI migration</strong></td>
+<td><strong>~$53/month</strong></td>
+</tr>
+</tbody></table>
+<h4>At 1,500 active users (~100,000 queries/month):</h4>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Cost</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Embeddings (with cache hit ratio ~40%)</td>
+<td>~$8</td>
+</tr>
+<tr>
+<td>Redis</td>
+<td>$17</td>
+</tr>
+<tr>
+<td>App Insights</td>
+<td>$10</td>
+</tr>
+<tr>
+<td>Storage</td>
+<td>$1</td>
+</tr>
+<tr>
+<td><strong>NEW (RAG only)</strong></td>
+<td><strong>~$36/month</strong></td>
+</tr>
+<tr>
+<td>Plus chat completions migrated</td>
+<td><strong>~$120/month</strong></td>
+</tr>
+</tbody></table>
+<h3>Comparison to Original Estimate</h3>
+<table>
+<thead>
+<tr>
+<th>Original Estimate</th>
+<th>With Your Existing Infra</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>~$87/month at 500 users</td>
+<td><strong>~$28/month at 500 users</strong></td>
+</tr>
+<tr>
+<td>~$135/month at 1,500 users</td>
+<td><strong>~$36/month at 1,500 users</strong></td>
+</tr>
+</tbody></table>
+<p>You save ~$60/month because you already have PostgreSQL (no Qdrant needed) and Redis (no new cache infra needed). Postgres + pgvector is excellent up to ~1M chunks — you won&#39;t hit that ceiling for years.</p>
+<h3>One-Time Costs</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Cost</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Initial corpus embedding (existing knowledge JSONs + docs/)</td>
+<td>~$2</td>
+</tr>
+<tr>
+<td>Development effort (6 weeks)</td>
+<td>~$12,000</td>
+</tr>
+<tr>
+<td><strong>Total upfront</strong></td>
+<td><strong>~$12,002</strong></td>
+</tr>
+</tbody></table>
+<h3>Cost Per User Per Month</h3>
+<table>
+<thead>
+<tr>
+<th>Users</th>
+<th>Total Monthly</th>
+<th>Per User</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>100</td>
+<td>$25</td>
+<td>$0.25</td>
+</tr>
+<tr>
+<td>500</td>
+<td>$28</td>
+<td>$0.06</td>
+</tr>
+<tr>
+<td>1,500</td>
+<td>$36</td>
+<td>$0.024</td>
+</tr>
+<tr>
+<td>5,000</td>
+<td>$80</td>
+<td>$0.016</td>
+</tr>
+</tbody></table>
+<p>If you charge even $5/user/month for AI features, gross margin is <strong>&gt;99%</strong>.</p>
+<hr>
+<h2>Part 7 — Implementation Steps Mapped to Your Setup</h2>
+<h3>Pre-Work (Before Week 1)</h3>
+<h4>Step A — Apply for Azure OpenAI Access</h4>
+<p><strong>Where:</strong> <a href="https://aka.ms/oaiapply">https://aka.ms/oaiapply</a>
+<strong>Time:</strong> 1-2 business days for approval
+<strong>Provide:</strong></p>
+<ul>
+<li>Subscription ID (from your Azure portal)</li>
+<li>Use case: &quot;BIM/AEC AI assistant for Revit, knowledge retrieval and chat completions&quot;</li>
+<li>Expected volume: 100K queries/month within 6 months</li>
+</ul>
+<h4>Step B — Verify Postgres Version</h4>
+<p>Connect to <code>bimanage-postgres</code> and run:</p>
+<pre><code class="language-sql">SHOW server_version;
+</code></pre>
+<p><strong>Required:</strong> PostgreSQL 13+ (pgvector requires this). Most likely you have 14 or 15.</p>
+<h4>Step C — Decide Resource Group</h4>
+<p>Either:</p>
+<ul>
+<li>Add RAG resources to existing resource group, OR</li>
+<li>Create new <code>rg-bimanage-rag-prod</code> for clean isolation (recommended)</li>
+</ul>
+<h3>Week 1 — Infrastructure Setup</h3>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Where</th>
+<th>Owner</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Provision Azure OpenAI in East US 2</td>
+<td>Portal → Azure OpenAI</td>
+<td>DevOps</td>
+</tr>
+<tr>
+<td>Deploy <code>text-embedding-3-small</code> model</td>
+<td>Azure OpenAI Studio</td>
+<td>DevOps</td>
+</tr>
+<tr>
+<td>Enable pgvector on <code>bimanage-postgres</code></td>
+<td><code>CREATE EXTENSION vector;</code></td>
+<td>DBA</td>
+</tr>
+<tr>
+<td>Create <code>knowledge_chunks</code> table with vector column</td>
+<td>Migration script</td>
+<td>Backend dev</td>
+</tr>
+<tr>
+<td>Provision production Redis (Basic C0)</td>
+<td>Portal → Redis</td>
+<td>DevOps</td>
+</tr>
+<tr>
+<td>Add storage container <code>knowledge-docs</code></td>
+<td>Existing <code>zemanageblob</code></td>
+<td>DevOps</td>
+</tr>
+<tr>
+<td>Store Azure OpenAI API key in <code>bimanage-kv-staging</code></td>
+<td>Key Vault</td>
+<td>DevOps</td>
+</tr>
+<tr>
+<td>Update App Service connection strings</td>
+<td>App Service config</td>
+<td>DevOps</td>
+</tr>
+</tbody></table>
+<h3>Week 2 — Backend Development (Indexing)</h3>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>File</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Create <code>IEmbeddingService</code> + <code>AzureOpenAIEmbeddingService</code></td>
+<td><code>Backend/AI/Embeddings/</code></td>
+</tr>
+<tr>
+<td>Create <code>IVectorStore</code> + <code>PgVectorStore</code></td>
+<td><code>Backend/AI/VectorStore/</code></td>
+</tr>
+<tr>
+<td>Build chunkers (Markdown, JSON, PDF, DOCX)</td>
+<td><code>Backend/AI/Indexing/Chunkers/</code></td>
+</tr>
+<tr>
+<td>Build <code>KnowledgeIndexer</code></td>
+<td><code>Backend/AI/Indexing/</code></td>
+</tr>
+<tr>
+<td>One-time job: index all existing JSON knowledge</td>
+<td>Indexing CLI</td>
+</tr>
+</tbody></table>
+<h3>Week 3 — Backend Development (Retrieval)</h3>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>File</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Build <code>RagSearchService</code></td>
+<td><code>Backend/AI/Retrieval/</code></td>
+</tr>
+<tr>
+<td>Add hybrid search (vector + BM25 via Postgres full-text)</td>
+<td>Same</td>
+</tr>
+<tr>
+<td>Add Redis caching layer</td>
+<td>Same</td>
+</tr>
+<tr>
+<td>Expose <code>POST /api/v1/Revit/ai/knowledge-search</code></td>
+<td><code>Backend/Controllers/</code></td>
+</tr>
+<tr>
+<td>Multi-tenant filtering by <code>company_id</code></td>
+<td>Same</td>
+</tr>
+<tr>
+<td>Score threshold (skip results &lt; 0.5)</td>
+<td>Same</td>
+</tr>
+</tbody></table>
+<h3>Week 4 — Plugin Integration</h3>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>File</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Create <code>RagKnowledgeProvider : IKnowledgeProvider</code></td>
+<td><code>BIManage/AI/Knowledge/</code></td>
+</tr>
+<tr>
+<td>Wire DI to use RAG provider</td>
+<td><code>ZestAiViewModel</code> constructor</td>
+</tr>
+<tr>
+<td>Add fallback to JsonKnowledgeProvider on timeout</td>
+<td>Same</td>
+</tr>
+<tr>
+<td>Add retrieval score logging to AiDiagLog</td>
+<td><code>AiDiagLog.cs</code></td>
+</tr>
+<tr>
+<td>Token budget enforcement (cap at ~2000 tokens injected)</td>
+<td><code>OpenAIProvider.cs</code></td>
+</tr>
+</tbody></table>
+<h3>Week 5 — Quality &amp; Eval</h3>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Build eval set from 100 real chat history queries</td>
+<td><code>eval_set.json</code></td>
+</tr>
+<tr>
+<td>Run baseline measurements (current keyword system)</td>
+<td>Metrics report</td>
+</tr>
+<tr>
+<td>Run new system measurements</td>
+<td>Metrics report</td>
+</tr>
+<tr>
+<td>Tune chunk size, top_k, score threshold</td>
+<td>Config</td>
+</tr>
+<tr>
+<td>Add re-ranking if base ranking weak</td>
+<td><code>Backend/AI/Retrieval/ReRanker.cs</code></td>
+</tr>
+</tbody></table>
+<h3>Week 6 — Admin Tools, Hardening, Rollout</h3>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Where</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Admin UI: upload knowledge docs</td>
+<td>Web dashboard</td>
+</tr>
+<tr>
+<td>Admin UI: trigger re-index</td>
+<td>Same</td>
+</tr>
+<tr>
+<td>Admin UI: view coverage report (gaps)</td>
+<td>Same</td>
+</tr>
+<tr>
+<td>Empty-result query telemetry</td>
+<td>App Insights</td>
+</tr>
+<tr>
+<td>Cost dashboard (tokens per company)</td>
+<td>App Insights workbook</td>
+</tr>
+<tr>
+<td>Feature flag for gradual rollout (10% → 50% → 100%)</td>
+<td>Backend config</td>
+</tr>
+<tr>
+<td>Kill switch (revert to JSON fallback)</td>
+<td>Backend config</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>Summary</h2>
+<h3>What You Have Today</h3>
+<p>A working AI assistant with keyword-based knowledge retrieval, live model context, three diagnostic engines, and full Revit integration. It works, but its keyword classifier limits how well it answers paraphrased or semantically-related questions.</p>
+<h3>What RAG Adds</h3>
+<p>Semantic search over your knowledge base. Same UI, same plugin, but knowledge retrieval becomes ~6x smaller (token-efficient) and ~10x more relevant (better answers).</p>
+<h3>Cost on Your Azure Plan</h3>
+<ul>
+<li><strong>One-time:</strong> ~$12,000 (development)</li>
+<li><strong>Monthly at 500 users:</strong> ~$28 (RAG only) or ~$53 (with full Azure OpenAI migration)</li>
+<li><strong>Monthly at 1,500 users:</strong> ~$36 (RAG only) or ~$120 (with full Azure OpenAI migration)</li>
+<li><strong>Per user per month:</strong> $0.02-$0.06</li>
+</ul>
+<p>You save significantly because your existing PostgreSQL (with pgvector) and Redis eliminate the need for separate vector DB and cache infrastructure.</p>
+<h3>Timeline</h3>
+<p><strong>6 weeks total</strong> with one backend dev primary and 0.25 FTE plugin dev.</p>
+<h3>Risk Profile</h3>
+<p>Low. The change is additive — old keyword system remains as fallback. Feature-flagged rollout means we can revert instantly if issues appear. No user-facing UX changes; just smarter behind-the-scenes retrieval.</p>
+<hr>
+<hr>
+<h2>Part 8 — Azure OpenAI: Quotas, Batch Limits, Rate Limits</h2>
+<p>When you migrate from OpenAI direct to Azure OpenAI, you need to understand how Azure rations capacity. The model is different from OpenAI&#39;s &quot;just pay-as-you-go&quot; approach — Azure pre-allocates capacity per region per model.</p>
+<h3>How Azure OpenAI Quotas Work</h3>
+<p>Azure OpenAI capacity is measured in <strong>Tokens-Per-Minute (TPM)</strong> allocated per model, per region, per subscription. You don&#39;t get unlimited usage — you get a fixed TPM allocation, and individual deployments consume from that pool.</p>
+<pre><code>Subscription
+  └── Region (e.g., East US 2)
+        └── Model (e.g., gpt-4o-mini)
+              └── TPM Quota: 1,000,000 tokens/minute
+                    ├── Deployment A: 600,000 TPM
+                    └── Deployment B: 400,000 TPM
+</code></pre>
+<p>If you exceed your TPM, requests get rate-limited (HTTP 429). If you exceed your TPM consistently, you can request a quota increase from Microsoft (usually granted within 1-3 business days).</p>
+<h3>Default Quotas (As of 2026)</h3>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Default TPM (Pay-As-You-Go)</th>
+<th>Default RPM</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>gpt-4o-mini</code></td>
+<td>1,000,000 (~166K req/min)</td>
+<td>6,000</td>
+</tr>
+<tr>
+<td><code>gpt-4o</code></td>
+<td>450,000</td>
+<td>2,700</td>
+</tr>
+<tr>
+<td><code>text-embedding-3-small</code></td>
+<td>350,000</td>
+<td>2,100</td>
+</tr>
+<tr>
+<td><code>text-embedding-3-large</code></td>
+<td>350,000</td>
+<td>2,100</td>
+</tr>
+<tr>
+<td><code>gpt-4-turbo</code></td>
+<td>80,000</td>
+<td>480</td>
+</tr>
+</tbody></table>
+<p><strong>Translation for ZeManage:</strong></p>
+<p>For 500 active users averaging 60 queries/month each = 30,000 queries/month total = ~1,000 queries/day = ~42 queries/hour at peak. With ~4,000 input + 500 output tokens per query that&#39;s ~190K tokens/hour, or ~3,200 TPM.</p>
+<p><strong>You&#39;re using &lt;0.5% of default quota.</strong> No bottleneck.</p>
+<p>For 5,000 active users at the same per-user rate = ~32,000 TPM = ~3% of default quota. Still no bottleneck.</p>
+<p>You&#39;d only hit the quota at <strong>~150,000 active users</strong>. By that point, your business case justifies an enterprise quota upgrade.</p>
+<h3>Three Deployment Types You Can Choose</h3>
+<p>When you deploy a model in Azure OpenAI Studio, you pick one of these:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>What It Is</th>
+<th>When To Use</th>
+<th>Cost Model</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Standard (Regional Pay-As-You-Go)</strong></td>
+<td>Default. Pay per token. Quota-limited.</td>
+<td>Recommended for ZeManage at any scale below 5,000 users</td>
+<td>Per-token</td>
+</tr>
+<tr>
+<td><strong>Global Standard</strong></td>
+<td>Same as Standard but uses global pool</td>
+<td>Higher throughput, slightly variable latency</td>
+<td>Per-token (slightly cheaper)</td>
+</tr>
+<tr>
+<td><strong>Provisioned (PTU)</strong></td>
+<td>Reserved capacity, fixed monthly fee</td>
+<td>Heavy enterprise users (10K+ active users), predictable cost</td>
+<td>$260+/month per PTU</td>
+</tr>
+</tbody></table>
+<p><strong>Recommendation for ZeManage:</strong> Start with <strong>Global Standard</strong> for the embedding model and <strong>Standard</strong> for chat. Switch to PTU only if you outgrow the per-token model.</p>
+<h3>Batch Processing for Embedding Indexing</h3>
+<p>Azure OpenAI supports batch processing for embeddings — useful when you index large knowledge corpora. You can send up to <strong>2,048 inputs per batch request</strong>, which is far more efficient than one-at-a-time.</p>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>API Call Method</th>
+<th>Limit</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Single embedding</td>
+<td><code>POST /embeddings</code> with one input</td>
+<td>1 input</td>
+</tr>
+<tr>
+<td>Batch embedding</td>
+<td><code>POST /embeddings</code> with array</td>
+<td><strong>Up to 2,048 inputs per call</strong></td>
+</tr>
+<tr>
+<td>Async Batch API</td>
+<td><code>POST /batches</code> with file</td>
+<td><strong>50,000 requests per batch file</strong>, 24-hour SLA</td>
+</tr>
+</tbody></table>
+<p>For your initial indexing of ~10,000 chunks:</p>
+<ul>
+<li>Without batching: 10,000 API calls — slow, hits rate limits</li>
+<li>With batch endpoint (2,048 per call): <strong>5 API calls</strong> — done in seconds</li>
+<li>With Async Batch API: <strong>1 batch job</strong> — completes overnight, <strong>50% cheaper</strong></li>
+</ul>
+<p>The Async Batch API is half-price for non-real-time work. Use it for re-indexing.</p>
+<h3>Azure OpenAI vs OpenAI Direct — Rate Limit Comparison</h3>
+<table>
+<thead>
+<tr>
+<th>Limit Type</th>
+<th>OpenAI Direct (Tier 4 paid)</th>
+<th>Azure OpenAI (default)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>gpt-4o-mini</code> TPM</td>
+<td>2,000,000</td>
+<td>1,000,000</td>
+</tr>
+<tr>
+<td><code>gpt-4o-mini</code> RPM</td>
+<td>10,000</td>
+<td>6,000</td>
+</tr>
+<tr>
+<td><code>text-embedding-3-small</code> TPM</td>
+<td>5,000,000</td>
+<td>350,000</td>
+</tr>
+<tr>
+<td>Burst handling</td>
+<td>Strict</td>
+<td>Strict</td>
+</tr>
+<tr>
+<td>Quota increase request</td>
+<td>Tiered automatic</td>
+<td>Manual ticket, usually 1-3 days</td>
+</tr>
+</tbody></table>
+<p><strong>OpenAI direct has higher default ceilings</strong>, but Azure quotas are easily increased on request. For ZeManage&#39;s volume, both are way more than you need.</p>
+<h3>What Happens When You Hit Rate Limits</h3>
+<p>If you exceed TPM, the API returns:</p>
+<pre><code class="language-http">HTTP 429 Too Many Requests
+Retry-After: 12
+</code></pre>
+<p>Your existing <code>OpenAIProvider.SendWithRetryAsync()</code> already handles this — it retries with exponential backoff (0ms, 1s, 3s). Same logic works for Azure OpenAI.</p>
+<p>For the embedding indexing pipeline, add a token bucket rate limiter to stay below 90% of TPM:</p>
+<pre><code class="language-csharp">var rateLimiter = new TokenBucketLimiter(
+    tokensPerMinute: 350_000 * 0.9,  // 315K TPM target
+    burstSize: 50_000
+);
+</code></pre>
+<p>This is ~30 lines of code in the indexing service. Standard pattern.</p>
+<h3>Cost Impact of Quotas</h3>
+<p><strong>There is no extra charge for quota.</strong> Quota = ceiling, not allocation. You only pay for tokens you actually consume. If your deployment has 1M TPM quota but you only use 5K TPM, you pay for 5K TPM worth of tokens.</p>
+<p>The only time you pay for quota directly is <strong>PTU (Provisioned Throughput Units)</strong> — $260+/month per PTU regardless of usage. Don&#39;t use PTUs unless you&#39;re at enterprise scale.</p>
+<h3>Bottom Line on Quotas</h3>
+<p>For ZeManage&#39;s expected scale (100-5,000 users):</p>
+<ul>
+<li><strong>You will not hit Azure OpenAI quotas.</strong> Default allocation handles 100x your projected usage.</li>
+<li><strong>Use Global Standard for embeddings</strong> (slightly cheaper, same model)</li>
+<li><strong>Use Async Batch API for re-indexing</strong> (50% cheaper for non-realtime)</li>
+<li><strong>No extra charge for quota</strong> — only pay for tokens consumed</li>
+<li><strong>If you ever hit limits</strong>, raise a ticket — usually granted within 1-3 days</li>
+</ul>
+<hr>
+<h2>Part 9 — MCP Server: What It Is, What It Costs, Why It Matters</h2>
+<h3>What MCP Actually Is</h3>
+<p><strong>MCP (Model Context Protocol)</strong> is an open standard from Anthropic, adopted by OpenAI and Microsoft, that defines a universal way for AI applications to talk to data sources and tools.</p>
+<p><strong>Without MCP (today):</strong></p>
+<pre><code>Ze AI → custom HTTP code → /api/v1/master/ai-training
+Ze AI → custom HTTP code → /api/v1/Revit/metrics/manual
+Ze AI → custom HTTP code → /api/v1/Revit/metrics/periodic
+[every endpoint requires custom integration in plugin]
+</code></pre>
+<p><strong>With MCP:</strong></p>
+<pre><code>Ze AI → MCP client → MCP server (single endpoint, multiple tools)
+Claude Desktop → MCP client → same MCP server
+Cursor → MCP client → same MCP server
+[one server, many clients]
+</code></pre>
+<h3>What MCP Does for ZeManage Specifically</h3>
+<p>An MCP server is a backend service that exposes &quot;tools&quot; the LLM can call. For ZeManage, your MCP server would expose:</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>What It Does</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>search_revit_knowledge(query)</code></td>
+<td>RAG search over best practices, workflows, errors</td>
+</tr>
+<tr>
+<td><code>get_model_metrics(model_guid)</code></td>
+<td>Returns live model metrics</td>
+</tr>
+<tr>
+<td><code>get_health_alerts(model_guid)</code></td>
+<td>Returns active health alerts</td>
+</tr>
+<tr>
+<td><code>query_audit_log(filter)</code></td>
+<td>Searches audit log entries</td>
+</tr>
+<tr>
+<td><code>get_warning_resolution(warning_type)</code></td>
+<td>Returns warning fix instructions</td>
+</tr>
+<tr>
+<td><code>lookup_revit_command(command_name)</code></td>
+<td>Returns Revit command details</td>
+</tr>
+<tr>
+<td><code>get_workflow(task)</code></td>
+<td>Returns step-by-step workflow</td>
+</tr>
+</tbody></table>
+<p>The LLM (GPT-4o-mini, Claude, etc.) sees these tools in the system prompt and decides which to call based on the user&#39;s question. <strong>You don&#39;t write keyword classifiers anymore — the LLM does the routing.</strong></p>
+<h3>How MCP Differs from Your Current API</h3>
+<p><strong>Today&#39;s API endpoints:</strong></p>
+<ul>
+<li>Hand-coded URLs</li>
+<li>Custom serialization in each plugin file</li>
+<li>Plugin must redeploy when API changes</li>
+<li>Each new endpoint = new C# code in plugin</li>
+</ul>
+<p><strong>MCP server:</strong></p>
+<ul>
+<li>Standard JSON-RPC 2.0 protocol over HTTP/SSE or stdio</li>
+<li>Self-describing — client auto-discovers what tools are available</li>
+<li>Server can add/change tools without plugin redeployment</li>
+<li>Same server works with Claude Desktop, Cursor, mobile, anything</li>
+</ul>
+<h3>Cost of Running an MCP Server</h3>
+<p>This is the part most people get wrong. MCP itself is <strong>free and open-source</strong>. The cost is just hosting.</p>
+<h4>Infrastructure Cost</h4>
+<p><strong>Your MCP server is just another C# Web API service.</strong> It runs on the same App Service Plan as your existing backend.</p>
+<table>
+<thead>
+<tr>
+<th>Hosting Option</th>
+<th>Monthly Cost</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Same App Service Plan</strong> (<code>ASP-bimanagerg-87ea</code>) — add as new App Service</td>
+<td><strong>$0 incremental</strong> (your plan has headroom)</td>
+</tr>
+<tr>
+<td>New dedicated App Service (B1)</td>
+<td>$55/mo</td>
+</tr>
+<tr>
+<td>Container App</td>
+<td>$30/mo</td>
+</tr>
+<tr>
+<td>Function App (consumption)</td>
+<td>$5-15/mo</td>
+</tr>
+</tbody></table>
+<p><strong>My recommendation:</strong> Add the MCP server as a new App Service in your existing plan. <strong>Zero incremental hosting cost.</strong></p>
+<h4>Compute Cost</h4>
+<p>The MCP server itself doesn&#39;t call LLMs. It just exposes tools that the LLM client can call. <strong>No LLM cost in the MCP server.</strong></p>
+<p>The LLM cost happens in the <em>client</em> (Ze AI plugin), and you&#39;re already paying that.</p>
+<p>What the MCP server does pay for:</p>
+<ul>
+<li>Vector DB queries → already in pgvector ($0)</li>
+<li>Embedding queries → ~$3-5/mo (already in RAG budget)</li>
+<li>Database lookups → already running ($0)</li>
+</ul>
+<h4>Total Incremental Cost of MCP</h4>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Cost</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Hosting (in existing App Service Plan)</td>
+<td>$0</td>
+</tr>
+<tr>
+<td>LLM tokens</td>
+<td>$0 (LLM lives in client)</td>
+</tr>
+<tr>
+<td>Vector DB</td>
+<td>$0 (using pgvector you have)</td>
+</tr>
+<tr>
+<td>Logging (App Insights)</td>
+<td>~$2/mo</td>
+</tr>
+<tr>
+<td><strong>Total monthly cost</strong></td>
+<td><strong>~$2/mo</strong></td>
+</tr>
+</tbody></table>
+<p>The actual cost of MCP for ZeManage is <strong>negligible</strong>. The investment is the development work, not the infrastructure.</p>
+<h3>Development Cost for MCP</h3>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Days</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>C# MCP server skeleton (<code>ModelContextProtocol</code> NuGet)</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Convert 6-8 existing endpoints into MCP tools</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Tool descriptions and schemas</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Auth integration (your JWT)</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Hosting setup in existing App Service Plan</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Plugin integration (Ze AI as MCP client)</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Testing with Claude Desktop (validation)</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Documentation</td>
+<td>2</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>20 days (4 weeks)</strong></td>
+</tr>
+</tbody></table>
+<p><strong>Cost: ~$10,000 in dev work.</strong> Same as the original Phase 1 estimate.</p>
+<h3>Why MCP Matters for ZeManage</h3>
+<h4>Strategic Reasons</h4>
+<ol>
+<li><p><strong>Vendor flexibility</strong> — when you want to switch from GPT-4o-mini to Claude Sonnet, you don&#39;t rewrite code. The MCP server stays. Only the LLM client config changes.</p>
+</li>
+<li><p><strong>Multi-client support</strong> — your enterprise customers may want to use Claude Desktop or Cursor against ZeManage knowledge. MCP makes that work without extra dev.</p>
+</li>
+<li><p><strong>Future-proofing</strong> — Microsoft, OpenAI, Anthropic, Google have all adopted MCP. The market is consolidating around this protocol.</p>
+</li>
+<li><p><strong>Decouples plugin from API</strong> — today every API change risks breaking the plugin. MCP&#39;s auto-discovery means new tools appear without plugin updates.</p>
+</li>
+<li><p><strong>Better LLM behavior</strong> — keyword classifiers are brittle. LLMs choosing tools dynamically is more accurate.</p>
+</li>
+</ol>
+<h4>Operational Reasons</h4>
+<ol>
+<li><p><strong>Single source of truth</strong> — knowledge updates happen on the server, all clients benefit immediately.</p>
+</li>
+<li><p><strong>Better observability</strong> — every tool call is logged in one place (the MCP server) instead of scattered across plugin code.</p>
+</li>
+<li><p><strong>Easier testing</strong> — unit-test tools independently of the plugin.</p>
+</li>
+<li><p><strong>Plugin gets smaller</strong> — less custom HTTP code in the Revit plugin = fewer bugs, smaller install.</p>
+</li>
+</ol>
+<h3>Where MCP Fits in the Architecture</h3>
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│  Ze AI Plugin (in Revit)                                    │
+│                                                             │
+│   ZestAiViewModel                                           │
+│       │                                                     │
+│       ├──&gt; OpenAIProvider (LLM client)                      │
+│       │      │                                              │
+│       │      └──&gt; Azure OpenAI (gpt-4o-mini)                │
+│       │              │                                      │
+│       │              └─[ LLM picks tool ]──&gt; MCP Client     │
+│       │                                          │          │
+│       └──&gt; MCP Client ◄──────────────────────────┘          │
+│              │                                              │
+│              ▼                                              │
+└──────────────────┬──────────────────────────────────────────┘
+                   │ HTTPS + JSON-RPC
+                   ▼
+┌─────────────────────────────────────────────────────────────┐
+│  ZeManage MCP Server (in your App Service Plan)             │
+│                                                             │
+│   Tools exposed:                                            │
+│     • search_revit_knowledge ───&gt; RAG (Postgres + pgvector) │
+│     • get_model_metrics ────────&gt; Existing metrics API      │
+│     • get_health_alerts ────────&gt; Existing health API       │
+│     • query_audit_log ──────────&gt; Existing audit API        │
+│     • get_warning_resolution ───&gt; Knowledge DB              │
+│     • get_workflow ─────────────&gt; Knowledge DB              │
+└─────────────────────────────────────────────────────────────┘
+</code></pre>
+<p>The MCP server <strong>wraps</strong> your existing backend APIs. You don&#39;t replace them — you add a thin layer that the LLM understands.</p>
+<h3>Should MCP Come Before or After RAG?</h3>
+<p><strong>RAG first, then MCP.</strong> Reasoning:</p>
+<ol>
+<li>RAG gives immediate user-visible quality improvement</li>
+<li>MCP without RAG is just protocol shuffling — same answers, different transport</li>
+<li>Once RAG is live, MCP is the natural way to expose it cleanly</li>
+<li>Building MCP first means you&#39;d need to refactor it once RAG arrives</li>
+</ol>
+<h3>MCP Cost Summary</h3>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Cost</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>One-time development</td>
+<td>~$10,000</td>
+</tr>
+<tr>
+<td>Monthly hosting (existing infra)</td>
+<td>$0</td>
+</tr>
+<tr>
+<td>Monthly logging</td>
+<td>~$2</td>
+</tr>
+<tr>
+<td>LLM tokens (paid by client, not server)</td>
+<td>$0</td>
+</tr>
+<tr>
+<td><strong>Total monthly</strong></td>
+<td><strong>~$2/mo</strong></td>
+</tr>
+</tbody></table>
+<p>MCP is a <strong>one-time investment with zero ongoing cost</strong> on your setup.</p>
+<hr>
+<h2>Part 10 — Existing C# Terminal Analysis (RevitPythonShell-Based)</h2>
+<p>You&#39;ve started development on a C# terminal in <code>C:\Users\Admin\Downloads\My Tools terminal\revitpythonshell-master\</code>. Here&#39;s the analysis.</p>
+<h3>What&#39;s There Today</h3>
+<p>This is a <strong>mature open-source project (RevitPythonShell)</strong> that you&#39;ve adopted as a starting point. It&#39;s well-architected and already provides about 80% of what you need for an AI-driven C# terminal.</p>
+<h3>Project Structure</h3>
+<table>
+<thead>
+<tr>
+<th>Project</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>RevitPythonShell</code></td>
+<td>Main Revit add-in, ribbon registration, command entry points</td>
+</tr>
+<tr>
+<td><code>RpsRuntime</code></td>
+<td>Runtime library — <code>ScriptExecutor</code>, output streaming, configuration</td>
+</tr>
+<tr>
+<td><code>PythonConsoleControl</code></td>
+<td>WPF REPL UI with syntax highlighting, autocomplete, command history</td>
+</tr>
+<tr>
+<td><strong><code>DynamicRevitExtension</code></strong></td>
+<td><strong>C# code execution via Roslyn — the part you care about most</strong></td>
+</tr>
+<tr>
+<td><code>IronTextBox</code></td>
+<td>Editor wrapper</td>
+</tr>
+<tr>
+<td><code>Installer</code></td>
+<td>Deployment tools</td>
+</tr>
+</tbody></table>
+<h3>What You Already Have (Critical Findings)</h3>
+<h4>✅ Roslyn-Based C# Execution Already Implemented</h4>
+<p><strong>File:</strong> <code>DynamicRevitExtension/CSharpExecutor.cs</code></p>
+<p>Uses <code>Microsoft.CodeAnalysis.CSharp.Scripting</code> (Roslyn) v4.8.0 — the right approach. The execution pattern is:</p>
+<pre><code class="language-csharp">var globals = new CSharpRevitGlobals { /* doc, uidoc, app references */ };
+var task = CSharpScript.RunAsync(code, options, globals, typeof(CSharpRevitGlobals));
+</code></pre>
+<p>This is exactly the pattern needed for AI-generated C# code execution. <strong>Major head start.</strong></p>
+<h4>✅ WPF Terminal UI Already Built</h4>
+<p><strong>File:</strong> <code>PythonConsoleControl/PythonConsoleControl.xaml</code></p>
+<ul>
+<li>Interactive REPL with input/output</li>
+<li>Syntax highlighting via custom colorizer</li>
+<li>Autocomplete with Ctrl+Space</li>
+<li>Command history (arrow keys)</li>
+<li>AvalonEdit integration for advanced editing</li>
+<li>Modal and non-modal modes</li>
+</ul>
+<p>This UI can be repurposed as the AI terminal interface — change input from &quot;type code&quot; to &quot;type natural language&quot;, show the generated code, then show execution result.</p>
+<h4>✅ Multi-Version Revit Support</h4>
+<p>Multi-targeted: .NET 4.8 for Revit 2018-2024, .NET 8.0 for Revit 2025-2026. Same versions ZeManage targets.</p>
+<h4>✅ Configuration System</h4>
+<p>XML-based config (<code>RevitPythonShell.xml</code>) for search paths, environment variables, pre-configured commands. Reusable for AI terminal settings.</p>
+<h4>✅ Output Capture System</h4>
+<p><code>ScriptOutputStream</code> redirects stdout/stderr — perfect for capturing C# script output and streaming back to the user.</p>
+<h4>✅ Python-to-C# Converter (Experimental)</h4>
+<p><code>DynamicRevitExtension/PythonToCSharpConverter</code> parses Python AST and converts to C#-like syntax. Not directly useful for AI flow but indicates Roslyn integration is mature.</p>
+<h3>What&#39;s Missing for AI Integration</h3>
+<h4>❌ No AI/LLM Integration</h4>
+<p>Currently, the user types code directly. There&#39;s no natural language → code generation step.</p>
+<h4>❌ No Sandbox or Safety Restrictions</h4>
+<p>Scripts execute with <strong>full CLR permissions</strong>. Can call:</p>
+<ul>
+<li><code>Document.Delete()</code> — destructive</li>
+<li><code>Transaction</code> operations — can modify model</li>
+<li>File I/O, Process.Start, network calls</li>
+<li>Reflection</li>
+</ul>
+<p>This is a major risk for AI-generated code execution. Anything the LLM generates will run unrestricted.</p>
+<h4>❌ No Static Analysis</h4>
+<p>No AST validation before execution. AI-generated code with <code>doc.Delete()</code> would just run.</p>
+<h4>❌ No Code Preview UI</h4>
+<p>User would need to see the generated C# code before execution and approve. The current UI doesn&#39;t have this flow.</p>
+<h4>❌ No ExternalEvent Wrapping</h4>
+<p>Scripts execute in the IExternalCommand thread directly. For long-running operations or async work, you need ExternalEvent wrapping.</p>
+<h4>❌ No Audit Logging for AI-Generated Code</h4>
+<p>Critical for compliance — every AI-generated code execution should be logged in your audit system.</p>
+<h3>What Needs to Be Added (Phase 3 — AI Terminal)</h3>
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│  USER: &quot;How many doors taller than 8 feet are in this       │
+│   model?&quot;                                                   │
+└─────────────────────────────────────────────────────────────┘
+                         ↓
+┌─────────────────────────────────────────────────────────────┐
+│  NEW: Intent Classification                                 │
+│  - Read-only query? Action? Destructive?                    │
+│  - Determines guardrail tier                                │
+└─────────────────────────────────────────────────────────────┘
+                         ↓
+┌─────────────────────────────────────────────────────────────┐
+│  NEW: AI Code Generation                                    │
+│  - LLM (gpt-4o-mini) generates C# snippet                   │
+│  - System prompt: &quot;You write read-only Revit API queries.   │
+│    No transactions, no file I/O, no network.&quot;               │
+│  - Output: snippet returning typed result                   │
+└─────────────────────────────────────────────────────────────┘
+                         ↓
+┌─────────────────────────────────────────────────────────────┐
+│  NEW: Static Analyzer (Roslyn AST walker)                   │
+│  - Reject: Transaction, Delete, SetParameter writes         │
+│  - Reject: System.IO, Process.Start, HttpClient, Reflection │
+│  - Whitelist: Autodesk.Revit.DB, System.Linq, primitives    │
+└─────────────────────────────────────────────────────────────┘
+                         ↓
+┌─────────────────────────────────────────────────────────────┐
+│  NEW: Code Preview + User Approval                          │
+│  - Show generated C# in syntax-highlighted panel            │
+│  - &quot;Run&quot;, &quot;Modify&quot;, &quot;Cancel&quot; buttons                        │
+│  - For destructive ops: require admin OTP                   │
+└─────────────────────────────────────────────────────────────┘
+                         ↓
+┌─────────────────────────────────────────────────────────────┐
+│  EXISTING: CSharpExecutor (already built!)                  │
+│  - ScriptOptions configured with whitelisted refs           │
+│  - Execute with timeout (30s)                               │
+│  - Wrap in ExternalEvent for safe Revit thread access       │
+└─────────────────────────────────────────────────────────────┘
+                         ↓
+┌─────────────────────────────────────────────────────────────┐
+│  EXISTING: Output Stream (already built!)                   │
+│  - Capture result + stdout                                  │
+│  - Format as table/text in UI                               │
+└─────────────────────────────────────────────────────────────┘
+                         ↓
+┌─────────────────────────────────────────────────────────────┐
+│  NEW: Audit Logging                                         │
+│  - Log: query, generated code, result, user, model, time    │
+│  - Sync to backend audit table                              │
+└─────────────────────────────────────────────────────────────┘
+</code></pre>
+<h3>Reuse Map: What Survives, What Needs Building</h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>CSharpExecutor.cs</code> (Roslyn execution)</td>
+<td>✅ Reuse as-is</td>
+<td>Add ScriptOptions tightening</td>
+</tr>
+<tr>
+<td><code>PythonConsoleControl</code> (terminal UI)</td>
+<td>✅ Reuse, modify</td>
+<td>Change input mode, add code preview</td>
+</tr>
+<tr>
+<td><code>ScriptOutputStream</code> (output capture)</td>
+<td>✅ Reuse as-is</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>App.cs</code> (Revit add-in registration)</td>
+<td>✅ Reuse</td>
+<td>Modify ribbon button</td>
+</tr>
+<tr>
+<td><code>IExternalCommand</code> entry points</td>
+<td>✅ Reuse</td>
+<td>Wire to AI terminal command</td>
+</tr>
+<tr>
+<td>Config system (XML)</td>
+<td>✅ Reuse</td>
+<td>Add AI settings</td>
+</tr>
+<tr>
+<td><strong>Static analyzer</strong></td>
+<td>❌ Build new</td>
+<td>Roslyn AST walker, ~5 days</td>
+</tr>
+<tr>
+<td><strong>AI code generation client</strong></td>
+<td>❌ Build new</td>
+<td>Reuse <code>OpenAIProvider</code>, ~3 days</td>
+</tr>
+<tr>
+<td><strong>Code preview UI</strong></td>
+<td>❌ Build new</td>
+<td>WPF panel, ~3 days</td>
+</tr>
+<tr>
+<td><strong>Audit integration</strong></td>
+<td>❌ Build new</td>
+<td>Wire to existing <code>ProtectionAuditEntry</code>, ~2 days</td>
+</tr>
+<tr>
+<td><strong>Sandbox / namespace allowlist</strong></td>
+<td>❌ Build new</td>
+<td>Custom <code>ScriptOptions</code>, ~3 days</td>
+</tr>
+<tr>
+<td><strong>ExternalEvent wrapper</strong></td>
+<td>❌ Build new</td>
+<td>~2 days</td>
+</tr>
+</tbody></table>
+<h3>How This Changes Phase 3 Estimates</h3>
+<p>The original Phase 3 estimate was <strong>9 weeks ($25,000)</strong> for the C# Terminal.</p>
+<p><strong>With RevitPythonShell as a starting point:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Original Plan</th>
+<th>Revised Estimate</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>9 weeks total</td>
+<td><strong>5-6 weeks total</strong></td>
+</tr>
+<tr>
+<td>$25,000</td>
+<td><strong>~$16,000</strong></td>
+</tr>
+<tr>
+<td>Build Roslyn integration</td>
+<td>Already done — adapt only</td>
+</tr>
+<tr>
+<td>Build terminal UI</td>
+<td>Already done — modify only</td>
+</tr>
+<tr>
+<td>Build output capture</td>
+<td>Already done — reuse</td>
+</tr>
+</tbody></table>
+<p><strong>You save ~3-4 weeks and ~$9,000</strong> because the foundational work is done. The remaining effort is the safety layer, AI integration, and audit integration.</p>
+<h3>Critical Recommendations</h3>
+<h4>1. Start in Read-Only Mode (Tier 1)</h4>
+<p>First version executes only read-only Revit API code. No transactions, no parameter writes, no deletions. This handles 80% of useful &quot;tell me about my model&quot; queries with very low risk.</p>
+<h4>2. Add Static Analyzer Before First Use</h4>
+<p>Do not skip this. The existing RevitPythonShell has zero safety — direct CLR access. Adding the static analyzer is mandatory before AI generates any executed code.</p>
+<h4>3. Always Show Code Preview</h4>
+<p>Even for read-only queries, show the user the generated C# before execution. Builds trust and catches LLM hallucinations.</p>
+<h4>4. Audit Every Execution</h4>
+<p>Every AI-generated code execution should produce a <code>ProtectionAuditEntry</code> with the natural language query, generated code, result, user, and timestamp. Compliance requirement.</p>
+<h4>5. Wrap in ExternalEvent</h4>
+<p>Revit API calls must happen on the UI thread. The existing <code>IExternalCommand</code> flow handles this for synchronous code, but for async LLM calls + synchronous Revit execution, you need <code>ExternalEvent</code> to bridge them safely.</p>
+<h4>6. Tier the Trust Model</h4>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>What&#39;s Allowed</th>
+<th>Approval Required</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Tier 1 (default)</td>
+<td>Read-only queries (counts, parameter reads, filtering)</td>
+<td>None</td>
+</tr>
+<tr>
+<td>Tier 2 (admin)</td>
+<td>Property writes within transactions, with rollback</td>
+<td>Admin OTP</td>
+</tr>
+<tr>
+<td>Tier 3 (admin + flag)</td>
+<td>Element creation/deletion</td>
+<td>Admin OTP + protection rule check</td>
+</tr>
+</tbody></table>
+<p>Don&#39;t enable Tier 2 or 3 in v1.</p>
+<h3>License Considerations</h3>
+<p>RevitPythonShell is open-source. Check the LICENSE file in the folder:</p>
+<table>
+<thead>
+<tr>
+<th>Likely License</th>
+<th>What It Means</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MIT / Apache 2.0</td>
+<td>You can fork, modify, use commercially</td>
+</tr>
+<tr>
+<td>GPL / LGPL</td>
+<td>Stricter — derivative works may need to be open-sourced</td>
+</tr>
+</tbody></table>
+<p><strong>Action:</strong> Read <code>LICENSE</code> file in the folder before integrating into ZeManage. Most likely it&#39;s MIT (typical for Revit OSS), but verify.</p>
+<h3>Integration Plan: From &quot;My Tools terminal&quot; → ZeManage AI Terminal</h3>
+<p><strong>Phase 3a — Foundation (Weeks 11-12)</strong></p>
+<ul>
+<li>Fork RevitPythonShell into <code>BIManage.Terminal</code> namespace</li>
+<li>Strip out IronPython/Python-specific code (you don&#39;t need it)</li>
+<li>Keep <code>CSharpExecutor</code>, terminal UI, output system</li>
+<li>Verify it loads in your existing Revit plugin</li>
+</ul>
+<p><strong>Phase 3b — Safety Layer (Weeks 13-14)</strong></p>
+<ul>
+<li>Build Roslyn AST static analyzer</li>
+<li>Configure restricted <code>ScriptOptions</code> (allowlist references)</li>
+<li>Add timeout enforcement</li>
+<li>Add audit logging hooks</li>
+</ul>
+<p><strong>Phase 3c — AI Integration (Weeks 15-16)</strong></p>
+<ul>
+<li>Reuse <code>OpenAIProvider</code> to call Azure OpenAI for code generation</li>
+<li>Design system prompt for read-only Revit API code</li>
+<li>Wire user query → code gen → static analysis → preview → execute → result</li>
+</ul>
+<p><strong>Phase 3d — UX Polish (Week 17)</strong></p>
+<ul>
+<li>Code preview panel with syntax highlighting (AvalonEdit, already there)</li>
+<li>Result display (table for tabular data, text for scalars)</li>
+<li>Error handling for compilation failures, execution timeouts</li>
+<li>&quot;Re-run&quot;, &quot;Modify code&quot;, &quot;Copy code&quot; buttons</li>
+</ul>
+<p><strong>Phase 3e — Hardening (Week 18)</strong></p>
+<ul>
+<li>Comprehensive security testing (try every dangerous pattern)</li>
+<li>Audit log integration with existing ZeManage audit system</li>
+<li>Documentation</li>
+<li>Beta rollout to internal team</li>
+</ul>
+<p><strong>Total: 5-6 weeks, ~$16,000.</strong></p>
+<hr>
+<h2>Part 11 — Unified Roadmap: RAG + MCP + Terminal</h2>
+<p>Here&#39;s how the three components sequence together.</p>
+<h3>Timeline Overview</h3>
+<pre><code>Month 1     Month 2     Month 3     Month 4     Month 5     Month 6
+┌─────────────┬───────────────────┬───────────────────┬─────────────┐
+│             │                   │                   │             │
+│  Phase 2:   │   Phase 1:        │   Phase 3:        │  Phase 4:   │
+│  RAG        │   MCP Server      │   C# Terminal     │  Hardening  │
+│  6 weeks    │   4 weeks         │   5-6 weeks       │  3-4 weeks  │
+│             │                   │                   │             │
+│  $12,000    │   $10,000         │   $16,000         │  $10,000    │
+│             │                   │                   │             │
+└─────────────┴───────────────────┴───────────────────┴─────────────┘
+                                                              ↓
+                                            Total: ~5-6 months
+                                            Build: ~$48,000
+                                            Monthly: ~$50/mo
+</code></pre>
+<h3>Why This Order</h3>
+<ol>
+<li><strong>RAG first</strong> — biggest user-visible quality win, foundation for everything else</li>
+<li><strong>MCP second</strong> — wraps RAG cleanly, prepares for multi-client future, exposes Terminal nicely</li>
+<li><strong>Terminal third</strong> — needs MCP infrastructure to fit nicely into the architecture</li>
+<li><strong>Hardening last</strong> — covers all three at once, single observability stack</li>
+</ol>
+<h3>Cost Summary (Final, On Your Azure Setup)</h3>
+<h4>One-Time Development</h4>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Original</th>
+<th>With Your Setup</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Phase 2 — RAG</td>
+<td>$12,000</td>
+<td>$12,000</td>
+</tr>
+<tr>
+<td>Phase 1 — MCP</td>
+<td>$10,000</td>
+<td>$10,000</td>
+</tr>
+<tr>
+<td>Phase 3 — Terminal</td>
+<td>$25,000</td>
+<td><strong>$16,000</strong> (RevitPythonShell base)</td>
+</tr>
+<tr>
+<td>Phase 4 — Hardening</td>
+<td>$12,500</td>
+<td><strong>$10,000</strong> (less infra to harden)</td>
+</tr>
+<tr>
+<td>Contingency 15%</td>
+<td>$9,000</td>
+<td>$7,200</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>$68,500</strong></td>
+<td><strong>~$55,200</strong></td>
+</tr>
+</tbody></table>
+<p><strong>Savings: ~$13,000</strong> thanks to:</p>
+<ul>
+<li>pgvector instead of Qdrant (Phase 2)</li>
+<li>RevitPythonShell foundation (Phase 3)</li>
+</ul>
+<h4>Monthly Recurring Costs (At 500 Active Users)</h4>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Cost</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Existing Azure infrastructure</strong></td>
+<td>$0 incremental</td>
+</tr>
+<tr>
+<td>RAG: Azure OpenAI embeddings</td>
+<td>$5</td>
+</tr>
+<tr>
+<td>RAG: pgvector (existing Postgres)</td>
+<td>$0</td>
+</tr>
+<tr>
+<td>RAG: Production Redis (Basic C0)</td>
+<td>$17</td>
+</tr>
+<tr>
+<td>RAG: App Insights extra ingestion</td>
+<td>$5</td>
+</tr>
+<tr>
+<td>RAG: Storage (knowledge docs)</td>
+<td>$1</td>
+</tr>
+<tr>
+<td>MCP: Hosting (existing App Service Plan)</td>
+<td>$0</td>
+</tr>
+<tr>
+<td>MCP: App Insights logging</td>
+<td>$2</td>
+</tr>
+<tr>
+<td>Terminal: Audit logging</td>
+<td>$1</td>
+</tr>
+<tr>
+<td>Chat completions (if migrated to Azure OpenAI)</td>
+<td>$25</td>
+</tr>
+<tr>
+<td><strong>Total RAG + MCP + Terminal monthly</strong></td>
+<td><strong>~$56/mo</strong></td>
+</tr>
+<tr>
+<td><strong>Savings vs paying OpenAI direct (~$200/mo)</strong></td>
+<td><strong>+$144/mo</strong></td>
+</tr>
+<tr>
+<td><strong>Net change in total cloud spend</strong></td>
+<td><strong>~$0</strong></td>
+</tr>
+</tbody></table>
+<p>You&#39;re essentially getting RAG, MCP, and AI terminal <strong>for free in operating cost</strong> because the Azure OpenAI migration savings offset everything.</p>
+<h4>Per-User Cost</h4>
+<table>
+<thead>
+<tr>
+<th>Users</th>
+<th>Monthly</th>
+<th>Per User</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>100</td>
+<td>$40</td>
+<td>$0.40</td>
+</tr>
+<tr>
+<td>500</td>
+<td>$56</td>
+<td>$0.11</td>
+</tr>
+<tr>
+<td>1,500</td>
+<td>$80</td>
+<td>$0.05</td>
+</tr>
+<tr>
+<td>5,000</td>
+<td>$200</td>
+<td>$0.04</td>
+</tr>
+</tbody></table>
+<p>If you charge $10-20/user/month for AI features, gross margin is <strong>&gt;99%</strong>.</p>
+<h3>Key Decisions to Confirm</h3>
+<p>Before kicking off, confirm these:</p>
+<table>
+<thead>
+<tr>
+<th>Decision</th>
+<th>Recommendation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Start with RAG, then MCP, then Terminal</td>
+<td>✅ Confirmed</td>
+</tr>
+<tr>
+<td>Use Azure OpenAI (not OpenAI direct)</td>
+<td>✅ Confirmed</td>
+</tr>
+<tr>
+<td>Use pgvector on existing Postgres</td>
+<td>✅ Confirmed</td>
+</tr>
+<tr>
+<td>Fork RevitPythonShell for Terminal foundation</td>
+<td>Pending license check</td>
+</tr>
+<tr>
+<td>Resource group strategy</td>
+<td>New <code>rg-bimanage-rag-prod</code> recommended</td>
+</tr>
+<tr>
+<td>Azure OpenAI region</td>
+<td>East US 2 (cross-region from Central US)</td>
+</tr>
+<tr>
+<td>Budget alert threshold</td>
+<td>Current spend + $200/mo</td>
+</tr>
+<tr>
+<td>Phased rollout (10% → 50% → 100%)</td>
+<td>✅ Confirmed</td>
+</tr>
+</tbody></table>
+<h3>What I Need From You Next</h3>
+<p>To start Week 1 of Phase 2 (RAG), I need:</p>
+<ol>
+<li><strong>Azure OpenAI access application status</strong> — applied yet?</li>
+<li><strong>PostgreSQL version on <code>bimanage-postgres</code></strong> — needs 13+ for pgvector</li>
+<li><strong>License check on RevitPythonShell folder</strong> — read the LICENSE file, confirm MIT/Apache</li>
+<li><strong>Resource group decision</strong> — new or extend existing?</li>
+<li><strong>Knowledge sources for first index</strong> — which JSONs and docs go in?</li>
+<li><strong>Eval set owner</strong> — who can pull 100 real chat queries from your logs?</li>
+</ol>
+<p>Once these are confirmed, I can write:</p>
+<ul>
+<li>The exact Azure resource provisioning script (Bicep/ARM)</li>
+<li>The pgvector schema migration SQL</li>
+<li>The first PR for <code>RagKnowledgeProvider</code></li>
+<li>The eval framework starter code</li>
+</ul>
+<hr>
+<hr>
+<h2>Part 12 — Locked Plan: AI Terminal + MCP (Phase 3, In Progress)</h2>
+<p>This section reflects the <strong>final, confirmed decisions</strong> for the AI Terminal and MCP server work. Everything below is locked.</p>
+<h3>Confirmed Decisions</h3>
+<table>
+<thead>
+<tr>
+<th>Decision</th>
+<th>Choice</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Standalone plugin (no Node.js, no separate add-in)</td>
+<td>✅ Yes</td>
+</tr>
+<tr>
+<td>Strategy</td>
+<td>Fork Sparx, take the useful pieces, build standalone in C#</td>
+</tr>
+<tr>
+<td>Tool count</td>
+<td><strong>13 MCP tools</strong> (10 from Sparx + 3 ZeManage-specific)</td>
+</tr>
+<tr>
+<td>Location in code</td>
+<td>All under <code>BIManage/AI/</code> (existing AI folder)</td>
+</tr>
+<tr>
+<td>Part of Ze AI ribbon group</td>
+<td>✅ Yes</td>
+</tr>
+<tr>
+<td>MCP transports</td>
+<td>Both stdio + HTTP+SSE</td>
+</tr>
+<tr>
+<td>Hosting strategy</td>
+<td><strong>Local MCP now, Cloud MCP later</strong></td>
+</tr>
+<tr>
+<td>Branch</td>
+<td><code>feature/ai-terminal-mcp</code></td>
+</tr>
+<tr>
+<td>Reference clone</td>
+<td>Kept at <code>Downloads/sparx-revit-mcp-analysis/</code></td>
+</tr>
+</tbody></table>
+<h3>Final Tool List</h3>
+<h4>From Sparx (10 tools — port to C# under <code>BIManage/AI/Terminal/</code>)</h4>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Tool</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td><code>send_code_to_revit</code></td>
+<td>Execute AI-generated C# (HARDENED with our safety layer)</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>analyze_model_statistics</code></td>
+<td>Element/type/view/sheet counts, category breakdown</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>export_room_data</code></td>
+<td>Room schedule export with area, volume, level</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>get_material_quantities</code></td>
+<td>Material takeoff (area, volume per material)</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>get_selected_elements</code></td>
+<td>Returns selected element IDs + properties</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>ai_element_filter</code></td>
+<td>Intelligent element filtering</td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>color_splash</code></td>
+<td>Color elements by parameter value</td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>say_hello</code></td>
+<td>Connection/health check</td>
+</tr>
+<tr>
+<td>9</td>
+<td><code>get_current_view_info</code></td>
+<td>Viewport, scale, level, view type</td>
+</tr>
+<tr>
+<td>10</td>
+<td><code>get_available_family_types</code></td>
+<td>All loadable families in project</td>
+</tr>
+</tbody></table>
+<h4>ZeManage-Specific (3 tools — net new)</h4>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Tool</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>11</td>
+<td><code>query_audit_log</code></td>
+<td>Search ZeManage&#39;s audit trail by user, date, action</td>
+</tr>
+<tr>
+<td>12</td>
+<td><code>check_protection_rules</code></td>
+<td>List active protection rules for current model</td>
+</tr>
+<tr>
+<td>13</td>
+<td><code>get_health_alerts</code></td>
+<td>Returns current model health alerts</td>
+</tr>
+</tbody></table>
+<h3>Folder Layout (Inside Existing <code>BIManage/AI/</code>)</h3>
+<pre><code>BIManage/AI/                           [existing — keep all current files]
+├── Providers/                         [existing]
+├── Interfaces/                        [existing]
+├── Knowledge/                         [existing]
+├── ModelContextService.cs             [existing]
+├── ModelHealthAlertService.cs         [existing]
+├── LocalDbQueryService.cs             [existing]
+├── ElementVisibilityService.cs        [existing]
+├── WarningResolutionService.cs        [existing]
+├── AiDiagLog.cs                       [existing]
+│
+└── Terminal/                          [NEW — all AI Terminal + MCP work lives here]
+    ├── McpServer/
+    │   ├── ZeManageMcpServer.cs       Hosts both transports
+    │   ├── StdioTransport.cs          Claude Desktop, Cursor support
+    │   └── HttpSseTransport.cs        Web/Ze AI support (localhost:5174)
+    │
+    ├── Tools/                         The 13 MCP tools
+    │   ├── SendCodeToRevit/
+    │   ├── AnalyzeModelStatistics/
+    │   ├── ExportRoomData/
+    │   ├── GetMaterialQuantities/
+    │   ├── GetSelectedElements/
+    │   ├── AiElementFilter/
+    │   ├── ColorSplash/
+    │   ├── SayHello/
+    │   ├── GetCurrentViewInfo/
+    │   ├── GetAvailableFamilyTypes/
+    │   ├── QueryAuditLog/             ZeManage-specific
+    │   ├── CheckProtectionRules/      ZeManage-specific
+    │   └── GetHealthAlerts/           ZeManage-specific
+    │
+    ├── Safety/
+    │   ├── RoslynStaticAnalyzer.cs    AST validation, reject dangerous patterns
+    │   ├── NamespaceAllowlist.cs      Whitelist of allowed namespaces
+    │   └── ExecutionTimeout.cs        30-second cancel via CancellationToken
+    │
+    ├── Execution/
+    │   ├── CSharpScriptExecutor.cs    From Sparx, hardened with safety
+    │   ├── ExternalEventManager.cs    From Sparx verbatim (UI thread bridge)
+    │   └── RevitScriptGlobals.cs      Globals object exposed to scripts
+    │
+    └── UI/                            (XAML files in BIManage/Views/AI/)
+        ├── TerminalWindow.xaml        Chat-style + code preview
+        ├── CodePreviewPanel.xaml      Syntax-highlighted preview
+        └── McpServerStatusWindow.xaml On/off toggle
+</code></pre>
+<h3>Two New Ribbon Buttons (Inside Existing AI Panel)</h3>
+<p>The Ze AI ribbon panel will have <strong>3 buttons</strong> total:</p>
+<table>
+<thead>
+<tr>
+<th>Button</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Ze AI</td>
+<td>Existing</td>
+<td>Opens chat dialog</td>
+</tr>
+<tr>
+<td><strong>AI Terminal</strong></td>
+<td><strong>NEW</strong></td>
+<td>Opens terminal window for natural-language → C# execution</td>
+</tr>
+<tr>
+<td><strong>MCP Server</strong></td>
+<td><strong>NEW</strong></td>
+<td>Opens server status / on-off toggle</td>
+</tr>
+</tbody></table>
+<h3>Hosting Decision — Local MCP First</h3>
+<p><strong>Now (Phase 3):</strong></p>
+<ul>
+<li>Local MCP server runs <strong>inside the Revit plugin process</strong></li>
+<li>Both stdio + HTTP+SSE transports active</li>
+<li>HTTP listens on <code>localhost:5174</code></li>
+<li>All 10 Revit-execution tools registered</li>
+<li>3 ZeManage-specific tools called via existing backend API</li>
+</ul>
+<p><strong>Later (Phase 4 — after RAG is done):</strong></p>
+<ul>
+<li>Cloud MCP server added to existing <code>ASP-bimanagerg-87ea</code> App Service Plan</li>
+<li>Hosts knowledge tools (RAG search), cross-user audit, etc.</li>
+<li>Local + Cloud MCP work together</li>
+</ul>
+<h3>Cost (Phase 3 Only — Local MCP)</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Cost</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Hosting (in Revit plugin process)</td>
+<td>$0</td>
+</tr>
+<tr>
+<td><code>ModelContextProtocol</code> C# SDK (Apache 2.0)</td>
+<td>$0</td>
+</tr>
+<tr>
+<td>Logging (App Insights)</td>
+<td>~$2/mo</td>
+</tr>
+<tr>
+<td><strong>Monthly recurring</strong></td>
+<td><strong>~$2/mo</strong></td>
+</tr>
+</tbody></table>
+<h3>Development Cost (Phase 3 — Local MCP Only)</h3>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Days</th>
+<th>Cost</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>3a — Foundation: port executor + first Sparx tool</td>
+<td>3</td>
+<td>$2,400</td>
+</tr>
+<tr>
+<td>3b — Port remaining 9 Sparx tools</td>
+<td>4</td>
+<td>$3,200</td>
+</tr>
+<tr>
+<td>3c — Build C# MCP server (stdio + HTTP+SSE)</td>
+<td>5</td>
+<td>$4,000</td>
+</tr>
+<tr>
+<td>3d — Roslyn safety layer (AST + allowlist + timeout)</td>
+<td>5</td>
+<td>$4,000</td>
+</tr>
+<tr>
+<td>3e — Build 3 ZeManage-specific tools</td>
+<td>4</td>
+<td>$3,200</td>
+</tr>
+<tr>
+<td>3f — Terminal UI (chat + code preview)</td>
+<td>5</td>
+<td>$4,000</td>
+</tr>
+<tr>
+<td>3g — AI integration (NL → C# code-gen)</td>
+<td>4</td>
+<td>$3,200</td>
+</tr>
+<tr>
+<td>3h — Testing + audit integration + docs</td>
+<td>5</td>
+<td>$4,000</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>35 days (~5 weeks)</strong></td>
+<td><strong>$28,000</strong></td>
+</tr>
+<tr>
+<td>15% contingency</td>
+<td>—</td>
+<td>$4,200</td>
+</tr>
+<tr>
+<td><strong>Final total Phase 3</strong></td>
+<td>—</td>
+<td><strong>~$32,200</strong></td>
+</tr>
+</tbody></table>
+<p>Cloud MCP server (Phase 4) adds ~$2,400 + 3 days when we&#39;re ready.</p>
+<h3>Cloud MCP Cost (Phase 4 — When Built Later)</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Cost</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Hosting on existing App Service Plan</td>
+<td>$0 incremental</td>
+</tr>
+<tr>
+<td>Apache 2.0 SDK</td>
+<td>$0</td>
+</tr>
+<tr>
+<td>Logging</td>
+<td>~$2/mo additional</td>
+</tr>
+<tr>
+<td><strong>Total monthly added</strong></td>
+<td><strong>~$2/mo</strong></td>
+</tr>
+</tbody></table>
+<h3>Files to Reuse from Sparx Fork</h3>
+<table>
+<thead>
+<tr>
+<th>Source File</th>
+<th>Action</th>
+<th>Target in ZeManage</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>commandset/Commands/SayHello/*</code></td>
+<td>Copy + namespace rename</td>
+<td><code>BIManage/AI/Terminal/Tools/SayHello/</code></td>
+</tr>
+<tr>
+<td><code>commandset/Commands/AnalyzeModelStatistics/*</code></td>
+<td>Copy + namespace rename</td>
+<td><code>BIManage/AI/Terminal/Tools/AnalyzeModelStatistics/</code></td>
+</tr>
+<tr>
+<td><code>commandset/Commands/ExportRoomData/*</code></td>
+<td>Copy + namespace rename</td>
+<td><code>BIManage/AI/Terminal/Tools/ExportRoomData/</code></td>
+</tr>
+<tr>
+<td><code>commandset/Commands/GetMaterialQuantities/*</code></td>
+<td>Copy + namespace rename</td>
+<td><code>BIManage/AI/Terminal/Tools/GetMaterialQuantities/</code></td>
+</tr>
+<tr>
+<td><code>commandset/Commands/GetSelectedElements/*</code></td>
+<td>Copy + namespace rename</td>
+<td><code>BIManage/AI/Terminal/Tools/GetSelectedElements/</code></td>
+</tr>
+<tr>
+<td><code>commandset/Commands/AiElementFilter/*</code></td>
+<td>Copy + namespace rename</td>
+<td><code>BIManage/AI/Terminal/Tools/AiElementFilter/</code></td>
+</tr>
+<tr>
+<td><code>commandset/Commands/ColorSplash/*</code></td>
+<td>Copy + namespace rename</td>
+<td><code>BIManage/AI/Terminal/Tools/ColorSplash/</code></td>
+</tr>
+<tr>
+<td><code>commandset/Commands/GetCurrentViewInfo/*</code></td>
+<td>Copy + namespace rename</td>
+<td><code>BIManage/AI/Terminal/Tools/GetCurrentViewInfo/</code></td>
+</tr>
+<tr>
+<td><code>commandset/Commands/GetAvailableFamilyTypes/*</code></td>
+<td>Copy + namespace rename</td>
+<td><code>BIManage/AI/Terminal/Tools/GetAvailableFamilyTypes/</code></td>
+</tr>
+<tr>
+<td><code>commandset/Commands/ExecuteDynamicCode/ExecuteCodeEventHandler.cs</code></td>
+<td>Copy + <strong>add safety wrapper</strong></td>
+<td><code>BIManage/AI/Terminal/Execution/CSharpScriptExecutor.cs</code></td>
+</tr>
+<tr>
+<td><code>commandset/Models/*.cs</code></td>
+<td>Copy verbatim</td>
+<td><code>BIManage/AI/Terminal/Models/</code></td>
+</tr>
+<tr>
+<td><code>plugin/Core/ExternalEventManager.cs</code></td>
+<td>Copy verbatim</td>
+<td><code>BIManage/AI/Terminal/Execution/ExternalEventManager.cs</code></td>
+</tr>
+</tbody></table>
+<h3>Files NOT Reused from Sparx</h3>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Why Skip</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>server/</code> (entire TypeScript folder, 4,816 lines)</td>
+<td>Replaced by C# MCP server using <code>ModelContextProtocol</code> NuGet</td>
+</tr>
+<tr>
+<td><code>plugin/Core/SocketService.cs</code></td>
+<td>No TCP layer needed — in-process MCP server</td>
+</tr>
+<tr>
+<td><code>plugin/Core/Application.cs</code></td>
+<td>We have ZeManage&#39;s own Application class</td>
+</tr>
+<tr>
+<td><code>command.json</code> discovery + DLL reflection</td>
+<td>Direct C# tool registration instead</td>
+</tr>
+<tr>
+<td><code>commandset/Commands/CreateGrid/</code>, <code>CreateLevel/</code>, <code>CreateRoom/</code>, <code>CreateDimension/</code>, <code>CreateStructuralFraming/</code></td>
+<td>Out of ZeManage scope</td>
+</tr>
+<tr>
+<td><code>commandset/Commands/DeleteElement/</code>, <code>OperateElement/</code>, <code>TagAllWalls/</code>, <code>TagAllRooms/</code></td>
+<td>Skipped per categorization</td>
+</tr>
+<tr>
+<td><code>commandset/Commands/StoreProjectData/</code>, <code>StoreRoomData/</code></td>
+<td>ZeManage has its own SQLite layer</td>
+</tr>
+</tbody></table>
+<h3>MIT License Attribution</h3>
+<p>A new file <code>BIManage/AI/Terminal/THIRD_PARTY_NOTICES.md</code> will include:</p>
+<pre><code>This product includes code from mcp-servers-for-revit
+(https://github.com/mcp-servers-for-revit/mcp-servers-for-revit)
+licensed under the MIT License.
+
+Copyright (c) 2026 sparx-fire, mcp-servers-for-revit
+
+[Full MIT text included]
+</code></pre>
+<h3>NuGet Packages to Add</h3>
+<table>
+<thead>
+<tr>
+<th>Package</th>
+<th>Version</th>
+<th>Purpose</th>
+<th>License</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ModelContextProtocol</code></td>
+<td>1.3.0</td>
+<td>C# MCP SDK (server + client)</td>
+<td>Apache 2.0</td>
+</tr>
+<tr>
+<td><code>ModelContextProtocol.AspNetCore</code></td>
+<td>1.3.0</td>
+<td>HTTP+SSE transport</td>
+<td>Apache 2.0</td>
+</tr>
+<tr>
+<td><code>Microsoft.CodeAnalysis.CSharp.Scripting</code></td>
+<td>4.8.0</td>
+<td>Roslyn (already needed for executor)</td>
+<td>MIT</td>
+</tr>
+<tr>
+<td><code>Microsoft.CodeAnalysis.CSharp</code></td>
+<td>4.8.0</td>
+<td>Roslyn AST analyzer</td>
+<td>MIT</td>
+</tr>
+</tbody></table>
+<p>Total added DLL footprint: ~5 MB.</p>
+<h3>Security Tier Model (Day 1)</h3>
+<p><strong>Only Tier 1 enabled in Phase 3.</strong> Tier 2 and Tier 3 are documented but disabled.</p>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>What&#39;s Allowed</th>
+<th>Approval</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Tier 1</strong></td>
+<td>Read-only queries (counts, parameters, filtering, LINQ)</td>
+<td>None</td>
+<td><strong>Enabled v1</strong></td>
+</tr>
+<tr>
+<td>Tier 2</td>
+<td>Property writes within transactions, with rollback</td>
+<td>Admin OTP</td>
+<td>Disabled</td>
+</tr>
+<tr>
+<td>Tier 3</td>
+<td>Element creation/deletion</td>
+<td>Admin OTP + protection rule check</td>
+<td>Disabled</td>
+</tr>
+</tbody></table>
+<p>The static analyzer enforces this — anything matching Tier 2/3 patterns gets rejected at parse time.</p>
+<h3>Phase 3 Sequence (Lock-In)</h3>
+<table>
+<thead>
+<tr>
+<th>Sub-phase</th>
+<th>Days</th>
+<th>Deliverable</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>3a — Foundation</td>
+<td>3</td>
+<td>New <code>BIManage/AI/Terminal/</code> folder, first Sparx tool (SayHello) ported, ribbon button visible, executes against Revit</td>
+</tr>
+<tr>
+<td>3b — Port remaining 9 Sparx tools</td>
+<td>4</td>
+<td>All 10 read-only tools callable via simple test harness</td>
+</tr>
+<tr>
+<td>3c — C# MCP server</td>
+<td>5</td>
+<td>Both stdio + HTTP+SSE transports working, all 10 tools registered with MCP, Claude Desktop test connection</td>
+</tr>
+<tr>
+<td>3d — Safety layer</td>
+<td>5</td>
+<td>Roslyn AST analyzer + namespace allowlist + 30s timeout, full Tier 1 enforcement</td>
+</tr>
+<tr>
+<td>3e — ZeManage tools</td>
+<td>4</td>
+<td>3 new tools wired to existing audit/protection/health services</td>
+</tr>
+<tr>
+<td>3f — Terminal UI</td>
+<td>5</td>
+<td>Chat-style window, code preview pane with syntax highlighting, Run/Modify/Cancel buttons</td>
+</tr>
+<tr>
+<td>3g — AI integration</td>
+<td>4</td>
+<td>Natural language → C# code-gen via Azure OpenAI, wired through MCP tool</td>
+</tr>
+<tr>
+<td>3h — Testing + audit + docs</td>
+<td>5</td>
+<td>Adversarial security testing, audit log integration, user guide</td>
+</tr>
+</tbody></table>
+<h3>Checkpoints</h3>
+<table>
+<thead>
+<tr>
+<th>Checkpoint</th>
+<th>When</th>
+<th>What</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>After 3a</td>
+<td>End of Day 3</td>
+<td>Demo of first ported tool — your sign-off</td>
+</tr>
+<tr>
+<td>After 3c</td>
+<td>End of Day 12</td>
+<td>Demo of MCP server with Claude Desktop — your sign-off</td>
+</tr>
+<tr>
+<td>After 3d</td>
+<td>End of Day 17</td>
+<td>Review of safety layer test cases — your sign-off</td>
+</tr>
+<tr>
+<td>After 3g</td>
+<td>End of Day 30</td>
+<td>End-to-end demo: type natural language, see code, see result — your sign-off</td>
+</tr>
+<tr>
+<td>After 3h</td>
+<td>End of Day 35</td>
+<td>Internal beta begins</td>
+</tr>
+</tbody></table>
+<hr>
+<hr>
+<h2>Part 13 — Strategy Pivot: OpenAI Function Calling Now, MCP Later</h2>
+<h3>Why the Pivot</h3>
+<p>After Phase 3b completed (10 tools ported, builds clean), we re-examined the goal of the work. The user&#39;s clarified intent: <strong>&quot;Make Ze AI smarter about analyzing the open model&quot;</strong> — not necessarily <em>&quot;build a multi-client MCP ecosystem&quot;</em>.</p>
+<p>For that goal, <strong>OpenAI function calling</strong> is a more direct path than MCP:</p>
+<ul>
+<li>Already supported by your existing <code>OpenAIProvider</code> (just one new field in the request)</li>
+<li>No new transport layer (no stdio, no HTTP+SSE, no port to manage)</li>
+<li>No new server process to host</li>
+<li>No external client coordination needed</li>
+<li>~3 days to integrate vs. ~5 days to build the MCP server</li>
+</ul>
+<p><strong>Crucially, the 10 ported tool classes from Phase 3b stay valid.</strong> They are plain C# (<code>Execute(JsonElement, string)</code>) with no MCP-specific assumptions. Both function calling and MCP can call them through different adapters.</p>
+<h3>The Decision</h3>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Choice</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Primary integration</td>
+<td><strong>OpenAI function calling</strong> (now, Phase 3c-NEW)</td>
+</tr>
+<tr>
+<td>MCP server</td>
+<td><strong>Deferred to Phase 5</strong> (when Claude Desktop / external client integration becomes a real ask)</td>
+</tr>
+<tr>
+<td>Tool classes</td>
+<td><strong>Unchanged</strong> — same 10 from Phase 3b serve both paths</td>
+</tr>
+<tr>
+<td>Architecture seam</td>
+<td><strong>Tool registry</strong> — built in 3c-NEW, reused by future MCP adapter</td>
+</tr>
+</tbody></table>
+<h3>Why MCP Stays Achievable</h3>
+<p>The pivot does <strong>not</strong> lock us out of MCP. The key insight:</p>
+<pre><code>┌──────────────────────────────────────────────────────────────┐
+│  10 Tool Classes (Phase 3b — DONE)                           │
+│  Plain C# — no protocol assumptions                          │
+└──────────────────────────────────────────────────────────────┘
+           ▲                                          ▲
+           │ called by                                │ called by
+┌──────────────────────────┐              ┌──────────────────────────┐
+│ OpenAI Function Calling  │              │  MCP Server              │
+│ Adapter (Phase 3c-NEW)   │              │  (Phase 5 — LATER)       │
+│ Used by Ze AI plugin     │              │ Used by Claude Desktop,  │
+│                          │              │ Cursor, web tools        │
+└──────────────────────────┘              └──────────────────────────┘
+</code></pre>
+<p>When the day comes, Phase 5 is a clean addition (~5 days):</p>
+<ul>
+<li>All tools already exist</li>
+<li>Tool registry abstracts &quot;list tools&quot; + &quot;execute by name&quot;</li>
+<li>MCP wrapper translates JSON-RPC → same <code>Execute(JsonElement, string)</code> calls</li>
+</ul>
+<h3>Revised Phase Sequence</h3>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Original</th>
+<th>Revised</th>
+<th>Days</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>3a — Foundation + first tool ported</td>
+<td>3 days</td>
+<td>Same</td>
+<td>3</td>
+<td>✅ Done (verified in Revit)</td>
+</tr>
+<tr>
+<td>3b — Port remaining 9 Sparx tools</td>
+<td>4 days</td>
+<td>Same</td>
+<td>4</td>
+<td>✅ Done (build clean)</td>
+</tr>
+<tr>
+<td>3c-OLD — Build C# MCP server (stdio + HTTP+SSE)</td>
+<td>5 days</td>
+<td><strong>Skipped — moved to Phase 5</strong></td>
+<td>0</td>
+<td>Deferred</td>
+</tr>
+<tr>
+<td><strong>3c-NEW — OpenAI function-calling adapter + tool registry</strong></td>
+<td>—</td>
+<td><strong>NEW</strong></td>
+<td>3</td>
+<td>🔄 In progress</td>
+</tr>
+<tr>
+<td>3d — Roslyn safety layer + enable <code>send_code_to_revit</code></td>
+<td>5 days</td>
+<td>Same</td>
+<td>5</td>
+<td>Pending</td>
+</tr>
+<tr>
+<td>3e — 3 ZeManage-specific tools</td>
+<td>4 days</td>
+<td>Same (now invoked via function calling)</td>
+<td>4</td>
+<td>Pending</td>
+</tr>
+<tr>
+<td>3f — Terminal UI</td>
+<td>5 days</td>
+<td>Same</td>
+<td>5</td>
+<td>Pending</td>
+</tr>
+<tr>
+<td>3g — AI integration</td>
+<td>4 days</td>
+<td><strong>Mostly absorbed into 3c-NEW</strong></td>
+<td>1</td>
+<td>Pending</td>
+</tr>
+<tr>
+<td>3h — Testing + audit + docs</td>
+<td>5 days</td>
+<td>Same</td>
+<td>5</td>
+<td>Pending</td>
+</tr>
+<tr>
+<td><strong>Phase 5 (FUTURE) — MCP wrapper around the same tools</strong></td>
+<td>—</td>
+<td><strong>NEW</strong></td>
+<td>5</td>
+<td>Backlogged</td>
+</tr>
+</tbody></table>
+<p><strong>Net: 6 days saved in Phase 3</strong> by deferring MCP. The MCP work isn&#39;t lost — it&#39;s just sequenced after we know there&#39;s real demand for external clients.</p>
+<h3>What &quot;OpenAI Function Calling&quot; Adds to Ze AI</h3>
+<p>Concretely:</p>
+<ul>
+<li>A new <code>tools</code> array in every chat completion request, listing the 9 enabled tool classes</li>
+<li>When GPT-4o-mini decides a tool fits, it returns <code>tool_calls</code> instead of plain text</li>
+<li><code>OpenAIProvider</code> detects this, looks up the tool in the registry, invokes it on the live Revit model</li>
+<li>Tool result is sent back to GPT as a follow-up message</li>
+<li>GPT generates the final natural-language answer using the tool&#39;s data</li>
+</ul>
+<p>User experience: same chat dialog, smarter answers, ability to query the live model instead of relying only on cached snapshots.</p>
+<h3>Tool Selection for v1 (3c-NEW)</h3>
+<p>All 9 working tools enabled from day 1:</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Tool</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td><code>say_hello</code></td>
+<td>✅ Verified (Phase 3a)</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>get_selected_elements</code></td>
+<td>✅ Built (3b)</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>get_current_view_info</code></td>
+<td>✅ Built (3b)</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>get_available_family_types</code></td>
+<td>✅ Built (3b)</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>analyze_model_statistics</code></td>
+<td>✅ Built (3b)</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>export_room_data</code></td>
+<td>✅ Built (3b)</td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>get_material_quantities</code></td>
+<td>✅ Built (3b)</td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>color_splash</code></td>
+<td>✅ Built (3b)</td>
+</tr>
+<tr>
+<td>9</td>
+<td><code>ai_element_filter</code></td>
+<td>✅ Built (3b)</td>
+</tr>
+<tr>
+<td>10</td>
+<td><code>send_code_to_revit</code></td>
+<td>⏸ Stay stubbed until Phase 3d</td>
+</tr>
+</tbody></table>
+<h3>Phase 3c-NEW Deliverables</h3>
+<table>
+<thead>
+<tr>
+<th>Day</th>
+<th>Task</th>
+<th>File</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Tool registry — discovers all <code>ExternalEventCommandBase</code> subclasses, maps name→type</td>
+<td><code>BIManage/AI/Terminal/ToolRegistry.cs</code></td>
+</tr>
+<tr>
+<td>1</td>
+<td>Tool schema generator — turns each tool&#39;s parameter shape into OpenAI&#39;s JSON-schema format</td>
+<td><code>BIManage/AI/Terminal/OpenAi/ToolSchemaBuilder.cs</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>OpenAI provider extension — accept <code>tools</code>, parse <code>tool_calls</code>, dispatch</td>
+<td><code>BIManage/AI/Providers/OpenAIProvider.cs</code> (modify)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Tool execution dispatcher — invoke tool, marshal <code>JsonElement</code> args + serialize result</td>
+<td><code>BIManage/AI/Terminal/OpenAi/ToolDispatcher.cs</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Wire into <code>ZestAiViewModel.SendMessageAsync</code> so chat messages can use tools</td>
+<td><code>BIManage/ViewModels/AI/ZestAiViewModel.cs</code> (modify)</td>
+</tr>
+<tr>
+<td>3</td>
+<td>End-to-end smoke test in Revit — ask &quot;how many walls in this model?&quot;, verify tool fires</td>
+<td>Manual + audit log check</td>
+</tr>
+</tbody></table>
+<hr>
+<p><em>Document version: 4.0</em>
+<em>Status: Phase 3c-NEW (OpenAI function calling adapter) — in progress on branch <code>feature/ai-terminal-mcp</code></em>
+<em>Last updated: 2026-05-10</em>
+<em>Active phase: 3c-NEW (tool registry + function calling adapter)</em>
+<em>Deferred: 3c-OLD (MCP server) → Phase 5 (post-launch)</em></p>
+
+
+<hr>
+<div style="text-align: center; color: #94a3b8; font-size: 9pt; margin-top: 40px;">
+  &copy; 2026 ZestineTech. ZeManage AI Architecture Documentation. Document version 2.0.
+</div>
+
+</div>
+</body>
+</html>

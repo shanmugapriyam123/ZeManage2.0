@@ -1,0 +1,1013 @@
+<Window x:Class="BIManageRevit.BIManage.Views.AI.ZestAiDialog"
+        Topmost="False"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ai="clr-namespace:BIManage.ViewModels.AI"
+    xmlns:converters="clr-namespace:BIManage.Common.Converters"
+    d:DataContext="{d:DesignInstance ai:ZestAiViewModel}"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    WindowStartupLocation="CenterScreen"
+    Title="Zest AI"
+    Height="660"
+    Width="760"
+    MinHeight="480"
+    MinWidth="480"
+    WindowStyle="None"
+    AllowsTransparency="True"
+    Background="Transparent"
+    ResizeMode="CanResizeWithGrip"
+    KeyDown="Window_KeyDown">
+    <Window.Icon>
+        <BitmapImage UriSource="pack://application:,,,/BIManageRevit;component/BIManage/Resources/Icons/BIManage.png"/>
+    </Window.Icon>
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        <converters:InverseBooleanConverter x:Key="InvBool"/>
+        <converters:InverseBooleanToVisibilityConverter x:Key="InvBoolToVis"/>
+        <converters:MarkdownTextConverter x:Key="MdConverter"/>
+        <converters:FeedbackColorConverter x:Key="FeedbackColorConverter"/>
+
+        <!-- IconBreathe + CircleDrift storyboards deleted 2026-05-28: scale-animating the
+             mascot reflowed surrounding content (greeting card text and quick-action grid
+             shifted on every frame), which read as distracting in motion rather than alive.
+             Margin-animating the decorative circles caused the same visual effect. Both were
+             removed; the mascot now sits still. Re-add carefully if needed — any animation
+             that affects layout-relevant properties (Width, Height, Margin, scale) will
+             reflow siblings inside a StackPanel. -->
+
+        <!-- 2026-05-28: AccentShimmer storyboard removed. The forever-repeating opacity +
+             height pulse on the orange accent line at the top of the window read as a
+             constant "breathing" effect in the UI. The one-shot entrance storyboards
+             below (Header / Content / Input) are kept — they play ONCE on Window.Loaded
+             and never loop, so they don't contribute to steady-state movement. The user's
+             rule: nothing should animate once the AI is idle. DotPulse (further down) is
+             also kept because it only runs while the thinking indicator is visible. -->
+
+        <!-- Header slide-down entrance (one-shot, fires on Window.Loaded) -->
+        <Storyboard x:Key="HeaderEntrance">
+            <ThicknessAnimation Storyboard.TargetName="HeaderBar"
+                                Storyboard.TargetProperty="Margin"
+                                From="0,-48,0,0" To="0"
+                                Duration="0:0:0.5">
+                <ThicknessAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </ThicknessAnimation.EasingFunction>
+            </ThicknessAnimation>
+            <DoubleAnimation Storyboard.TargetName="HeaderBar"
+                             Storyboard.TargetProperty="Opacity"
+                             From="0" To="1" Duration="0:0:0.4">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+
+        <!-- Content entrance (one-shot, fires on Window.Loaded) -->
+        <Storyboard x:Key="ContentEntrance">
+            <DoubleAnimation Storyboard.TargetName="ChatContent"
+                             Storyboard.TargetProperty="Opacity"
+                             From="0" To="1" Duration="0:0:0.5" BeginTime="0:0:0.1">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+
+        <!-- Input float-up entrance (one-shot, fires on Window.Loaded) -->
+        <Storyboard x:Key="InputEntrance">
+            <DoubleAnimation Storyboard.TargetName="InputArea"
+                             Storyboard.TargetProperty="Opacity"
+                             From="0" To="1" Duration="0:0:0.4" BeginTime="0:0:0.2">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+
+        <!-- Slim scrollbar -->
+        <Style x:Key="SlimThumb" TargetType="Thumb">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Thumb">
+                        <Border x:Name="thumbBg" Background="#C8D0DC" CornerRadius="2.5" MinHeight="18" Width="5"/>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="thumbBg" Property="Background" Value="#8896AA"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="SlimVerticalScrollBar" TargetType="ScrollBar">
+            <Setter Property="Width" Value="5"/>
+            <Setter Property="MinWidth" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid Background="Transparent">
+                            <Track x:Name="PART_Track" IsDirectionReversed="True">
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton Command="ScrollBar.PageUpCommand" Opacity="0"/>
+                                </Track.DecreaseRepeatButton>
+                                <Track.Thumb>
+                                    <Thumb Style="{StaticResource SlimThumb}"/>
+                                </Track.Thumb>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton Command="ScrollBar.PageDownCommand" Opacity="0"/>
+                                </Track.IncreaseRepeatButton>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="SlimScrollViewer" TargetType="ScrollViewer">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollViewer">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <ScrollContentPresenter Grid.Column="0" Margin="{TemplateBinding Padding}"/>
+                            <ScrollBar x:Name="PART_VerticalScrollBar" Grid.Column="1"
+                                       Style="{StaticResource SlimVerticalScrollBar}"
+                                       Value="{TemplateBinding VerticalOffset}"
+                                       Maximum="{TemplateBinding ScrollableHeight}"
+                                       ViewportSize="{TemplateBinding ViewportHeight}"
+                                       Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Thinking dots -->
+        <Storyboard x:Key="DotPulse" RepeatBehavior="Forever">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Dot1" Storyboard.TargetProperty="Opacity">
+                <DiscreteDoubleKeyFrame KeyTime="0:0:0" Value="0.25"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.6" Value="0.25">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseIn"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Dot2" Storyboard.TargetProperty="Opacity">
+                <DiscreteDoubleKeyFrame KeyTime="0:0:0" Value="0.25"/>
+                <DiscreteDoubleKeyFrame KeyTime="0:0:0.15" Value="0.25"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.35" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.75" Value="0.25">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseIn"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Dot3" Storyboard.TargetProperty="Opacity">
+                <DiscreteDoubleKeyFrame KeyTime="0:0:0" Value="0.25"/>
+                <DiscreteDoubleKeyFrame KeyTime="0:0:0.3" Value="0.25"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.9" Value="0.25">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseIn"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <!-- Suggestion card style with left accent + scale hover -->
+        <Style x:Key="SuggestionCard" TargetType="Button">
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="cardBg" Background="White" CornerRadius="10"
+                                BorderBrush="#E8EDF3" BorderThickness="1">
+                            <Grid>
+                                <!-- Left accent stripe -->
+                                <Border x:Name="accentStripe" Width="3" HorizontalAlignment="Left" CornerRadius="10,0,0,10"
+                                        Opacity="0">
+                                    <Border.Background>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                            <GradientStop Color="#FF5500" Offset="0"/>
+                                            <GradientStop Color="#E5611A" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Border.Background>
+                                </Border>
+                                <Border Padding="14,12">
+                                    <ContentPresenter/>
+                                </Border>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="cardBg" Property="BorderBrush" Value="#B3D4F0"/>
+                                <Setter TargetName="cardBg" Property="Background" Value="#F5F8FC"/>
+                                <Setter TargetName="accentStripe" Property="Opacity" Value="1"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="cardBg" Property="Background" Value="#EAF0F8"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                 To="1.03" Duration="0:0:0.15">
+                                    <DoubleAnimation.EasingFunction>
+                                        <CubicEase EasingMode="EaseOut"/>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                 To="1.03" Duration="0:0:0.15">
+                                    <DoubleAnimation.EasingFunction>
+                                        <CubicEase EasingMode="EaseOut"/>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                 To="1" Duration="0:0:0.2">
+                                    <DoubleAnimation.EasingFunction>
+                                        <CubicEase EasingMode="EaseOut"/>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                 To="1" Duration="0:0:0.2">
+                                    <DoubleAnimation.EasingFunction>
+                                        <CubicEase EasingMode="EaseOut"/>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <!-- Follow-up question bubble button (Pill style from screenshot) -->
+        <Style x:Key="FollowUpButton" TargetType="Button">
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Margin" Value="0,4,6,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="fuBg" CornerRadius="15" Padding="14,6"
+                                Background="White" BorderBrush="#E2E8F0" BorderThickness="1">
+                            <ContentPresenter VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="fuBg" Property="Background" Value="#F8FAFC"/>
+                                <Setter TargetName="fuBg" Property="BorderBrush" Value="#CBD5E1"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Window.Loaded">
+            <!-- AccentShimmer removed 2026-05-28: the forever-pulsing orange line was the
+                 main source of the constant "breathing" effect the user reported. Only
+                 one-shot entrance animations remain (Header / Content / Input). -->
+            <BeginStoryboard Storyboard="{StaticResource HeaderEntrance}"/>
+            <BeginStoryboard Storyboard="{StaticResource ContentEntrance}"/>
+            <BeginStoryboard Storyboard="{StaticResource InputEntrance}"/>
+        </EventTrigger>
+    </Window.Triggers>
+
+    <!-- Window shell -->
+    <Border CornerRadius="10" ClipToBounds="False">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="20" Color="#000000" ShadowDepth="0" Opacity="0.18"/>
+        </Border.Effect>
+
+        <Border CornerRadius="10" Background="White" ClipToBounds="True">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <!-- accent -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- header -->
+                    <RowDefinition Height="*"/>
+                    <!-- chat -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- input -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- footer -->
+                </Grid.RowDefinitions>
+
+                <!-- ── Gradient accent bar ── -->
+                <Border x:Name="AccentLine" Grid.Row="0" Height="3">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                            <GradientStop Color="#FF5500" Offset="0"/>
+                            <GradientStop Color="#FF7A33" Offset="0.35"/>
+                            <GradientStop Color="#E5611A" Offset="0.7"/>
+                            <GradientStop Color="#FF5500" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                </Border>
+
+                <!-- ── White header (matches image 1) ── -->
+                <Border x:Name="HeaderBar" Grid.Row="1" MouseLeftButtonDown="Header_MouseDown" Opacity="0"
+                        Background="White" BorderBrush="#EEF1F5" BorderThickness="0,0,0,1">
+                    <Grid Margin="16,9,8,9">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <!-- 0: Logo -->
+                            <ColumnDefinition Width="Auto"/>
+                            <!-- 1: Title -->
+                            <ColumnDefinition Width="*"/>
+                            <!-- 2: Spacer -->
+                            <ColumnDefinition Width="Auto"/>
+                            <!-- 3: History -->
+                            <ColumnDefinition Width="Auto"/>
+                            <!-- 4: New -->
+                            <ColumnDefinition Width="Auto"/>
+                            <!-- 5: Export -->
+                            <ColumnDefinition Width="Auto"/>
+                            <!-- 6: Controls -->
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Ze AI logo -->
+                        <Border Grid.Column="0" Width="30" Height="30" CornerRadius="6" Margin="0,0,10,0"
+                                Background="White" BorderBrush="#30FFFFFF" BorderThickness="1">
+                            <Image Source="pack://application:,,,/BIManageRevit;component/BIManage/Resources/Icons/BIManage.png"
+                                   Width="20" Height="20" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Border>
+
+                        <!-- Title (Online badge hidden to match image 1) -->
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="Ze AI" FontSize="14" FontWeight="SemiBold" Foreground="#0F172A"/>
+                        </StackPanel>
+
+                        <!-- History button (sits left of "+ New"). Styled for the light header. -->
+                        <Button Grid.Column="3" x:Name="HistoryButton" Click="HistoryButton_Click"
+                                Cursor="Hand" VerticalAlignment="Center" Margin="0,0,8,0">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border x:Name="histBg" CornerRadius="6" Padding="10,5"
+                                            Background="White" BorderBrush="#E2E8F0" BorderThickness="1">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="&#xE823;" FontFamily="Segoe MDL2 Assets" FontSize="11"
+                                                       Foreground="#64748B" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                            <TextBlock Text="History" FontSize="12" Foreground="#475569" FontWeight="Medium"/>
+                                        </StackPanel>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="histBg" Property="Background" Value="#F8FAFC"/>
+                                            <Setter TargetName="histBg" Property="BorderBrush" Value="#CBD5E1"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+
+                        <!-- History popup: anchored to the History button, shows last 5 sessions -->
+                        <Popup x:Name="HistoryPopup" PlacementTarget="{Binding ElementName=HistoryButton}"
+                               Placement="Bottom" StaysOpen="False" AllowsTransparency="True"
+                               PopupAnimation="Fade">
+                            <Border Background="White" CornerRadius="6" Padding="6"
+                                    BorderBrush="#E2E8F0" BorderThickness="1"
+                                    MinWidth="280" MaxWidth="340">
+                                <Border.Effect>
+                                    <DropShadowEffect Color="#000000" Opacity="0.15" BlurRadius="14" ShadowDepth="2"/>
+                                </Border.Effect>
+                                <StackPanel>
+                                    <TextBlock Text="Recent chats for this model" FontSize="11"
+                                               Foreground="#64748B" Margin="8,4,8,6" FontWeight="SemiBold"/>
+                                    <ItemsControl ItemsSource="{Binding RecentSessions}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Button Grid.Column="0" Click="HistoryItem_Click" Tag="{Binding ChatSessionId}"
+                                                            Cursor="Hand" HorizontalContentAlignment="Stretch"
+                                                            Background="Transparent" BorderThickness="0" Padding="0">
+                                                        <Button.Template>
+                                                            <ControlTemplate TargetType="Button">
+                                                                <Border x:Name="itemBg" Background="Transparent"
+                                                                        CornerRadius="6" Padding="8,6" Margin="0,1">
+                                                                    <StackPanel>
+                                                                        <TextBlock Text="{Binding Title, TargetNullValue='(no title)'}"
+                                                                                   FontSize="12" Foreground="#1E293B"
+                                                                                   TextTrimming="CharacterEllipsis"/>
+                                                                        <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                                                                            <TextBlock Text="{Binding StartedAt, StringFormat='{}{0:MMM d, h:mm tt}'}"
+                                                                                       FontSize="10" Foreground="#94A3B8"/>
+                                                                            <TextBlock Text=" · " FontSize="10" Foreground="#94A3B8"/>
+                                                                            <TextBlock FontSize="10" Foreground="#94A3B8">
+                                                                                <Run Text="{Binding MessageCount, Mode=OneWay}"/>
+                                                                                <Run Text=" msgs"/>
+                                                                            </TextBlock>
+                                                                        </StackPanel>
+                                                                    </StackPanel>
+                                                                </Border>
+                                                                <ControlTemplate.Triggers>
+                                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                                        <Setter TargetName="itemBg" Property="Background" Value="#F1F5F9"/>
+                                                                    </Trigger>
+                                                                </ControlTemplate.Triggers>
+                                                            </ControlTemplate>
+                                                        </Button.Template>
+                                                    </Button>
+                                                    <!-- Per-row delete (×). Stops the click bubbling to the parent button. -->
+                                                    <Button Grid.Column="1" Click="HistoryItemDelete_Click" Tag="{Binding ChatSessionId}"
+                                                            Cursor="Hand" VerticalAlignment="Center" Margin="2,0,4,0"
+                                                            ToolTip="Delete this chat">
+                                                        <Button.Template>
+                                                            <ControlTemplate TargetType="Button">
+                                                                <Border x:Name="delBg" Width="22" Height="22" CornerRadius="11"
+                                                                        Background="Transparent">
+                                                                    <TextBlock Text="&#xE894;" FontFamily="Segoe MDL2 Assets"
+                                                                               FontSize="10" Foreground="#94A3B8"
+                                                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                                </Border>
+                                                                <ControlTemplate.Triggers>
+                                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                                        <Setter TargetName="delBg" Property="Background" Value="#FEE2E2"/>
+                                                                    </Trigger>
+                                                                </ControlTemplate.Triggers>
+                                                            </ControlTemplate>
+                                                        </Button.Template>
+                                                    </Button>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                    <TextBlock x:Name="HistoryEmptyText" Text="No previous chats for this model."
+                                               FontSize="11" Foreground="#94A3B8" Margin="8,4,8,4"
+                                               Visibility="Collapsed"/>
+                                    <!-- Clear all button — only shown when there's history to clear -->
+                                    <Border x:Name="ClearAllRow" Margin="0,4,0,0" BorderBrush="#E2E8F0" BorderThickness="0,1,0,0">
+                                        <Button x:Name="ClearAllHistoryButton" Click="ClearAllHistory_Click"
+                                                Cursor="Hand" HorizontalAlignment="Stretch"
+                                                Background="Transparent" BorderThickness="0">
+                                            <Button.Template>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Border x:Name="clearBg" CornerRadius="6" Padding="8,8" Margin="2"
+                                                            Background="Transparent">
+                                                        <TextBlock Text="Clear all chat history for this model"
+                                                                   FontSize="11" Foreground="#DC2626"
+                                                                   HorizontalAlignment="Center"/>
+                                                    </Border>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter TargetName="clearBg" Property="Background" Value="#FEF2F2"/>
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Button.Template>
+                                        </Button>
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+                        </Popup>
+
+                        <!-- New Chat (white pill with orange + and dark text, matches image 1) -->
+                        <Button Grid.Column="4" Click="NewChat_Click" Cursor="Hand" VerticalAlignment="Center" Margin="0,0,10,0">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border x:Name="newBg" CornerRadius="6" Padding="12,6"
+                                            Background="White" BorderBrush="#E2E8F0" BorderThickness="1">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="+" FontSize="14" FontWeight="SemiBold"
+                                                       Foreground="#FF5500" VerticalAlignment="Center" Margin="0,-2,5,0"/>
+                                            <TextBlock Text="New" FontSize="11.5" Foreground="#FF5500" FontWeight="SemiBold"
+                                                       VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="newBg" Property="Background" Value="#FFF6F0"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+
+                        <!-- Window controls (dark icons on white header, matches image 1) -->
+                        <StackPanel Grid.Column="6" Orientation="Horizontal" VerticalAlignment="Center">
+                            <Button Click="Minimize_Click" Cursor="Hand">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border x:Name="bg" Width="28" Height="28" CornerRadius="6" Background="Transparent">
+                                            <TextBlock Text="&#xE921;" FontFamily="Segoe MDL2 Assets" FontSize="9"
+                                                       Foreground="#475569" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="bg" Property="Background" Value="#F1F5F9"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                            <Button Click="MaximizeRestore_Click" Cursor="Hand" Visibility="Collapsed">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border x:Name="bg" Width="28" Height="28" CornerRadius="6" Background="Transparent">
+                                            <TextBlock Text="&#xE922;" FontFamily="Segoe MDL2 Assets" FontSize="8"
+                                                       Foreground="#6BA3D6" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="bg" Property="Background" Value="#15FFFFFF"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                            <Button Click="Close_Click" Cursor="Hand">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border x:Name="bg" Width="28" Height="28" CornerRadius="6" Background="Transparent">
+                                            <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="10"
+                                                       Foreground="#475569" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="bg" Property="Background" Value="#FEE2E2"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- ── Chat area + Welcome (white background to match image 1) ── -->
+                <Grid x:Name="ChatContent" Grid.Row="2" Opacity="0" ClipToBounds="True" Background="White">
+
+                    <!-- Messages -->
+                    <ScrollViewer x:Name="MessageScrollViewer"
+                                 VerticalScrollBarVisibility="Auto"
+                                 HorizontalScrollBarVisibility="Disabled"
+                                 Style="{StaticResource SlimScrollViewer}"
+                                 Padding="24,12">
+                        <StackPanel HorizontalAlignment="Stretch">
+                            <ItemsControl ItemsSource="{Binding Messages}" HorizontalContentAlignment="Stretch">
+                                <ItemsControl.ItemContainerStyle>
+                                    <Style TargetType="ContentPresenter">
+                                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                    </Style>
+                                </ItemsControl.ItemContainerStyle>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="0,4">
+                                            <!-- AI message (Screenshot style) -->
+                                            <Grid Visibility="{Binding IsUser, Converter={StaticResource InvBoolToVis}}"
+                                                  HorizontalAlignment="Left" Margin="0,8,60,8">
+                                                <StackPanel>
+                                                    <Border Background="#F1F5F9" CornerRadius="4,18,18,18" Padding="16,12"
+                                                            BorderBrush="#E2E8F0" BorderThickness="1">
+                                                        <ContentControl Content="{Binding Text, Converter={StaticResource MdConverter}}"
+                                                                        HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                                                                        Foreground="#1E293B"/>
+                                                    </Border>
+
+                                                    <!-- Follow-up question pills -->
+                                                    <ItemsControl ItemsSource="{Binding FollowUpQuestions}" Margin="0,8,0,0">
+                                                        <ItemsControl.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <WrapPanel Orientation="Horizontal"/>
+                                                            </ItemsPanelTemplate>
+                                                        </ItemsControl.ItemsPanel>
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Button Style="{StaticResource FollowUpButton}"
+                                                                        Click="FollowUp_Click"
+                                                                        CommandParameter="{Binding}">
+                                                                    <TextBlock Text="{Binding}" FontSize="11" Foreground="#475569"/>
+                                                                </Button>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+                                                </StackPanel>
+                                            </Grid>
+
+                                            <!-- User message (Screenshot style).
+                                                 Uses a read-only TextBox (not TextBlock) so the
+                                                 user can highlight and Ctrl+C their own prompt —
+                                                 tester complaint 2026-05-25 was that they
+                                                 couldn't re-copy a question they'd already sent.
+                                                 WPF's TextBlock doesn't support text selection
+                                                 (IsTextSelectionEnabled is UWP-only); a styled
+                                                 TextBox with no border/background is the standard
+                                                 workaround. -->
+                                            <Border Visibility="{Binding IsUser, Converter={StaticResource BoolToVis}}"
+                                                    HorizontalAlignment="Right" MaxWidth="520"
+                                                    CornerRadius="18,18,4,18" Padding="16,10" Margin="80,8,0,8"
+                                                    Background="#0F172A">
+                                                <StackPanel>
+                                                    <TextBox Text="{Binding Text, Mode=OneWay}"
+                                                             FontSize="13" Foreground="White"
+                                                             TextWrapping="Wrap"
+                                                             IsReadOnly="True"
+                                                             BorderThickness="0"
+                                                             Background="Transparent"
+                                                             Padding="0"
+                                                             SelectionBrush="#FF5500"
+                                                             SelectionOpacity="0.4"
+                                                             Cursor="IBeam"/>
+                                                </StackPanel>
+                                            </Border>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                            <!-- Thinking -->
+                            <Grid Margin="0,4">
+                                <Grid HorizontalAlignment="Left"
+                                      Visibility="{Binding IsThinking, Converter={StaticResource BoolToVis}}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Border Grid.Column="0" Width="28" Height="28" CornerRadius="6"
+                                            VerticalAlignment="Top" Margin="0,2,8,0"
+                                            Background="White" BorderBrush="#E2E8F0" BorderThickness="1">
+                                        <Border.Effect>
+                                            <DropShadowEffect Color="#000000" BlurRadius="6" ShadowDepth="0" Opacity="0.12"/>
+                                        </Border.Effect>
+                                        <Image Source="pack://application:,,,/BIManageRevit;component/BIManage/Resources/Icons/BIManage.png"
+                                               Width="20" Height="20" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    </Border>
+
+                                    <Border x:Name="ThinkingBubble" Grid.Column="1"
+                                            Background="White" CornerRadius="4,12,12,12" Padding="16,12"
+                                            BorderBrush="#E8EDF3" BorderThickness="1">
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <Ellipse x:Name="Dot1" Width="7" Height="7" Fill="#D3D3D3" Margin="0,0,4,0" Opacity="0.25"/>
+                                            <Ellipse x:Name="Dot2" Width="7" Height="7" Fill="#D3D3D3" Margin="0,0,4,0" Opacity="0.25"/>
+                                            <Ellipse x:Name="Dot3" Width="7" Height="7" Fill="#D3D3D3" Opacity="0.25"/>
+                                        </StackPanel>
+                                        <Border.Triggers>
+                                            <EventTrigger RoutedEvent="Border.Loaded">
+                                                <BeginStoryboard Storyboard="{StaticResource DotPulse}"/>
+                                            </EventTrigger>
+                                        </Border.Triggers>
+                                    </Border>
+                                </Grid>
+                            </Grid>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- "New reply" affordance: appears when a fresh AI message arrives while
+                         the user has scrolled up to re-read earlier content. We deliberately
+                         do NOT auto-scroll to bottom in that case (sticky-bottom rule from
+                         tester complaint about "content jumping"), so this pill is the
+                         notification surface. Click → scroll to bottom and hide. -->
+                    <Button x:Name="NewReplyButton"
+                            Click="NewReplyButton_Click"
+                            Visibility="Collapsed"
+                            HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                            Margin="0,0,0,16"
+                            Cursor="Hand">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="pillBg" Background="#0F172A" CornerRadius="16"
+                                        Padding="14,8" BorderBrush="#1E293B" BorderThickness="1">
+                                    <Border.Effect>
+                                        <DropShadowEffect Color="#000000" BlurRadius="10"
+                                                          ShadowDepth="2" Opacity="0.25"/>
+                                    </Border.Effect>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Text="New reply" FontSize="12" FontWeight="SemiBold"
+                                                   Foreground="White" VerticalAlignment="Center"/>
+                                        <TextBlock Text="&#xE74B;" FontFamily="Segoe MDL2 Assets"
+                                                   FontSize="11" Foreground="#FF5500" Margin="8,0,0,0"
+                                                   VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="pillBg" Property="Background" Value="#1E293B"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+
+                    <!-- Welcome panel overlay (chat-first layout: mascot + suggestion cards) -->
+                    <Grid x:Name="WelcomePanel" ClipToBounds="True">
+                        <Grid.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0.3,1">
+                                <GradientStop Color="#F4F7FB" Offset="0"/>
+                                <GradientStop Color="#EDF2F9" Offset="0.4"/>
+                                <GradientStop Color="#F8FAFC" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Grid.Background>
+                        <!-- IconBreathe + CircleDrift storyboards removed 2026-05-28: the scale
+                             animation on the mascot moved enough surrounding content (because the
+                             ScaleTransform reflowed siblings within the StackPanel) to feel
+                             distracting in motion. CircleDrift was animating decorative-ellipse
+                             margins, which also caused subtle reflow on slower machines. Mascot
+                             and decorative circles are now fully static. -->
+
+                        <!-- Decorative floating circles -->
+                        <Ellipse x:Name="DecoCircle1" Width="140" Height="140" Opacity="0.06"
+                                 HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-40,-30,0,0"
+                                 IsHitTestVisible="False">
+                            <Ellipse.Fill>
+                                <RadialGradientBrush>
+                                    <GradientStop Color="#000000" Offset="0"/>
+                                    <GradientStop Color="#00063970" Offset="1"/>
+                                </RadialGradientBrush>
+                            </Ellipse.Fill>
+                        </Ellipse>
+                        <Ellipse x:Name="DecoCircle2" Width="100" Height="100" Opacity="0.05"
+                                 HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,-35,-20"
+                                 IsHitTestVisible="False">
+                            <Ellipse.Fill>
+                                <RadialGradientBrush>
+                                    <GradientStop Color="#4FC3F7" Offset="0"/>
+                                    <GradientStop Color="#004FC3F7" Offset="1"/>
+                                </RadialGradientBrush>
+                            </Ellipse.Fill>
+                        </Ellipse>
+                        <Ellipse x:Name="DecoCircle3" Width="70" Height="70" Opacity="0.04"
+                                 HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,30,0,0"
+                                 IsHitTestVisible="False">
+                            <Ellipse.Fill>
+                                <RadialGradientBrush>
+                                    <GradientStop Color="#2196F3" Offset="0"/>
+                                    <GradientStop Color="#002196F3" Offset="1"/>
+                                </RadialGradientBrush>
+                            </Ellipse.Fill>
+                        </Ellipse>
+
+                        <!-- Scrollable so the Quick Action grid stays reachable on shorter windows.
+                             Padding tuned to match the reference: 28 px sides give the greeting card
+                             and quick-action tiles consistent breathing room from the dialog edge. -->
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+                                      Style="{StaticResource SlimScrollViewer}" Padding="28,22,28,18">
+                            <StackPanel>
+                                <!-- ── Greeting card (mascot + Good Morning {UserName} + tagline) ──
+                                     Tuned to match the reference: softer lavender background, larger
+                                     mascot (100 px), more generous internal padding, and tighter line
+                                     spacing on the heading/tagline pair. -->
+                                <Border CornerRadius="14" Padding="22,20" Margin="0,0,0,28"
+                                        Background="#F1ECFF" BorderBrush="#E1D8FA" BorderThickness="1">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="20"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- Mascot lives at /Resources/Icons/ZeAiMascot.png (top-level Resources
+                                             folder, not BIManage/Resources). The csproj wildcard <Resource
+                                             Include="Resources\Icons\*.png" /> picks it up automatically. -->
+                                        <!-- WelcomeIcon: static mascot. RenderTransform removed
+                                             along with the breathing storyboard; the layout no
+                                             longer reflows on every frame. -->
+                                        <Image Grid.Column="0" x:Name="WelcomeIcon"
+                                               Source="pack://application:,,,/BIManageRevit;component/Resources/Icons/ZeAiMascot.png"
+                                               Width="100" Height="100"
+                                               VerticalAlignment="Center"
+                                               RenderOptions.BitmapScalingMode="HighQuality"/>
+
+                                        <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                            <TextBlock FontSize="20" FontWeight="SemiBold" Foreground="#0F172A"
+                                                       TextWrapping="Wrap" LineHeight="26" LineStackingStrategy="BlockLineHeight">
+                                                <Run Text="{Binding Greeting, Mode=OneWay}"/><Run Text=" "/><Run Text="{Binding UserName, Mode=OneWay}" FontWeight="Bold"/><Run Text="!"/>
+                                            </TextBlock>
+                                            <TextBlock FontSize="13" Foreground="#475569" Margin="0,6,0,0" TextWrapping="Wrap">
+                                                <Run Text="I'm "/><Run Text="Zesto" Foreground="#FF5500" FontWeight="SemiBold"/><Run Text=", your Revit model health assistant"/>
+                                            </TextBlock>
+                                            <TextBlock FontSize="12" Foreground="#64748B" Margin="0,4,0,0" TextWrapping="Wrap"
+                                                       Text="Pick a quick action below, or ask me anything in the chat box."/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+
+                                <!-- ── Quick Action heading ── -->
+                                <TextBlock Text="Quick Action" FontSize="16" FontWeight="SemiBold"
+                                           Foreground="#0F172A" Margin="2,0,0,14"/>
+
+                                <!-- ── Quick Action grid (3 cols × 2 rows = 6 tiles) bound to SuggestionChips.
+                                     Tiles use slightly more generous margin to match the reference's airier
+                                     2×3 grid; icon size bumped to match the larger tile footprint. -->
+                                <ItemsControl x:Name="SuggestionsGrid" ItemsSource="{Binding SuggestionChips}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <UniformGrid Columns="3"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Button Style="{StaticResource SuggestionCard}" Margin="5"
+                                                    Tag="{Binding Prompt}" Click="SuggestionChip_Click"
+                                                    HorizontalContentAlignment="Stretch">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="12"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Border Grid.Column="0" Width="34" Height="34" CornerRadius="9"
+                                                            Background="{Binding IconBackground}">
+                                                        <TextBlock Text="{Binding IconGlyph}" FontFamily="Segoe MDL2 Assets"
+                                                                   FontSize="13" Foreground="{Binding IconColor}"
+                                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    </Border>
+                                                    <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                                        <TextBlock Text="{Binding Title}" FontSize="13" FontWeight="SemiBold"
+                                                                   Foreground="#1E293B" TextTrimming="CharacterEllipsis"/>
+                                                        <TextBlock Text="{Binding Subtitle}" FontSize="11" Foreground="#94A3B8"
+                                                                   Margin="0,2,0,0" TextTrimming="CharacterEllipsis"/>
+                                                    </StackPanel>
+                                                    <TextBlock Grid.Column="3" Text="&#xE76C;" FontFamily="Segoe MDL2 Assets"
+                                                               FontSize="10" Foreground="#CBD5E1"
+                                                               VerticalAlignment="Center" Margin="6,0,0,0"/>
+                                                </Grid>
+                                            </Button>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Grid>
+                </Grid>
+
+                <!-- ── Input area — matches reference image 2 (the wide flat pill).
+                     Stretches the full dialog width with small side margins (back to the
+                     pre-2026-05-28 sizing — capping with MaxWidth=560 made it look narrow
+                     and floating; the reference is genuinely wide).
+                     Border: hair-thin neutral #E5E7EB so the pill reads as a flat input
+                     bar, not a colored card.
+                     Leading icon: three-sparkle cluster (the recognizable "AI" mark with
+                     one large + two small sparkles) — drawn as a Canvas of three Paths so
+                     it renders identically on every Windows build, no font dependency.
+                     Send glyph: clean simple paper-plane triangle (NOT the previous folded
+                     wing shape — that came out looking like a broken bow-tie). -->
+                <Border x:Name="InputArea" Grid.Row="3" Margin="20,10,20,16" Opacity="0">
+                    <Border x:Name="InputBorder" CornerRadius="22" BorderBrush="#E5E7EB" BorderThickness="1"
+                            Background="White">
+                        <Grid Height="44">
+                            <Grid.ColumnDefinitions>
+                                <!-- Leading sparkle cluster -->
+                                <ColumnDefinition Width="Auto"/>
+                                <!-- TextBox + placeholder -->
+                                <ColumnDefinition Width="*"/>
+                                <!-- Send button -->
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Three-sparkle cluster — one large 4-point sparkle plus two
+                                 smaller satellites. Matches the orange/AI "spark" mark in
+                                 the reference. Canvas with three vector Paths so the glyph
+                                 is identical across all Windows builds. The two small
+                                 sparkles are offset toward the upper-right of the main one. -->
+                            <Viewbox Grid.Column="0" Width="18" Height="18"
+                                     Margin="16,0,0,0"
+                                     VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <Canvas Width="24" Height="24">
+                                    <!-- Main sparkle (centre, large) -->
+                                    <Path Fill="#FF6B35"
+                                          Data="M 9,7
+                                                L 10.6,12.4
+                                                L 16,14
+                                                L 10.6,15.6
+                                                L 9,21
+                                                L 7.4,15.6
+                                                L 2,14
+                                                L 7.4,12.4 Z"/>
+                                    <!-- Small sparkle (upper-right) -->
+                                    <Path Fill="#FF8A5C"
+                                          Data="M 17,3
+                                                L 17.8,5.7
+                                                L 20.5,6.5
+                                                L 17.8,7.3
+                                                L 17,10
+                                                L 16.2,7.3
+                                                L 13.5,6.5
+                                                L 16.2,5.7 Z"/>
+                                    <!-- Tiny sparkle (right edge) -->
+                                    <Path Fill="#FFA77A"
+                                          Data="M 20,11
+                                                L 20.5,12.5
+                                                L 22,13
+                                                L 20.5,13.5
+                                                L 20,15
+                                                L 19.5,13.5
+                                                L 18,13
+                                                L 19.5,12.5 Z"/>
+                                </Canvas>
+                            </Viewbox>
+
+                            <Grid Grid.Column="1" Margin="10,0,4,0">
+                                <TextBlock x:Name="PlaceholderText"
+                                           Text="Ask about your Revit models or project data..."
+                                           FontSize="12.5" Foreground="#94A3B8"
+                                           Padding="2,0,4,0"
+                                           VerticalAlignment="Center"
+                                           IsHitTestVisible="False"/>
+                                <TextBox x:Name="InputBox"
+                                         Text="{Binding UserMessage, UpdateSourceTrigger=PropertyChanged}"
+                                         BorderThickness="0" Background="Transparent"
+                                         FontSize="12.5" Foreground="#1E293B"
+                                         Padding="2,0,4,0"
+                                         VerticalContentAlignment="Center"
+                                         AcceptsReturn="False"
+                                         IsEnabled="{Binding IsSending, Converter={StaticResource InvBool}}"
+                                         GotFocus="InputBox_GotFocus"
+                                         LostFocus="InputBox_LostFocus"
+                                         TextChanged="InputBox_TextChanged">
+                                    <TextBox.InputBindings>
+                                        <KeyBinding Key="Return" Command="{Binding SendMessageCommand}"/>
+                                    </TextBox.InputBindings>
+                                </TextBox>
+                            </Grid>
+
+                            <!-- Send button — clean paper-plane triangle. Simple convex shape
+                                 (tail at lower-left, two sides converging on the nose at
+                                 upper-right) — no fold line, no inner triangle. The previous
+                                 attempt drew two overlapping triangles which rendered as a
+                                 broken bow-tie shape. This single triangle reads cleanly as
+                                 "send" at small sizes. -->
+                            <Button Grid.Column="2" Command="{Binding SendMessageCommand}"
+                                    Cursor="Hand" Margin="6,0,6,0" VerticalAlignment="Center">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border x:Name="sendBg" Width="32" Height="32" CornerRadius="6" Background="#FF5500">
+                                            <Viewbox Width="16" Height="16" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                     Margin="-1,1,1,-1">
+                                                <Path Stretch="Uniform" Fill="White"
+                                                      Data="M 2,12 L 22,2 L 14,22 L 11,13 Z"/>
+                                            </Viewbox>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="sendBg" Property="Background" Value="#E5611A"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </Grid>
+                    </Border>
+                </Border>
+
+                <!-- ── Footer (hidden to match image 1) ── -->
+                <Border Grid.Row="4" Padding="0,5,0,6" CornerRadius="0,0,10,10"
+                        Background="White" Visibility="Collapsed">
+                    <TextBlock Text="Powered by Ze AI - Always Review and Verify AI Outputs"
+                               FontSize="9" Foreground="#A0ADBF" HorizontalAlignment="Center"/>
+                </Border>
+
+                <!-- Resize grip -->
+                <Path Grid.Row="4" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,3,3"
+                      Data="M0,10 L10,0 M3,10 L10,3 M6,10 L10,6"
+                      Stroke="#DDE4EE" StrokeThickness="1"/>
+            </Grid>
+        </Border>
+    </Border>
+</Window>
+    
+    

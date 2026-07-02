@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -la /c/Users/PC/Documents/GitHub_JC/BIManageRevit/bin/*/)",
+      "Bash(dotnet build BIManage.Addons.csproj -c \"Debug R25\")"
+    ]
+  }
+}

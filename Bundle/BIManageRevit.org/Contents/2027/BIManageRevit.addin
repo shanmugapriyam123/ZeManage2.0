@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+    <AddIn Type="Application">
+        <Name>ZeManage</Name>
+        <!-- Manifest points at the Shim, NOT the Core (BIManageRevit.dll).
+             The Shim is a tiny IExternalApplication forwarder. It loads the Core
+             (BIManageRevit.dll, deployed in the same folder) into a dedicated
+             AssemblyLoadContext on Revit 2025+ so Revit's manifest scanner never
+             sees the Core directly. This eliminates the R25 dual-ALC duplicate-load
+             that surfaces as "Revit encountered a serious error" via native
+             AddInManager::commandHasAddinSubscriptions. See BIManageRevit.Shim/. -->
+        <Assembly>BIManageRevit\BIManageRevit.Shim.dll</Assembly>
+        <AddInId>C29E6964-7D84-4BD4-AA1C-37163627DBA9</AddInId>
+        <FullClassName>BIManageRevit.Shim.ShimApplication</FullClassName>
+        <VendorId>Zestine</VendorId>
+        <VendorDescription>ZestineTech - BIM Management Tools</VendorDescription>
+        <VendorEmail>support@zestine.com</VendorEmail>
+    </AddIn>
+    <!-- UseRevitContext=True is REQUIRED on Revit 2026+ to prevent the duplicate-load that
+         breaks WPF dialogs and Application._instance access. Without it, Revit 2026 creates
+         an isolated ALC named "BIManageRevit" AND the scanner leaves a phantom copy in the
+         Default ALC - IExternalCommands dispatched to the Default-ALC copy then read
+         _instance==null and toast "Unable to access application services", and WPF fails to
+         resolve the pack URI for any dialog (BAML lookup picks the wrong copy).
+
+         IMPORTANT - schema availability (verified 2026-04-30 against AddInManager.dll
+         string tables):
+           Revit 2021-2024 (.NET 4.8):  schema does NOT recognize <ManifestSettings>
+                                        (silent rejection of the whole .addin).
+           Revit 2025 (.NET 8):         schema does NOT recognize <ManifestSettings>
+                                        (explicit rejection: "The 'ManifestSettings' tag is
+                                        incorrect, should be replaced with 'AddIn'." -> addin
+                                        fails to load).
+           Revit 2026+ (.NET 8/10):     schema recognizes <ManifestSettings><UseRevitContext>.
+
+         The csproj target PreserveManifestSettings injects this block ONLY into R26+ deployed
+         and published .addin files. The csproj target StripR25ManifestSettings additionally
+         scrubs it from R25 if a stale block ever lands there. R21-R25 keep the stripped form
+         that PatchManifest produces. -->
+    <ManifestSettings>
+        <UseRevitContext>True</UseRevitContext>
+    </ManifestSettings>
+</RevitAddIns>

@@ -1,0 +1,285 @@
+<Window x:Class="BIManage.Views.Protection.GuideDialog"
+        Topmost="False"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        mc:Ignorable="d"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Title="{Binding DialogTitle}"
+        SizeToContent="Height"
+        Width="440"
+        MinWidth="400"
+        MaxWidth="520"
+        MaxHeight="560"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        ShowInTaskbar="True"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        KeyDown="Window_KeyDown">
+    <Window.Icon>
+        <BitmapImage UriSource="pack://application:,,,/BIManageRevit;component/BIManage/Resources/Icons/BIManage.png"/>
+    </Window.Icon>
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+    </Window.Resources>
+
+    <Border Margin="10" Background="White" CornerRadius="10" ClipToBounds="True">
+        <Border.Effect>
+            <DropShadowEffect Color="#000000" BlurRadius="20" ShadowDepth="0" Opacity="0.18"/>
+        </Border.Effect>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Title Bar -->
+            <Border Grid.Row="0" Background="#F8FAFC" CornerRadius="10,10,0,0"
+                    BorderBrush="#E2E8F0" BorderThickness="0,0,0,1"
+                    MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+                <Grid Height="36" Margin="12,0">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Source="pack://application:,,,/BIManageRevit;component/BIManage/Resources/Icons/BIManage.png"
+                               Width="16" Height="16" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
+                                   FontSize="12" FontWeight="SemiBold" Foreground="#1E293B" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <Button HorizontalAlignment="Right" VerticalAlignment="Center"
+                            Click="CloseButton_Click" Width="28" Height="28"
+                            BorderThickness="0" Background="Transparent" Cursor="Hand">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="closeBg" Background="Transparent" CornerRadius="6" Width="28" Height="28">
+                                    <TextBlock Text="&#x2715;" FontSize="10" Foreground="#94A3B8"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="closeBg" Property="Background" Value="#F1F5F9"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </Grid>
+            </Border>
+
+            <!-- Content (DockPanel inside the content row) -->
+            <DockPanel Grid.Row="1" LastChildFill="True" Background="White">
+
+                <!-- FOOTER -->
+                <Border DockPanel.Dock="Bottom"
+                        Background="#F8FAFC" Padding="14,10"
+                        CornerRadius="0,0,10,10"
+                        BorderBrush="#E2E8F0" BorderThickness="0,1,0,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- OTP Button (Protect mode only, hidden by default) — Danger style -->
+                        <Button Grid.Column="1"
+                                x:Name="OtpButton"
+                                Content="Enter OTP"
+                                Click="OnEnterOtpClick"
+                                Foreground="White" FontSize="11.5" FontWeight="SemiBold"
+                                Padding="18,6" MinWidth="90" Height="36" Cursor="Hand"
+                                BorderThickness="0"
+                                Visibility="Collapsed"
+                                Margin="0,0,8,0">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border x:Name="Bd"
+                                            Background="#EF5350"
+                                            CornerRadius="6"
+                                            Padding="{TemplateBinding Padding}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="Bd" Property="Background" Value="#E53935"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+
+                        <!-- No — Secondary style -->
+                        <Button Grid.Column="2"
+                                Content="{Binding CancelButtonText}"
+                                Click="OnCancelClick"
+                                Margin="0,0,8,0"
+                                Foreground="#212121" FontSize="11.5" FontWeight="SemiBold"
+                                Padding="18,6" MinWidth="72" Height="36" Cursor="Hand"
+                                Background="White" BorderBrush="#E0E0E0" BorderThickness="1">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border x:Name="Bd"
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            CornerRadius="6"
+                                            Padding="{TemplateBinding Padding}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="Bd" Property="Background" Value="#F5F5F5"/>
+                                            <Setter TargetName="Bd" Property="BorderBrush" Value="#94A3B8"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+
+                        <!-- Yes — Primary style (#FF5500) -->
+                        <Button Grid.Column="3"
+                                x:Name="ProceedButton"
+                                Content="{Binding ProceedButtonText}"
+                                Click="OnProceedClick"
+                                Command="{Binding ProceedCommand}"
+                                Foreground="White" FontSize="11.5" FontWeight="SemiBold"
+                                Padding="18,6" MinWidth="72" Height="36" Cursor="Hand"
+                                BorderThickness="0">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border x:Name="Bd"
+                                            Background="#FF5500"
+                                            CornerRadius="6"
+                                            Padding="{TemplateBinding Padding}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="Bd" Property="Background" Value="#E5611A"/>
+                                        </Trigger>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="Opacity" Value="0.4"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                    </Grid>
+                </Border>
+
+                <!-- BODY -->
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="14,12,14,10">
+                    <StackPanel>
+
+                        <!-- Mode Mascot Image — fixed-height slot prevents layout shake -->
+                        <Grid Height="132" Margin="0,8,0,4" HorizontalAlignment="Center">
+                            <Border x:Name="MascotWrap" HorizontalAlignment="Center"
+                                    VerticalAlignment="Center" Background="Transparent">
+                                <Border.RenderTransform>
+                                    <TranslateTransform x:Name="MascotFloat"/>
+                                </Border.RenderTransform>
+                                <Border.Triggers>
+                                    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <!-- Fade in on open -->
+                                                <DoubleAnimation
+                                                    Storyboard.TargetName="MascotWrap"
+                                                    Storyboard.TargetProperty="Opacity"
+                                                    From="0" To="1" Duration="0:0:0.6"/>
+                                                <!-- Symmetric float within fixed slot — no layout impact -->
+                                                <DoubleAnimation
+                                                    Storyboard.TargetName="MascotFloat"
+                                                    Storyboard.TargetProperty="Y"
+                                                    From="-5" To="5" Duration="0:0:2.2"
+                                                    AutoReverse="True" RepeatBehavior="Forever">
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <SineEase EasingMode="EaseInOut"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </Border.Triggers>
+                                <Image Source="{Binding MascotImageSource}"
+                                       Width="115" Height="115"
+                                       RenderOptions.BitmapScalingMode="HighQuality"
+                                       Stretch="Uniform"/>
+                            </Border>
+                        </Grid>
+
+                        <!-- Content Title (visible when set) -->
+                        <TextBlock x:Name="ContentTitleText" FontSize="16" FontWeight="Bold" Foreground="#1E293B"
+                                   Margin="0,0,0,8" TextWrapping="Wrap"
+                                   Visibility="Collapsed"/>
+
+                        <!-- Rule info with message -->
+                        <Border Padding="10,9" CornerRadius="6" Margin="0,0,0,12"
+                                Visibility="{Binding HasDialogMessage, Converter={StaticResource BoolToVis}}">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background" Value="#E8F0FE"/>
+                                    <Setter Property="BorderBrush" Value="#A4C2F4"/>
+                                    <Setter Property="BorderThickness" Value="1"/>
+                                </Style>
+                            </Border.Style>
+                            <TextBlock Text="{Binding DialogMessage}"
+                                       FontSize="11" TextWrapping="Wrap"
+                                       Foreground="#2D3748" LineHeight="17"/>
+                        </Border>
+
+                        <!-- Screenshot Preview (only shown when image is available) -->
+                        <Border Margin="0,0,0,12" CornerRadius="6"
+                                BorderBrush="#D6DCE5" BorderThickness="1"
+                                Background="White"
+                                Visibility="{Binding ShowImageSection, Converter={StaticResource BoolToVis}}">
+                            <Border.Effect>
+                                <DropShadowEffect Color="#000000" BlurRadius="4" ShadowDepth="1" Opacity="0.05"/>
+                            </Border.Effect>
+                            <StackPanel>
+                                <TextBlock Text="Preview"
+                                           FontSize="9.5" FontWeight="SemiBold"
+                                           Foreground="#5A6A7E" Margin="10,8,10,5"/>
+                                <Border BorderBrush="#E8ECF1" BorderThickness="1"
+                                        Margin="10,0,10,10" CornerRadius="6" Height="130"
+                                        Background="#F5F7FA">
+                                    <Image Source="{Binding PreviewImage}"
+                                           Stretch="Uniform" Margin="4"
+                                           RenderOptions.BitmapScalingMode="HighQuality"/>
+                                </Border>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Comment -->
+                        <StackPanel Margin="0,0,0,4">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <TextBlock Text="Comment" FontSize="10" FontWeight="SemiBold" Foreground="#1E293B"/>
+                                <TextBlock Text=" *" FontSize="10" FontWeight="Bold" Foreground="#E06B75"
+                                           Visibility="{Binding CommentRequired, Converter={StaticResource BoolToVis}}"/>
+                                <TextBlock Text="  (Required)" FontSize="9" Foreground="#E06B75" VerticalAlignment="Center"
+                                           Visibility="{Binding CommentRequired, Converter={StaticResource BoolToVis}}"/>
+                            </StackPanel>
+                            <TextBox Text="{Binding UserComment, UpdateSourceTrigger=PropertyChanged}"
+                                     MinHeight="48" MaxHeight="64"
+                                     TextWrapping="Wrap" AcceptsReturn="False"
+                                     VerticalScrollBarVisibility="Auto"
+                                     Padding="6" FontSize="10.5"
+                                     BorderBrush="#CBD5E1" BorderThickness="1" Background="White"
+                                     KeyDown="CommentTextBox_KeyDown">
+                                <TextBox.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="6"/>
+                                    </Style>
+                                </TextBox.Resources>
+                            </TextBox>
+                            <TextBlock Text="{Binding CommentHint}" FontSize="9" Foreground="#94A3B8" Margin="2,3,0,0"
+                                       Visibility="{Binding CommentRequired, Converter={StaticResource BoolToVis}}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </DockPanel>
+        </Grid>
+    </Border>
+</Window>

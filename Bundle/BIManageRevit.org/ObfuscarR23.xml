@@ -1,0 +1,27 @@
+<?xml version='1.0'?>
+<!--
+  Obfuscar config: BIManageRevit R23 (net48 / Revit 2023).
+  Revit 2023 is NOT installed on this build machine so the probe falls back
+  to Revit 2024 - same cascade the csproj uses for compile-time AdWindows
+  resolution. Revit API is backwards-compatible within the major version
+  family, so AdWindows.dll 5.0.x from 2024 satisfies the 23.x reference
+  closure during obfuscation. See ObfuscarR21.xml for net48 rationale.
+-->
+<Obfuscator>
+  <Var name="InPath"           value="BIManageRevit.org\Contents\2023" />
+  <Var name="OutPath"          value="BIManageRevit.org\Confused\2023" />
+  <Var name="HideStrings"      value="true" />
+  <Var name="KeepPublicApi"    value="true" />
+  <Var name="HidePrivateApi"   value="false" />
+  <Var name="RenameMethods"    value="false" />
+  <Var name="RenameProperties" value="false" />
+  <Var name="RenameEvents"     value="false" />
+  <Var name="RenameFields"     value="false" />
+  <Var name="UseUnicodeNames"  value="false" />
+
+  <AssemblySearchPath path="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8" />
+  <AssemblySearchPath path="C:\Program Files\Autodesk\Revit 2024" />
+
+  <Module file="BIManageRevit.org\Contents\2023\BIManageRevit.dll" />
+  <Module file="BIManageRevit.org\Contents\2023\BIManage.Addons.dll" />
+</Obfuscator>

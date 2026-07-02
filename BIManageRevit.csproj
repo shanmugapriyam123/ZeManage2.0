@@ -1,0 +1,849 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <UseWPF>true</UseWPF>
+        <Version>1.0.1</Version>
+        <!--
+            AssemblyVersion is intentionally pinned to 1.0.0.0 (decoupled from product release).
+            WPF's MarkupCompiler embeds the AssemblyVersion into the pack URI it generates inside
+            BAML / *.g.cs (e.g. `/BIManageRevit;V0.2.2.0;component/...`). When the version is bumped
+            but the per-Revit obj/ folder isn't fully regenerated, the BAML keeps the OLD version in
+            the URI while the assembly is stamped with the NEW version, and Application.LoadComponent
+            throws `IOException: cannot find resource …` at the first XAML window's InitializeComponent
+            (this is what the 0.2.3.0 deploy hit on Revit 2025: stale obj/Debug R25/*.g.cs still said
+            ;V0.2.2.0; while the assembly itself was 0.2.3.0).
+            By pinning AssemblyVersion to 1.0.0.0 we make the pack URI version stable, so future
+            product-version bumps never invalidate already-compiled BAML.
+            FileVersion + InformationalVersion stay tied to the product release for telemetry / display.
+        -->
+        <AssemblyVersion>1.0.0.0</AssemblyVersion>
+        <FileVersion>1.0.1.0</FileVersion>
+        <InformationalVersion>1.0.1</InformationalVersion>
+        <InternalsVisibleTo>BIManageRevit.Tests</InternalsVisibleTo>
+        <Nullable Condition="'$(TargetFramework)' == 'net48'">disable</Nullable>
+        <Nullable Condition="'$(TargetFramework)' != 'net48'">enable</Nullable>
+        <LangVersion>latest</LangVersion>
+        <Platforms>AnyCPU;x64</Platforms>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <PlatformTarget>x64</PlatformTarget>
+        <ImplicitUsings>true</ImplicitUsings>
+        <!--
+            EnableDynamicLoading=true is REQUIRED on Revit 2025+ — DO NOT FLIP TO FALSE.
+            v0.2.0 (commit 9ac722d, the last verified-working release on R25) had this set to
+            true. Every time it has been flipped to false since (commits 50b66ae, and a later
+            edit that broke 0.2.5 in the field) the symptom is identical: ribbon loads, but
+            every IExternalCommand toasts "Unable to access application services" and WPF
+            dialogs throw IOException on InitializeComponent.
+
+            What this property actually does (.NET SDK behaviour for class libraries):
+              - true:  emits BIManageRevit.runtimeconfig.json + a fully-populated deps.json
+                       next to the DLL. Revit 2025's add-in loader reads runtimeconfig.json to
+                       set up ONE coherent per-add-in AssemblyLoadContext. Single ALC, single
+                       copy of BIManageRevit, Application.Instance accessible everywhere, WPF
+                       pack-URI resolution behaves.
+              - false: NO runtimeconfig.json is emitted. Revit 2025 cannot establish a single
+                       coherent context, so it falls back to a fragmented load: the manifest
+                       scanner loads us into the Default ALC, the instantiator loads us again
+                       into an isolation ALC named "BIManageRevit". Two copies of every type,
+                       static singletons (Application.Instance) split per ALC, [AsmIdentity]
+                       logs "DUPLICATE LOAD DETECTED". Commands dispatched to the wrong copy
+                       see null Application.Instance.
+
+            Pair this with <UseRevitContext>True</UseRevitContext> in BIManageRevit.addin —
+            BOTH must be set together. Either alone reproduces the duplicate-load symptom.
+
+            No-op on .NET Framework 4.8 (Revit 2021-2024) — that runtime has no
+            AssemblyLoadContext concept and ignores EnableDynamicLoading entirely.
+        -->
+        <EnableDynamicLoading>true</EnableDynamicLoading>
+        <!-- Prevent main project from scanning sub-project directories.
+             Bundle\** MUST be excluded: it contains pre-built obfuscator inputs in NuGet-style
+             runtimes\<rid>\lib\<tfm>\ layouts. Without exclusion, MSBuild auto-resolves those
+             DLLs as RID-specific managed references. For Debug/Release R21-R24 (net48 builds)
+             this drags Bundle\...\runtimes\win\lib\net8.0\System.Management.dll into
+             @(ReferencePath), and WPF's MarkupCompilePass1 then fails with MC1000
+             "Could not find type 'System.Resources.NeutralResourcesLanguageAttribute' in
+             assembly System.Runtime.dll" because the .NET 8 ref expects this attribute via
+             the System.Runtime contract while net48 has it only in mscorlib / the
+             System.Resources.ResourceManager facade. -->
+        <DefaultItemExcludes>$(DefaultItemExcludes);BIManage.Addons\**;BIManageRevit.Tests\**;BIManageRevit.Shim\**;Bundle\**;ZeManage.Agent.Core\**;ZeManage.Agent\**;ZeManage.Agent.Check\**</DefaultItemExcludes>
+        <!-- Limit satellite resource assemblies to English only. The transitive Roslyn /
+             Microsoft.CodeAnalysis.* packages ship localized error-message resources for
+             13 cultures (cs/de/es/fr/it/ja/ko/pl/pt-BR/ru/tr/zh-Hans/zh-Hant), producing
+             ~52 *.resources.dll satellite assemblies under <language>\ subfolders in the
+             addin deployment. None reach the user: Roslyn errors are caught and surfaced
+             via ex.Message in our own UI/logs, which is always English regardless of OS
+             locale. The deployed satellites only contribute file-enumeration cost on every
+             Revit launch (manifest walk, .NET assembly-resolve probing, AV scan). Setting
+             this property to 'en' makes the SDK copy ONLY English satellites (or none if
+             none exist), cutting the addin's deployed file count from ~88 to ~36. Files
+             are removed; no code or binary changes; Roslyn's resource lookup already falls
+             back to English when a culture satellite is missing — which is what en-GB and
+             all other non-listed locales experience today anyway. Measured on a customer
+             machine where ZeManage was adding 60+ s to Revit cold launch beyond Defender. -->
+        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+        <!-- NuGetAudit: warn about vulnerable packages during restore -->
+    </PropertyGroup>
+
+    <!-- Global usings shared across the project (added by UI branch). Keep here so files
+         can reference common types without adding explicit using statements. -->
+    <ItemGroup>
+        <Using Include="Autodesk.Revit.DB" />
+        <Using Include="BIManage.Common.Helpers" />
+        <Using Include="BIManage.Infrastructure.Api" />
+        <Using Include="BIManage.Infrastructure.Logging" />
+        <Using Include="BIManage.Core.Protection.Models" />
+        <Using Include="BIManage.Revit.Protection" />
+    </ItemGroup>
+
+    <PropertyGroup>
+        <NuGetAudit>true</NuGetAudit>
+        <NuGetAuditLevel>low</NuGetAuditLevel>
+        <NuGetAuditMode>all</NuGetAuditMode>
+        <Configurations>Debug R21;Debug R22;Debug R23;Debug R24;Debug R25;Debug R26;Debug R27</Configurations>
+        <Configurations>$(Configurations);Release R21;Release R22;Release R23;Release R24;Release R25;Release R26;Release R27</Configurations>
+        <!-- Suppress duplicate assembly attribute generation -->
+        <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+        <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+        <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+        <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+        <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+        <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+        <!-- Suppress NeutralResourcesLanguageAttribute auto-generation. Without this, the .NET 10 SDK
+             emits the attribute via WPF's MarkupCompilePass1, which then probes the net48 facade
+             System.Runtime.dll for the type definition — a probe that fails because the facade is
+             empty (the type lives in mscorlib on net48). Setting GenerateNeutralResourcesLanguageAttribute=false
+             stops the SDK from inserting the attribute, sidestepping the probe entirely.
+             See https://github.com/dotnet/windowsdesktop/issues/3878. -->
+        <GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
+        <!-- Generate the [AssemblyVersion] attribute so the runtime identity matches the
+             <AssemblyVersion>1.0.0.0</AssemblyVersion> property AND the ;V1.0.0.0; baked into
+             BAML pack URIs by MarkupCompilePass1. With this set to false, runtime identity
+             becomes 0.0.0.0 — WPF's pack-URI resolver falls back to simple-name match (which
+             usually works) but every other version-aware path in .NET / Revit ends up
+             confused. Was set to false in 0.2.5 by mistake; v0.2.0 (verified-working) had it
+             defaulting to true. Keep it true. -->
+        <GenerateAssemblyVersionAttribute>true</GenerateAssemblyVersionAttribute>
+        <!-- Keep FileVersion + InformationalVersion attributes generated so the Support dialog
+             (and any external version readers) can resolve the product version. They are safe:
+             only AssemblyVersion is embedded in WPF BAML pack URIs, which is why that ONE is
+             pinned to 1.0.0.0 above. FileVersion + InformationalVersion are display-only. -->
+        <GenerateAssemblyFileVersionAttribute>true</GenerateAssemblyFileVersionAttribute>
+        <GenerateAssemblyInformationalVersionAttribute>true</GenerateAssemblyInformationalVersionAttribute>
+        <!-- Strong-name signing disabled — Nice3point.Revit.Toolkit, RevitAPI, and RevitAPIUI
+             are unsigned third-party assemblies. A signed assembly cannot load unsigned references
+             at runtime in .NET Framework, causing FileLoadException on startup. -->
+        <!-- Force binding redirects for net48 assembly version conflicts (Unsafe, etc.) -->
+        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+        <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+    </PropertyGroup>
+
+    <!-- Revit configuration -->
+    <PropertyGroup Condition="$(Configuration.Contains('R21'))">
+        <RevitVersion>2021</RevitVersion>
+        <TargetFramework>net48</TargetFramework>
+        <DefineConstants>REVIT2021;REVIT2021_OR_GREATER</DefineConstants>
+    </PropertyGroup>
+    <PropertyGroup Condition="$(Configuration.Contains('R22'))">
+        <RevitVersion>2022</RevitVersion>
+        <TargetFramework>net48</TargetFramework>
+        <DefineConstants>REVIT2022;REVIT2021_OR_GREATER;REVIT2022_OR_GREATER</DefineConstants>
+    </PropertyGroup>
+    <PropertyGroup Condition="$(Configuration.Contains('R23'))">
+        <RevitVersion>2023</RevitVersion>
+        <TargetFramework>net48</TargetFramework>
+        <DefineConstants>REVIT2023;REVIT2021_OR_GREATER;REVIT2022_OR_GREATER;REVIT2023_OR_GREATER</DefineConstants>
+    </PropertyGroup>
+    <PropertyGroup Condition="$(Configuration.Contains('R24'))">
+        <RevitVersion>2024</RevitVersion>
+        <TargetFramework>net48</TargetFramework>
+        <DefineConstants>REVIT2024;REVIT2021_OR_GREATER;REVIT2022_OR_GREATER;REVIT2023_OR_GREATER;REVIT2024_OR_GREATER</DefineConstants>
+    </PropertyGroup>
+    <PropertyGroup Condition="$(Configuration.Contains('R25'))">
+        <RevitVersion>2025</RevitVersion>
+        <TargetFramework>net8.0-windows</TargetFramework>
+        <DefineConstants>REVIT2025;REVIT2021_OR_GREATER;REVIT2022_OR_GREATER;REVIT2023_OR_GREATER;REVIT2024_OR_GREATER;REVIT2025_OR_GREATER</DefineConstants>
+    </PropertyGroup>
+    <PropertyGroup Condition="$(Configuration.Contains('R26'))">
+        <RevitVersion>2026</RevitVersion>
+        <TargetFramework>net8.0-windows</TargetFramework>
+        <DefineConstants>REVIT2026;REVIT2021_OR_GREATER;REVIT2022_OR_GREATER;REVIT2023_OR_GREATER;REVIT2024_OR_GREATER;REVIT2025_OR_GREATER;REVIT2026_OR_GREATER</DefineConstants>
+    </PropertyGroup>
+    <PropertyGroup Condition="$(Configuration.Contains('R27'))">
+        <RevitVersion>2027</RevitVersion>
+        <TargetFramework>net10.0-windows</TargetFramework>
+        <DefineConstants>REVIT2027;REVIT2021_OR_GREATER;REVIT2022_OR_GREATER;REVIT2023_OR_GREATER;REVIT2024_OR_GREATER;REVIT2025_OR_GREATER;REVIT2026_OR_GREATER;REVIT2027_OR_GREATER</DefineConstants>
+        <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
+    </PropertyGroup>
+
+    <!-- Fallback: Default to Revit 2024 (net48) since it is the only version on this PC -->
+    <PropertyGroup Condition="'$(TargetFramework)' == ''">
+        <TargetFramework>net48</TargetFramework>
+        <RevitVersion Condition="'$(RevitVersion)' == ''">2024</RevitVersion>
+        <DefineConstants Condition="'$(RevitVersion)' == '2024'">$(DefineConstants);REVIT2024;REVIT2024_OR_GREATER</DefineConstants>
+        <DefineConstants Condition="'$(RevitVersion)' != '2024'">$(DefineConstants);REVIT$(RevitVersion)</DefineConstants>
+    </PropertyGroup>
+
+    <!--
+         CopyLocalLockFileAssemblies must be TRUE for all TFMs.
+         With EnableDynamicLoading=false, the SDK no longer implicitly copies transitive NuGet
+         assemblies. We need them ALL copied to bin (and from there to the publish/addin folder)
+         because Revit doesn't supply third-party NuGet packages like CommunityToolkit.Mvvm,
+         MaterialDesignThemes, Nice3point.Revit.Toolkit, System.Data.SQLite, etc.
+
+         On net8.0+/net10.0+ the SDK is smart enough to skip framework-provided assemblies
+         (System.Text.Json, System.Buffers, etc.) automatically — only actual third-party deps
+         get copied. So TRUE here doesn't risk duplicating Revit's runtime assemblies.
+    -->
+    <PropertyGroup>
+        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    </PropertyGroup>
+
+    <!-- Launch configuration -->
+    <PropertyGroup>
+        <StartAction>Program</StartAction>
+        <StartProgram>C:\Program Files\Autodesk\Revit $(RevitVersion)\Revit.exe</StartProgram>
+        <StartArguments>/language ENG</StartArguments>
+    </PropertyGroup>
+
+    <!-- Build configuration -->
+    <!-- https://github.com/Nice3point/Revit.Build.Tasks -->
+    <PropertyGroup>
+        <IsRepackable>false</IsRepackable>
+        <DeployRevitAddin>true</DeployRevitAddin>
+        <!-- Set to false to exclude BIManage.Addons from build/deploy -->
+        <IncludeAddons Condition="'$(IncludeAddons)' == ''">true</IncludeAddons>
+        <!-- Disable VS fast up-to-date check — Nice3point deploy targets copy to
+             Revit Addins folder which confuses incremental build timestamp comparison,
+             causing builds to appear up-to-date when source files have changed. -->
+        <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
+    </PropertyGroup>
+
+    <!-- Self-heal: if project.assets.json is missing the CURRENT TargetFramework, run a restore
+         for the active configuration before ResolvePackageAssets throws NETSDK1005.
+         This handles the VS batch-build / config-switch scenario where a prior config's restore
+         overwrote the assets file with a different TFM family. We restore for the CURRENT config
+         only (not both families) because Nice3point packages are RevitVersion-specific.
+
+         Runs BOTH in design-time and build-time — NETSDK1005 breaks VS Intellisense too. -->
+    <Target Name="EnsureCurrentTfmAssets" BeforeTargets="_CheckForInvalidConfigurationAndPlatform;ResolvePackageAssets" Condition="'$(TargetFramework)' != ''">
+        <PropertyGroup>
+            <_AssetsFile>$(MSBuildProjectDirectory)\obj\project.assets.json</_AssetsFile>
+            <_AssetsExists>false</_AssetsExists>
+            <_AssetsExists Condition="Exists('$(_AssetsFile)')">true</_AssetsExists>
+            <!-- Map TFM to its assets.json "targets" section key. This key identifies
+                 which TFM the last restore was for (NOT the package compatibility list). -->
+            <_AssetsTargetKey Condition="'$(TargetFramework)' == 'net48'">.NETFramework,Version=v4.8</_AssetsTargetKey>
+            <_AssetsTargetKey Condition="'$(TargetFramework)' == 'net8.0-windows'">net8.0-windows7.0</_AssetsTargetKey>
+            <_AssetsTargetKey Condition="'$(TargetFramework)' == 'net10.0-windows'">net10.0-windows7.0</_AssetsTargetKey>
+            <_AssetsTargetKey Condition="'$(_AssetsTargetKey)' == ''">$(TargetFramework)</_AssetsTargetKey>
+            <_HasCurrentTfm Condition="'$(_AssetsExists)' == 'true'">$([System.IO.File]::ReadAllText('$(_AssetsFile)').Contains('"$(_AssetsTargetKey)": {'))</_HasCurrentTfm>
+            <_HasCurrentTfm Condition="'$(_HasCurrentTfm)' == ''">false</_HasCurrentTfm>
+        </PropertyGroup>
+        <Message Text="[BIManage] Self-healing restore for $(Configuration) ($(TargetFramework) → $(_AssetsTargetKey))..." Importance="High" Condition="'$(_HasCurrentTfm)' != 'True'" />
+        <Exec Command="dotnet restore &quot;$(MSBuildProjectFullPath)&quot; -p:Configuration=&quot;$(Configuration)&quot; --verbosity quiet" Condition="'$(_HasCurrentTfm)' != 'True'" ContinueOnError="false" />
+    </Target>
+
+    <!-- Build BIManage.Addons and copy DLLs into main output BEFORE CoreBuild completes.
+         Nice3point's PublishRevitAddinFiles (AfterTargets="CoreBuild") copies $(TargetDir)
+         into the publish folder, so Addons must be in $(OutputPath) before that happens.
+
+         ISOLATION STRATEGY: Newtonsoft.Json goes to lib/ subfolder (not flat).
+         This prevents conflict with Revit's own Newtonsoft.Json when Revit's
+         Cloud Collaboration / external resource subsystems load it. Our addin's
+         AssemblyResolve handler probes lib/ on-demand only for OUR code requests. -->
+    <Target Name="BuildAddons" AfterTargets="Compile" BeforeTargets="PublishRevitAddinFiles" Condition="'$(IncludeAddons)' == 'true'">
+        <MSBuild Projects="BIManage.Addons\BIManage.Addons.csproj" Properties="Configuration=$(Configuration)" Targets="Restore" />
+        <MSBuild Projects="BIManage.Addons\BIManage.Addons.csproj" Properties="Configuration=$(Configuration)" Targets="Build" />
+        <PropertyGroup>
+            <_AddonsOut>BIManage.Addons\bin\$(Configuration)\</_AddonsOut>
+        </PropertyGroup>
+        <ItemGroup>
+            <!-- Flat deployment: our own addon + WindowsAPICodePack (no name conflict with Revit) -->
+            <AddonFiles Include="$(_AddonsOut)BIManage.Addons.dll" />
+            <AddonFiles Include="$(_AddonsOut)Microsoft.WindowsAPICodePack.*.dll" />
+            <!-- lib/ subfolder: assemblies that conflict with Revit's own copies -->
+            <AddonLibFiles Include="$(_AddonsOut)Newtonsoft.Json.dll" Condition="Exists('$(_AddonsOut)Newtonsoft.Json.dll')" />
+        </ItemGroup>
+        <Copy SourceFiles="@(AddonFiles)" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" />
+        <Copy SourceFiles="@(AddonLibFiles)" DestinationFolder="$(OutputPath)lib" SkipUnchangedFiles="true" />
+        <!-- Also copy to Revit addins folder if already deployed -->
+        <Copy SourceFiles="@(AddonFiles)" DestinationFolder="$(AppData)\Autodesk\Revit\Addins\$(RevitVersion)\BIManageRevit\" SkipUnchangedFiles="true" Condition="Exists('$(AppData)\Autodesk\Revit\Addins\$(RevitVersion)\BIManageRevit\')" />
+        <Copy SourceFiles="@(AddonLibFiles)" DestinationFolder="$(AppData)\Autodesk\Revit\Addins\$(RevitVersion)\BIManageRevit\lib\" SkipUnchangedFiles="true" Condition="Exists('$(AppData)\Autodesk\Revit\Addins\$(RevitVersion)\BIManageRevit\')" />
+    </Target>
+
+    <!-- Build BIManageRevit.Shim and copy its outputs into the main output BEFORE CoreBuild
+         completes. This mirrors BuildAddons. The Shim is the tiny IExternalApplication
+         forwarder listed in BIManageRevit.addin's <Assembly> — Revit's manifest scanner
+         loads ONLY the Shim into the Default AssemblyLoadContext on R25, and the Shim then
+         loads the Core (BIManageRevit.dll) into a dedicated ALC. This eliminates the
+         dual-load that surfaces as "Revit encountered a serious error" via native
+         AddInManager::commandHasAddinSubscriptions.
+
+         The Shim's runtimeconfig.json + deps.json must be deployed next to BIManageRevit.Shim.dll
+         on Revit 2025+ so Revit's add-in loader can set up a coherent ALC for the Shim. -->
+    <Target Name="BuildShim" AfterTargets="Compile" BeforeTargets="PublishRevitAddinFiles">
+        <MSBuild Projects="BIManageRevit.Shim\BIManageRevit.Shim.csproj" Properties="Configuration=$(Configuration)" Targets="Restore" />
+        <MSBuild Projects="BIManageRevit.Shim\BIManageRevit.Shim.csproj" Properties="Configuration=$(Configuration)" Targets="Build" />
+        <PropertyGroup>
+            <_ShimOut>BIManageRevit.Shim\bin\$(Configuration)\$(TargetFramework)\</_ShimOut>
+        </PropertyGroup>
+        <ItemGroup>
+            <!-- Core Shim binary -->
+            <ShimFiles Include="$(_ShimOut)BIManageRevit.Shim.dll" />
+            <ShimFiles Include="$(_ShimOut)BIManageRevit.Shim.pdb" Condition="Exists('$(_ShimOut)BIManageRevit.Shim.pdb')" />
+            <!-- runtimeconfig.json + deps.json (.NET 8/10 only; net48 doesn't emit them) -->
+            <ShimFiles Include="$(_ShimOut)BIManageRevit.Shim.runtimeconfig.json" Condition="Exists('$(_ShimOut)BIManageRevit.Shim.runtimeconfig.json')" />
+            <ShimFiles Include="$(_ShimOut)BIManageRevit.Shim.deps.json" Condition="Exists('$(_ShimOut)BIManageRevit.Shim.deps.json')" />
+        </ItemGroup>
+        <!-- Copy to main output so Nice3point's PublishRevitAddinFiles picks them up. -->
+        <Copy SourceFiles="@(ShimFiles)" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" />
+        <!-- Also copy directly to the Revit addins folder if already deployed.
+             Mirrors BuildAddons line 256 — keeps dev-loop tight (rebuild then re-launch Revit
+             without a separate Publish step). -->
+        <Copy SourceFiles="@(ShimFiles)" DestinationFolder="$(AppData)\Autodesk\Revit\Addins\$(RevitVersion)\BIManageRevit\" SkipUnchangedFiles="true" Condition="Exists('$(AppData)\Autodesk\Revit\Addins\$(RevitVersion)\BIManageRevit\')" />
+    </Target>
+
+    <!-- Remove flat Newtonsoft.Json from OutputPath and deployed addin folder.
+         It MUST only exist in lib/ to avoid being pre-loaded and shadowing Revit's copy. -->
+    <Target Name="RemoveFlatNewtonsoftJson" AfterTargets="BuildAddons;BuildShim;PublishRevitAddinFiles;DeployRevitAddinFiles">
+        <Delete Files="$(OutputPath)Newtonsoft.Json.dll" />
+        <Delete Files="$(AppData)\Autodesk\Revit\Addins\$(RevitVersion)\BIManageRevit\Newtonsoft.Json.dll" Condition="Exists('$(AppData)\Autodesk\Revit\Addins\$(RevitVersion)\BIManageRevit\Newtonsoft.Json.dll')" />
+    </Target>
+
+    <!-- Restore <ManifestSettings> in the deployed .addin files for Revit 2026+ ONLY.
+         Nice3point's PatchManifest task strips the ManifestSettings block during publish for
+         "backwards compatibility", but Revit 2026/2027 NEED <UseRevitContext>True</UseRevitContext>
+         to prevent the dual-ALC-load that breaks WPF dialogs. We overwrite the patched .addin with
+         our source .addin AFTER PatchManifest and DeployRevitAddinFiles run.
+
+         CRITICAL — verified 2026-04-30 against AddInManager.dll string tables:
+           Revit 2021-2024 (.NET 4.8):  schema does NOT recognize <ManifestSettings>. Unknown
+                                        element silently rejects the entire .addin (no journal entry).
+           Revit 2025 (.NET 8):         schema does NOT recognize <ManifestSettings> either. The
+                                        parser is stricter and writes a journal error:
+                                        "The 'ManifestSettings' tag is incorrect, should be replaced
+                                        with 'AddIn'." → manifest fails to load, addin not detected.
+           Revit 2026+ (.NET 8/10):     schema recognizes <ManifestSettings><UseRevitContext>.
+                                        Required to prevent dual-ALC duplicate load that breaks WPF.
+
+         So <ManifestSettings> may only appear in the deployed .addin for R26+. R21-R25 must be
+         the stripped form. PatchManifest already strips it for all targets; this target only
+         RE-INJECTS for R26+.
+
+         IMPORTANT: refreshes the .addin in EVERY R26+ Revit Addins folder under %AppData%,
+         not just $(RevitVersion). Without this, building for R27 leaves R26's deployed .addin
+         stale (no UseRevitContext), which re-introduces the duplicate-load on R26. -->
+    <Target Name="PreserveManifestSettings"
+            AfterTargets="PatchManifest;DeployRevitAddinFiles;Build"
+            Condition="Exists('$(MSBuildProjectDirectory)\BIManageRevit.addin')">
+        <PropertyGroup>
+            <_AddinSrcPath>$(MSBuildProjectDirectory)\BIManageRevit.addin</_AddinSrcPath>
+        </PropertyGroup>
+        <!-- Glob both targets:
+             1. publish folder (consumed by installer) — matches "Revit XXXX YYY addin/BIManageRevit.addin".
+                Filtered to R26+ via the regex on the path: PatchManifest leaves R21-R25 publish
+                folders with the (correct) stripped .addin, so we only restore for R26+.
+             2. R26+ deployed Revit Addins folders only — fixes stale .addin from prior R-version builds.
+                R21-R25 are explicitly excluded so the stripped (no <ManifestSettings>) version stays. -->
+        <ItemGroup>
+            <_AllPublishedAddins Include="$(PublishDir)**\BIManageRevit.addin" />
+            <_PublishedAddins Include="@(_AllPublishedAddins)"
+                Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('%(Identity)', 'Revit\s20(2[6-9]|[3-9]\d)'))" />
+            <_DeployedAddins Include="$(AppData)\Autodesk\Revit\Addins\2026\BIManageRevit.addin" />
+            <_DeployedAddins Include="$(AppData)\Autodesk\Revit\Addins\2027\BIManageRevit.addin" />
+            <_DeployedAddins Include="$(AppData)\Autodesk\Revit\Addins\2028\BIManageRevit.addin" />
+            <_DeployedAddins Include="$(AppData)\Autodesk\Revit\Addins\2029\BIManageRevit.addin" />
+        </ItemGroup>
+        <Message Text="[PreserveManifestSettings] R26+ only - published=@(_PublishedAddins) deployed=@(_DeployedAddins)" Importance="High" />
+        <!-- Use a metadata transform so SourceFiles count matches DestinationFiles count.
+             '@(_PublishedAddins->'$(_AddinSrcPath)')' produces one copy of $(_AddinSrcPath)
+             per item in @(_PublishedAddins), keeping MSBuild's Copy task happy when copying
+             one source file out to N destinations (R2026-R2029 deployed addins). -->
+        <Copy SourceFiles="@(_PublishedAddins->'$(_AddinSrcPath)')"
+              DestinationFiles="@(_PublishedAddins)"
+              SkipUnchangedFiles="false"
+              OverwriteReadOnlyFiles="true"
+              Condition="'@(_PublishedAddins)' != ''" />
+        <Copy SourceFiles="@(_DeployedAddins->'$(_AddinSrcPath)')"
+              DestinationFiles="@(_DeployedAddins)"
+              SkipUnchangedFiles="false"
+              OverwriteReadOnlyFiles="true"
+              Condition="'@(_DeployedAddins)' != '' AND Exists('%(_DeployedAddins.Identity)')" />
+    </Target>
+
+    <!-- DEFENSIVE: After build, if R25's deployed .addin contains <ManifestSettings> from a
+         prior bad build, strip it. R25's manifest parser explicitly rejects ManifestSettings
+         ("The 'ManifestSettings' tag is incorrect, should be replaced with 'AddIn'") and the
+         entire addin fails to load. This target rewrites a clean stripped version when needed. -->
+    <Target Name="StripR25ManifestSettings"
+            AfterTargets="PatchManifest;DeployRevitAddinFiles;Build">
+        <PropertyGroup>
+            <_R25Addin>$(AppData)\Autodesk\Revit\Addins\2025\BIManageRevit.addin</_R25Addin>
+        </PropertyGroup>
+        <ItemGroup>
+            <_R25Publish Include="$(PublishDir)**\BIManageRevit.addin"
+                Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('%(Identity)', 'Revit\s2025'))" />
+        </ItemGroup>
+        <Exec Command="powershell -NoProfile -Command &quot;$f='$(_R25Addin)'; if (Test-Path $f) { $c=Get-Content $f -Raw; if ($c -match '&lt;ManifestSettings&gt;') { $c2=[regex]::Replace($c, '(?s)\s*&lt;!--.*?--&gt;\s*&lt;ManifestSettings&gt;.*?&lt;/ManifestSettings&gt;\s*', ''); $c2=[regex]::Replace($c2, '(?s)\s*&lt;ManifestSettings&gt;.*?&lt;/ManifestSettings&gt;\s*', ''); Set-Content -Path $f -Value $c2 -Encoding UTF8 -NoNewline; Write-Host '[StripR25ManifestSettings] Stripped from' $f } }&quot;"
+              Condition="Exists('$(_R25Addin)')"
+              ContinueOnError="true" />
+        <Exec Command="powershell -NoProfile -Command &quot;$f='%(_R25Publish.Identity)'; if (Test-Path $f) { $c=Get-Content $f -Raw; if ($c -match '&lt;ManifestSettings&gt;') { $c2=[regex]::Replace($c, '(?s)\s*&lt;!--.*?--&gt;\s*&lt;ManifestSettings&gt;.*?&lt;/ManifestSettings&gt;\s*', ''); $c2=[regex]::Replace($c2, '(?s)\s*&lt;ManifestSettings&gt;.*?&lt;/ManifestSettings&gt;\s*', ''); Set-Content -Path $f -Value $c2 -Encoding UTF8 -NoNewline; Write-Host '[StripR25ManifestSettings] Stripped from' $f } }&quot;"
+              Condition="'@(_R25Publish)' != ''"
+              ContinueOnError="true" />
+    </Target>
+
+    <ItemGroup>
+        <!-- Revit References -->
+        <PackageReference Include="MaterialDesignColors" Version="5.3.0" />
+        <PackageReference Include="MaterialDesignThemes" Version="5.3.0" />
+        <PackageReference Include="Nice3point.Revit.Build.Tasks" Version="3.0.1" />
+
+        <!-- MVVM — 8.3.2 for net48 because 8.4.0 pulls Unsafe 6.1.0 (asm 6.0.1.0) which
+             causes FileNotFoundException on deployed machines where System.Text.Json requests 6.0.0.0.
+             8.3.2 depends on Unsafe 6.0.0 (asm 6.0.0.0) — exact match, no binding redirect needed. -->
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" Condition="'$(TargetFramework)' == 'net48'" />
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" Condition="'$(TargetFramework)' != 'net48'" />
+
+        <!-- SQLite Database - Core only (raw ADO.NET, no Entity Framework) -->
+        <PackageReference Include="System.Data.SQLite.Core" Version="1.0.118" />
+
+        <!-- System.Management for hardware-based machine identification -->
+        <PackageReference Include="System.Management" Version="9.0.0" />
+
+        <!--
+            Roslyn — powers AI Terminal's send_code_to_revit tool (Phase 3d).
+            BIManage/AI/Terminal/Safety/ uses these to:
+              1. Parse AI-generated C# into a syntax tree (Microsoft.CodeAnalysis.CSharp)
+              2. Walk the AST to reject unsafe patterns (no Transaction, no IO, no Reflection, etc.)
+              3. Compile the validated snippet into an in-memory assembly with restricted refs (Scripting)
+              4. Invoke against the active Revit document on the UI thread (ExternalEvent)
+
+            Version pinning rationale:
+              - 4.8.0 is the last release with clean netstandard2.0 deps that work cleanly on net48
+                via fallback (5.x targets netstandard2.0 but pulls System.Collections.Immutable 9.0
+                which fights the strict 8.x pinning documented above for Bcl.AsyncInterfaces).
+              - Same version across all 3 TFMs (net48 / net8.0-windows / net10.0-windows) — no
+                conditional version mess to debug.
+              - Sparx revit-mcp uses identical 4.8.0 pinning across Revit 2020-2026, so this version
+                is validated against the same Revit API surface we target.
+        -->
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.8.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.8.0" />
+
+    </ItemGroup>
+
+    <!-- Evidence Capture Dependencies (for .NET 8.0-windows / .NET 10.0-windows) -->
+    <ItemGroup Condition="'$(TargetFramework)' == 'net8.0-windows'">
+        <PackageReference Include="System.Drawing.Common" Version="8.0.0" />
+        <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="8.0.0" />
+    </ItemGroup>
+    <!-- net10.0-windows: these are part of the runtime — no PackageReference needed -->
+
+    <!-- DPAPI for .NET Framework (built-in, just need the reference) -->
+    <!-- net48-specific package versions. ALL must use the same major version of
+         Microsoft.Bcl.AsyncInterfaces — System.Text.Json calls Utf8JsonWriter.DisposeAsync
+         which is defined on IAsyncDisposable from Bcl.AsyncInterfaces. Mixing 6.x and 8.x of
+         Bcl.AsyncInterfaces produces TypeLoadException: "DisposeAsync does not have an implementation".
+         CommunityToolkit.Mvvm 8.3.2 transitively requires Bcl.AsyncInterfaces 8.0.0, so we use
+         System.Text.Json 8.x (compiled against Bcl 8.x) to keep the graph consistent. -->
+    <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+        <Reference Include="System.Security" />
+        <PackageReference Include="System.Text.Json" Version="8.0.5" />
+        <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
+    </ItemGroup>
+
+    <!-- Nice3point Revit packages - split by TFM to avoid NU1202.
+         IMPORTANT: Pin to the .0 minor version for each Revit major to ensure compatibility
+         with ALL service pack installations. Using wildcard (e.g. "2026.*") resolves to the
+         latest 2026.x (currently 2026.4), which then fails to load on users with Revit 2026.3
+         or earlier installed — journal shows "RevitAPI 26.4.0.0 conflicts with preloaded 26.3.0.0"
+         and our DocumentOpening handler silently crashes the process when calling any API method
+         added after the user's installed minor version.
+         Revit API is backwards-compatible: a plugin compiled against 26.0 runs on all 26.x. -->
+    <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+        <PackageReference Include="Nice3point.Revit.Toolkit" Version="2024.0.*" />
+        <PackageReference Include="Nice3point.Revit.Api.RevitAPI" Version="2024.0.*" />
+        <PackageReference Include="Nice3point.Revit.Api.RevitAPIUI" Version="2024.0.*" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(TargetFramework)' == 'net8.0-windows'">
+        <PackageReference Include="Nice3point.Revit.Toolkit" Version="$(RevitVersion).0.*" />
+        <PackageReference Include="Nice3point.Revit.Api.RevitAPI" Version="$(RevitVersion).0.*" />
+        <PackageReference Include="Nice3point.Revit.Api.RevitAPIUI" Version="$(RevitVersion).0.*" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(TargetFramework)' == 'net10.0-windows'">
+        <PackageReference Include="Nice3point.Revit.Toolkit" Version="$(RevitVersion).0.*" />
+        <PackageReference Include="Nice3point.Revit.Api.RevitAPI" Version="$(RevitVersion).0.*" />
+        <PackageReference Include="Nice3point.Revit.Api.RevitAPIUI" Version="$(RevitVersion).0.*" />
+    </ItemGroup>
+
+    <!-- ZeManage Desktop Agent (R27 / net10.0-windows only).
+         Keeps BIManage SQLite (%LocalAppData%\BIManageRevit\) and Agent SQLite
+         (%LocalAppData%\ZeManage\agent.db) completely separate. -->
+    <ItemGroup Condition="'$(TargetFramework)' == 'net10.0-windows'">
+        <ProjectReference Include="ZeManage.Agent.Core\ZeManage.Agent.Core.csproj" />
+    </ItemGroup>
+
+    <!-- VB InputBox for OTP input dialog (net48/net8.0 need explicit ref; net10.0 has it built-in) -->
+    <ItemGroup Condition="'$(TargetFramework)' != 'net10.0-windows'">
+        <Reference Include="Microsoft.VisualBasic" />
+    </ItemGroup>
+
+    <!-- AdWindows.dll: Autodesk's internal ribbon manipulation API, used by the CAD Explode
+         ribbon button swap (Ze_CADExplodeProtection). Lives next to RevitAPI.dll in the Revit
+         install directory. Marked Private=False because Revit loads it itself; we never copy
+         it to the addin folder. All consuming code MUST guard with try/catch so a missing or
+         API-changed AdWindows never crashes the plugin — protection logic gracefully degrades
+         to the post-action audit handler when the swap can't be installed.
+
+         The HintPath cascades: prefer the AdWindows.dll from the Revit version we're building
+         for, but fall back to whichever Revit (2024 → 2027) is installed on the build machine.
+         Without this fallback, building Release R21 on a machine without Revit 2021 installed
+         fails at compile time with CS0234 (no Autodesk.Windows namespace), even though every
+         call site is try/catch-guarded at runtime. AdWindows API is sufficiently backward-
+         compatible across major Revit versions that the 2024/2025/2026 DLL satisfies the
+         compiler for all R21-R27 targets. -->
+    <PropertyGroup>
+        <_AdWindowsHint Condition="'$(_AdWindowsHint)' == '' AND Exists('C:\Program Files\Autodesk\Revit $(RevitVersion)\AdWindows.dll')">C:\Program Files\Autodesk\Revit $(RevitVersion)\AdWindows.dll</_AdWindowsHint>
+        <_AdWindowsHint Condition="'$(_AdWindowsHint)' == '' AND Exists('C:\Program Files\Autodesk\Revit 2024\AdWindows.dll')">C:\Program Files\Autodesk\Revit 2024\AdWindows.dll</_AdWindowsHint>
+        <_AdWindowsHint Condition="'$(_AdWindowsHint)' == '' AND Exists('C:\Program Files\Autodesk\Revit 2025\AdWindows.dll')">C:\Program Files\Autodesk\Revit 2025\AdWindows.dll</_AdWindowsHint>
+        <_AdWindowsHint Condition="'$(_AdWindowsHint)' == '' AND Exists('C:\Program Files\Autodesk\Revit 2026\AdWindows.dll')">C:\Program Files\Autodesk\Revit 2026\AdWindows.dll</_AdWindowsHint>
+        <_AdWindowsHint Condition="'$(_AdWindowsHint)' == '' AND Exists('C:\Program Files\Autodesk\Revit 2027\AdWindows.dll')">C:\Program Files\Autodesk\Revit 2027\AdWindows.dll</_AdWindowsHint>
+    </PropertyGroup>
+    <ItemGroup Condition="'$(_AdWindowsHint)' != ''">
+        <Reference Include="AdWindows">
+            <HintPath>$(_AdWindowsHint)</HintPath>
+            <Private>False</Private>
+        </Reference>
+    </ItemGroup>
+
+    <!-- System.Configuration for .NET Framework -->
+    <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+        <Reference Include="System.Configuration" />
+    </ItemGroup>
+
+    <!-- System.Configuration for .NET 8.0+ -->
+    <ItemGroup Condition="'$(TargetFramework)' == 'net8.0-windows'">
+        <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
+    </ItemGroup>
+    <!-- net10.0-windows: ConfigurationManager is part of the runtime -->
+
+    <!-- HTTP Client Dependencies (net48 only — net8.0/net10.0 runtimes include it) -->
+    <!-- IMPORTANT: Must reference the .NET Framework's built-in System.Net.Http (4.0.0.0),
+         NOT the NuGet package (which bakes in 4.2.0.0 as a metadata reference).
+         Revit preloads 4.0.0.0 — if our DLL references 4.2.0.0, it pollutes the AppDomain
+         and breaks Revit's CloudResourceManager (external resource links fail with
+         MissingMethodException on BaseJsonMediaTypeFormatter.get_SerializerSettings).
+         Using <Reference> instead of <PackageReference> resolves to the framework DLL at
+         compile time, so no version mismatch is baked into BIManageRevit.dll's metadata. -->
+    <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+        <Reference Include="System.Net.Http" />
+    </ItemGroup>
+
+    <!-- SAST: Roslyn Security Analyzers (build-time static analysis) -->
+    <ItemGroup>
+        <PackageReference Include="SecurityCodeScan.VS2019" Version="5.6.7">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <!-- Light theme icons (default) -->
+    <ItemGroup>
+        <Resource Include="Resources\Icons\*.png" />
+    </ItemGroup>
+
+    <!-- Dark theme icons (white variants) -->
+    <ItemGroup>
+        <Resource Include="Resources\IconsWhite\*.png" />
+    </ItemGroup>
+
+    <!-- Tell SDK not to auto-copy App.config — our Target below handles it.
+         Prevents NETSDK1152 (duplicate publish output) under .NET 10 SDK. -->
+    <ItemGroup>
+        <None Update="App.config">
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+            <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+        </None>
+    </ItemGroup>
+
+    <!-- Copy App.config to bin/publish as BIManageRevit.dll.config. -->
+    <Target Name="CopyAppConfigAsDllConfig" AfterTargets="Build;Publish" Condition="Exists('App.config')">
+        <Copy SourceFiles="App.config" DestinationFiles="$(OutputPath)BIManageRevit.dll.config" SkipUnchangedFiles="true" Condition="'$(OutputPath)' != ''" />
+        <Copy SourceFiles="App.config" DestinationFiles="$(PublishDir)BIManageRevit.dll.config" SkipUnchangedFiles="true" Condition="'$(PublishDir)' != ''" />
+    </Target>
+
+    <ItemGroup>
+        <EmbeddedResource Include="BIManage\Data\SQLite\Schema.sql">
+            <LogicalName>BIManage.Data.SQLite.Schema.sql</LogicalName>
+        </EmbeddedResource>
+        <EmbeddedResource Include="BIManage\Data\SQLite\Schema_Persistence.sql">
+            <LogicalName>BIManage.Data.SQLite.Schema_Persistence.sql</LogicalName>
+        </EmbeddedResource>
+        <None Update="BIManage\Rules\Samples\sample-rules.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="BIManage\Rules\Samples\sample-command-protection.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="BIManage\Resources\Categories.xlsx">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+
+        <!--
+            AI Terminal product-knowledge dataset.
+
+            Source-controlled here (NOT in bin/) so updates survive a clean build.
+            Loaded at runtime by JsonKnowledgeProvider, which looks under
+            <DllDir>\BIManage\AI\Knowledge\Data\ — matched by the directory layout below.
+
+            CopyToOutputDirectory=PreserveNewest ensures it lands in the deployed addin
+            folder on every build, and the deployed copy is overwritten only when the
+            source is newer (so a manual edit to bin/ for quick testing isn't squashed
+            on the next incremental build, but committing the source change always wins).
+
+            Other knowledge files (errors.json, best_practices.json, etc.) live only in
+            bin/ today — pull each into source via the same pattern when you next touch them.
+        -->
+        <None Update="BIManage\AI\Knowledge\Data\product_knowledge.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+    <!-- Exclude test project, addons project, and shim project files from main project build -->
+    <ItemGroup>
+        <Compile Remove="BIManageRevit.Tests\**" />
+        <Compile Remove="BIManage\Tools\Testing\**" />
+        <Compile Remove="BIManage.Addons\**" />
+        <Compile Remove="BIManageRevit.Shim\**" />
+        <EmbeddedResource Remove="BIManageRevit.Tests\**" />
+        <EmbeddedResource Remove="BIManage\Tools\Testing\**" />
+        <EmbeddedResource Remove="BIManage.Addons\**" />
+        <EmbeddedResource Remove="BIManageRevit.Shim\**" />
+        <None Remove="BIManageRevit.Tests\**" />
+        <None Remove="BIManage\Tools\Testing\**" />
+        <None Remove="BIManage.Addons\**" />
+        <None Remove="BIManageRevit.Shim\**" />
+        <Page Remove="BIManage.Addons\**" />
+        <Page Remove="BIManageRevit.Shim\**" />
+    </ItemGroup>
+
+    <!-- IsExternalInit polyfill for .NET Framework to support init-only properties -->
+    <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+        <Compile Remove="BIManage\Core\Polyfills\IsExternalInit.cs" />
+        <Compile Include="BIManage\Core\Polyfills\IsExternalInit.cs" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(TargetFramework)' != 'net48'">
+        <Compile Remove="BIManage\Core\Polyfills\IsExternalInit.cs" />
+    </ItemGroup>
+    <ItemGroup>
+      <Resource Include="BIManage\Resources\Icons\BIManage.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <!-- ZeAiMascot.png lives in Resources\Icons\ and is already picked up by the
+           wildcard <Resource Include="Resources\Icons\*.png" /> earlier in this csproj.
+           No explicit entry needed here. -->
+      <Resource Include="BIManage\Resources\Images\LoginIllustration.png" />
+      <Resource Include="BIManage\Resources\Images\ZeManageLogo.png" />
+      <Resource Include="BIManage\Resources\Images\OctopusNotify.png" />
+      <Resource Include="BIManage\Resources\Images\OctopusAssist.png" />
+      <Resource Include="BIManage\Resources\Images\OctopusProtect.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Update="PresentationCore">
+        <Private>False</Private>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Update="PresentationFramework">
+        <Private>False</Private>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Update="System">
+        <Private>False</Private>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Update="System.Core">
+        <Private>False</Private>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Update="System.Data">
+        <Private>False</Private>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Update="System.Drawing">
+        <Private>False</Private>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Update="System.IO.Compression.FileSystem">
+        <Private>False</Private>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Update="System.Numerics">
+        <Private>False</Private>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Update="System.Runtime.Serialization">
+        <Private>False</Private>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Update="System.Windows.Controls.Ribbon">
+        <Private>False</Private>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Update="System.Xaml">
+        <Private>False</Private>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Update="System.Xml">
+        <Private>False</Private>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Update="System.Xml.Linq">
+        <Private>False</Private>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Update="UIAutomationClient">
+        <Private>False</Private>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Update="UIAutomationClientSideProviders">
+        <Private>False</Private>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Update="UIAutomationProvider">
+        <Private>False</Private>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Update="UIAutomationTypes">
+        <Private>False</Private>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Update="WindowsBase">
+        <Private>False</Private>
+      </Reference>
+    </ItemGroup>
+
+    <!-- Post-build: Copy SQLite.Interop.dll for Revit compatibility.
+         Runs after CoreBuild (compile + content copy) but BEFORE Nice3point's
+         PublishRevitAddinFiles, so the .dll is in $(OutputPath) when publish copies $(TargetDir). -->
+    <Target Name="CopySQLiteNativeDll" AfterTargets="CoreBuild" BeforeTargets="PublishRevitAddinFiles">
+        <Message Text="═══════════════════════════════════════════════════════" Importance="high" />
+        <Message Text="  Copying SQLite.Interop.dll (Required for Database)" Importance="high" />
+        <Message Text="  Target Framework: $(TargetFramework)" Importance="high" />
+        <Message Text="  Output Path: $(OutputPath)" Importance="high" />
+        <Message Text="═══════════════════════════════════════════════════════" Importance="high" />
+
+        <!-- For .NET 8.0 (Revit 2025+): Copy from runtimes folder to root -->
+        <Copy SourceFiles="$(OutputPath)runtimes\win-x64\native\SQLite.Interop.dll" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="false" OverwriteReadOnlyFiles="true" Condition="Exists('$(OutputPath)runtimes\win-x64\native\SQLite.Interop.dll')" />
+        <Message Text="✓ SQLite.Interop.dll copied from runtimes\win-x64\native\" Importance="high" Condition="Exists('$(OutputPath)runtimes\win-x64\native\SQLite.Interop.dll')" />
+
+        <!-- For .NET Framework 4.8 (Revit 2021-2024): Copy from x64 folder to root -->
+        <Copy SourceFiles="$(OutputPath)x64\SQLite.Interop.dll" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="false" OverwriteReadOnlyFiles="true" Condition="Exists('$(OutputPath)x64\SQLite.Interop.dll')" />
+        <Message Text="✓ SQLite.Interop.dll copied from x64\" Importance="high" Condition="Exists('$(OutputPath)x64\SQLite.Interop.dll')" />
+
+        <!-- Fallback: Try copying from NuGet packages cache.
+             The actual native DLL lives in Stub.System.Data.SQLite.Core.NetFramework (net48)
+             or Stub.System.Data.SQLite.Core.NetStandard (net8.0+) — NOT in System.Data.SQLite.Core
+             which is just a metapackage. Build also copies to OutputPath\x64\ AND OutputPath\x86\.
+             This fallback ensures both are present even if the Stub package's BuildDependsOn
+             hook didn't fire (e.g. fresh restore + build race on net48 R21/R22/R23). -->
+        <PropertyGroup>
+            <SQLiteStubNetFw>$(UserProfile)\.nuget\packages\stub.system.data.sqlite.core.netframework\1.0.118\build\net46</SQLiteStubNetFw>
+            <SQLiteStubNetStd>$(UserProfile)\.nuget\packages\stub.system.data.sqlite.core.netstandard\1.0.118\runtimes\win-x64\native</SQLiteStubNetStd>
+        </PropertyGroup>
+        <!-- net48: copy from net46/x64 + net46/x86 in Stub.System.Data.SQLite.Core.NetFramework -->
+        <Copy SourceFiles="$(SQLiteStubNetFw)\x64\SQLite.Interop.dll" DestinationFolder="$(OutputPath)x64" SkipUnchangedFiles="false" OverwriteReadOnlyFiles="true" Condition="'$(TargetFramework)' == 'net48' AND !Exists('$(OutputPath)x64\SQLite.Interop.dll') AND Exists('$(SQLiteStubNetFw)\x64\SQLite.Interop.dll')" />
+        <Copy SourceFiles="$(SQLiteStubNetFw)\x86\SQLite.Interop.dll" DestinationFolder="$(OutputPath)x86" SkipUnchangedFiles="false" OverwriteReadOnlyFiles="true" Condition="'$(TargetFramework)' == 'net48' AND !Exists('$(OutputPath)x86\SQLite.Interop.dll') AND Exists('$(SQLiteStubNetFw)\x86\SQLite.Interop.dll')" />
+        <Copy SourceFiles="$(SQLiteStubNetFw)\x64\SQLite.Interop.dll" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="false" OverwriteReadOnlyFiles="true" Condition="'$(TargetFramework)' == 'net48' AND !Exists('$(OutputPath)SQLite.Interop.dll') AND Exists('$(SQLiteStubNetFw)\x64\SQLite.Interop.dll')" />
+        <Message Text="✓ SQLite.Interop.dll copied from Stub.NetFramework NuGet cache (fallback for net48)" Importance="high" Condition="'$(TargetFramework)' == 'net48' AND Exists('$(SQLiteStubNetFw)\x64\SQLite.Interop.dll')" />
+        <!-- net8.0+/net10.0+: copy from runtimes/win-x64/native in Stub.System.Data.SQLite.Core.NetStandard -->
+        <Copy SourceFiles="$(SQLiteStubNetStd)\SQLite.Interop.dll" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="false" OverwriteReadOnlyFiles="true" Condition="'$(TargetFramework)' != 'net48' AND !Exists('$(OutputPath)SQLite.Interop.dll') AND Exists('$(SQLiteStubNetStd)\SQLite.Interop.dll')" />
+        <Message Text="✓ SQLite.Interop.dll copied from Stub.NetStandard NuGet cache (fallback for net core)" Importance="high" Condition="'$(TargetFramework)' != 'net48' AND Exists('$(SQLiteStubNetStd)\SQLite.Interop.dll')" />
+
+        <!-- Also copy to Revit addins folder -->
+        <PropertyGroup>
+            <RevitAddinsDir Condition="'$(RevitAddinsDir)' == ''">$(AppData)\Autodesk\Revit\Addins\$(RevitVersion)\BIManageRevit</RevitAddinsDir>
+        </PropertyGroup>
+        <Copy SourceFiles="$(OutputPath)SQLite.Interop.dll" DestinationFolder="$(RevitAddinsDir)" SkipUnchangedFiles="false" OverwriteReadOnlyFiles="true" Condition="Exists('$(OutputPath)SQLite.Interop.dll') AND Exists('$(RevitAddinsDir)')" />
+        <Message Text="SQLite.Interop.dll deployed to Revit addins folder" Importance="high" Condition="Exists('$(OutputPath)SQLite.Interop.dll') AND Exists('$(RevitAddinsDir)')" />
+    </Target>
+
+
+    <!-- Include x64 folder in publish for .NET Framework builds -->
+    <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+        <None Include="$(OutputPath)x64\**\*.*">
+            <Link>x64\%(RecursiveDir)%(Filename)%(Extension)</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+      <!-- BIManage\AI\Knowledge\Data\ is no longer an empty-folder placeholder —
+           product_knowledge.json now lives there as a tracked Content file (see above). -->
+      <Folder Include="Resources\Icons\Music\" />
+    </ItemGroup>
+
+    <!-- Security reports: SBOM → SCA → SAST → DAST (Release builds only, output to Tools/Security/) -->
+    <PropertyGroup>
+        <_IsReleaseBuild Condition="$(Configuration.Contains('Release'))">true</_IsReleaseBuild>
+        <_IsReleaseBuild Condition="$(Configuration.Contains('Debug'))">false</_IsReleaseBuild>
+        <_SecurityDir>$(MSBuildProjectDirectory)\Tools\Security</_SecurityDir>
+    </PropertyGroup>
+
+    <Target Name="GenerateSBOM" AfterTargets="Build" Condition="'$(_IsReleaseBuild)' == 'true'">
+        <MakeDir Directories="$(_SecurityDir)" Condition="!Exists('$(_SecurityDir)')" />
+        <Exec Command="dotnet dotnet-CycloneDX &quot;$(MSBuildProjectFullPath)&quot; -o &quot;$(_SecurityDir)&quot; --filename sbom.json --json --exclude-dev --disable-package-restore" IgnoreExitCode="true" ContinueOnError="true" Timeout="120000" />
+        <Message Text="SBOM generated at Tools\Security\sbom.json" Importance="high" Condition="Exists('$(_SecurityDir)\sbom.json')" />
+    </Target>
+
+    <Target Name="GenerateSCA" AfterTargets="GenerateSBOM" Condition="'$(_IsReleaseBuild)' == 'true'">
+        <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)\Tools\SCA\RunSCA.ps1&quot; -ProjectDir &quot;$(MSBuildProjectDirectory)&quot; -OutputDir &quot;$(_SecurityDir)&quot;" IgnoreExitCode="true" ContinueOnError="true" Timeout="180000" />
+        <Message Text="SCA report generated at Tools\Security\sca-report.json" Importance="high" />
+    </Target>
+
+    <Target Name="GenerateSAST" AfterTargets="GenerateSCA" Condition="'$(_IsReleaseBuild)' == 'true'">
+        <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)\Tools\SAST\RunSAST.ps1&quot; -ProjectDir &quot;$(MSBuildProjectDirectory)&quot; -Configuration &quot;$(Configuration)&quot; -OutputDir &quot;$(_SecurityDir)&quot;" IgnoreExitCode="true" ContinueOnError="true" Timeout="300000" />
+        <Message Text="SAST report generated at Tools\Security\sast-report.json" Importance="high" />
+    </Target>
+
+    <Target Name="GenerateDAST" AfterTargets="GenerateSAST" Condition="'$(_IsReleaseBuild)' == 'true'">
+        <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)\Tools\DAST\RunDAST.ps1&quot; -ProjectDir &quot;$(MSBuildProjectDirectory)&quot; -OutputDir &quot;$(_SecurityDir)&quot;" IgnoreExitCode="true" ContinueOnError="true" Timeout="300000" />
+        <Message Text="DAST report generated at Tools\Security\dast-report.json" Importance="high" />
+    </Target>
+
+</Project>

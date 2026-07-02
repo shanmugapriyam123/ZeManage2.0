@@ -1,0 +1,8 @@
+<Project>
+  <!-- Defaults for test project builds where Configuration is plain 'Debug'/'Release'.
+       The main csproj sets TargetFramework per-configuration (Debug R21..R26).
+       When no Revit configuration suffix is present, default to Revit 2025 / net8.0-windows. -->
+  <PropertyGroup>
+    <RevitVersion Condition="'$(RevitVersion)' == ''">2024</RevitVersion>
+  </PropertyGroup>
+</Project>

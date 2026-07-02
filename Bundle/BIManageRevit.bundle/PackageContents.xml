@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Autodesk Application Plugin Manager bundle manifest for ZeManage
+  (BIManageRevit). Layout adapted from the sister product
+  ZeConnect\Bundle\ZeConnect.bundle\PackageContents.xml.
+
+  Per Autodesk's ApplicationPlugin schema each Revit major version gets
+  its own <Components> block scoped via <RuntimeRequirements> SeriesMin/Max,
+  pointing at the corresponding .addin manifest under Contents\<year>\.
+
+  ProductCode is a stable GUID for ZeManage so the App Manager can detect
+  and upgrade prior installs in place. It is NOT the same as the AddInId
+  inside BIManageRevit.addin (that one identifies the IExternalApplication
+  to Revit; this one identifies the BUNDLE to the Application Plugin Manager).
+  MUST be a valid GUID (hex digits only, 0-9 a-f). Autodesk's manifest
+  validator silently rejects the entire bundle if the GUID is malformed.
+  Replace the current value with a freshly-generated GUID before public
+  release (e.g. PowerShell: [guid]::NewGuid().ToString().ToUpper()).
+
+  AppVersion / FriendlyVersion should track <Version> in BIManageRevit.csproj.
+  Bump both when releasing.
+-->
+<ApplicationPackage SchemaVersion="1.0"
+                    AutodeskProduct="Revit"
+                    Name="ZeManage"
+                    Description="BIM management for Revit: protection rules, pin/unpin OTP, command interception, AI assistant."
+                    AppVersion="1.0.1"
+                    FriendlyVersion="1.0.1"
+                    ProductType="Application"
+                    SupportedLocales="Enu"
+                    AppNameSpace="appstore.exchange.autodesk.com"
+                    Author="Zestine Technologies"
+                    OnlineDocumentation="https://zestinetech.com/"
+                    ProductCode="{B1B19A6E-AABC-4D20-9BAD-B141E5E2B019}">
+  <CompanyDetails Name="Zestine Technologies"
+                  Email="support@zestinetech.com"
+                  Url="https://zestinetech.com/"
+                  Phone=" " />
+  <RuntimeRequirements OS="Win64" Platform="Revit" SeriesMin="R2021" SeriesMax="R2027" />
+
+  <Components Description="2021 parts">
+    <RuntimeRequirements OS="Win64" Platform="Revit" SeriesMin="R2021" SeriesMax="R2021" />
+    <ComponentEntry AppName="ZeManage" Version="1.0.1" ModuleName="./Contents/2021/BIManageRevit.addin" AppDescription="ZeManage" />
+  </Components>
+  <Components Description="2022 parts">
+    <RuntimeRequirements OS="Win64" Platform="Revit" SeriesMin="R2022" SeriesMax="R2022" />
+    <ComponentEntry AppName="ZeManage" Version="1.0.1" ModuleName="./Contents/2022/BIManageRevit.addin" AppDescription="ZeManage" />
+  </Components>
+  <Components Description="2023 parts">
+    <RuntimeRequirements OS="Win64" Platform="Revit" SeriesMin="R2023" SeriesMax="R2023" />
+    <ComponentEntry AppName="ZeManage" Version="1.0.1" ModuleName="./Contents/2023/BIManageRevit.addin" AppDescription="ZeManage" />
+  </Components>
+  <Components Description="2024 parts">
+    <RuntimeRequirements OS="Win64" Platform="Revit" SeriesMin="R2024" SeriesMax="R2024" />
+    <ComponentEntry AppName="ZeManage" Version="1.0.1" ModuleName="./Contents/2024/BIManageRevit.addin" AppDescription="ZeManage" />
+  </Components>
+  <Components Description="2025 parts">
+    <RuntimeRequirements OS="Win64" Platform="Revit" SeriesMin="R2025" SeriesMax="R2025" />
+    <ComponentEntry AppName="ZeManage" Version="1.0.1" ModuleName="./Contents/2025/BIManageRevit.addin" AppDescription="ZeManage" />
+  </Components>
+  <Components Description="2026 parts">
+    <RuntimeRequirements OS="Win64" Platform="Revit" SeriesMin="R2026" SeriesMax="R2026" />
+    <ComponentEntry AppName="ZeManage" Version="1.0.1" ModuleName="./Contents/2026/BIManageRevit.addin" AppDescription="ZeManage" />
+  </Components>
+  <Components Description="2027 parts">
+    <RuntimeRequirements OS="Win64" Platform="Revit" SeriesMin="R2027" SeriesMax="R2027" />
+    <ComponentEntry AppName="ZeManage" Version="1.0.1" ModuleName="./Contents/2027/BIManageRevit.addin" AppDescription="ZeManage" />
+  </Components>
+</ApplicationPackage>

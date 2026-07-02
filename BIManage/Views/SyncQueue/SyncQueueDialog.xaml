@@ -1,0 +1,366 @@
+﻿<Window x:Class="BIManageRevit.BIManage.Views.SyncQueue.SyncQueueDialog"
+        Topmost="False"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:BIManageRevit.BIManage.Views.SyncQueue"
+        Title="Sync Activity Monitor"
+        Width="740"
+        Height="520"
+        MinWidth="620"
+        MinHeight="440"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        KeyDown="Window_KeyDown">
+    <Window.Icon>
+        <BitmapImage UriSource="pack://application:,,,/BIManageRevit;component/BIManage/Resources/Icons/BIManage.png"/>
+    </Window.Icon>
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/BIManageRevit;component/BIManage/Views/styles/DialogStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Summary Card Style -->
+            <Style x:Key="SummaryCard" TargetType="Border">
+                <Setter Property="Background" Value="White"/>
+                <Setter Property="BorderBrush" Value="#E2E8F0"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="CornerRadius" Value="6"/>
+                <Setter Property="Padding" Value="14,10"/>
+                <Setter Property="Margin" Value="0,0,8,0"/>
+            </Style>
+
+            <!-- Action Button Style -->
+            <Style x:Key="ActionButton" TargetType="Button">
+                <Setter Property="Background" Value="White"/>
+                <Setter Property="Foreground" Value="#1E293B"/>
+                <Setter Property="BorderBrush" Value="#E2E8F0"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="Padding" Value="12,6"/>
+                <Setter Property="FontSize" Value="11"/>
+                <Setter Property="FontWeight" Value="Medium"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Margin" Value="0,0,6,0"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="border" Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="6" Padding="{TemplateBinding Padding}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="border" Property="Background" Value="#F1F5F9"/>
+                                    <Setter TargetName="border" Property="BorderBrush" Value="#CBD5E1"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Opacity" Value="0.5"/>
+                                    <Setter Property="Cursor" Value="Arrow"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <!-- DataGrid Styles -->
+            <Style TargetType="DataGrid">
+                <Setter Property="Background" Value="White"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+                <Setter Property="HorizontalGridLinesBrush" Value="#E2E8F0"/>
+                <Setter Property="RowBackground" Value="White"/>
+                <Setter Property="AlternatingRowBackground" Value="#FAFBFC"/>
+                <Setter Property="HeadersVisibility" Value="Column"/>
+                <Setter Property="SelectionMode" Value="Single"/>
+                <Setter Property="SelectionUnit" Value="FullRow"/>
+                <Setter Property="CanUserAddRows" Value="False"/>
+                <Setter Property="CanUserDeleteRows" Value="False"/>
+                <Setter Property="CanUserReorderColumns" Value="False"/>
+                <Setter Property="CanUserResizeRows" Value="False"/>
+                <Setter Property="AutoGenerateColumns" Value="False"/>
+                <Setter Property="IsReadOnly" Value="True"/>
+            </Style>
+
+            <Style TargetType="DataGridColumnHeader">
+                <Setter Property="Background" Value="#F8FAFC"/>
+                <Setter Property="Foreground" Value="#475569"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
+                <Setter Property="FontSize" Value="10"/>
+                <Setter Property="Padding" Value="8,6"/>
+                <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            </Style>
+
+            <Style TargetType="DataGridCell">
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Padding" Value="8,5"/>
+                <Setter Property="FontSize" Value="11"/>
+                <Setter Property="Foreground" Value="#1E293B"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="DataGridCell">
+                            <Border Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}">
+                                <ContentPresenter VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsSelected" Value="True">
+                        <Setter Property="Background" Value="#EFF6FF"/>
+                        <Setter Property="Foreground" Value="#1E293B"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Border Margin="10" Background="White" CornerRadius="10" ClipToBounds="True">
+        <Border.Effect>
+            <DropShadowEffect Color="#000000" BlurRadius="20" ShadowDepth="0" Opacity="0.18"/>
+        </Border.Effect>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Standard title bar -->
+            <Border Grid.Row="0" Background="#F8FAFC" CornerRadius="10,10,0,0"
+                    BorderBrush="#E2E8F0" BorderThickness="0,0,0,1"
+                    MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+                <Grid Height="36" Margin="12,0">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Source="pack://application:,,,/BIManageRevit;component/BIManage/Resources/Icons/BIManage.png"
+                               Width="16" Height="16" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
+                                   FontSize="12" FontWeight="SemiBold" Foreground="#1E293B" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <Button HorizontalAlignment="Right" VerticalAlignment="Center"
+                            Click="CloseButton_Click" Width="28" Height="28"
+                            BorderThickness="0" Background="Transparent" Cursor="Hand">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="closeBg" Background="Transparent" CornerRadius="6" Width="28" Height="28">
+                                    <TextBlock Text="&#x2715;" FontSize="10" Foreground="#94A3B8"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="closeBg" Property="Background" Value="#F1F5F9"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </Grid>
+            </Border>
+
+            <!-- Existing content -->
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Header with Summary Cards -->
+                <Border Grid.Row="0" Background="White" BorderBrush="#E2E8F0" BorderThickness="0,0,0,1" Padding="16,12">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Title + live status pill (Live / Disconnected / No model open) -->
+                        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+                            <TextBlock Text="Sync Activity Monitor" FontSize="16" FontWeight="SemiBold" Foreground="#1E293B" VerticalAlignment="Center"/>
+                            <Border CornerRadius="6" Padding="6,2" Margin="8,0,0,0" VerticalAlignment="Center"
+                                    Background="{Binding HeaderStatusKind, Converter={x:Static local:HeaderStatusBackgroundConverter.Instance}}">
+                                <TextBlock Text="{Binding HeaderStatusText}" FontSize="10" FontWeight="SemiBold"
+                                           Foreground="{Binding HeaderStatusKind, Converter={x:Static local:HeaderStatusForegroundConverter.Instance}}"/>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- Summary Cards -->
+                        <StackPanel Grid.Row="1" Orientation="Horizontal">
+                            <Border Style="{StaticResource SummaryCard}">
+                                <StackPanel>
+                                    <TextBlock Text="Syncing Now" FontSize="10" Foreground="#64748B"/>
+                                    <TextBlock Text="{Binding SyncingNowCount}" FontSize="18" FontWeight="Bold" Foreground="#F59E0B"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Style="{StaticResource SummaryCard}">
+                                <StackPanel>
+                                    <TextBlock Text="Completed" FontSize="10" Foreground="#64748B"/>
+                                    <TextBlock Text="{Binding CompletedCount}" FontSize="18" FontWeight="Bold" Foreground="#22C55E"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Style="{StaticResource SummaryCard}">
+                                <StackPanel>
+                                    <TextBlock Text="Total Events" FontSize="10" Foreground="#64748B"/>
+                                    <TextBlock Text="{Binding TotalCount}" FontSize="18" FontWeight="Bold" Foreground="#1E293B"/>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- Action Toolbar -->
+                <Border Grid.Row="1" Background="#FAFBFC" BorderBrush="#E2E8F0" BorderThickness="0,0,0,1" Padding="16,8">
+                    <StackPanel Orientation="Horizontal">
+                        <Button x:Name="BtnClearHistory" Content="Clear History" Click="ClearHistory_Click" Style="{StaticResource ActionButton}"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Currently Syncing Users -->
+                <Border x:Name="SyncingUsersPanel" Grid.Row="2" Background="#FFF9C4" BorderBrush="#FDE047"
+                        BorderThickness="0,0,0,1" Padding="16,8"
+                        Visibility="{Binding SyncingNowCount, Converter={x:Static local:CountToVisibilityConverter.Instance}}">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock Text="Currently Syncing" FontSize="11" FontWeight="SemiBold" Foreground="#92400E" VerticalAlignment="Center"/>
+                            <Border Background="#FEF3C7" CornerRadius="6" Padding="6,1" Margin="8,0,0,0" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding SyncingNowCount}" FontSize="10" FontWeight="Bold" Foreground="#92400E"/>
+                            </Border>
+                        </StackPanel>
+                        <!-- Wrapped in a ScrollViewer with MaxHeight so 5+ concurrent syncers don't
+                             push the history grid out of view; vertical overflow becomes scrollable. -->
+                        <ScrollViewer MaxHeight="80" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                            <ItemsControl ItemsSource="{Binding SyncingUsers}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="#FEF3C7" CornerRadius="6" Padding="8,3" Margin="0,2,6,2"
+                                                ToolTip="{Binding ComputerName}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding DisplayName}" FontSize="11" FontWeight="Medium" Foreground="#78350F"/>
+                                                <TextBlock Text=" (" FontSize="10" Foreground="#92400E"/>
+                                                <TextBlock Text="{Binding ComputerName}" FontSize="10" Foreground="#92400E"/>
+                                                <TextBlock Text=")" FontSize="10" Foreground="#92400E"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+
+                        <!-- Waiting in Queue panel: shows the ordered list of users who tried to sync
+                             while another sync was in progress. Position chip (#1, #2, ...) updates
+                             in place as users ahead complete/cancel. Hidden when nobody is waiting. -->
+                        <StackPanel Margin="0,8,0,0"
+                                    Visibility="{Binding QueuedCount, Converter={x:Static local:CountToVisibilityConverter.Instance}}">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <TextBlock Text="Waiting in Queue" FontSize="11" FontWeight="SemiBold" Foreground="#92400E" VerticalAlignment="Center"/>
+                                <Border Background="#FEF3C7" CornerRadius="6" Padding="6,1" Margin="8,0,0,0" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding QueuedCount}" FontSize="10" FontWeight="Bold" Foreground="#92400E"/>
+                                </Border>
+                            </StackPanel>
+                            <ScrollViewer MaxHeight="80" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                <ItemsControl ItemsSource="{Binding QueuedUsers}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Background="#FFF3E0" BorderBrush="#FED7AA" BorderThickness="1"
+                                                    CornerRadius="6" Padding="6,3" Margin="0,2,6,2"
+                                                    ToolTip="{Binding ComputerName}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Border Background="#F97316" CornerRadius="6" Padding="4,0" Margin="0,0,6,0">
+                                                        <TextBlock Text="{Binding PositionLabel}" FontSize="10" FontWeight="Bold" Foreground="White"/>
+                                                    </Border>
+                                                    <TextBlock Text="{Binding DisplayName}" FontSize="11" FontWeight="Medium" Foreground="#7C2D12" VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Sync Activity History DataGrid -->
+                <Border Grid.Row="3" Margin="16,12,16,0" Background="White" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="6">
+                    <Grid>
+                        <DataGrid x:Name="GridSyncHistory" ItemsSource="{Binding SyncHistory}" Margin="0">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="S.No" Binding="{Binding RowNumber}" Width="50"/>
+                                <DataGridTextColumn Header="User" Binding="{Binding Username}" Width="2*"/>
+                                <DataGridTextColumn Header="Started" Binding="{Binding StartedAtDisplay}" Width="100"/>
+                                <DataGridTextColumn Header="Duration" Binding="{Binding Duration}" Width="80"/>
+                                <DataGridTemplateColumn Header="Status" Width="100">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border CornerRadius="6" Padding="6,2" HorizontalAlignment="Left"
+                                                    Background="{Binding Status, Converter={x:Static local:SyncStatusToBackgroundConverter.Instance}}">
+                                                <TextBlock Text="{Binding StatusDisplay}" FontSize="10" FontWeight="Medium"
+                                                           Foreground="{Binding Status, Converter={x:Static local:SyncStatusToForegroundConverter.Instance}}"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <!-- Empty State — two flavours toggled by HeaderStatusKind so the user
+                             understands WHY there's nothing here: "no model open" vs. "model
+                             open but no activity yet". The .cs UpdateEmptyState sets the outer
+                             Border visibility; the inner TextBlocks toggle on HeaderStatusKind. -->
+                        <Border x:Name="EmptyState" Background="#F8FAFC" Visibility="Collapsed">
+                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <!-- No model open -->
+                                <StackPanel HorizontalAlignment="Center"
+                                            Visibility="{Binding HeaderStatusKind, Converter={x:Static local:HeaderStatusKindToVisibilityConverter.NoModel}}">
+                                    <TextBlock Text="No workshared model open" FontSize="14" FontWeight="Medium"
+                                               Foreground="#92400E" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Open a workshared central model to see live sync activity for your team." FontSize="11"
+                                               Foreground="#94A3B8" HorizontalAlignment="Center" Margin="0,4,0,0" TextWrapping="Wrap" MaxWidth="380" TextAlignment="Center"/>
+                                </StackPanel>
+                                <!-- SignalR disconnected -->
+                                <StackPanel HorizontalAlignment="Center"
+                                            Visibility="{Binding HeaderStatusKind, Converter={x:Static local:HeaderStatusKindToVisibilityConverter.Disconnected}}">
+                                    <TextBlock Text="Live updates paused" FontSize="14" FontWeight="Medium"
+                                               Foreground="#991B1B" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="SignalR is disconnected. Sync events from teammates won't appear until the connection is restored." FontSize="11"
+                                               Foreground="#94A3B8" HorizontalAlignment="Center" Margin="0,4,0,0" TextWrapping="Wrap" MaxWidth="420" TextAlignment="Center"/>
+                                </StackPanel>
+                                <!-- Live, just no activity yet -->
+                                <StackPanel HorizontalAlignment="Center"
+                                            Visibility="{Binding HeaderStatusKind, Converter={x:Static local:HeaderStatusKindToVisibilityConverter.Live}}">
+                                    <TextBlock Text="No Sync Activity" FontSize="14" FontWeight="Medium"
+                                               Foreground="#64748B" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Sync events from other users will appear here in real time." FontSize="11"
+                                               Foreground="#94A3B8" HorizontalAlignment="Center" Margin="0,4,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!-- Status Bar -->
+                <Border Grid.Row="4" Background="White" BorderBrush="#E2E8F0" BorderThickness="0,1,0,0" Padding="16,6">
+                    <Grid>
+                        <TextBlock x:Name="TxtStatus" Text="{Binding StatusMessage}" FontSize="10" Foreground="#64748B" VerticalAlignment="Center"/>
+                        <Button Content="Close" Click="Close_Click" Style="{StaticResource SecondaryButton}"
+                                HorizontalAlignment="Right" Height="28" Padding="16,0" FontSize="11"/>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

@@ -1,0 +1,157 @@
+﻿{
+    "scanDate":  "2026-04-02T06:59:28Z",
+    "buildUser":  "GF_S_046",
+    "project":  "BIManageRevit",
+    "targetUrl":  "https://bimanage-api-staging-f2h4fgg8a6cnhwam.centralus-01.azurewebsites.net",
+    "tool":  "BIManage DAST Scanner (PowerShell)",
+    "toolVersion":  "1.0.0",
+    "summary":  {
+                    "totalTests":  26,
+                    "passed":  18,
+                    "failed":  8,
+                    "errors":  0,
+                    "critical":  0,
+                    "high":  3,
+                    "medium":  3,
+                    "low":  4
+                },
+    "findings":  {
+                     "passed":  [
+                                    {
+                                        "test":  "SSL/TLS Configuration",
+                                        "detail":  "Server accepts TLS 1.2+",
+                                        "severity":  "info"
+                                    },
+                                    {
+                                        "test":  "Info Leak: X-Powered-By",
+                                        "detail":  "Not exposed",
+                                        "severity":  "info"
+                                    },
+                                    {
+                                        "test":  "Info Leak: X-AspNet-Version",
+                                        "detail":  "Not exposed",
+                                        "severity":  "info"
+                                    },
+                                    {
+                                        "test":  "Info Leak: X-AspNetMvc-Version",
+                                        "detail":  "Not exposed",
+                                        "severity":  "info"
+                                    },
+                                    {
+                                        "test":  "CORS Configuration",
+                                        "detail":  "No CORS header returned for foreign origin",
+                                        "severity":  "info"
+                                    },
+                                    {
+                                        "test":  "HTTP Method: TRACE",
+                                        "detail":  "Returns 404",
+                                        "severity":  "info"
+                                    },
+                                    {
+                                        "test":  "HTTP Method: DELETE",
+                                        "detail":  "Returns 404",
+                                        "severity":  "info"
+                                    },
+                                    {
+                                        "test":  "HTTP Method: PUT",
+                                        "detail":  "Returns 404",
+                                        "severity":  "info"
+                                    },
+                                    {
+                                        "test":  "Endpoint: /api/health",
+                                        "detail":  "Returns status 404",
+                                        "severity":  "info"
+                                    },
+                                    {
+                                        "test":  "Endpoint: /api",
+                                        "detail":  "Returns status 404",
+                                        "severity":  "info"
+                                    },
+                                    {
+                                        "test":  "Endpoint: /hubs/notifications",
+                                        "detail":  "Protected (status 401)",
+                                        "severity":  "info"
+                                    },
+                                    {
+                                        "test":  "SQL Injection",
+                                        "detail":  "No SQL error for payload: \u0027 OR \u00271\u0027=\u00271...",
+                                        "severity":  "info"
+                                    },
+                                    {
+                                        "test":  "SQL Injection",
+                                        "detail":  "No SQL error for payload: 1; DROP TABLE --...",
+                                        "severity":  "info"
+                                    },
+                                    {
+                                        "test":  "SQL Injection",
+                                        "detail":  "No SQL error for payload: \u0027 UNION SELECT NULL-...",
+                                        "severity":  "info"
+                                    },
+                                    {
+                                        "test":  "XSS Reflection",
+                                        "detail":  "Payload not reflected: \u003cscript\u003ealert(1)\u003c/sc...",
+                                        "severity":  "info"
+                                    },
+                                    {
+                                        "test":  "XSS Reflection",
+                                        "detail":  "Payload not reflected: \u003cimg src=x onerror=a...",
+                                        "severity":  "info"
+                                    },
+                                    {
+                                        "test":  "XSS Reflection",
+                                        "detail":  "Payload not reflected: javascript:alert(1)...",
+                                        "severity":  "info"
+                                    },
+                                    {
+                                        "test":  "HTTPS Enforcement",
+                                        "detail":  "HTTP returns status 0",
+                                        "severity":  "info"
+                                    }
+                                ],
+                     "failed":  [
+                                    {
+                                        "test":  "Header: Strict-Transport-Security",
+                                        "detail":  "Missing - HSTS - Prevents downgrade attacks",
+                                        "severity":  "high"
+                                    },
+                                    {
+                                        "test":  "Header: X-Content-Type-Options",
+                                        "detail":  "Missing - Prevents MIME-type sniffing",
+                                        "severity":  "medium"
+                                    },
+                                    {
+                                        "test":  "Header: X-Frame-Options",
+                                        "detail":  "Missing - Prevents clickjacking",
+                                        "severity":  "medium"
+                                    },
+                                    {
+                                        "test":  "Header: Content-Security-Policy",
+                                        "detail":  "Missing - Prevents XSS and injection attacks",
+                                        "severity":  "medium"
+                                    },
+                                    {
+                                        "test":  "Header: X-XSS-Protection",
+                                        "detail":  "Missing - Legacy XSS filter (supplementary)",
+                                        "severity":  "low"
+                                    },
+                                    {
+                                        "test":  "Header: Referrer-Policy",
+                                        "detail":  "Missing - Controls referrer information leakage",
+                                        "severity":  "low"
+                                    },
+                                    {
+                                        "test":  "Header: Permissions-Policy",
+                                        "detail":  "Missing - Controls browser feature access",
+                                        "severity":  "low"
+                                    },
+                                    {
+                                        "test":  "Info Leak: Server",
+                                        "detail":  "Header exposes: Kestrel",
+                                        "severity":  "low"
+                                    }
+                                ],
+                     "errors":  [
+
+                                ]
+                 }
+}

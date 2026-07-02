@@ -1,0 +1,29 @@
+<?xml version='1.0'?>
+<!--
+  Obfuscar config: BIManageRevit R27 (net10.0-windows / Revit 2027).
+  See ObfuscarR26.xml for full rationale. R27 differs in the BCL runtime
+  version (.NET 10) but keeps the same transitive-fallback paths
+  (.NET 7 for Roslyn 4.8's net7.0 lib, .NET 6 for Azure / Material refs).
+-->
+<Obfuscator>
+  <Var name="InPath"           value="BIManageRevit.org\Contents\2027" />
+  <Var name="OutPath"          value="BIManageRevit.org\Confused\2027" />
+  <Var name="HideStrings"      value="true" />
+  <Var name="KeepPublicApi"    value="true" />
+  <Var name="HidePrivateApi"   value="false" />
+  <Var name="RenameMethods"    value="false" />
+  <Var name="RenameProperties" value="false" />
+  <Var name="RenameEvents"     value="false" />
+  <Var name="RenameFields"     value="false" />
+  <Var name="UseUnicodeNames"  value="false" />
+
+  <AssemblySearchPath path="C:\Program Files\Autodesk\Revit 2027" />
+  <AssemblySearchPath path="C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.3" />
+  <AssemblySearchPath path="C:\Program Files\dotnet\shared\Microsoft.NETCore.App\7.0.20" />
+  <AssemblySearchPath path="C:\Program Files\dotnet\shared\Microsoft.NETCore.App\6.0.36" />
+  <AssemblySearchPath path="C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.3" />
+  <AssemblySearchPath path="C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\6.0.36" />
+
+  <Module file="BIManageRevit.org\Contents\2027\BIManageRevit.dll" />
+  <Module file="BIManageRevit.org\Contents\2027\BIManage.Addons.dll" />
+</Obfuscator>

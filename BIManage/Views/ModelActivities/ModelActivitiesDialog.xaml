@@ -1,0 +1,655 @@
+﻿<Window x:Class="BIManageRevit.BIManage.Views.ModelActivities.ModelActivitiesDialog"
+        Topmost="False"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:BIManageRevit.BIManage.Views.ModelActivities"
+        Title="Model Activities"
+        Width="1100"
+        Height="700"
+        MinWidth="900"
+        MinHeight="600"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        KeyDown="Window_KeyDown">
+    <Window.Icon>
+        <BitmapImage UriSource="pack://application:,,,/BIManageRevit;component/BIManage/Resources/Icons/BIManage.png"/>
+    </Window.Icon>
+    <Window.Resources>
+        <!-- Color Palette -->
+        <SolidColorBrush x:Key="NotifyBlue" Color="#3B82F6"/>
+        <SolidColorBrush x:Key="SuccessGreen" Color="#22C55E"/>
+        <SolidColorBrush x:Key="TextPrimary" Color="#1E293B"/>
+        <SolidColorBrush x:Key="TextSecondary" Color="#64748B"/>
+        <SolidColorBrush x:Key="BorderLight" Color="#E2E8F0"/>
+
+        <!-- Converters -->
+        <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <local:BoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter" IsInverse="True"/>
+
+        <!-- Gradient Primary Button -->
+        <Style x:Key="PrimaryGradientButton" TargetType="Button">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="16,0"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" CornerRadius="6" Padding="{TemplateBinding Padding}"
+                                Background="#FF5500">
+                            <Border.Effect>
+                                <DropShadowEffect Color="#000000" BlurRadius="8" ShadowDepth="2" Opacity="0.2"/>
+                            </Border.Effect>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#E5611A"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- White Secondary Button -->
+        <Style x:Key="WhiteButton" TargetType="Button">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#475569"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="14,0"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="White"
+                                BorderBrush="#E2E8F0" BorderThickness="1"
+                                CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#F5F5F5"/>
+                                <Setter TargetName="border" Property="BorderBrush" Value="#CBD5E1"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Chat Button Style -->
+        <Style x:Key="ChatButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="ToolTip" Value="Chat"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="6">
+                            <Path Data="M2,2 L14,2 C15.1,2 16,2.9 16,4 L16,10 C16,11.1 15.1,12 14,12 L6,12 L2,16 L2,12 C0.9,12 0,11.1 0,10 L0,4 C0,2.9 0.9,2 2,2 Z"
+                                  Fill="#64748B" Width="16" Height="16" Stretch="Uniform"
+                                  HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#EFF6FF"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- DataGrid Style -->
+        <Style TargetType="DataGrid">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="#F1F5F9"/>
+            <Setter Property="RowBackground" Value="White"/>
+            <Setter Property="AlternatingRowBackground" Value="#FAFBFC"/>
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="CanUserDeleteRows" Value="False"/>
+            <Setter Property="CanUserSortColumns" Value="True"/>
+            <Setter Property="CanUserReorderColumns" Value="False"/>
+            <Setter Property="SelectionMode" Value="Single"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="RowHeight" Value="40"/>
+        </Style>
+
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#F8FAFC"/>
+            <Setter Property="Foreground" Value="#475569"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Padding" Value="8,8"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DataGridColumnHeader">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}">
+                            <TextBlock Text="{TemplateBinding Content}"
+                                       TextWrapping="Wrap" TextAlignment="Left"
+                                       HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                       VerticalAlignment="Center"
+                                       FontWeight="{TemplateBinding FontWeight}"
+                                       FontSize="{TemplateBinding FontSize}"
+                                       Foreground="{TemplateBinding Foreground}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="DataGridCell">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="4,2"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DataGridCell">
+                        <Border Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}">
+                            <ContentPresenter VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#EFF6FF"/>
+                    <Setter Property="Foreground" Value="#1E293B"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="DataGridRow">
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#EFF6FF"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#F8FAFC"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Border Margin="10" Background="White" CornerRadius="10" ClipToBounds="True">
+        <Border.Effect>
+            <DropShadowEffect Color="#000000" BlurRadius="20" ShadowDepth="0" Opacity="0.18"/>
+        </Border.Effect>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Border Grid.Row="0" Background="#F8FAFC" CornerRadius="10,10,0,0"
+                    BorderBrush="#E2E8F0" BorderThickness="0,0,0,1"
+                    MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+                <Grid Height="36" Margin="12,0">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Source="pack://application:,,,/BIManageRevit;component/BIManage/Resources/Icons/BIManage.png"
+                               Width="16" Height="16" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
+                                   FontSize="12" FontWeight="SemiBold" Foreground="#1E293B" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <Button HorizontalAlignment="Right" VerticalAlignment="Center"
+                            Click="CloseButton_Click" Width="28" Height="28"
+                            BorderThickness="0" Background="Transparent" Cursor="Hand">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="closeBg" Background="Transparent" CornerRadius="6" Width="28" Height="28">
+                                    <TextBlock Text="&#x2715;" FontSize="10" Foreground="#94A3B8"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="closeBg" Property="Background" Value="#F1F5F9"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </Grid>
+            </Border>
+        <Grid Grid.Row="1">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header: Model Info -->
+        <Border Grid.Row="0" Background="White" BorderBrush="#E2E8F0" BorderThickness="0,0,0,1" Padding="16,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock x:Name="HeaderModelName" FontSize="16" FontWeight="SemiBold" Foreground="#1E293B"
+                                   VerticalAlignment="Center"/>
+                        <Border Background="#F1F5F9" CornerRadius="6" Padding="6,2" Margin="10,0,0,0" VerticalAlignment="Center">
+                            <TextBlock x:Name="HeaderModelType" FontSize="10" Foreground="#64748B" FontWeight="Medium"/>
+                        </Border>
+                        <Border Background="#DCFCE7" CornerRadius="10" Padding="8,2" Margin="10,0,0,0" VerticalAlignment="Center">
+                            <StackPanel Orientation="Horizontal">
+                                <Ellipse Width="6" Height="6" Fill="#22C55E" Margin="0,0,4,0" VerticalAlignment="Center"/>
+                                <TextBlock x:Name="HeaderSessionCount" FontSize="10" Foreground="#166534" FontWeight="Medium"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                        <Border x:Name="ProjectBadge" Background="#EFF6FF" CornerRadius="6" Padding="8,3" VerticalAlignment="Center">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock x:Name="ProjectIcon" Text="&#xE8B7;" FontFamily="Segoe MDL2 Assets" FontSize="11"
+                                           Foreground="#2563EB" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                <TextBlock x:Name="HeaderProjectName" FontSize="11" Foreground="#1E40AF" FontWeight="SemiBold"
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                        <TextBlock x:Name="HeaderModelPath" FontSize="10" Foreground="#94A3B8" Margin="10,0,0,0"
+                                   TextTrimming="CharacterEllipsis" ToolTip="{Binding CentralModelPath}"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <!-- Project admin(s) line -->
+                    <StackPanel x:Name="ProjectAdminPanel" Orientation="Horizontal" Margin="0,4,0,0" Visibility="Collapsed">
+                        <TextBlock Text="&#xE13D;" FontFamily="Segoe MDL2 Assets" FontSize="10"
+                                   Foreground="#64748B" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <TextBlock Text="Project Admin:" FontSize="10" FontWeight="SemiBold"
+                                   Foreground="#64748B" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <TextBlock x:Name="HeaderProjectAdminNames" FontSize="10" Foreground="#334155"
+                                   VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
+                                   ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Chat buttons (hidden until chat backend is ready) -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Visibility="Collapsed">
+                    <!-- Model Chat with unread badge -->
+                    <Grid Margin="0,0,8,0">
+                        <Button Style="{StaticResource WhiteButton}"
+                                Click="ChatModelAllButton_Click" ToolTip="Chat with all users on this model">
+                            <StackPanel Orientation="Horizontal">
+                                <Path Data="M2,2 L14,2 C15.1,2 16,2.9 16,4 L16,10 C16,11.1 15.1,12 14,12 L6,12 L2,16 L2,12 C0.9,12 0,11.1 0,10 L0,4 C0,2.9 0.9,2 2,2 Z"
+                                      Fill="#475569" Width="12" Height="12" Stretch="Uniform" Margin="0,0,6,0"/>
+                                <TextBlock Text="Model Chat" FontSize="11"/>
+                            </StackPanel>
+                        </Button>
+                        <Border Background="#EF4444" CornerRadius="6" Padding="4,1"
+                                HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-5,-5,0"
+                                Visibility="{Binding HasUnreadModel, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <TextBlock Text="{Binding UnreadModelCount}" FontSize="9" FontWeight="Bold" Foreground="White"/>
+                        </Border>
+                    </Grid>
+                    <!-- Project Chat with unread badge -->
+                    <Grid>
+                        <Button Style="{StaticResource PrimaryGradientButton}"
+                                Click="ChatProjectAllButton_Click" ToolTip="Chat with all users on this project">
+                            <StackPanel Orientation="Horizontal">
+                                <Path Data="M2,2 L14,2 C15.1,2 16,2.9 16,4 L16,10 C16,11.1 15.1,12 14,12 L6,12 L2,16 L2,12 C0.9,12 0,11.1 0,10 L0,4 C0,2.9 0.9,2 2,2 Z"
+                                      Fill="White" Width="12" Height="12" Stretch="Uniform" Margin="0,0,6,0"/>
+                                <TextBlock Text="Project Chat" FontSize="11"/>
+                            </StackPanel>
+                        </Button>
+                        <Border Background="#EF4444" CornerRadius="6" Padding="4,1"
+                                HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-5,-5,0"
+                                Visibility="{Binding HasUnreadProject, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <TextBlock Text="{Binding UnreadProjectCount}" FontSize="9" FontWeight="Bold" Foreground="White"/>
+                        </Border>
+                    </Grid>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Content: Users (left) + Chat Panel (right) -->
+        <Grid Grid.Row="1" Margin="16,12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition x:Name="ChatColumnDef" Width="0"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Left: Active Users -->
+            <Border Grid.Column="0" Background="White" CornerRadius="6" BorderBrush="#E2E8F0" BorderThickness="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Users Header -->
+                    <Border Grid.Row="0" Background="#F8FAFC" CornerRadius="6,6,0,0" Padding="14,10"
+                            BorderBrush="#E2E8F0" BorderThickness="0,0,0,1">
+                        <TextBlock FontSize="13" FontWeight="SemiBold" Foreground="#1E293B">
+                            <Run Text="Active Users"/>
+                            <Run x:Name="UserCountRun" Foreground="#94A3B8" FontWeight="Normal"/>
+                        </TextBlock>
+                    </Border>
+
+                    <!-- Users DataGrid -->
+                    <DataGrid x:Name="UsersDataGrid" Grid.Row="1"
+                              ItemsSource="{Binding ActiveUsers}"
+                              IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <!-- S.No -->
+                            <DataGridTemplateColumn Header="S.No" Width="50">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding RowNumber}" FontSize="11"
+                                                   Foreground="#94A3B8" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- Revit Username -->
+                            <DataGridTemplateColumn Header="Revit User" Width="1.5*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding RevitUsername}" FontSize="11"
+                                                   Foreground="#64748B" VerticalAlignment="Center"
+                                                   TextTrimming="CharacterEllipsis"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- Computer Name -->
+                            <DataGridTemplateColumn Header="Computer" Width="1.5*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding ComputerName}" FontSize="11"
+                                                   Foreground="#64748B" VerticalAlignment="Center"
+                                                   TextTrimming="CharacterEllipsis"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- Session Duration -->
+                            <DataGridTemplateColumn Header="Duration" Width="1*">
+                                <DataGridTemplateColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTemplateColumn.HeaderStyle>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding SessionDuration}" FontSize="11"
+                                                   Foreground="#64748B" VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- Chat Button -->
+                            <DataGridTemplateColumn Header="Chat" Width="50" Visibility="Collapsed">
+                                <DataGridTemplateColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTemplateColumn.HeaderStyle>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid Width="30" Height="30">
+                                            <Button Style="{StaticResource ChatButton}" Click="ChatButton_Click"
+                                                    Tag="{Binding}" ToolTip="{Binding UsernameDisplay, StringFormat='Chat with {0}'}"/>
+                                            <Border Background="#EF4444" CornerRadius="6" Width="14" Height="14"
+                                                    HorizontalAlignment="Right" VerticalAlignment="Top"
+                                                    Visibility="{Binding HasUnread, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <TextBlock Text="{Binding UnreadCount}" FontSize="8" FontWeight="Bold"
+                                                           Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                        </Grid>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <!-- No Users Message -->
+                    <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <StackPanel.Style>
+                            <Style TargetType="StackPanel">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ActiveUsers.Count}" Value="0">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+                        <TextBlock Text="No active users on this model" FontSize="13" Foreground="#94A3B8" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Users will appear here when they open this model" FontSize="10" Foreground="#CBD5E1" HorizontalAlignment="Center" Margin="0,4,0,0"/>
+                    </StackPanel>
+
+                    <!-- Unmonitored Users Section -->
+                    <Border Grid.Row="2" BorderBrush="#E2E8F0" BorderThickness="0,1,0,0"
+                            Visibility="{Binding HasUnmonitoredUsers, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <StackPanel>
+                            <Border Background="#FEF3C7" Padding="10,6">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#x26A0;" FontSize="11" Foreground="#D97706" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                    <TextBlock FontSize="11" Foreground="#92400E" VerticalAlignment="Center">
+                                        <Run Text="Unmonitored Users"/>
+                                        <Run Text="{Binding UnmonitoredCount, StringFormat='({0})'}" FontWeight="SemiBold"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+                            <ItemsControl ItemsSource="{Binding UnmonitoredUsers}" Margin="10,4,10,6">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="0,3">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="{Binding RevitUsername}" FontSize="11"
+                                                       FontWeight="SemiBold" Foreground="#92400E" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding DetectedAtDisplay}" FontSize="9"
+                                                       Foreground="#94A3B8" VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Loading Overlay -->
+                    <Border Grid.RowSpan="3" Background="#80FFFFFF" CornerRadius="6"
+                            Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <TextBlock Text="Loading..." FontSize="12" Foreground="#64748B"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!-- Right: Chat Panel (slide-out) -->
+            <Border x:Name="ChatPanel" Grid.Column="1" Background="White" CornerRadius="6"
+                    BorderBrush="#E2E8F0" BorderThickness="1" Margin="10,0,0,0"
+                    Visibility="Collapsed">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Chat Header -->
+                    <Border Grid.Row="0" Background="#F8FAFC" CornerRadius="6,6,0,0" Padding="12,10"
+                            BorderBrush="#E2E8F0" BorderThickness="0,0,0,1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel>
+                                <TextBlock x:Name="ChatHeaderTitle" FontSize="13" FontWeight="SemiBold" Foreground="#1E293B"/>
+                                <TextBlock x:Name="ChatHeaderSubtitle" FontSize="10" Foreground="#94A3B8" Margin="0,2,0,0"/>
+                            </StackPanel>
+
+                            <!-- Close chat button -->
+                            <Button Grid.Column="1" Width="28" Height="28" Cursor="Hand" Click="CloseChatPanel_Click"
+                                    ToolTip="Close chat">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border x:Name="border" Background="Transparent" CornerRadius="6">
+                                            <TextBlock Text="&#x2715;" FontSize="12" Foreground="#94A3B8"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="border" Property="Background" Value="#F0F0F0"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <!-- Chat Messages -->
+                    <ScrollViewer x:Name="ChatScrollViewer" Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="12,8">
+                        <ItemsControl x:Name="ChatMessagesControl" ItemsSource="{Binding ChatMessages}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Margin="0,4" Padding="0">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- Message Bubble -->
+                                            <Border CornerRadius="6" Padding="10,6" MaxWidth="280"
+                                                    HorizontalAlignment="{Binding IsCurrentUser, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=alignment}">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Background" Value="#F1F5F9"/>
+                                                        <Setter Property="HorizontalAlignment" Value="Left"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsCurrentUser}" Value="True">
+                                                                <Setter Property="Background" Value="#EFF6FF"/>
+                                                                <Setter Property="HorizontalAlignment" Value="Right"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <StackPanel>
+                                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,3">
+                                                        <TextBlock Text="{Binding Sender}" FontSize="10" FontWeight="SemiBold" Foreground="#475569"/>
+                                                        <TextBlock Text="{Binding TimeDisplay}" FontSize="9" Foreground="#94A3B8" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                    <TextBlock Text="{Binding Text}" FontSize="11" Foreground="#1E293B" TextWrapping="Wrap"/>
+                                                </StackPanel>
+                                            </Border>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+
+                    <!-- Chat empty state -->
+                    <TextBlock Grid.Row="1" Text="No messages yet. Start the conversation!" FontSize="11" Foreground="#CBD5E1"
+                               HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ChatMessages.Count}" Value="0">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+
+                    <!-- Chat Input -->
+                    <Border Grid.Row="2" Background="#F8FAFC" CornerRadius="0,0,6,6" Padding="10,8"
+                            BorderBrush="#E2E8F0" BorderThickness="0,1,0,0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBox x:Name="ChatInput" Grid.Column="0" Height="34" FontSize="11" Padding="10,7"
+                                     BorderBrush="#E2E8F0" BorderThickness="1" KeyDown="ChatInput_KeyDown">
+                                <TextBox.Template>
+                                    <ControlTemplate TargetType="TextBox">
+                                        <Border Background="White" BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6">
+                                            <ScrollViewer x:Name="PART_ContentHost" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </TextBox.Template>
+                            </TextBox>
+
+                            <Button Grid.Column="1" Margin="6,0,0,0" Style="{StaticResource PrimaryGradientButton}"
+                                    Click="SendMessage_Click" Width="34" Height="34" Padding="0" ToolTip="Send">
+                                <Path Data="M2,12 L22,2 L12,22 L10,14 Z" Fill="White" Width="14" Height="14" Stretch="Uniform"/>
+                            </Button>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- Status Bar -->
+        <Border Grid.Row="2" Background="White" BorderBrush="#E2E8F0" BorderThickness="0,1,0,0" Padding="16,8">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock x:Name="StatusMessage" FontSize="10" Foreground="#64748B" VerticalAlignment="Center"/>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Ellipse Width="6" Height="6" Fill="#22C55E" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                    <TextBlock Text="Connected" FontSize="10" Foreground="#22C55E" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Success Popup Toast -->
+        <Border x:Name="SuccessPopup" Grid.RowSpan="3" HorizontalAlignment="Right" VerticalAlignment="Top"
+                Margin="0,60,20,0" Background="#F0FDF4" CornerRadius="6" Padding="16,10"
+                BorderBrush="#BBF7D0" BorderThickness="1" Visibility="Collapsed">
+            <Border.Effect>
+                <DropShadowEffect Color="#000000" BlurRadius="12" ShadowDepth="3" Opacity="0.15"/>
+            </Border.Effect>
+            <StackPanel Orientation="Horizontal">
+                <Ellipse Width="18" Height="18" Fill="#22C55E" Margin="0,0,8,0"/>
+                <StackPanel>
+                    <TextBlock x:Name="SuccessTitle" FontSize="12" FontWeight="SemiBold" Foreground="#166534"/>
+                    <TextBlock x:Name="SuccessMessage" FontSize="10" Foreground="#15803D" Margin="0,2,0,0"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </Grid>
+        </Grid>
+    </Border>
+</Window>

@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ze'Manage · ROI Calculator</title>
+<style>
+  :root {
+    --bg: #f8fafc;
+    --panel: #ffffff;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --line: #e2e8f0;
+    --soft: #f1f5f9;
+    --brand: #166534;
+    --brand-light: #16a34a;
+    --brand-bg: #dcfce7;
+    --accent: #2563eb;
+    --m1: #1d4ed8;
+    --m2: #0891b2;
+    --m3: #16a34a;
+    --m4: #db2777;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 15px/1.5 -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg); color: var(--ink); margin: 0;
+    padding: 32px 20px;
+  }
+  .wrap { max-width: 920px; margin: 0 auto; }
+
+  /* Header */
+  .head { text-align: center; margin-bottom: 28px; }
+  .head h1 { font-size: 28px; margin: 0 0 6px; letter-spacing: -0.01em; }
+  .head p { color: var(--muted); margin: 0; font-size: 15px; }
+  .head .badge {
+    display: inline-block; padding: 3px 10px; border-radius: 12px;
+    background: var(--brand-bg); color: var(--brand); font-size: 12px; font-weight: 600;
+    margin-bottom: 12px; letter-spacing: 0.02em;
+  }
+
+  /* Card base */
+  .card {
+    background: var(--panel); border-radius: 12px;
+    border: 1px solid var(--line); padding: 24px;
+    margin-bottom: 16px;
+  }
+  .card h2 {
+    font-size: 13px; color: var(--muted); margin: 0 0 14px;
+    text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;
+  }
+
+  /* Input form */
+  .form-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+  }
+  .input-field { display: flex; flex-direction: column; }
+  .input-field label {
+    font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 6px;
+  }
+  .input-field .helper { font-size: 11.5px; color: var(--muted); margin-top: 4px; }
+  .input-field input, .input-field select {
+    padding: 10px 12px; font: 600 16px ui-monospace, Consolas, monospace;
+    border: 1.5px solid var(--line); border-radius: 6px; background: white;
+    color: var(--ink); width: 100%;
+  }
+  .input-field select { font: 500 14px -apple-system, "Segoe UI", sans-serif; }
+  .input-field input:focus, .input-field select:focus { outline: none; border-color: var(--accent); }
+  .input-field .with-prefix { position: relative; }
+  .input-field .with-prefix input { padding-left: 26px; }
+  .input-field .with-prefix .prefix {
+    position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    color: var(--muted); font-weight: 600; font-size: 14px;
+  }
+
+  /* Hero result */
+  .hero {
+    background: linear-gradient(135deg, #052e16 0%, #14532d 50%, #166534 100%);
+    color: white; padding: 32px 28px; border-radius: 14px;
+    margin-bottom: 16px; text-align: center;
+  }
+  .hero .label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.85; }
+  .hero .value {
+    font-size: 52px; font-weight: 700; line-height: 1; margin: 8px 0 4px;
+    letter-spacing: -0.02em;
+  }
+  .hero .value .range { font-size: 28px; opacity: 0.8; font-weight: 500; }
+  .hero .sub { font-size: 14px; opacity: 0.9; }
+  .hero .sub strong { font-weight: 600; }
+  .hero .cost-line {
+    margin-top: 14px; padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.18);
+    font-size: 13px; opacity: 0.88;
+    display: flex; align-items: baseline; justify-content: center; gap: 6px; flex-wrap: wrap;
+  }
+  .hero .cost-line [data-key="gross"], .hero .cost-line [data-key="license_cost"] { font-weight: 700; opacity: 1; }
+  .hero .cost-line small { font-size: 11.5px; opacity: 0.7; margin-left: 4px; }
+
+  /* KPI row */
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .kpi {
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: 8px; padding: 16px; text-align: center;
+  }
+  .kpi .v { font-size: 22px; font-weight: 700; color: var(--brand); }
+  .kpi .l { font-size: 11.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; margin-top: 4px; font-weight: 600; }
+
+  /* Module split bars */
+  .modules { margin-top: 4px; }
+  .mod-row {
+    display: grid; grid-template-columns: 160px 1fr 110px;
+    gap: 14px; align-items: center; padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .mod-row:last-child { border-bottom: none; }
+  .mod-name { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; }
+  .mod-name .dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+  .mod-name .sub { color: var(--muted); font-weight: 400; font-size: 11.5px; }
+  .mod-bar-wrap { height: 10px; background: var(--soft); border-radius: 5px; overflow: hidden; }
+  .mod-bar { height: 100%; border-radius: 5px; transition: width 0.4s ease; }
+  .mod-val { text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--brand); }
+
+  /* Method footer */
+  .method {
+    background: var(--soft); border-radius: 8px; padding: 16px 18px;
+    border: 1px solid var(--line); font-size: 13px; color: var(--muted);
+    line-height: 1.55;
+  }
+  .method strong { color: var(--ink); font-weight: 600; }
+  .method ul { margin: 8px 0 0; padding-left: 18px; }
+  .method li { margin-bottom: 4px; }
+  .method a { color: var(--accent); text-decoration: none; }
+
+  /* CTA */
+  .cta {
+    text-align: center; margin-top: 18px; padding: 20px;
+    background: linear-gradient(135deg, #eff6ff, #dbeafe);
+    border-radius: 10px; border: 1px solid #93c5fd;
+  }
+  .cta p { margin: 0 0 12px; font-size: 14px; color: var(--ink); }
+  .cta .btn {
+    display: inline-block; padding: 10px 24px;
+    background: var(--accent); color: white; border-radius: 6px;
+    font-weight: 600; text-decoration: none; font-size: 14px;
+  }
+  .cta .btn:hover { background: #1d4ed8; }
+
+  /* Admin / footer note */
+  .footer-note {
+    margin-top: 18px; padding: 12px 16px; text-align: center;
+    font-size: 12px; color: var(--muted);
+    display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap;
+  }
+  .footer-note .override-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 3px 10px; border-radius: 12px;
+    background: var(--brand-bg); color: var(--brand);
+    font-weight: 600;
+  }
+  .footer-note .override-badge::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor;
+  }
+  .footer-note a {
+    color: var(--muted); text-decoration: none; font-weight: 500;
+    padding: 3px 8px; border-radius: 4px;
+  }
+  .footer-note a:hover { color: var(--accent); background: var(--soft); }
+
+  @media (max-width: 720px) {
+    .form-grid { grid-template-columns: 1fr 1fr; }
+    .kpis { grid-template-columns: 1fr 1fr; }
+    .hero .value { font-size: 40px; }
+    .hero .value .range { font-size: 22px; }
+    .mod-row { grid-template-columns: 1fr 90px; gap: 8px; }
+    .mod-row .mod-bar-wrap { grid-column: 1 / -1; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <div class="head">
+    <span class="badge">ROI Calculator</span>
+    <h1>See what Ze'Manage could save your team</h1>
+    <p>Conservative estimate based on industry-standard Revit team baselines · takes 30 seconds</p>
+  </div>
+
+  <!-- Inputs -->
+  <div class="card">
+    <h2>About your team</h2>
+    <div class="form-grid">
+
+      <div class="input-field">
+        <label>Team size</label>
+        <input id="team_size" type="number" value="12" min="1" max="500" step="1" required>
+        <div class="helper">Active Revit users</div>
+      </div>
+
+      <div class="input-field">
+        <label>Hourly cost</label>
+        <div class="with-prefix">
+          <span class="prefix">$</span>
+          <input id="hourly_rate" type="number" value="75" min="1" max="500" step="5" required>
+        </div>
+        <div class="helper">Fully-loaded designer rate</div>
+      </div>
+
+      <div class="input-field">
+        <label>Project mix</label>
+        <select id="phase_mix">
+          <option value="early">Mostly early design</option>
+          <option value="balanced" selected>Balanced (design + CD)</option>
+          <option value="construction">Construction-heavy</option>
+        </select>
+        <div class="helper" id="phase_mix_helper">Late-stage = costlier rework</div>
+      </div>
+
+      <div class="input-field">
+        <label>Modeling intensity</label>
+        <select id="activity_level">
+          <option value="light">Light · few incidents</option>
+          <option value="medium" selected>Medium · typical</option>
+          <option value="heavy">Heavy · complex models</option>
+        </select>
+        <div class="helper" id="activity_level_helper">Sync/crash/warning frequency</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Hero result -->
+  <div class="hero">
+    <div class="label">Estimated monthly net savings · conservative range</div>
+    <div class="value">
+      <span data-key="net_low">$0</span> <span class="range">– <span data-key="net_high">$0</span></span>
+    </div>
+    <div class="sub">
+      ≈ <strong><span data-key="hours">0</span> hours</strong> reclaimed per month ·
+      payback in <strong><span data-key="payback">—</span></strong>
+    </div>
+    <div class="cost-line">
+      Gross value <span data-key="gross">$0</span>
+      &nbsp;−&nbsp; Ze'Manage licence <span data-key="license_cost">$0</span>
+      <small data-key="license_detail">($0/user × 0 users)</small>
+    </div>
+  </div>
+
+  <!-- KPI row -->
+  <div class="kpis">
+    <div class="kpi">
+      <div class="v" data-key="per_user">$0</div>
+      <div class="l">Per user / month</div>
+    </div>
+    <div class="kpi">
+      <div class="v" data-key="per_year">$0</div>
+      <div class="l">Annualised value</div>
+    </div>
+    <div class="kpi">
+      <div class="v" data-key="roi_multiple">0×</div>
+      <div class="l">Return on licence</div>
+    </div>
+    <div class="kpi">
+      <div class="v" data-key="hours_per_user">0</div>
+      <div class="l">Hours / user / month</div>
+    </div>
+  </div>
+
+  <!-- Module split -->
+  <div class="card">
+    <h2>Where the value comes from</h2>
+    <div class="modules">
+
+      <div class="mod-row">
+        <div class="mod-name">
+          <span class="dot" style="background:var(--m1)"></span>
+          <div>Protection<br><span class="sub">Pin · Command · Event · Rule</span></div>
+        </div>
+        <div class="mod-bar-wrap"><div class="mod-bar" style="background:var(--m1)" data-bar="m1"></div></div>
+        <div class="mod-val" data-key="m1_val">$0</div>
+      </div>
+
+      <div class="mod-row">
+        <div class="mod-name">
+          <span class="dot" style="background:var(--m4)"></span>
+          <div>Sync Control<br><span class="sub">Queue · Background iSync</span></div>
+        </div>
+        <div class="mod-bar-wrap"><div class="mod-bar" style="background:var(--m4)" data-bar="m4"></div></div>
+        <div class="mod-val" data-key="m4_val">$0</div>
+      </div>
+
+      <div class="mod-row">
+        <div class="mod-name">
+          <span class="dot" style="background:var(--m3)"></span>
+          <div>Model Health<br><span class="sub">File size · Warnings · Linked files</span></div>
+        </div>
+        <div class="mod-bar-wrap"><div class="mod-bar" style="background:var(--m3)" data-bar="m3"></div></div>
+        <div class="mod-val" data-key="m3_val">$0</div>
+      </div>
+
+      <div class="mod-row">
+        <div class="mod-name">
+          <span class="dot" style="background:var(--m2)"></span>
+          <div>Activity Tracking<br><span class="sub">Billing accuracy · Crash recovery</span></div>
+        </div>
+        <div class="mod-bar-wrap"><div class="mod-bar" style="background:var(--m2)" data-bar="m2"></div></div>
+        <div class="mod-val" data-key="m2_val">$0</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Methodology -->
+  <div class="card">
+    <h2>How we calculated this</h2>
+    <div class="method">
+      Numbers are built from <strong>per-user-per-month rates</strong> observed across reference Revit teams (e.g., ~6 critical-element blocks, ~120 sync operations, ~58 warnings cleared per user/month). We scale those by your team size, modeling intensity, and project phase, then apply <strong>conservative time-cost values</strong> per event:
+      <ul>
+        <li><strong>Protection</strong> — ~8 min saved per critical block, ~15 min per pin-protect rescue</li>
+        <li><strong>Sync Control</strong> — ~10 min saved per prevented collision, ~30% of background-sync time counted as productive</li>
+        <li><strong>Model Health</strong> — ~0.5 min saved per warning cleared, ~0.4 min/MB of bloat prevented (team-wide)</li>
+        <li><strong>Activity Tracking</strong> — ~20 min recovered per detected crash, billing-accuracy uplift</li>
+      </ul>
+      The high end of the range uses industry-typical time values (≈2× conservative). Ze'Manage license cost is subtracted from gross savings to give net value &amp; payback. Real results depend on your team's discipline mix, model complexity, and how rules are deployed.
+    </div>
+  </div>
+
+  <div class="cta">
+    <p><strong>Want a detailed report</strong> tied to your own project data, with module-level breakdown and 30-day trends?</p>
+    <a href="#" class="btn">Request a full ROI assessment →</a>
+  </div>
+
+  <div class="footer-note" id="footer-note">
+    <span id="override_msg" class=""></span>
+    <a href="roi-calculator-admin.html" id="admin-link">Review &amp; calibrate assumptions →</a>
+  </div>
+
+</div>
+
+<script>
+/* =====================================================================
+   FACTORY DEFAULTS — used when no admin override is present in localStorage.
+   Admins can edit these centrally at roi-calculator-admin.html.
+===================================================================== */
+const DEFAULTS = {
+  baselines: {
+    // M1 Protection
+    pin_unauth_blocked:     0.44,
+    cmd_critical_blocks:    5.8,
+    cmd_major_blocks:       1.3,
+    cmd_minor_blocks:       19,
+    cmd_overrides:          2.1,
+    event_blocks:           2.6,
+    event_overrides:        0.34,
+    // M2 Activity
+    crashes:                0.125,
+    billable_hrs_recovered: 1.4,
+    // M3 Model Health
+    mb_growth_avoided:      75,
+    warnings_cleared:       58,
+    duplicates_flagged:     13,
+    // M4 Sync
+    bg_sync_hours:          13,
+    collisions_prevented:   0.69,
+    failed_syncs_recovered: 0.22,
+  },
+  conservative: {
+    t_pin: 15, t_cmd_critical: 8, t_cmd_major: 4, t_cmd_minor: 1,
+    t_event: 8, t_collision: 10, t_crash: 20, t_warning: 0.5,
+    dep_factor: 1.5, override_risk: 0.50,
+    bg_sync_usable: 0.30, mb_save: 0.4,
+  },
+  realistic: {
+    t_pin: 25, t_cmd_critical: 15, t_cmd_major: 8, t_cmd_minor: 2,
+    t_event: 15, t_collision: 20, t_crash: 45, t_warning: 1.0,
+    dep_factor: 2.5, override_risk: 0.30,
+    bg_sync_usable: 0.50, mb_save: 1.0,
+  },
+  multipliers: {
+    phase_mix: { early: 0.7, balanced: 1.0, construction: 1.7 },
+    modeling:  { light: 0.6, medium: 1.0, heavy: 1.6 },
+  },
+  license_per_user_month: 45,
+};
+
+const STORAGE_KEY = 'zemanage_roi_config';
+
+/* =====================================================================
+   LOAD CONFIG — merge admin overrides (localStorage) with defaults
+===================================================================== */
+function loadConfig() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return { config: JSON.parse(JSON.stringify(DEFAULTS)), overridden: false };
+    const s = JSON.parse(raw);
+    return {
+      config: {
+        baselines:    { ...DEFAULTS.baselines,    ...(s.baselines    || {}) },
+        conservative: { ...DEFAULTS.conservative, ...(s.conservative || {}) },
+        realistic:    { ...DEFAULTS.realistic,    ...(s.realistic    || {}) },
+        multipliers: {
+          phase_mix: { ...DEFAULTS.multipliers.phase_mix, ...(s.multipliers?.phase_mix || {}) },
+          modeling:  { ...DEFAULTS.multipliers.modeling,  ...(s.multipliers?.modeling  || {}) },
+        },
+        license_per_user_month: s.license_per_user_month ?? DEFAULTS.license_per_user_month,
+      },
+      overridden: true,
+    };
+  } catch (e) {
+    return { config: JSON.parse(JSON.stringify(DEFAULTS)), overridden: false };
+  }
+}
+
+const { config: CFG, overridden: ADMIN_OVERRIDE } = loadConfig();
+
+// Aliases to keep the rest of the script readable
+const PER_USER_MONTH = CFG.baselines;
+const ASSUMPTIONS = {
+  low:  { ...CFG.conservative, license_per_user_month: CFG.license_per_user_month },
+  high: { ...CFG.realistic,    license_per_user_month: CFG.license_per_user_month },
+};
+
+function readInputs() {
+  // Resolve dropdown slot names → multipliers via admin config
+  const phaseSlot = document.getElementById('phase_mix').value;
+  const actSlot   = document.getElementById('activity_level').value;
+  const phase = CFG.multipliers.phase_mix[phaseSlot]  ?? DEFAULTS.multipliers.phase_mix.balanced;
+  const activity = CFG.multipliers.modeling[actSlot]  ?? DEFAULTS.multipliers.modeling.medium;
+  const team = parseFloat(document.getElementById('team_size').value);
+  const rate = parseFloat(document.getElementById('hourly_rate').value);
+  return {
+    team: isNaN(team) ? 0 : Math.max(0, team),
+    rate: isNaN(rate) ? 0 : Math.max(0, rate),
+    phase, activity,
+  };
+}
+
+function computeBand(band) {
+  const i = readInputs();
+  const a = ASSUMPTIONS[band];
+  const p = PER_USER_MONTH;
+  const team = i.team;
+  const phase = i.phase;
+  const act = i.activity;
+  const ratePerMin = i.rate / 60;
+
+  // Scale per-user counts by team size and activity intensity
+  const scale = team * act;
+
+  // ----- Protection (M1) — phase applies (rework cost scales with project stage) -----
+  const m1_pin = (
+    p.pin_unauth_blocked * scale * a.t_pin * phase * a.dep_factor
+  ) * ratePerMin;
+
+  const m1_cmd = (
+    p.cmd_critical_blocks * scale * a.t_cmd_critical * phase * a.dep_factor +
+    p.cmd_major_blocks    * scale * a.t_cmd_major    * phase +
+    p.cmd_minor_blocks    * scale * a.t_cmd_minor    * phase -
+    p.cmd_overrides       * scale * a.t_cmd_critical * a.override_risk * phase
+  ) * ratePerMin;
+
+  const m1_event = (
+    p.event_blocks    * scale * a.t_event * phase -
+    p.event_overrides * scale * a.t_event * a.override_risk * phase
+  ) * ratePerMin;
+
+  const m1 = Math.max(0, m1_pin + m1_cmd + m1_event);
+
+  // ----- Sync Control (M4) — phase-agnostic -----
+  const m4_bg       = p.bg_sync_hours * scale * a.bg_sync_usable * i.rate;
+  const m4_collide  = p.collisions_prevented * scale * a.t_collision * ratePerMin;
+  const m4_failed   = p.failed_syncs_recovered * scale * 12 * ratePerMin;  // 12 min/recovered
+  const m4 = m4_bg + m4_collide + m4_failed;
+
+  // ----- Model Health (M3) — phase-agnostic -----
+  const m3_bloat    = p.mb_growth_avoided * scale * a.mb_save * ratePerMin;
+  const m3_warn     = p.warnings_cleared  * scale * a.t_warning * ratePerMin;
+  const m3_dupes    = p.duplicates_flagged * scale * 1 * ratePerMin;
+  const m3 = m3_bloat + m3_warn + m3_dupes;
+
+  // ----- Activity Tracking (M2) — phase-agnostic -----
+  const m2_crash    = p.crashes * scale * a.t_crash * 4 * ratePerMin;  // ×4 team interrupt
+  const m2_billing  = p.billable_hrs_recovered * scale * i.rate;
+  const m2 = m2_crash + m2_billing;
+
+  const total = m1 + m2 + m3 + m4;
+  const license = team * a.license_per_user_month;
+  const net = total - license;
+
+  return { m1, m2, m3, m4, total, net, license };
+}
+
+function format$(n) {
+  if (!isFinite(n)) return '—';
+  if (n === 0)      return '$0';
+  const sign = n < 0 ? '−' : '';
+  const abs = Math.abs(n);
+  if (abs < 1)   return sign + '$' + abs.toFixed(2);   // "$0.05"
+  if (abs < 100) return sign + '$' + abs.toFixed(1);   // "$12.4"
+  return sign + '$' + Math.round(abs).toLocaleString();
+}
+
+function render() {
+  const lo = computeBand('low');
+  const hi = computeBand('high');
+  const i  = readInputs();
+
+  // Average-of-band figures for module breakdown
+  const avg = {
+    m1: (lo.m1 + hi.m1) / 2,
+    m2: (lo.m2 + hi.m2) / 2,
+    m3: (lo.m3 + hi.m3) / 2,
+    m4: (lo.m4 + hi.m4) / 2,
+  };
+  const total_avg = avg.m1 + avg.m2 + avg.m3 + avg.m4;
+
+  // Hero range — clamp net savings to >= 0 (can't have "negative savings")
+  // Gross / license stay accurate so the math beneath remains transparent.
+  const setText = (k, v) => {
+    document.querySelectorAll(`[data-key="${k}"]`).forEach(el => el.textContent = v);
+  };
+  const netLoClamped = Math.max(0, lo.net);
+  const netHiClamped = Math.max(0, hi.net);
+  setText('net_low',  format$(netLoClamped));
+  setText('net_high', format$(netHiClamped));
+
+  const hoursRaw = i.rate > 0 ? netLoClamped / i.rate : 0;
+  setText('hours', isFinite(hoursRaw) ? Math.round(hoursRaw).toLocaleString() : '—');
+
+  // Cost-line transparency — show real gross / license / detail
+  setText('gross', format$(lo.total));
+  setText('license_cost', format$(lo.license));
+  setText('license_detail',
+    `($${CFG.license_per_user_month}/user × ${i.team} user${i.team === 1 ? '' : 's'})`);
+
+  // Payback uses the real (unclamped) net so "not reached" still fires correctly
+  const months_to_payback = lo.net > 0 ? (lo.license * 12) / lo.net : Infinity;
+  let payback_str;
+  if (lo.net <= 0)                 payback_str = 'not reached';
+  else if (months_to_payback < 1)  payback_str = '< 1 month';
+  else if (months_to_payback < 12) payback_str = `${months_to_payback.toFixed(1)} months`;
+  else                             payback_str = `${(months_to_payback / 12).toFixed(1)} years`;
+  setText('payback', payback_str);
+
+  // KPIs — clamped net so they don't show negatives
+  setText('per_user', format$(i.team > 0 ? netLoClamped / i.team : 0));
+  setText('per_year', format$(netLoClamped * 12));
+  const roi_x = lo.license > 0 ? (lo.total / lo.license) : 0;
+  setText('roi_multiple', roi_x.toFixed(1) + '×');
+  const hpu = (i.rate > 0 && i.team > 0) ? (netLoClamped / i.rate) / i.team : 0;
+  setText('hours_per_user', isFinite(hpu) ? hpu.toFixed(1) + ' hr' : '—');
+
+  // Module values + bars
+  const max_val = Math.max(avg.m1, avg.m2, avg.m3, avg.m4) || 1;
+  ['m1','m2','m3','m4'].forEach(m => {
+    setText(`${m}_val`, format$(avg[m]));
+    const bar = document.querySelector(`[data-bar="${m}"]`);
+    if (bar) bar.style.width = (avg[m] / max_val * 100) + '%';
+  });
+
+  // Footer note — diplomatic phrasing
+  const msgEl = document.getElementById('override_msg');
+  if (msgEl) {
+    msgEl.textContent = ADMIN_OVERRIDE
+      ? 'Estimates calibrated to your firm'
+      : 'Estimates based on industry reference values';
+    msgEl.className = ADMIN_OVERRIDE ? 'override-badge' : '';
+  }
+
+  // Show the active multiplier next to each dropdown
+  const pmHelper = document.getElementById('phase_mix_helper');
+  const alHelper = document.getElementById('activity_level_helper');
+  if (pmHelper) pmHelper.textContent = `Late-stage = costlier rework · current ${i.phase.toFixed(1)}×`;
+  if (alHelper) alHelper.textContent = `Sync/crash/warning frequency · current ${i.activity.toFixed(1)}×`;
+}
+
+/* =====================================================================
+   PERSIST user inputs — survives page refresh
+===================================================================== */
+const INPUTS_KEY = 'zemanage_calculator_inputs';
+const INPUT_IDS = ['team_size', 'hourly_rate', 'phase_mix', 'activity_level'];
+
+function saveInputs() {
+  const state = {};
+  INPUT_IDS.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) state[id] = el.value;
+  });
+  try { localStorage.setItem(INPUTS_KEY, JSON.stringify(state)); } catch (e) {}
+}
+
+function restoreInputs() {
+  try {
+    const raw = localStorage.getItem(INPUTS_KEY);
+    if (!raw) return;
+    const state = JSON.parse(raw);
+    INPUT_IDS.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && state[id] !== undefined && state[id] !== '') el.value = state[id];
+    });
+  } catch (e) {}
+}
+
+// Wire inputs — save + recompute on every change
+document.querySelectorAll('input, select').forEach(el => {
+  const handler = () => { saveInputs(); render(); };
+  el.addEventListener('input', handler);
+  el.addEventListener('change', handler);
+});
+
+// Restore saved values, then render
+restoreInputs();
+render();
+</script>
+
+</body>
+</html>

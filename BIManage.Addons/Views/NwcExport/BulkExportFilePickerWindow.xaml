@@ -1,0 +1,343 @@
+<Window x:Class="BIManage.Addons.Views.NwcExport.BulkExportFilePickerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Select Revit Files and 3D Views"
+        Height="520" Width="880"
+        MinWidth="650" MinHeight="450"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanResize"
+        Background="#FAFBFC">
+
+    <Grid Margin="20">
+        <Grid.Resources>
+            <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+            <SolidColorBrush x:Key="PrimaryBrush" Color="#E74C3C"/>
+            <SolidColorBrush x:Key="PrimaryLightBrush" Color="#FDECEA"/>
+            <SolidColorBrush x:Key="SurfaceBrush" Color="#FFFFFF"/>
+            <SolidColorBrush x:Key="BorderBrush" Color="#D1D5DB"/>
+            <SolidColorBrush x:Key="BorderLightBrush" Color="#E5E7EB"/>
+            <SolidColorBrush x:Key="TextPrimaryBrush" Color="#000000"/>
+            <SolidColorBrush x:Key="TextSecondaryBrush" Color="#6B7280"/>
+            <SolidColorBrush x:Key="TextMutedBrush" Color="#9CA3AF"/>
+            <SolidColorBrush x:Key="HoverBrush" Color="#F3F4F6"/>
+
+            <Style x:Key="ProfessionalButton" TargetType="Button">
+                <Setter Property="Background" Value="#D3D3D3"/>
+                <Setter Property="Foreground" Value="#000000"/>
+                <Setter Property="FontFamily" Value="Segoe UI"/>
+                <Setter Property="FontWeight" Value="Medium"/>
+                <Setter Property="FontSize" Value="13"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="border"
+                                    Background="{TemplateBinding Background}"
+                                    CornerRadius="4"
+                                    BorderBrush="{StaticResource BorderBrush}"
+                                    BorderThickness="1"
+                                    Padding="16,8">
+                                <ContentPresenter x:Name="content"
+                                                  HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"
+                                                  TextElement.Foreground="{TemplateBinding Foreground}"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="border" Property="Background" Value="#FF5500"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="border" Property="Background" Value="#CC4400"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter TargetName="border" Property="Background" Value="#DEE2E6"/>
+                                    <Setter Property="Foreground" Value="#9CA3AF"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="ProfessionalCard" TargetType="Border">
+                <Setter Property="Background" Value="{StaticResource SurfaceBrush}"/>
+                <Setter Property="BorderBrush" Value="{StaticResource BorderLightBrush}"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="CornerRadius" Value="6"/>
+                <Setter Property="Padding" Value="16"/>
+            </Style>
+
+            <Style x:Key="CleanListBox" TargetType="ListBox">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+                <Setter Property="VirtualizingStackPanel.IsVirtualizing" Value="True"/>
+                <Setter Property="VirtualizingStackPanel.VirtualizationMode" Value="Recycling"/>
+                <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+                <Setter Property="ItemContainerStyle">
+                    <Setter.Value>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="Margin" Value="0"/>
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <ContentPresenter/>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="ProfessionalCheckBox" TargetType="CheckBox">
+                <Setter Property="FontFamily" Value="Segoe UI"/>
+                <Setter Property="FontSize" Value="13"/>
+                <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+                <Setter Property="Margin" Value="0,4"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="CheckBox">
+                            <StackPanel Orientation="Horizontal">
+                                <Border x:Name="checkBoxBorder"
+                                        Width="18" Height="18"
+                                        Background="White"
+                                        BorderBrush="{StaticResource BorderBrush}"
+                                        BorderThickness="1.5"
+                                        CornerRadius="3"
+                                        Margin="0,0,8,0"
+                                        VerticalAlignment="Center">
+                                    <Viewbox Stretch="Uniform" Margin="1">
+                                        <Canvas Width="16" Height="16" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <Path x:Name="checkMark"
+                                                  Data="M3,9 L7,13 L13,5"
+                                                  Stroke="#000000"
+                                                  StrokeThickness="2"
+                                                  StrokeStartLineCap="Round"
+                                                  StrokeEndLineCap="Round"
+                                                  StrokeLineJoin="Round"
+                                                  Visibility="Collapsed"/>
+                                        </Canvas>
+                                    </Viewbox>
+                                </Border>
+                                <ContentPresenter VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter TargetName="checkMark" Property="Visibility" Value="Visible"/>
+                                    <Setter TargetName="checkBoxBorder" Property="Background" Value="#E8EEF4"/>
+                                    <Setter TargetName="checkBoxBorder" Property="BorderBrush" Value="#000000"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="checkBoxBorder" Property="BorderBrush" Value="#000000"/>
+                                    <Setter TargetName="checkBoxBorder" Property="Background" Value="#F0F4F8"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="SectionHeader" TargetType="TextBlock">
+                <Setter Property="FontFamily" Value="Segoe UI"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+                <Setter Property="Margin" Value="0,0,0,8"/>
+            </Style>
+        </Grid.Resources>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="0,0,0,14">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal">
+                    <Image x:Name="HeaderLogo" Width="24" Height="24" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                    <TextBlock Text="File Selection"
+                               FontFamily="Segoe UI" FontSize="18" FontWeight="SemiBold"
+                               Foreground="{StaticResource TextPrimaryBrush}" VerticalAlignment="Center"/>
+                </StackPanel>
+                <TextBlock Text="Select Revit files and their corresponding 3D views for processing"
+                           FontFamily="Segoe UI" FontSize="12"
+                           Foreground="{StaticResource TextSecondaryBrush}" Margin="0,2,0,0"/>
+            </StackPanel>
+
+            <!-- Browse Files Button -->
+            <Button Grid.Column="1"
+                    Command="{Binding BrowseFilesCommand}"
+                    Style="{StaticResource ProfessionalButton}"
+                    MinWidth="120" Height="36"
+                    x:Name="BrowseFilesButton"
+                    Visibility="{Binding ShowBrowseButton, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource BoolToVis}}">
+                <StackPanel Orientation="Horizontal">
+                    <Path Data="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"
+                          Width="16" Height="17" Margin="0,0,6,0" Stretch="Fill">
+                        <Path.Style>
+                            <Style TargetType="Path">
+                                <Setter Property="Fill" Value="#000000"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Button}}" Value="True">
+                                        <Setter Property="Fill" Value="White"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Path.Style>
+                    </Path>
+                    <TextBlock Text="Browse Files"/>
+                </StackPanel>
+            </Button>
+
+            <!-- Import-mode Source Buttons -->
+            <StackPanel Grid.Column="1" Orientation="Horizontal"
+                        Visibility="{Binding ShowImportSourceButtons, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource BoolToVis}}">
+                <Button Content="📁 Local File"
+                        Command="{Binding BrowseFilesCommand}"
+                        Style="{StaticResource ProfessionalButton}"
+                        MinWidth="120" Height="36"
+                        Margin="0,0,8,0"
+                        ToolTip="Add Revit files from local storage"/>
+                <Button Content="☁ ACC/BIM360"
+                        Command="{Binding AddCloudFilesCommand}"
+                        Style="{StaticResource ProfessionalButton}"
+                        MinWidth="120" Height="36"
+                        ToolTip="Add Revit files from Autodesk Construction Cloud / BIM 360"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2.2*"/>
+                <ColumnDefinition Width="24"/>
+                <ColumnDefinition Width="3.3*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0" VerticalAlignment="Stretch">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Selected Revit Files" Style="{StaticResource SectionHeader}" Grid.Row="0"/>
+                <Border Style="{StaticResource ProfessionalCard}" MinHeight="200" MaxHeight="350" Grid.Row="1" VerticalAlignment="Stretch">
+                    <ListBox ItemsSource="{Binding SelectedFiles}"
+                             Style="{StaticResource CleanListBox}"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto"
+                             ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                             VirtualizingStackPanel.IsVirtualizing="True"
+                             ScrollViewer.CanContentScroll="True"
+                             VerticalAlignment="Stretch">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="Transparent" Padding="12,8" Margin="0,1" CornerRadius="3">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="{StaticResource HoverBrush}"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Ellipse Fill="{StaticResource PrimaryBrush}"
+                                                 Width="6" Height="6" Margin="4,0,12,0" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis"
+                                                   ToolTip="{Binding}" FontFamily="Segoe UI" FontSize="13"
+                                                   Foreground="{StaticResource TextPrimaryBrush}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Border>
+            </Grid>
+
+            <Border Grid.Column="1"
+                    Background="{StaticResource BorderLightBrush}"
+                    Width="1"
+                    Margin="11,0,12,0"
+                    VerticalAlignment="Stretch"/>
+
+            <Grid Grid.Column="2" VerticalAlignment="Stretch">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Available 3D Views" Style="{StaticResource SectionHeader}" Grid.Row="0"/>
+                <Border Style="{StaticResource ProfessionalCard}" MinHeight="200" MaxHeight="350" Grid.Row="1" VerticalAlignment="Stretch">
+                    <ListBox ItemsSource="{Binding All3DViewPairs}"
+                             Style="{StaticResource CleanListBox}"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                             VirtualizingStackPanel.IsVirtualizing="True"
+                             ScrollViewer.CanContentScroll="True"
+                             VerticalAlignment="Stretch">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="Transparent" Padding="12,6" Margin="0,1" CornerRadius="3">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="{StaticResource HoverBrush}"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                              Style="{StaticResource ProfessionalCheckBox}">
+                                        <StackPanel Orientation="Vertical" Margin="0,2">
+                                            <TextBlock Text="{Binding ViewName}"
+                                                       FontFamily="Segoe UI" FontWeight="Medium" FontSize="13"
+                                                       Foreground="{StaticResource TextPrimaryBrush}"/>
+                                            <TextBlock Text="{Binding FileName}"
+                                                       FontFamily="Segoe UI"
+                                                       Foreground="{StaticResource TextMutedBrush}"
+                                                       FontSize="11" Margin="0,1,0,0"/>
+                                        </StackPanel>
+                                    </CheckBox>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Border>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="2" Margin="0,14,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0"
+                       Text="Select the files and views you want to process, then click Confirm to continue."
+                       FontFamily="Segoe UI" FontSize="12"
+                       Foreground="{StaticResource TextSecondaryBrush}" VerticalAlignment="Center"/>
+            <Button Grid.Column="1"
+                    Style="{StaticResource ProfessionalButton}"
+                    MinWidth="140" Height="36" FontSize="13"
+                    Command="{Binding ConfirmSelectionCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Confirm Selection"/>
+                </StackPanel>
+            </Button>
+        </Grid>
+    </Grid>
+</Window>

@@ -1,0 +1,25 @@
+<?xml version='1.0'?>
+<!-- See ObfuscarR21.xml for the net48 / probe-path rationale. -->
+<Obfuscator>
+  <Var name="InPath"           value="BIManageRevit.org\Contents\2022" />
+  <Var name="OutPath"          value="BIManageRevit.org\Confused\2022" />
+  <Var name="HideStrings"      value="true" />
+  <Var name="KeepPublicApi"    value="true" />
+  <Var name="HidePrivateApi"   value="false" />
+  <Var name="RenameMethods"    value="false" />
+  <Var name="RenameProperties" value="false" />
+  <Var name="RenameEvents"     value="false" />
+  <Var name="RenameFields"     value="false" />
+  <Var name="UseUnicodeNames"  value="false" />
+
+  <AssemblySearchPath path="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8" />
+  <!-- R22 BIManageRevit.dll references RevitAPI v24.0.0.0 (the net48 family is
+       pinned to the Nice3point 2024 stub - see ObfuscarR21.xml). Revit 2022 is
+       not installed on this build machine, so we point at Revit 2024 which
+       supplies RevitAPI/RevitAPIUI v24.0.0.0 for the reference closure scan,
+       same fallback R21/R23/R24 use. -->
+  <AssemblySearchPath path="C:\Program Files\Autodesk\Revit 2024" />
+
+  <Module file="BIManageRevit.org\Contents\2022\BIManageRevit.dll" />
+  <Module file="BIManageRevit.org\Contents\2022\BIManage.Addons.dll" />
+</Obfuscator>

@@ -1,0 +1,165 @@
+﻿<Window x:Class="BIManageRevit.BIManage.Views.Bindings.OtpInputDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Pin Protection"
+        WindowStartupLocation="CenterScreen"
+        SizeToContent="WidthAndHeight"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ShowInTaskbar="False"
+        KeyDown="Window_KeyDown">
+    <Window.Icon>
+        <BitmapImage UriSource="pack://application:,,,/BIManageRevit;component/BIManage/Resources/Icons/BIManage.png"/>
+    </Window.Icon>
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/BIManageRevit;component/BIManage/Views/styles/DialogStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- OTP Box Style -->
+            <Style x:Key="OtpBoxStyle" TargetType="TextBox">
+                <Setter Property="Width" Value="48"/>
+                <Setter Property="Height" Value="56"/>
+                <Setter Property="FontSize" Value="26"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="FontFamily" Value="Segoe UI"/>
+                <Setter Property="TextAlignment" Value="Center"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="MaxLength" Value="1"/>
+                <Setter Property="CharacterCasing" Value="Upper"/>
+                <Setter Property="BorderThickness" Value="2"/>
+                <Setter Property="BorderBrush" Value="#CBD5E1"/>
+                <Setter Property="Background" Value="#FFFFFF"/>
+                <Setter Property="Foreground" Value="#1A1F36"/>
+                <Setter Property="Margin" Value="3"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="TextBox">
+                            <Border x:Name="Border"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="6">
+                                <ScrollViewer x:Name="PART_ContentHost"
+                                            Margin="0"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsFocused" Value="True">
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="#FF5500"/>
+                                    <Setter TargetName="Border" Property="BorderThickness" Value="2"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <!-- Centered dialog box on the semi-transparent backdrop. No outer border —
+         only the digit input boxes carry the black outline now. The drop shadow
+         still separates the dialog from the dimmed backdrop. -->
+    <Border HorizontalAlignment="Center" VerticalAlignment="Center"
+            Width="420"
+            Background="White"
+            BorderThickness="0"
+            CornerRadius="10" ClipToBounds="True">
+        <Border.Effect>
+            <DropShadowEffect Color="#000000" BlurRadius="20" ShadowDepth="0" Opacity="0.18"/>
+        </Border.Effect>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Custom title bar replacing the OS chrome we lost by going WindowStyle=None.
+                 Keeps the "Pin Protection" label + an X close button that maps to the
+                 existing close behavior. Mouse-drag is enabled via the click handler. -->
+            <Border Grid.Row="0" Background="#F8FAFC" CornerRadius="10,10,0,0"
+                    BorderBrush="#E2E8F0" BorderThickness="0,0,0,1"
+                    MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+                <Grid Height="32">
+                    <StackPanel Orientation="Horizontal" Margin="10,0" VerticalAlignment="Center">
+                        <Image Source="pack://application:,,,/BIManageRevit;component/BIManage/Resources/Icons/BIManage.png"
+                               Width="14" Height="14" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
+                                   Margin="6,0,0,0"
+                                   VerticalAlignment="Center" FontSize="12" Foreground="#1A1F36"/>
+                    </StackPanel>
+                    <Button HorizontalAlignment="Right" Width="28" Height="28" Cursor="Hand"
+                            Click="TitleBarClose_Click" Background="Transparent" BorderThickness="0">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="closeBg" Background="Transparent" CornerRadius="6" Width="28" Height="28">
+                                    <TextBlock Text="&#x2715;" FontSize="10" Foreground="#94A3B8"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="closeBg" Property="Background" Value="#F1F5F9"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </Grid>
+            </Border>
+
+        <StackPanel Grid.Row="1" Margin="20,16,20,20">
+        <!-- Title -->
+        <TextBlock Text="Enter OTP Code"
+                   FontSize="18"
+                   FontWeight="SemiBold"
+                   Foreground="#1A1F36"
+                   TextAlignment="Center"
+                   Margin="0,0,0,8"/>
+
+        <!-- Instruction -->
+        <TextBlock Text="Enter the 6-digit code from your administrator"
+                   TextAlignment="Center"
+                   FontSize="12"
+                   Foreground="#697386"
+                   Margin="0,0,0,16"/>
+
+        <!-- 6 OTP Input Boxes -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,12">
+            <TextBox x:Name="Otp1" Style="{StaticResource OtpBoxStyle}" TextChanged="OtpBox_TextChanged" PreviewKeyDown="OtpBox_PreviewKeyDown"/>
+            <TextBox x:Name="Otp2" Style="{StaticResource OtpBoxStyle}" TextChanged="OtpBox_TextChanged" PreviewKeyDown="OtpBox_PreviewKeyDown"/>
+            <TextBox x:Name="Otp3" Style="{StaticResource OtpBoxStyle}" TextChanged="OtpBox_TextChanged" PreviewKeyDown="OtpBox_PreviewKeyDown"/>
+            <TextBox x:Name="Otp4" Style="{StaticResource OtpBoxStyle}" TextChanged="OtpBox_TextChanged" PreviewKeyDown="OtpBox_PreviewKeyDown"/>
+            <TextBox x:Name="Otp5" Style="{StaticResource OtpBoxStyle}" TextChanged="OtpBox_TextChanged" PreviewKeyDown="OtpBox_PreviewKeyDown"/>
+            <TextBox x:Name="Otp6" Style="{StaticResource OtpBoxStyle}" TextChanged="OtpBox_TextChanged" PreviewKeyDown="OtpBox_PreviewKeyDown"/>
+        </StackPanel>
+
+        <!-- Error Message -->
+        <Border x:Name="ErrorBorder"
+                Visibility="Collapsed"
+                Background="#FEF2F2"
+                BorderBrush="#DC2626"
+                BorderThickness="1"
+                CornerRadius="6"
+                Padding="10"
+                Margin="0,0,0,0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Text="⚠"
+                          FontSize="14"
+                          Foreground="#DC2626"
+                          Margin="0,0,6,0"
+                          VerticalAlignment="Center"/>
+                <TextBlock x:Name="ErrorText"
+                           FontSize="11"
+                           FontWeight="Medium"
+                           Foreground="#DC2626"
+                           VerticalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+        </StackPanel>
+        </Grid>
+    </Border>
+</Window>

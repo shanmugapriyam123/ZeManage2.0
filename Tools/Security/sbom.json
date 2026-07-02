@@ -1,0 +1,1406 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "urn:uuid:f38f4771-3858-4002-b1a3-6ef6e758ca6a",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-06-15T09:18:40Z",
+    "tools": [
+      {
+        "vendor": "CycloneDX",
+        "name": "CycloneDX module for .NET",
+        "version": "6.0.0.0"
+      }
+    ],
+    "component": {
+      "type": "application",
+      "bom-ref": "BIManageRevit@0.0.0",
+      "name": "BIManageRevit",
+      "version": "0.0.0"
+    }
+  },
+  "components": [
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/CommunityToolkit.Mvvm@8.3.2",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "CommunityToolkit.Mvvm",
+      "version": "8.3.2",
+      "description": "This package includes a .NET MVVM library with helpers such as:\n      - ObservableObject: a base class for objects implementing the INotifyPropertyChanged interface.\n      - ObservableRecipient: a base class for observable objects with support for the IMessenger service.\n      - ObservableValidator: a base class for objects implementing the INotifyDataErrorInfo interface.\n      - RelayCommand: a simple delegate command implementing the ICommand interface.\n      - AsyncRelayCommand: a delegate command supporting asynchronous operations and cancellation.\n      - WeakReferenceMessenger: a messaging system to exchange messages through different loosely-coupled objects.\n      - StrongReferenceMessenger: a high-performance messaging system that trades weak references for speed.\n      - Ioc: a helper class to configure dependency injection service containers.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "87193041FB6A6E30C8E1E519D6EBED0DD3E29F04FBFE62F9EB5CF25EDB1D0CC4CE82F042DC0FCF215DB1F8AAA035A02B9902325E7FEA736C1120839B68D21889"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "(c) .NET Foundation and Contributors. All rights reserved.",
+      "purl": "pkg:nuget/CommunityToolkit.Mvvm@8.3.2",
+      "externalReferences": [
+        {
+          "url": "https://github.com/CommunityToolkit/dotnet",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/CommunityToolkit/dotnet",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/JetBrains.Annotations@2022.3.1",
+      "authors": [
+        {
+          "name": "JetBrains"
+        }
+      ],
+      "name": "JetBrains.Annotations",
+      "version": "2022.3.1",
+      "description": "Annotations to increase accuracy of JetBrains Rider and ReSharper code inspections",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "77F9CF58E647A482459B56788CB3F5E7C40219376CD60B7F918A0003CE2A7C8F7770539ECC0F5047FB7451E96A26EB1415764A473A27310DFD25CA64E7D5514D"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:nuget/JetBrains.Annotations@2022.3.1",
+      "externalReferences": [
+        {
+          "url": "https://www.jetbrains.com/help/resharper/Code_Analysis__Code_Annotations.html",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/JetBrains/JetBrains.Annotations.git",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/MaterialDesignColors@5.3.0",
+      "authors": [
+        {
+          "name": "James Willock"
+        }
+      ],
+      "name": "MaterialDesignColors",
+      "version": "5.3.0",
+      "description": "ResourceDictionary instances containing standard Google Material Design swatches, for inclusion in a XAML application.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "03EACC331621AF05BFBA26A6BD72A61DB12849AD2AA061137C5BE699BDD815CBA45FBF4F3DA6F2D4F894F4C0B55AE5C3C6CC3FB6B45CF6C554111219858675B0"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "Copyright 2025 James Willock/Mulholland Software Ltd",
+      "purl": "pkg:nuget/MaterialDesignColors@5.3.0",
+      "externalReferences": [
+        {
+          "url": "https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/MaterialDesignThemes@5.3.0",
+      "authors": [
+        {
+          "name": "James Willock"
+        }
+      ],
+      "name": "MaterialDesignThemes",
+      "version": "5.3.0",
+      "description": "ResourceDictionary instances containing Material Design templates and styles for WPF controls in .NET.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "69F207409B36BD26DCBAA5C62346AF13F5F5C05E6D5897AB9CAF7E29AE115210C47EE4CC37C2EE9B61BAC154FD3B643BA3194B4B0F728EAF65B57FF1CA5F46AB"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "Copyright 2025 James Willock/Mulholland Software Ltd",
+      "purl": "pkg:nuget/MaterialDesignThemes@5.3.0",
+      "externalReferences": [
+        {
+          "url": "https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.Bcl.AsyncInterfaces@8.0.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.Bcl.AsyncInterfaces",
+      "version": "8.0.0",
+      "description": "Provides the IAsyncEnumerable\u003CT\u003E and IAsyncDisposable interfaces and helper types for .NET Standard 2.0. This package is not required starting with .NET Standard 2.1 and .NET Core 3.0.\n\nCommonly Used Types:\nSystem.IAsyncDisposable\nSystem.Collections.Generic.IAsyncEnumerable\nSystem.Collections.Generic.IAsyncEnumerator",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "79CB0773D94465924CEE4E471D90353D5D8DF842C46AB2C572CB15D9B9FB5D0209A1A88D64392995335C5FE54A00D7C3194440B84C95142711BBB685CB5E9552"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/Microsoft.Bcl.AsyncInterfaces@8.0.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/dotnet/runtime",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.CodeAnalysis.Analyzers@3.3.4",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.CodeAnalysis.Analyzers",
+      "version": "3.3.4",
+      "description": "Analyzers for consumers of Microsoft.CodeAnalysis NuGet package, i.e. extensions and applications built on top of .NET Compiler Platform (Roslyn). This package is included as a development dependency of Microsoft.CodeAnalysis NuGet package and does not need to be installed separately if you are referencing Microsoft.CodeAnalysis NuGet package.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "23E462C3AFFA5A33480B276888DA438CDFC618FEEEE17B0BE95B08F651BF3A316E7C7DDF96F484CBF7F1361183546C195B0ABFE41967A97F8B1F676685E68F7E"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/Microsoft.CodeAnalysis.Analyzers@3.3.4",
+      "externalReferences": [
+        {
+          "url": "https://github.com/dotnet/roslyn-analyzers",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/dotnet/roslyn-analyzers",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.CodeAnalysis.Common@4.8.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.CodeAnalysis.Common",
+      "version": "4.8.0",
+      "description": "A shared package used by the Microsoft .NET Compiler Platform (\u0022Roslyn\u0022).\n      Do not install this package manually, it will be added as a prerequisite by other packages that require it.\n    \n      More details at https://aka.ms/roslyn-packages\n      This package was built from the source at https://github.com/dotnet/roslyn/commit/e091728607ca0fc9efca55ccfb3e59259c6b5a0a.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "477BBE806B3F45A9221AA9C17FCD27883239EA909A37583EDA7EBA4262AA8FA7C0BFAC70F6E112D81B70B4A3A442C893103A8F9BA564D0EC2B82C3F54BEAD26C"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/Microsoft.CodeAnalysis.Common@4.8.0",
+      "externalReferences": [
+        {
+          "url": "https://github.com/dotnet/roslyn",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/dotnet/roslyn",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.CodeAnalysis.CSharp@4.8.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.CodeAnalysis.CSharp",
+      "version": "4.8.0",
+      "description": ".NET Compiler Platform (\u0022Roslyn\u0022) support for C#, Microsoft.CodeAnalysis.CSharp.dll.\n    \n      More details at https://aka.ms/roslyn-packages\n      This package was built from the source at https://github.com/dotnet/roslyn/commit/e091728607ca0fc9efca55ccfb3e59259c6b5a0a.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "D475570908796F4C3F284EEA9E2D93D64D9D2BFE7E3FDB97C0E1EEF8D0D4C17E99A65A4D1FDE054944010BFC30CE3169C5F99D6217A7D4BBC6934878D1AFF468"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/Microsoft.CodeAnalysis.CSharp@4.8.0",
+      "externalReferences": [
+        {
+          "url": "https://github.com/dotnet/roslyn",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/dotnet/roslyn",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.CodeAnalysis.CSharp.Scripting@4.8.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.CodeAnalysis.CSharp.Scripting",
+      "version": "4.8.0",
+      "description": "Microsoft .NET Compiler Platform (\u0022Roslyn\u0022) CSharp scripting package.\n    \n      More details at https://aka.ms/roslyn-packages\n      This package was built from the source at https://github.com/dotnet/roslyn/commit/e091728607ca0fc9efca55ccfb3e59259c6b5a0a.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "AEF209C8625743965FE0DC78E867FB9394DB4425CFDFC3BC1C7766E59E22C90765C28984736D6AE6DB4A9B5F57086C590A1B84C2429D035EC7533E4AEC554207"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/Microsoft.CodeAnalysis.CSharp.Scripting@4.8.0",
+      "externalReferences": [
+        {
+          "url": "https://github.com/dotnet/roslyn",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/dotnet/roslyn",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.CodeAnalysis.Scripting.Common@4.8.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.CodeAnalysis.Scripting.Common",
+      "version": "4.8.0",
+      "description": "Microsoft .NET Compiler Platform (\u0022Roslyn\u0022) shared scripting package.\n      Do not install this package manually, it will be added as a prerequisite by other packages that require it.\n    \n      More details at https://aka.ms/roslyn-packages\n      This package was built from the source at https://github.com/dotnet/roslyn/commit/e091728607ca0fc9efca55ccfb3e59259c6b5a0a.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "65DD900DD77D2ECEE2F27B5FF4B3017F81778BAE94DE4083652CBE38CA998B8AA22A3A5439AC23AEBBF4F8619A20A6FA42E43C5B29B423509272EAE8A616249D"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/Microsoft.CodeAnalysis.Scripting.Common@4.8.0",
+      "externalReferences": [
+        {
+          "url": "https://github.com/dotnet/roslyn",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/dotnet/roslyn",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.CSharp@4.7.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.CSharp",
+      "version": "4.7.0",
+      "description": "Provides support for compilation and code generation, including dynamic, using the C# language.\n\nCommonly Used Types:\nMicrosoft.CSharp.RuntimeBinder.Binder\nMicrosoft.CSharp.RuntimeBinder.RuntimeBinderException\nMicrosoft.CSharp.RuntimeBinder.CSharpArgumentInfo\nMicrosoft.CSharp.RuntimeBinder.CSharpArgumentInfoFlags\nMicrosoft.CSharp.RuntimeBinder.CSharpBinderFlags\n \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "2C96988515F95714D4B83F5650F183DC6A564E0B3CF5255FA0E3EF48476DEBAB4BDE542F9F2F6C47F6620B7A71D6A515E4415E6D2E388B60817A29621D5690DF"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/Microsoft.CSharp@4.7.0",
+      "externalReferences": [
+        {
+          "url": "https://github.com/dotnet/corefx",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.Xaml.Behaviors.Wpf@1.1.77",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.Xaml.Behaviors.Wpf",
+      "version": "1.1.77",
+      "description": "Easily add interactivity to your apps using XAML Behaviors for WPF. Behaviors encapsulate reusable functionalities for elements that can be easily added to your XAML without the need for more imperative code.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "A0D83E434C11044D91667102056A9A1238D1088FE001468D9C4A9C244088EBE9E4BC8C75C1FAA8319B6C0259A67B07AD146B045AF13A19F45C603D356A2D4B71"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/Microsoft.Xaml.Behaviors.Wpf@1.1.77",
+      "externalReferences": [
+        {
+          "url": "https://github.com/Microsoft/XamlBehaviorsWpf",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/microsoft/XamlBehaviorsWpf",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Nice3point.Revit.Api.RevitAPI@2024.0.0",
+      "authors": [
+        {
+          "name": "Nice3point"
+        }
+      ],
+      "name": "Nice3point.Revit.Api.RevitAPI",
+      "version": "2024.0.0",
+      "description": "Library for Revit plugin development",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "941789E0D217152171CBFEB745A8B06BBD866377E8A1B4DAA7A103C302749D47871C9C7EE07FCB91D0B29EF5B8587CB307AA04F0E39A2AE7EAD80395DD468CBB"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "https://aka.ms/deprecateLicenseUrl"
+          }
+        }
+      ],
+      "purl": "pkg:nuget/Nice3point.Revit.Api.RevitAPI@2024.0.0",
+      "externalReferences": [
+        {
+          "url": "https://github.com/Nice3point/RevitApi",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Nice3point.Revit.Api.RevitAPIUI@2024.0.0",
+      "authors": [
+        {
+          "name": "Nice3point"
+        }
+      ],
+      "name": "Nice3point.Revit.Api.RevitAPIUI",
+      "version": "2024.0.0",
+      "description": "Library for Revit plugin development",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "8DC6D2D7387CDA54118F37D7582C8B7FEC86A13C6397C9E00C333D92DC276F3AAC0A9191050703B492EDD251680244CCDB305D1EFFD62E67AC96C18E1E1DBE81"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "https://aka.ms/deprecateLicenseUrl"
+          }
+        }
+      ],
+      "purl": "pkg:nuget/Nice3point.Revit.Api.RevitAPIUI@2024.0.0",
+      "externalReferences": [
+        {
+          "url": "https://github.com/Nice3point/RevitApi",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Nice3point.Revit.Build.Tasks@3.0.1",
+      "authors": [
+        {
+          "name": "Nice3point"
+        }
+      ],
+      "name": "Nice3point.Revit.Build.Tasks",
+      "version": "3.0.1",
+      "description": "MSBuild tasks for Revit add-ins development",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "40AB7A12BA68E108356DBBA8981E53DDB61BD301F54881E997EBB941980186ABC467415764943AFD0F7927EF79BFC0EC6D790B5F8EA614A71FB0303C9C48D401"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "https://aka.ms/deprecateLicenseUrl"
+          }
+        }
+      ],
+      "purl": "pkg:nuget/Nice3point.Revit.Build.Tasks@3.0.1",
+      "externalReferences": [
+        {
+          "url": "https://github.com/Nice3point/Revit.Build.Tasks",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/Nice3point/Revit.Build.Tasks",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Nice3point.Revit.Toolkit@2024.0.1",
+      "authors": [
+        {
+          "name": "Nice3point"
+        }
+      ],
+      "name": "Nice3point.Revit.Toolkit",
+      "version": "2024.0.1",
+      "description": "Toolkit for Revit plugin development",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "DFDDD386CF08DF46DCAAAE7371E8BC9AA854164ED234E38FFB08F42512A8A57A3D760162F0C297B756CEFBA2819A3D2CBE12CAF0A158A635F241507323B784AE"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "https://aka.ms/deprecateLicenseUrl"
+          }
+        }
+      ],
+      "purl": "pkg:nuget/Nice3point.Revit.Toolkit@2024.0.1",
+      "externalReferences": [
+        {
+          "url": "https://github.com/Nice3point/RevitToolkit",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/Nice3point/RevitToolkit",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Stub.System.Data.SQLite.Core.NetFramework@1.0.118",
+      "authors": [
+        {
+          "name": "SQLite Development Team"
+        }
+      ],
+      "name": "Stub.System.Data.SQLite.Core.NetFramework",
+      "version": "1.0.118",
+      "description": "The official SQLite database engine for both x86 and x64 along with the ADO.NET provider.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "9793B81A730454EB06F976472CEECE9C3642B350ACBCEAB24B921EE21FB392FD8D6A940B9561CC99C4CBCE47ACA102814CF63A43BB1E839FD7DFF9B182852610"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "https://www.sqlite.org/copyright.html"
+          }
+        }
+      ],
+      "copyright": "Copyright \u00A9 2004-2008 Hipp, Wyrick \u0026 Company, Inc.",
+      "purl": "pkg:nuget/Stub.System.Data.SQLite.Core.NetFramework@1.0.118",
+      "externalReferences": [
+        {
+          "url": "https://system.data.sqlite.org/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Buffers@4.5.1",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Buffers",
+      "version": "4.5.1",
+      "description": "Provides resource pooling of any type for performance-critical applications that allocate and deallocate objects frequently.\n\nCommonly Used Types:\nSystem.Buffers.ArrayPool\u003CT\u003E\n \n7601f4f6225089ffb291dc7d58293c7bbf5c5d4f \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "80DA6158E55B9BCF7E0B5E6379B9CF45A632914F037B53C5BF5609576E3CD7821F7861956B73D74470D2D0C2E56DD235A5EF4CA6FFE7E192B820DC2D023AAFF2"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "https://github.com/dotnet/corefx/blob/master/LICENSE.TXT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/System.Buffers@4.5.1",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.CodeDom@8.0.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.CodeDom",
+      "version": "8.0.0",
+      "description": "Provides types that can be used to model the structure of a source code document and to output source code for that model in a supported language.\n\nCommonly Used Types:\nSystem.CodeDom.CodeObject\nSystem.CodeDom.Compiler.CodeDomProvider\nMicrosoft.CSharp.CSharpCodeProvider\nMicrosoft.VisualBasic.VBCodeProvider",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "B86322C231F30477FB09F67314B0E4A03FD0EFB6B5E242A68B6870AB0DA5D8CB2D8C5A9F05740F317F37DBFD8D471D2AFD1864D400D4105C2B331761C75D7593"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/System.CodeDom@8.0.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/dotnet/runtime",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Collections.Immutable@7.0.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Collections.Immutable",
+      "version": "7.0.0",
+      "description": "This package provides collections that are thread safe and guaranteed to never change their contents, also known as immutable collections. Like strings, any methods that perform modifications will not change the existing instance but instead return a new instance. For efficiency reasons, the implementation uses a sharing mechanism to ensure that newly created instances share as much data as possible with the previous instance while ensuring that operations have a predictable time complexity.\n\nThe System.Collections.Immutable library is built-in as part of the shared framework in .NET Runtime. The package can be installed when you need to use it in other target frameworks.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "F084AFC9395D74B4F252C47B7D0E378E676D6B8B6033A68636B648B58805E3772DD22FF1DED05D3C8C8553D2E7685B29B753FE1CBB5A333F018ABE6422A3EBFA"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/System.Collections.Immutable@7.0.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/dotnet/runtime",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.ComponentModel.Annotations@5.0.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.ComponentModel.Annotations",
+      "version": "5.0.0",
+      "description": "Provides attributes that are used to define metadata for objects used as data sources.\n\nCommonly Used Types:\nSystem.ComponentModel.DataAnnotations.ValidationResult\nSystem.ComponentModel.DataAnnotations.IValidatableObject\nSystem.ComponentModel.DataAnnotations.ValidationAttribute\nSystem.ComponentModel.DataAnnotations.RequiredAttribute\nSystem.ComponentModel.DataAnnotations.StringLengthAttribute\nSystem.ComponentModel.DataAnnotations.DisplayAttribute\nSystem.ComponentModel.DataAnnotations.RegularExpressionAttribute\nSystem.ComponentModel.DataAnnotations.DataTypeAttribute\nSystem.ComponentModel.DataAnnotations.RangeAttribute\nSystem.ComponentModel.DataAnnotations.KeyAttribute\n \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "589AAC4C669701CE7910F1A327294F15788D3ECFF1D6DF5D9255651E5201C5411C2312286FAB111A6F549FB4DE864C8414CFAF2A365DEEB6F068C1FFCE7C353C"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/System.ComponentModel.Annotations@5.0.0",
+      "externalReferences": [
+        {
+          "url": "https://github.com/dotnet/runtime",
+          "type": "website"
+        },
+        {
+          "url": "git://github.com/dotnet/runtime",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Data.SQLite.Core@1.0.118",
+      "authors": [
+        {
+          "name": "SQLite Development Team"
+        }
+      ],
+      "name": "System.Data.SQLite.Core",
+      "version": "1.0.118",
+      "description": "The official SQLite database engine for both x86 and x64 along with the ADO.NET provider.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "2984905CB63F84CCCB85D010539CEB33E4E971DD1BFB79B11E107AF65214E01621CADCDCD2D903358F86EBD3577BA3D63C6BA24FA85DDA811925AF10076AF830"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "https://www.sqlite.org/copyright.html"
+          }
+        }
+      ],
+      "copyright": "Copyright \u00A9 2004-2008 Hipp, Wyrick \u0026 Company, Inc.",
+      "purl": "pkg:nuget/System.Data.SQLite.Core@1.0.118",
+      "externalReferences": [
+        {
+          "url": "https://system.data.sqlite.org/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Management@8.0.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Management",
+      "version": "8.0.0",
+      "description": "Provides access to a rich set of management information and management events about the system, devices, and applications instrumented to the Windows Management Instrumentation (WMI) infrastructure.\n\nCommonly Used Types:\nSystem.Management.ManagementClass\nSystem.Management.ManagementObject\nSystem.Management.SelectQuery",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "A0491F0B442496E4274E6C18DA87C8E31F471F4AF908B45FD000FB9B58E1760C49B4232B0DF9F0CE9E569FEA2DE968F0B2CC54CF7C53D6E67B46156FB100E9DF"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/System.Management@8.0.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/dotnet/runtime",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Memory@4.5.5",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Memory",
+      "version": "4.5.5",
+      "description": "Provides types for efficient representation and pooling of managed, stack, and native memory segments and sequences of such segments, along with primitives to parse and format UTF-8 encoded text stored in those memory segments.\n\nCommonly Used Types:\nSystem.Span\nSystem.ReadOnlySpan\nSystem.Memory\nSystem.ReadOnlyMemory\nSystem.Buffers.MemoryPool\nSystem.Buffers.ReadOnlySequence\nSystem.Buffers.Text.Utf8Parser\nSystem.Buffers.Text.Utf8Formatter\n \n32b491939fbd125f304031c35038b1e14b4e3958 \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "E8C8E536C97B94AC3443C940B30DAD43CF6E97DC7A8C3D989371048FE74E168606384F5E0143BDC0D86F7783BF9FDEE8417964CB3A8A5D752713E90B125172DC"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "https://github.com/dotnet/corefx/blob/master/LICENSE.TXT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/System.Memory@4.5.5",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Numerics.Vectors@4.5.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Numerics.Vectors",
+      "version": "4.5.0",
+      "description": "Provides hardware-accelerated numeric types, suitable for high-performance processing and graphics applications.\n\nCommonly Used Types:\nSystem.Numerics.Matrix3x2\nSystem.Numerics.Matrix4x4\nSystem.Numerics.Plane\nSystem.Numerics.Quaternion\nSystem.Numerics.Vector2\nSystem.Numerics.Vector3\nSystem.Numerics.Vector4\nSystem.Numerics.Vector\nSystem.Numerics.Vector\u003CT\u003E\n \n30ab651fcb4354552bd4891619a0bdd81e0ebdbf",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "9C04EC0530F608AAF801837A791B33857E2CA6D2265A6049C01FD4E972825967E709CAD3070F174829B7400F608E9A641D3AFC3A45D4636D4C47DD43DD0657B3"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "https://github.com/dotnet/corefx/blob/master/LICENSE.TXT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/System.Numerics.Vectors@4.5.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Reflection.Metadata@7.0.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Reflection.Metadata",
+      "version": "7.0.0",
+      "description": "This package provides a low-level .NET (ECMA-335) metadata reader and writer. It\u0027s geared for performance and is the ideal choice for building higher-level libraries that intend to provide their own object model, such as compilers. The metadata format is defined by the ECMA-335 - Common Language Infrastructure (CLI) specification.\n\nThe System.Reflection.Metadata library is built-in as part of the shared framework in .NET Runtime. The package can be installed when you need to use it in other target frameworks.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "2D93C8BA1A78CEB90D25B7A3B82AE7C7F2452AD29F49EE8E1C60B2BCDA19F8F6EDF68689D42A586AEF5FAF9F1049FE5E8095EC9A4AB48A2CD2A950A8B7EC2C85"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/System.Reflection.Metadata@7.0.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/dotnet/runtime",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Runtime.CompilerServices.Unsafe@6.0.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Runtime.CompilerServices.Unsafe",
+      "version": "6.0.0",
+      "description": "Provides the System.Runtime.CompilerServices.Unsafe class, which provides generic, low-level functionality for manipulating pointers.\n\nCommonly Used Types:\nSystem.Runtime.CompilerServices.Unsafe",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "D4057301BE4EC4936F24B9CE003B5EC4D99681AB6D9B65D5393DD38D04CDEC37784AAA12C1A8B50AC3767ED878DAE425749490773FEC01E734F93CF1045822B3"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/System.Runtime.CompilerServices.Unsafe@6.0.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/dotnet/runtime",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Text.Encoding.CodePages@7.0.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Text.Encoding.CodePages",
+      "version": "7.0.0",
+      "description": "Provides support for code-page based encodings, including Windows-1252, Shift-JIS, and GB2312.\n\nCommonly Used Types:\nSystem.Text.CodePagesEncodingProvider",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "485ABFAEB1F9DAC307249B2D84375A7D63C4BB175109107BA59E3AB6B476C52A62D677CA3C06F0E9A999AFD5BF2F21D396A4B4D534563BB9DA8D1B8ED6FC458A"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/System.Text.Encoding.CodePages@7.0.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/dotnet/runtime",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Text.Encodings.Web@8.0.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Text.Encodings.Web",
+      "version": "8.0.0",
+      "description": "Provides types for encoding and escaping strings for use in JavaScript, HyperText Markup Language (HTML), and uniform resource locators (URL).\n\nCommonly Used Types:\nSystem.Text.Encodings.Web.HtmlEncoder\nSystem.Text.Encodings.Web.UrlEncoder\nSystem.Text.Encodings.Web.JavaScriptEncoder",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "BA0822C38C3B658ABA9495642D269E882B827E3BE4AD2DC1426D8A97D3CBC5A2277C5F80847D0CB9381078AF01523328C4992CAA058146D5D8EE6B8A08609C32"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/System.Text.Encodings.Web@8.0.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/dotnet/runtime",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Text.Json@8.0.5",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Text.Json",
+      "version": "8.0.5",
+      "description": "Provides high-performance and low-allocating types that serialize objects to JavaScript Object Notation (JSON) text and deserialize JSON text to objects, with UTF-8 support built-in. Also provides types to read and write JSON text encoded as UTF-8, and to create an in-memory document object model (DOM), that is read-only, for random access of the JSON elements within a structured view of the data.\n\nThe System.Text.Json library is built-in as part of the shared framework in .NET Runtime. The package can be installed when you need to use it in other target frameworks.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "13589021AE3E81F54C877ABF613CE931CC24CA57BF127AF1063CCC1EB4DC57A6CC223A61E6452207F5D0DCE453B6627430E31E4143C78E71E9B5DD647F680ABF"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/System.Text.Json@8.0.5",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/dotnet/runtime",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Threading.Tasks.Extensions@4.5.4",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Threading.Tasks.Extensions",
+      "version": "4.5.4",
+      "description": "Provides additional types that simplify the work of writing concurrent and asynchronous code.\n\nCommonly Used Types:\nSystem.Threading.Tasks.ValueTask\u003CTResult\u003E\n \n7601f4f6225089ffb291dc7d58293c7bbf5c5d4f",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "68052086E77D3C7198737A3DA163D67740B7C44F93250C39659B3BF21B6547A9ABF64CBF40481F5C78F24361AF3AAF47D52D188B371554A0928A7F7665C1FC14"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "https://github.com/dotnet/corefx/blob/master/LICENSE.TXT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/System.Threading.Tasks.Extensions@4.5.4",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.ValueTuple@4.5.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.ValueTuple",
+      "version": "4.5.0",
+      "description": "Provides the System.ValueTuple structs, which implement the underlying types for tuples in C# and Visual Basic.\n\nCommonly Used Types:\nSystem.ValueTuple\nSystem.ValueTuple\u003CT1\u003E\nSystem.ValueTuple\u003CT1, T2\u003E\nSystem.ValueTuple\u003CT1, T2, T3\u003E\nSystem.ValueTuple\u003CT1, T2, T3, T4\u003E\nSystem.ValueTuple\u003CT1, T2, T3, T4, T5\u003E\nSystem.ValueTuple\u003CT1, T2, T3, T4, T5, T6\u003E\nSystem.ValueTuple\u003CT1, T2, T3, T4, T5, T6, T7\u003E\nSystem.ValueTuple\u003CT1, T2, T3, T4, T5, T6, T7, TRest\u003E\n \n30ab651fcb4354552bd4891619a0bdd81e0ebdbf \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "FA00EBB5045D12C51274F64411C551981BECEB1266A8606A4731063109B95EA1F15939197BF3D2BA899DB61E593DC39BFCE876908BBA34286823525093AE3D8E"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "https://github.com/dotnet/corefx/blob/master/LICENSE.TXT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/System.ValueTuple@4.5.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "BIManageRevit@0.0.0",
+      "dependsOn": [
+        "pkg:nuget/CommunityToolkit.Mvvm@8.3.2",
+        "pkg:nuget/MaterialDesignColors@5.3.0",
+        "pkg:nuget/MaterialDesignThemes@5.3.0",
+        "pkg:nuget/Microsoft.CodeAnalysis.CSharp@4.8.0",
+        "pkg:nuget/Microsoft.CodeAnalysis.CSharp.Scripting@4.8.0",
+        "pkg:nuget/Nice3point.Revit.Api.RevitAPI@2024.0.0",
+        "pkg:nuget/Nice3point.Revit.Api.RevitAPIUI@2024.0.0",
+        "pkg:nuget/Nice3point.Revit.Build.Tasks@3.0.1",
+        "pkg:nuget/Nice3point.Revit.Toolkit@2024.0.1",
+        "pkg:nuget/System.Data.SQLite.Core@1.0.118",
+        "pkg:nuget/System.Management@8.0.0",
+        "pkg:nuget/System.Runtime.CompilerServices.Unsafe@6.0.0",
+        "pkg:nuget/System.Text.Json@8.0.5"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/CommunityToolkit.Mvvm@8.3.2",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.Bcl.AsyncInterfaces@8.0.0",
+        "pkg:nuget/System.ComponentModel.Annotations@5.0.0",
+        "pkg:nuget/System.Memory@4.5.5",
+        "pkg:nuget/System.Runtime.CompilerServices.Unsafe@6.0.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/JetBrains.Annotations@2022.3.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/MaterialDesignColors@5.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/MaterialDesignThemes@5.3.0",
+      "dependsOn": [
+        "pkg:nuget/MaterialDesignColors@5.3.0",
+        "pkg:nuget/Microsoft.Xaml.Behaviors.Wpf@1.1.77"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.Bcl.AsyncInterfaces@8.0.0",
+      "dependsOn": [
+        "pkg:nuget/System.Threading.Tasks.Extensions@4.5.4"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.CodeAnalysis.Analyzers@3.3.4",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.CodeAnalysis.Common@4.8.0",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.CodeAnalysis.Analyzers@3.3.4",
+        "pkg:nuget/System.Collections.Immutable@7.0.0",
+        "pkg:nuget/System.Memory@4.5.5",
+        "pkg:nuget/System.Reflection.Metadata@7.0.0",
+        "pkg:nuget/System.Runtime.CompilerServices.Unsafe@6.0.0",
+        "pkg:nuget/System.Text.Encoding.CodePages@7.0.0",
+        "pkg:nuget/System.Threading.Tasks.Extensions@4.5.4"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.CodeAnalysis.CSharp.Scripting@4.8.0",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.CSharp@4.7.0",
+        "pkg:nuget/Microsoft.CodeAnalysis.CSharp@4.8.0",
+        "pkg:nuget/Microsoft.CodeAnalysis.Common@4.8.0",
+        "pkg:nuget/Microsoft.CodeAnalysis.Scripting.Common@4.8.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.CodeAnalysis.CSharp@4.8.0",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.CodeAnalysis.Common@4.8.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.CodeAnalysis.Scripting.Common@4.8.0",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.CodeAnalysis.Common@4.8.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.CSharp@4.7.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.Xaml.Behaviors.Wpf@1.1.77",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Nice3point.Revit.Api.RevitAPI@2024.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Nice3point.Revit.Api.RevitAPIUI@2024.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Nice3point.Revit.Build.Tasks@3.0.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Nice3point.Revit.Toolkit@2024.0.1",
+      "dependsOn": [
+        "pkg:nuget/JetBrains.Annotations@2022.3.1"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/Stub.System.Data.SQLite.Core.NetFramework@1.0.118",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/System.Buffers@4.5.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/System.CodeDom@8.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/System.Collections.Immutable@7.0.0",
+      "dependsOn": [
+        "pkg:nuget/System.Memory@4.5.5",
+        "pkg:nuget/System.Runtime.CompilerServices.Unsafe@6.0.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.ComponentModel.Annotations@5.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/System.Data.SQLite.Core@1.0.118",
+      "dependsOn": [
+        "pkg:nuget/Stub.System.Data.SQLite.Core.NetFramework@1.0.118"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Management@8.0.0",
+      "dependsOn": [
+        "pkg:nuget/System.CodeDom@8.0.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Memory@4.5.5",
+      "dependsOn": [
+        "pkg:nuget/System.Buffers@4.5.1",
+        "pkg:nuget/System.Numerics.Vectors@4.5.0",
+        "pkg:nuget/System.Runtime.CompilerServices.Unsafe@6.0.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Numerics.Vectors@4.5.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/System.Reflection.Metadata@7.0.0",
+      "dependsOn": [
+        "pkg:nuget/System.Collections.Immutable@7.0.0",
+        "pkg:nuget/System.Memory@4.5.5"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Runtime.CompilerServices.Unsafe@6.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/System.Text.Encoding.CodePages@7.0.0",
+      "dependsOn": [
+        "pkg:nuget/System.Memory@4.5.5",
+        "pkg:nuget/System.Runtime.CompilerServices.Unsafe@6.0.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Text.Encodings.Web@8.0.0",
+      "dependsOn": [
+        "pkg:nuget/System.Buffers@4.5.1",
+        "pkg:nuget/System.Memory@4.5.5",
+        "pkg:nuget/System.Runtime.CompilerServices.Unsafe@6.0.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Text.Json@8.0.5",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.Bcl.AsyncInterfaces@8.0.0",
+        "pkg:nuget/System.Buffers@4.5.1",
+        "pkg:nuget/System.Memory@4.5.5",
+        "pkg:nuget/System.Runtime.CompilerServices.Unsafe@6.0.0",
+        "pkg:nuget/System.Text.Encodings.Web@8.0.0",
+        "pkg:nuget/System.Threading.Tasks.Extensions@4.5.4",
+        "pkg:nuget/System.ValueTuple@4.5.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Threading.Tasks.Extensions@4.5.4",
+      "dependsOn": [
+        "pkg:nuget/System.Runtime.CompilerServices.Unsafe@6.0.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.ValueTuple@4.5.0",
+      "dependsOn": []
+    }
+  ]
+}

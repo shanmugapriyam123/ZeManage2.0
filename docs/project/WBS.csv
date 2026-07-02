@@ -1,0 +1,89 @@
+WBS ID,Description,Owner,Phase
+1,Revit Client Platform – CBOX Manage,Product,P0
+1.1,Add-in bootstrap (OnStartup / OnShutdown lifecycle),Revit Core,P0
+1.2,Global event registration framework (ControlledApplication),Revit Core,P0
+1.3,Feature toggle & pause framework,Revit Core,P0
+1.4,ExternalEvent orchestration & safety layer,Revit Core,P0
+,,,
+WBS ID,Description,Owner,Phase
+2,Event Capture & Polling Engine,Revit Core,P1
+2.1,"Document lifecycle event handlers (open, save, sync, close)",Revit Core,P1
+2.2,Command interception (BeforeExecuted / AfterExecuted),Revit Core,P1
+2.3,"ChangeSet extraction (added, modified, deleted)",Revit Core,P1
+2.4,View and UI interaction tracking,Revit Core,P1
+2.5,Idling event polling framework,Revit Core,P1
+2.6,Idling throttling and debounce logic,Revit Core,P1
+2.7,Background state reconciliation via Idling,Revit Core,P2
+,,,
+WBS ID,Description,Owner,Phase
+3,Rule Evaluation & Enforcement Engine,Revit Core,P1
+3.1,Rule schema deserialization & caching,Revit Core,P1
+3.2,Nested condition evaluation engine,Revit Core,P1
+3.3,Category-based rule processing,Revit Core,P1
+3.4,Parameter-based rule processing,Revit Core,P1
+3.5,Family / Type / View-based rule processing,Revit Core,P1
+3.6,"Action-based command rules (delete, mirror, copy, etc.)",Revit Core,P1
+3.7,Rule priority & conflict resolution,Revit Core,P2
+,,,
+WBS ID,Description,Owner,Phase
+4,Protection Modes & Intervention Framework,Revit Core,P1
+4.1,Monitor mode (passive tracking),Revit Core,P1
+4.2,Guide mode (modal & modeless WPF guidance),Revit Core,P1
+4.3,Prevent mode,Revit Core,P1
+4.4,OTP challenge invocation workflow,Revit Core + Backend,P2
+4.5,Admin override handling,Revit Core,P2
+,,,
+WBS ID,Description,Owner,Phase
+5,Local Persistence & Offline Cache,Revit Core,P1
+5.1,"SQLite schema design (sessions, events, rules cache)",Revit Core,P1
+5.2,SQLite integration & data access layer,Revit Core,P1
+5.3,Hybrid cache strategy (SQLite + memory),Revit Core,P1
+5.4,Offline operation handling & sync queue,Revit Core,P2
+5.5,Cache invalidation & cleanup policies,Revit Core,P2
+,,,
+WBS ID,Description,Owner,Phase
+6,Evidence & Audit Capture Engine,Revit Core,P1
+6.1,Before-state capture,Revit Core,P1
+6.2,After-state capture,Revit Core,P1
+6.3,Screenshot capture orchestration,Revit Core,P1
+6.4,Evidence metadata packaging,Revit Core,P1
+6.5,Secure upload & retry mechanism,Revit Core + Backend,P2
+,,,
+WBS ID,Description,Owner,Phase
+7,Revit UI Framework,Revit UI,P1
+7.1,Login & identity dialogs,Revit UI,P1
+7.2,Rule violation dialogs,Revit UI,P1
+7.3,Modeless admin & project panels,Revit UI,P1
+7.4,Notification & toast system,Revit UI,P2
+,,,
+WBS ID,Description,Owner,Phase
+8,SaaS Backend Platform,Backend,P0
+8.1,Tenant & company isolation,Backend,P0
+8.2,"User, role & project model",Backend,P0
+8.3,Rule persistence & versioning,Backend,P1
+8.4,OTP & security services,Backend,P1
+8.5,Activity ingestion & audit store,Backend,P1
+,,,
+WBS ID,Description,Owner,Phase
+9,Admin Web Application,Web,P1
+9.1,Company admin console,Web,P1
+9.2,Project admin console,Web,P1
+9.3,Rule authoring & policy management UI,Web,P1
+9.4,Audit timeline & evidence viewer,Web,P2
+9.5,Reporting & export features,Web,P2
+,,,
+WBS ID,Description,Owner,Phase
+10,AI Intelligence Layer,AI / Backend,P3
+10.1,"Knowledge base definition (templates, rules, audits)",Product + AI,P3
+10.2,Data preprocessing & feature extraction,AI,P3
+10.3,Basic trained AI model integration,AI,P3
+10.4,"AI Q&A interface (rule, audit, compliance queries)",Web + AI,P3
+10.5,AI-driven improvement suggestions engine,AI,P3
+10.6,Admin-controlled AI response governance,Backend,P3
+,,,
+WBS ID,Description,Owner,Phase
+11,DevOps & Operations,DevOps,P0
+11.1,Environment setup (Dev / QA / Prod),DevOps,P0
+11.2,Secure secret & token management,DevOps,P0
+11.3,Revit add-in update strategy,DevOps,P2
+11.4,"Monitoring, telemetry & alerting",DevOps,P2

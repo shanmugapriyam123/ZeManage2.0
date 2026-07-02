@@ -1,0 +1,43 @@
+<?xml version='1.0'?>
+<!--
+  Obfuscar config: BIManageRevit R21 (net48 / Revit 2021).
+  String encryption only - no renaming. See ObfuscarR26.xml for the
+  full rationale on why every Rename* toggle is false.
+-->
+<Obfuscator>
+  <Var name="InPath"           value="BIManageRevit.org\Contents\2021" />
+  <Var name="OutPath"          value="BIManageRevit.org\Confused\2021" />
+  <Var name="HideStrings"      value="true" />
+  <Var name="KeepPublicApi"    value="true" />
+  <Var name="HidePrivateApi"   value="false" />
+  <Var name="RenameMethods"    value="false" />
+  <Var name="RenameProperties" value="false" />
+  <Var name="RenameEvents"     value="false" />
+  <Var name="RenameFields"     value="false" />
+  <Var name="UseUnicodeNames"  value="false" />
+
+  <!-- net48 reference assemblies (System.dll, PresentationCore.dll, etc.) -->
+  <AssemblySearchPath path="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8" />
+
+  <!-- R21 BIManageRevit.dll references RevitAPI / RevitAPIUI v24.0.0.0
+       (verified with [Reflection.Assembly]::ReflectionOnlyLoadFrom...
+       .GetReferencedAssemblies()). That's because the csproj pins
+       Nice3point.Revit.Api.RevitAPIUI to "2024.0.*" for the entire net48
+       configuration family - the Nice3point Revit API stub used at build
+       time is the 2024 one, regardless of the target Revit year. Revit API
+       is backwards-compatible across the major version family so the
+       Nice3point 2024 stubs satisfy R21-R24 at runtime.
+       The local "C:\Program Files\Autodesk\Revit 2021" install on this
+       machine is a stub (only ACADInterop/AddIns subfolders, no actual
+       RevitAPIUI.dll) - presumably partially uninstalled - so we point
+       at Revit 2024's install which does have RevitAPIUI.dll v24.0.0.0
+       to satisfy the obfuscator's reference resolution. -->
+  <AssemblySearchPath path="C:\Program Files\Autodesk\Revit 2024" />
+
+  <!-- Obfuscar 2.2.50 resolves <Module file> relative to the working directory
+       (NOT InPath), so the Contents\<year> prefix is required here. The paths
+       are relative to the Bundle folder, which 02_Obfuscate.cmd sets as the
+       working directory (cd /d "%SCRIPT_DIR%") before invoking obfuscar. -->
+  <Module file="BIManageRevit.org\Contents\2021\BIManageRevit.dll" />
+  <Module file="BIManageRevit.org\Contents\2021\BIManage.Addons.dll" />
+</Obfuscator>

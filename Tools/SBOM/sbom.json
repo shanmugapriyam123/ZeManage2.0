@@ -1,0 +1,2930 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "urn:uuid:8d223a4e-68ee-49f0-85b8-bf1075493b3e",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-04-02T06:57:13Z",
+    "tools": [
+      {
+        "vendor": "CycloneDX",
+        "name": "CycloneDX module for .NET",
+        "version": "6.0.0.0"
+      }
+    ],
+    "component": {
+      "type": "application",
+      "bom-ref": "BIManageRevit@0.0.0",
+      "name": "BIManageRevit",
+      "version": "0.0.0"
+    }
+  },
+  "components": [
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/CommunityToolkit.Mvvm@8.4.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "CommunityToolkit.Mvvm",
+      "version": "8.4.0",
+      "description": "This package includes a .NET MVVM library with helpers such as:\n      - ObservableObject: a base class for objects implementing the INotifyPropertyChanged interface.\n      - ObservableRecipient: a base class for observable objects with support for the IMessenger service.\n      - ObservableValidator: a base class for objects implementing the INotifyDataErrorInfo interface.\n      - RelayCommand: a simple delegate command implementing the ICommand interface.\n      - AsyncRelayCommand: a delegate command supporting asynchronous operations and cancellation.\n      - WeakReferenceMessenger: a messaging system to exchange messages through different loosely-coupled objects.\n      - StrongReferenceMessenger: a high-performance messaging system that trades weak references for speed.\n      - Ioc: a helper class to configure dependency injection service containers.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "5E9705A1AD58B19F0B3CE956AC40226337402A7B17D067FBB5FD987E9ECEE2A100C2D76F15537932B18618599599023542257FE67DF32B193DC2B30542B2C30B"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "(c) .NET Foundation and Contributors. All rights reserved.",
+      "purl": "pkg:nuget/CommunityToolkit.Mvvm@8.4.0",
+      "externalReferences": [
+        {
+          "url": "https://github.com/CommunityToolkit/dotnet",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/CommunityToolkit/dotnet",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/MaterialDesignColors@5.3.0",
+      "authors": [
+        {
+          "name": "James Willock"
+        }
+      ],
+      "name": "MaterialDesignColors",
+      "version": "5.3.0",
+      "description": "ResourceDictionary instances containing standard Google Material Design swatches, for inclusion in a XAML application.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "03EACC331621AF05BFBA26A6BD72A61DB12849AD2AA061137C5BE699BDD815CBA45FBF4F3DA6F2D4F894F4C0B55AE5C3C6CC3FB6B45CF6C554111219858675B0"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "Copyright 2025 James Willock/Mulholland Software Ltd",
+      "purl": "pkg:nuget/MaterialDesignColors@5.3.0",
+      "externalReferences": [
+        {
+          "url": "https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/MaterialDesignThemes@5.3.0",
+      "authors": [
+        {
+          "name": "James Willock"
+        }
+      ],
+      "name": "MaterialDesignThemes",
+      "version": "5.3.0",
+      "description": "ResourceDictionary instances containing Material Design templates and styles for WPF controls in .NET.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "69F207409B36BD26DCBAA5C62346AF13F5F5C05E6D5897AB9CAF7E29AE115210C47EE4CC37C2EE9B61BAC154FD3B643BA3194B4B0F728EAF65B57FF1CA5F46AB"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "Copyright 2025 James Willock/Mulholland Software Ltd",
+      "purl": "pkg:nuget/MaterialDesignThemes@5.3.0",
+      "externalReferences": [
+        {
+          "url": "https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.NETCore.Platforms@1.1.1",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.NETCore.Platforms",
+      "version": "1.1.1",
+      "description": "Provides runtime information required to resolve target framework, platform, and runtime specific implementations of .NETCore packages. \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "9835090F578B5C8CE6527582CD69663506460E9FDC5464FC2B287331C24D9369E57DD1543A865A8BD89D4FCFC569C26BF0DBFCCE102675FDFD1479B9A9652819"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/Microsoft.NETCore.Platforms@1.1.1",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.NETCore.Targets@1.1.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.NETCore.Targets",
+      "version": "1.1.0",
+      "description": "Provides supporting infrastructure for portable projects: support identifiers that define framework and runtime for support targets and packages that reference the minimum supported package versions when targeting these. \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "1EF033A68688AAB9997EC1C0378ACB1638B4AFB618E533FCAF749D93389737BA94F4A0A94481BECDF701C7E988AE2FE390136A8EAE225887EE60DB45063490FE"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/Microsoft.NETCore.Targets@1.1.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.Win32.SystemEvents@8.0.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.Win32.SystemEvents",
+      "version": "8.0.0",
+      "description": "Provides access to Windows system event notifications.\n\nCommonly Used Types:\nMicrosoft.Win32.SystemEvents",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "25016C508653FBF463C52D8FC3D2773B7C211C2402C4EA7B4AA987FB29C851D3F80C5E7ABBCACE2D4D5E061AE290524E8029AFBC49A37D7E5186FE06AA4609B2"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/Microsoft.Win32.SystemEvents@8.0.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/dotnet/runtime",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.Xaml.Behaviors.Wpf@1.1.77",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.Xaml.Behaviors.Wpf",
+      "version": "1.1.77",
+      "description": "Easily add interactivity to your apps using XAML Behaviors for WPF. Behaviors encapsulate reusable functionalities for elements that can be easily added to your XAML without the need for more imperative code.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "A0D83E434C11044D91667102056A9A1238D1088FE001468D9C4A9C244088EBE9E4BC8C75C1FAA8319B6C0259A67B07AD146B045AF13A19F45C603D356A2D4B71"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/Microsoft.Xaml.Behaviors.Wpf@1.1.77",
+      "externalReferences": [
+        {
+          "url": "https://github.com/Microsoft/XamlBehaviorsWpf",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/microsoft/XamlBehaviorsWpf",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Nice3point.Revit.Api.RevitAPI@2025.4.20",
+      "authors": [
+        {
+          "name": "Nice3point"
+        }
+      ],
+      "name": "Nice3point.Revit.Api.RevitAPI",
+      "version": "2025.4.20",
+      "description": "Library for Revit plugin development",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "D56DFC29C90AF7300332A03235515B259973B11E0861F667D13EAB7416767FAEADF03CC7073F1F72CB83EC54F8AB894B58D0B2EE21AF24DD220C3EDB66C4C7F6"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "https://aka.ms/deprecateLicenseUrl"
+          }
+        }
+      ],
+      "purl": "pkg:nuget/Nice3point.Revit.Api.RevitAPI@2025.4.20",
+      "externalReferences": [
+        {
+          "url": "https://github.com/Nice3point/RevitApi",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Nice3point.Revit.Api.RevitAPIUI@2025.4.20",
+      "authors": [
+        {
+          "name": "Nice3point"
+        }
+      ],
+      "name": "Nice3point.Revit.Api.RevitAPIUI",
+      "version": "2025.4.20",
+      "description": "Library for Revit plugin development",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "19386F451F4497228DC18275AD38ED45CD43AD5FE4B478B70C7EB442709B64D02E9032791B9F555F531BE9BD5558DECDCC466BA56CA05060A1341A91F54FCBB8"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "https://aka.ms/deprecateLicenseUrl"
+          }
+        }
+      ],
+      "purl": "pkg:nuget/Nice3point.Revit.Api.RevitAPIUI@2025.4.20",
+      "externalReferences": [
+        {
+          "url": "https://github.com/Nice3point/RevitApi",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Nice3point.Revit.Build.Tasks@3.0.1",
+      "authors": [
+        {
+          "name": "Nice3point"
+        }
+      ],
+      "name": "Nice3point.Revit.Build.Tasks",
+      "version": "3.0.1",
+      "description": "MSBuild tasks for Revit add-ins development",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "40AB7A12BA68E108356DBBA8981E53DDB61BD301F54881E997EBB941980186ABC467415764943AFD0F7927EF79BFC0EC6D790B5F8EA614A71FB0303C9C48D401"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "https://aka.ms/deprecateLicenseUrl"
+          }
+        }
+      ],
+      "purl": "pkg:nuget/Nice3point.Revit.Build.Tasks@3.0.1",
+      "externalReferences": [
+        {
+          "url": "https://github.com/Nice3point/Revit.Build.Tasks",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/Nice3point/Revit.Build.Tasks",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Nice3point.Revit.Toolkit@2025.1.0",
+      "authors": [
+        {
+          "name": "Nice3point"
+        }
+      ],
+      "name": "Nice3point.Revit.Toolkit",
+      "version": "2025.1.0",
+      "description": "Toolkit for Revit plugin development",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "0EB5C3BD2A2332AA63010E3DFA883C3CAF3CC3641D9115A8238E5FCA95DD50779AE0F80DC7654D0A9CEDD108B194DA8A82A30D28141DEE5A742181EEDBC632E0"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "https://aka.ms/deprecateLicenseUrl"
+          }
+        }
+      ],
+      "purl": "pkg:nuget/Nice3point.Revit.Toolkit@2025.1.0",
+      "externalReferences": [
+        {
+          "url": "https://github.com/Nice3point/RevitToolkit",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/Nice3point/RevitToolkit",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl",
+      "version": "4.3.2",
+      "description": "Internal implementation package not meant for direct consumption.  Please do not reference directly. \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "8F071552EE042F0CBA39B1BA0A1205CF73DE447D662995BAE68F857A5946F7D154C029A79E37469081675687873C8BF2B9EFE57F5CBD660C366B1CA51823F7F2"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/runtime.fedora.23-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "runtime.fedora.23-x64.runtime.native.System.Security.Cryptography.OpenSsl",
+      "version": "4.3.2",
+      "description": "Internal implementation package not meant for direct consumption.  Please do not reference directly. \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "A135CA0F4F5A49319B5A52B7F4338F8A5FC4387EDF26F29E6CBF63A3C3A37B2B5C51C9CAF562EC41E470FBA281060362465BC56915BE782D6C75778AA6195E46"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/runtime.fedora.23-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/runtime.fedora.24-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "runtime.fedora.24-x64.runtime.native.System.Security.Cryptography.OpenSsl",
+      "version": "4.3.2",
+      "description": "Internal implementation package not meant for direct consumption.  Please do not reference directly. \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "2F24E2CBA88A96BB23848E1404878E4478A65642387B7B76AA4007587FE7C4D8208CBDE53D3ED65F8D0D71CD688BFC16BE66DC5F7BCF84C7B2CCF1B3C505B0B4"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/runtime.fedora.24-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/runtime.native.System@4.3.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "runtime.native.System",
+      "version": "4.3.0",
+      "description": "Internal implementation package not meant for direct consumption.  Please do not reference directly. \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "299C5A96FFFDCAF1972E3E3D1C727837D18AC9E88CB79C09914F12FF1DE7280DFF10C9232A49A1C1D3BA7785A5CF76F28C9DCE414F0A2A567688DE7FD5331DC8"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/runtime.native.System@4.3.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/runtime.native.System.Net.Http@4.3.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "runtime.native.System.Net.Http",
+      "version": "4.3.0",
+      "description": "Internal implementation package not meant for direct consumption.  Please do not reference directly. \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "DDD1E5B67545477F7C72B5883666DE40E89EFB0836D91E7A349E2F3D4AC05CE1125E6ADD3CB09C39CBDFE7AB7C5DC8FDAEAF6AC25ACD92F6DE3D8CE2D6DB7918"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/runtime.native.System.Net.Http@4.3.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/runtime.native.System.Security.Cryptography.Apple@4.3.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "runtime.native.System.Security.Cryptography.Apple",
+      "version": "4.3.0",
+      "description": "Internal implementation package not meant for direct consumption.  Please do not reference directly. \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "23C6A99B323CD71CDCB28C6FAA71F099F69FF0972D5125607AE8BBC99BA7C08513571D14526E8C2805AB3A8B70D3D3A6DD76DFA193320393ECB05906EE91F37D"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/runtime.native.System.Security.Cryptography.Apple@4.3.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "runtime.native.System.Security.Cryptography.OpenSsl",
+      "version": "4.3.2",
+      "description": "Internal implementation package not meant for direct consumption.  Please do not reference directly. \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "A34AD2DBE67EFCAE97FCBEA57AF386B30660A98AB8229A56C0DCA241316E673CF7A26E19C6EFB6B7117CC271FDF208741BA6F8447AE254C91ACBA3DDB7D2923A"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/runtime.opensuse.13.2-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "runtime.opensuse.13.2-x64.runtime.native.System.Security.Cryptography.OpenSsl",
+      "version": "4.3.2",
+      "description": "Internal implementation package not meant for direct consumption.  Please do not reference directly. \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "CE0873E07000DF98E640BD265E969D4A9236535CEE2699C5363F3AB297557B0D756260557995F2EE163CFF05FC2BA922D66BA0E4CB28521F841E7D546AB3B63E"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/runtime.opensuse.13.2-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/runtime.opensuse.42.1-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "runtime.opensuse.42.1-x64.runtime.native.System.Security.Cryptography.OpenSsl",
+      "version": "4.3.2",
+      "description": "Internal implementation package not meant for direct consumption.  Please do not reference directly. \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "BF754C1A66CD70DC1BD38D54FE675E9DD470417EBBA62E2F79E278BE8F06CC3496FF58ED90D30B5DD4D3EFEA9ACCBD09EB17CD87BE882951C0FDFB833C371F70"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/runtime.opensuse.42.1-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/runtime.osx.10.10-x64.runtime.native.System.Security.Cryptography.Apple@4.3.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "runtime.osx.10.10-x64.runtime.native.System.Security.Cryptography.Apple",
+      "version": "4.3.0",
+      "description": "Internal implementation package not meant for direct consumption.  Please do not reference directly. \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "9929942914071E0EA0944A952FF9AD3C296BE39E719A2F4BB3EAC298D41829B4468B332FBA880EBE242871A02145E1C26DC7660021375D12C7EFCAE4D200278A"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/runtime.osx.10.10-x64.runtime.native.System.Security.Cryptography.Apple@4.3.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/runtime.osx.10.10-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "runtime.osx.10.10-x64.runtime.native.System.Security.Cryptography.OpenSsl",
+      "version": "4.3.2",
+      "description": "Internal implementation package not meant for direct consumption.  Please do not reference directly. \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "0A38F25E8773B58155B5D3F94F849B93353D0809DA56228B8EBAB5C976E6458CA50EB5A38ACCA4C8940678E6E9521FB57AE487337F7CBF2EA7893AE9E3F43935"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/runtime.osx.10.10-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/runtime.rhel.7-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "runtime.rhel.7-x64.runtime.native.System.Security.Cryptography.OpenSsl",
+      "version": "4.3.2",
+      "description": "Internal implementation package not meant for direct consumption.  Please do not reference directly. \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "2AE9DB4B719B31FA7E40C60F52C70038FC8668E029CF4E1D120FDE8C295631D6B08207D7018A22937B79546016C560C894E27DD6EBC01D5E0F677567E6B2C4F2"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/runtime.rhel.7-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/runtime.ubuntu.14.04-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "runtime.ubuntu.14.04-x64.runtime.native.System.Security.Cryptography.OpenSsl",
+      "version": "4.3.2",
+      "description": "Internal implementation package not meant for direct consumption.  Please do not reference directly. \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "CD4B7BA744DE80086521AB67CAD2DB3085D488388D3D9CB83D9946389F0F4C784539BF3A4FFB8D4F3347C5C7813AADEF95B355FD2563E30C948A883C27B95287"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/runtime.ubuntu.14.04-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/runtime.ubuntu.16.04-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "runtime.ubuntu.16.04-x64.runtime.native.System.Security.Cryptography.OpenSsl",
+      "version": "4.3.2",
+      "description": "Internal implementation package not meant for direct consumption.  Please do not reference directly. \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "D7FC28A9F600E471EDCE0989C01C485D4E2A7E99551F531413AFA75039A4004D4E2C27E88976D65432635A321D86316A3C6CDAEBC7B2FEFA42141B64F4F10D66"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/runtime.ubuntu.16.04-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/runtime.ubuntu.16.10-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "runtime.ubuntu.16.10-x64.runtime.native.System.Security.Cryptography.OpenSsl",
+      "version": "4.3.2",
+      "description": "Internal implementation package not meant for direct consumption.  Please do not reference directly. \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "5FE0E6A878EFF59CFE24A8D57AF51140576D8E0FEC4988E4892C233C47B3A3EED27DEC072A6C0D55DD615777CD9CE3FE545C5353B4A95289376AD0B9408ED4BE"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/runtime.ubuntu.16.10-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Stub.System.Data.SQLite.Core.NetStandard@1.0.118",
+      "authors": [
+        {
+          "name": "SQLite Development Team"
+        }
+      ],
+      "name": "Stub.System.Data.SQLite.Core.NetStandard",
+      "version": "1.0.118",
+      "description": "The official SQLite database engine for both x86 and x64 along with the ADO.NET provider.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "EB30439B51F2EF5C950A9D892EA4B3D78976B7B01591C8683345AC2CF23200293D2EB8808C3D0F8309CE48B7B7D1464E09D3CF370FBB93AFEE123E22BE50046B"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "https://www.sqlite.org/copyright.html"
+          }
+        }
+      ],
+      "copyright": "Copyright \u00A9 2004-2008 Hipp, Wyrick \u0026 Company, Inc.",
+      "purl": "pkg:nuget/Stub.System.Data.SQLite.Core.NetStandard@1.0.118",
+      "externalReferences": [
+        {
+          "url": "https://system.data.sqlite.org/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.CodeDom@10.0.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.CodeDom",
+      "version": "10.0.0",
+      "description": "Provides types that can be used to model the structure of a source code document and to output source code for that model in C# or Visual Basic.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "E30E01C25B415F3F7F945FB6D5882DFCDCA0835212D1726E4B85457C94D6F2A73985B9D8EB27340E1F65A2244944F1E5F3E31689A376A95DBFB9F7BC91E3E2D4"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/System.CodeDom@10.0.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/dotnet/dotnet",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Collections@4.3.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Collections",
+      "version": "4.3.0",
+      "description": "Provides classes that define generic collections, which allow developers to create strongly typed collections that provide better type safety and performance than non-generic strongly typed collections.\n\nCommonly Used Types:\nSystem.Collections.Generic.List\u003CT\u003E\nSystem.Collections.Generic.Dictionary\u003CTKey, TValue\u003E\nSystem.Collections.Generic.Queue\u003CT\u003E\nSystem.Collections.Generic.Stack\u003CT\u003E\nSystem.Collections.Generic.HashSet\u003CT\u003E\nSystem.Collections.Generic.LinkedList\u003CT\u003E\nSystem.Collections.Generic.EqualityComparer\u003CT\u003E\nSystem.Collections.Generic.Comparer\u003CT\u003E\nSystem.Collections.Generic.SortedDictionary\u003CTKey, TValue\u003E\n \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "CA7B952D30DA1487CA4E43AA522817B5EE26E7E10537062810112FC67A7512766C39D402F394BB0426D1108BBCF9BBB64E9CE1F5AF736EF215A51A35E55F051B"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/System.Collections@4.3.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Collections.Concurrent@4.3.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Collections.Concurrent",
+      "version": "4.3.0",
+      "description": "Provides several thread-safe collection classes that should be used in place of the corresponding types in the System.Collections.NonGeneric and System.Collections packages whenever multiple threads are accessing the collection concurrently.\n\nCommonly Used Types:\nSystem.Collections.Concurrent.ConcurrentDictionary\u003CTKey, TValue\u003E\nSystem.Collections.Concurrent.ConcurrentQueue\u003CT\u003E\nSystem.Collections.Concurrent.ConcurrentBag\u003CT\u003E\nSystem.Collections.Concurrent.BlockingCollection\u003CT\u003E\nSystem.Collections.Concurrent.ConcurrentStack\u003CT\u003E\n \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "35C1AA3E636216FE5DC2EBEB504293E69AD6355D26E22453AF060AF94D8279FAA93BDCFE127AECB0B316C7E7D9185BCAC72E994984EFDB7F2D8515F1F55CF682"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/System.Collections.Concurrent@4.3.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Configuration.ConfigurationManager@8.0.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Configuration.ConfigurationManager",
+      "version": "8.0.0",
+      "description": "Provides types that support using XML configuration files (app.config). This package exists only to support migrating existing .NET Framework code that already uses System.Configuration. When writing new code, use another configuration system instead, such as Microsoft.Extensions.Configuration.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "58B9FB5B134C1ACF3EA5BA288C7A6277C08988D85CAF68FB900D20988F1F814E4B174246286A8785248773C596D21EFBB2F4124B6F4A3BE86BFB129EB92D89F4"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/System.Configuration.ConfigurationManager@8.0.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/dotnet/runtime",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Data.SQLite.Core@1.0.118",
+      "authors": [
+        {
+          "name": "SQLite Development Team"
+        }
+      ],
+      "name": "System.Data.SQLite.Core",
+      "version": "1.0.118",
+      "description": "The official SQLite database engine for both x86 and x64 along with the ADO.NET provider.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "2984905CB63F84CCCB85D010539CEB33E4E971DD1BFB79B11E107AF65214E01621CADCDCD2D903358F86EBD3577BA3D63C6BA24FA85DDA811925AF10076AF830"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "https://www.sqlite.org/copyright.html"
+          }
+        }
+      ],
+      "copyright": "Copyright \u00A9 2004-2008 Hipp, Wyrick \u0026 Company, Inc.",
+      "purl": "pkg:nuget/System.Data.SQLite.Core@1.0.118",
+      "externalReferences": [
+        {
+          "url": "https://system.data.sqlite.org/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Diagnostics.Debug@4.3.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Diagnostics.Debug",
+      "version": "4.3.0",
+      "description": "Provides classes and attributes that allows basic interaction with a debugger.\n\nCommonly Used Types:\nSystem.Diagnostics.Debug\nSystem.Diagnostics.DebuggerStepThroughAttribute\nSystem.Diagnostics.Debugger\nSystem.Diagnostics.DebuggerDisplayAttribute\nSystem.Diagnostics.DebuggerBrowsableAttribute\nSystem.Diagnostics.DebuggerBrowsableState\nSystem.Diagnostics.DebuggerHiddenAttribute\nSystem.Diagnostics.DebuggerNonUserCodeAttribute\nSystem.Diagnostics.DebuggerTypeProxyAttribute\n \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "6C58FE1E3618E7F87684C1CEA7EFC7D3B19BD7DF8D2535F9E27B62C52F441F11B67B21225D6BCD62F409E02C2A16231C4DB19BE33B8FAB5B9B0A5C8660DDAB24"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/System.Diagnostics.Debug@4.3.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Diagnostics.DiagnosticSource@4.3.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Diagnostics.DiagnosticSource",
+      "version": "4.3.0",
+      "description": "Provides Classes that allow you to decouple code logging rich (unserializable) diagnostics/telemetry (e.g. framework) from code that consumes it (e.g. tools)\n\nCommonly Used Types:\nSystem.Diagnostics.DiagnosticListener\nSystem.Diagnostics.DiagnosticSource",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "8F54DF5FF382B6650E2E10D1043863A24BF49FF0714E779E837CD7073E46FB2635BCFCDCF99D7C4A9D95F35EBFFD86AB0CA068305F4B245072E08303B917B34D"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/System.Diagnostics.DiagnosticSource@4.3.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Diagnostics.EventLog@8.0.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Diagnostics.EventLog",
+      "version": "8.0.0",
+      "description": "Provides the System.Diagnostics.EventLog class, which allows the applications to use the Windows event log service.\n\nCommonly Used Types:\nSystem.Diagnostics.EventLog",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "BA6E7F27323A92A50A768457E2AB48ACCAA5DFA0BA19082CA71DA7B473B71CD3B6DD036E442E109FC15EFBB4C267881A9844097AE4EDDC3CB887152C8C9511A5"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/System.Diagnostics.EventLog@8.0.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/dotnet/runtime",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Diagnostics.Tracing@4.3.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Diagnostics.Tracing",
+      "version": "4.3.0",
+      "description": "Provides class that enable you to create high performance tracing events to be captured by event tracing for Windows (ETW).\n\nCommonly Used Types:\nSystem.Diagnostics.Tracing.EventSource\nSystem.Diagnostics.Tracing.EventListener\nSystem.Diagnostics.Tracing.EventLevel\nSystem.Diagnostics.Tracing.EventKeywords\nSystem.Diagnostics.Tracing.EventWrittenEventArgs\nSystem.Diagnostics.Tracing.EventAttribute\nSystem.Diagnostics.Tracing.EventSourceAttribute\nSystem.Diagnostics.Tracing.NonEventAttribute\n \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "D0A5D30E261CD45B7DFAB02B7FFBD76B64E0C9B892ED826EA61481C983C0208B05B69981CD79E91CD4E5811E1CD4C3CEA06A1AFCE05811ECE58BE5E4C20169EA"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/System.Diagnostics.Tracing@4.3.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Drawing.Common@8.0.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Drawing.Common",
+      "version": "8.0.0",
+      "description": "Provides access to GDI\u002B graphics functionality.\n\nCommonly Used Types:\nSystem.Drawing.Bitmap\nSystem.Drawing.BitmapData\nSystem.Drawing.Brush\nSystem.Drawing.Font\nSystem.Drawing.Graphics\nSystem.Drawing.Icon\n\nSince .NET 7, non-Windows platforms are not supported, even with the runtime configuration switch. See https://aka.ms/systemdrawingnonwindows for more information.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "40A16C9C5DD59148051BD55A2355339343186EC188BCB8E9EA5ABE0DC6035106E7D745323CC4D492750E791C41397C53616B553D79B8D5E5FC56DFF3345ED533"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/System.Drawing.Common@8.0.0",
+      "externalReferences": [
+        {
+          "url": "https://github.com/dotnet/winforms",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/dotnet/winforms",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Globalization@4.3.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Globalization",
+      "version": "4.3.0",
+      "description": "Provides classes that define culture-related information, including language, country/region, calendars in use, format patterns for dates, currency, and numbers, and sort order for strings.\n\nCommonly Used Types:\nSystem.Globalization.DateTimeFormatInfo\nSystem.Globalization.CultureInfo\nSystem.Globalization.NumberFormatInfo\nSystem.Globalization.CalendarWeekRule\nSystem.Globalization.TextInfo\nSystem.Globalization.Calendar\nSystem.Globalization.CompareInfo\nSystem.Globalization.CompareOptions\nSystem.Globalization.UnicodeCategory\n \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "823D2BA308CB073B40A3146ECCCD0D9FD7B1615AC3FBEFB16F73D873E411FD81C3BDC87DF206D3DC7E2F14C9CD53AAFCA684A3570C25471280AADA8DE805ECE2"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/System.Globalization@4.3.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Globalization.Calendars@4.3.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Globalization.Calendars",
+      "version": "4.3.0",
+      "description": "Provides classes for performing date calculations using specific calendars, including the Gregorian, Julian, Hijri and Korean calendars.\n\nCommonly Used Types:\nSystem.Globalization.HijriCalendar\nSystem.Globalization.GregorianCalendar\nSystem.Globalization.HebrewCalendar\nSystem.Globalization.KoreanCalendar\nSystem.Globalization.ThaiBuddhistCalendar\nSystem.Globalization.TaiwanCalendar\nSystem.Globalization.JapaneseCalendar\nSystem.Globalization.GregorianCalendarTypes\nSystem.Globalization.PersianCalendar\nSystem.Globalization.UmAlQuraCalendar\n \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "E97190231402B393774B925EFC02A2BFA41D1D117A17FB87DA6E399F5234546962767E9CD8F39970EFA408E4F453CD1E6751A2A61E366BC97406E1B0B8A4BE86"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/System.Globalization.Calendars@4.3.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Globalization.Extensions@4.3.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Globalization.Extensions",
+      "version": "4.3.0",
+      "description": "Provides classes for performing Unicode string normalization, culture-specific string comparisons and support the use of non-ASCII characters for Internet domain names.\n\nCommonly Used Types:\nSystem.StringNormalizationExtensions\nSystem.Text.NormalizationForm\nSystem.Globalization.IdnMapping\n \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "A4D360003F95E0C31EDF39C0B91E1C73850A60AC5D0032B17DB888A3C7D7134CEF9ACD97219D14174AD213B7C044F49B364CC5720073EBFCB6E1BF6E4EC24CE5"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/System.Globalization.Extensions@4.3.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.IO@4.3.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.IO",
+      "version": "4.3.0",
+      "description": "Provides base input and output (I/O) types, including System.IO.Stream, System.IO.StreamReader and System.IO.StreamWriter, that allow reading and writing to data streams\n\nCommonly Used Types:\nSystem.IO.Stream\nSystem.IO.EndOfStreamException\nSystem.IO.MemoryStream\nSystem.IO.StreamReader\nSystem.IO.StreamWriter\nSystem.IO.StringWriter\nSystem.IO.TextWriter\nSystem.IO.TextReader\n \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "BFCA5A21E3E1986B9765B13DC6FBCD6F8B89E4C1383855D1D7EF256BF1BF2F51889769DB5365859DD7606FBF6454ADD4DAEB3BAB56994FFB98FD1D03FE8BC1E6"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/System.IO@4.3.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.IO.FileSystem@4.3.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.IO.FileSystem",
+      "version": "4.3.0",
+      "description": "Provides types that allow reading and writing to files and types that provide basic file and directory support.\n\nCommonly Used Types:\nSystem.IO.FileStream\nSystem.IO.FileInfo\nSystem.IO.DirectoryInfo\nSystem.IO.FileSystemInfo\nSystem.IO.File\nSystem.IO.Directory\nSystem.IO.SearchOption\nSystem.IO.FileOptions\n \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "4FB581D6F85B9529A091A0E974633752AA39E50B2BE6C8A9E5ECA8C2BC225CEA07064CCEC7778F77DF9987DEEBF4DCCEC050B1A97EDAC0EE9107142E6A8EE7EE"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/System.IO.FileSystem@4.3.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.IO.FileSystem.Primitives@4.3.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.IO.FileSystem.Primitives",
+      "version": "4.3.0",
+      "description": "Provides common enumerations and exceptions for path-based I/O libraries.\n\nCommonly Used Types:\nSystem.IO.DirectoryNotFoundException\nSystem.IO.FileAccess\nSystem.IO.FileLoadException\nSystem.IO.PathTooLongException\nSystem.IO.FileMode\nSystem.IO.FileShare\nSystem.IO.FileAttributes\n \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "5885953D09582CFFD973D23A21A929064D72F2BC9518AF3732D671FFFCC628A8B686F1D058A001EE6A114023B3E48B3FC0D0E4B22629A1C7F715E03795EE9EE5"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/System.IO.FileSystem.Primitives@4.3.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Linq@4.3.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Linq",
+      "version": "4.3.0",
+      "description": "Provides classes and interfaces that supports queries that use Language-Integrated Query (LINQ).\n\nCommonly Used Types:\nSystem.Linq.Enumerable\nSystem.Linq.IGrouping\u003CTKey, TElement\u003E\nSystem.Linq.IOrderedEnumerable\u003CTElement\u003E\nSystem.Linq.ILookup\u003CTKey, TElement\u003E\nSystem.Linq.Lookup\u003CTKey, TElement\u003E\n \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "EACC7FE1EC526F405F5BA0E671F616D0E5BE9C1828D543A9E2F8C65DF4099D6B2EA4A9FA2CDAE4F34B170DC37142F60E267E137CA39F350281ED70D2DC620458"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/System.Linq@4.3.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Management@10.0.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Management",
+      "version": "10.0.0",
+      "description": "Provides access to a rich set of management information and management events about the system, devices, and applications instrumented to the Windows Management Instrumentation (WMI) infrastructure.\n\nCommonly Used Types:\nSystem.Management.ManagementClass\nSystem.Management.ManagementObject\nSystem.Management.SelectQuery",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "95809B1B8CA10F4105099047BAF58F1D4A8F60BBC28B770F09BD033FFA7ADB9A9101F5BABD413C7A3E18BDCCDD688970FA24F91A7D55196AD16FC82E3B7F4E3C"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/System.Management@10.0.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/dotnet/dotnet",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Net.Http@4.3.4",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Net.Http",
+      "version": "4.3.4",
+      "description": "Provides a programming interface for modern HTTP applications, including HTTP client components that allow applications to consume web services over HTTP and HTTP components that can be used by both clients and servers for parsing HTTP headers.\n\nCommonly Used Types:\nSystem.Net.Http.HttpResponseMessage\nSystem.Net.Http.DelegatingHandler\nSystem.Net.Http.HttpRequestException\nSystem.Net.Http.HttpClient\nSystem.Net.Http.MultipartContent\nSystem.Net.Http.Headers.HttpContentHeaders\nSystem.Net.Http.HttpClientHandler\nSystem.Net.Http.StreamContent\nSystem.Net.Http.FormUrlEncodedContent\nSystem.Net.Http.HttpMessageHandler\n \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "163EDEEF734D1F0A1FF7B8053D326EABC82FE86F3DE72C6466DD780D59D974487882F2A5F16AE4B02C0D8C8A7F25E617FF2BBFAB133F88EBFD6A2F99637169ED"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/System.Net.Http@4.3.4",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Net.Primitives@4.3.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Net.Primitives",
+      "version": "4.3.0",
+      "description": "Provides common types for network-based libraries, including System.Net.IPAddress, System.Net.IPEndPoint, and System.Net.CookieContainer.\n\nCommonly Used Types:\nSystem.Net.HttpStatusCode\nSystem.Net.Sockets.SocketError\nSystem.Net.Cookie\nSystem.Net.Sockets.SocketException\nSystem.Net.IPEndPoint\nSystem.Net.ICredentials\nSystem.Net.NetworkCredential\nSystem.Net.IPAddress\nSystem.Net.CookieCollection\nSystem.Net.CookieContainer\n \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "9F7FDECE330A81F3312EA7C804927852413BEE2C929F3066B736993803DF47CC0692FBCA236C222BF19DC8F59B42F54F2A4C00DA9A4D624E458DA5874D127CE6"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/System.Net.Primitives@4.3.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Reflection@4.3.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Reflection",
+      "version": "4.3.0",
+      "description": "Provides types that retrieve information about assemblies, modules, members, parameters, and other entities in managed code by examining their metadata. These types also can be used to manipulate instances of loaded types, for example to hook up events or to invoke methods.\n\nCommonly Used Types:\nSystem.Reflection.MethodInfo\nSystem.Reflection.PropertyInfo\nSystem.Reflection.ParameterInfo\nSystem.Reflection.FieldInfo\nSystem.Reflection.ConstructorInfo\nSystem.Reflection.Assembly\nSystem.Reflection.MemberInfo\nSystem.Reflection.EventInfo\nSystem.Reflection.Module\n \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "2325B67ED60DCE0302807064F25422CBE1B7FB275B539B44FBA3C4A8CE4926F21D78529A5C34B31C03D80D110F7BACE9AF9589D457266BEAC014220057AF8333"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/System.Reflection@4.3.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Reflection.Primitives@4.3.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Reflection.Primitives",
+      "version": "4.3.0",
+      "description": "Provides common enumerations for reflection-based libraries.\n\nCommonly Used Types:\nSystem.Reflection.FieldAttributes\nSystem.Reflection.Emit.OpCode\nSystem.Reflection.TypeAttributes\nSystem.Reflection.MethodAttributes\nSystem.Reflection.CallingConventions\nSystem.Reflection.PropertyAttributes\nSystem.Reflection.EventAttributes\nSystem.Reflection.ParameterAttributes\nSystem.Reflection.GenericParameterAttributes\nSystem.Reflection.MethodImplAttributes\n \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "D4B9CC905F5A5CAB900206338E889068BF66C18EE863A29D68EFF3CDE2CCCA734112A2A851F2E2E5388A21EC28005FA19317C64D9B23923B05D6344BE2E49EAA"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/System.Reflection.Primitives@4.3.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Resources.ResourceManager@4.3.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Resources.ResourceManager",
+      "version": "4.3.0",
+      "description": "Provides classes and attributes that allow developers to create, store, and manage various culture-specific resources used in an application.\n\nCommonly Used Types:\nSystem.Resources.ResourceManager\nSystem.Resources.NeutralResourcesLanguageAttribute\nSystem.Resources.SatelliteContractVersionAttribute\nSystem.Resources.MissingManifestResourceException\n \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "9067DB28F1C48D08FC52AD40A608F88C14AD9112646741DDAF426FDFE68BED61AB01954B179461E61D187371600C1E6E5C36C788993F5A105A64F5702A6B81D4"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/System.Resources.ResourceManager@4.3.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Runtime@4.3.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Runtime",
+      "version": "4.3.0",
+      "description": "Provides the fundamental primitives, classes and base classes that define commonly-used value and reference data types, events and event handlers, interfaces, attributes, and exceptions. This packages represents the core package, and provides the minimal set of types required to build a managed application.\n\nCommonly Used Types:\nSystem.Object\nSystem.Exception\nSystem.Int16\nSystem.Int32\nSystem.Int64\nSystem.Enum\nSystem.String\nSystem.Char\nSystem.Boolean\nSystem.SByte\nSystem.Byte\nSystem.DateTime\nSystem.DateTimeOffset\nSystem.Single\nSystem.Double\nSystem.UInt16\nSystem.UInt32\nSystem.UInt64\nSystem.IDisposable\nSystem.Uri\n \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "92AB2249F08073CFAFDC4CFBD7DB36D651AD871B8D8BA961006982187DE374BF4A30AF93F15F73B05AF343F7A70CBD484B04D646570587636AE72171EB0714FB"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/System.Runtime@4.3.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Runtime.Extensions@4.3.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Runtime.Extensions",
+      "version": "4.3.0",
+      "description": "Provides commonly-used classes for performing mathematical functions, conversions, string comparisons and querying environment information.\n\nCommonly Used Types:\nSystem.Math\nSystem.Environment\nSystem.Random\nSystem.Progress\u003CT\u003E\nSystem.Convert\nSystem.Diagnostics.Stopwatch\nSystem.Runtime.Versioning.FrameworkName\nSystem.StringComparer\nSystem.IO.Path\n \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "680A32B19C2BD5026F8687AA5382AEA4F432B4F032F8BDE299FACB618C56D57369ADEF7F7CC8E60AD82AE3C12E5DD50772491363BF8044C778778628A6605BBC"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/System.Runtime.Extensions@4.3.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Runtime.Handles@4.3.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Runtime.Handles",
+      "version": "4.3.0",
+      "description": "Provides base classes, including System.Runtime.InteropServices.CriticalHandle and System.Runtime.InteropServices.SafeHandle, for types that represent operating system handles.\n\nCommonly Used Types:\nSystem.Runtime.InteropServices.SafeHandle\nMicrosoft.Win32.SafeHandles.SafeWaitHandle\nSystem.Runtime.InteropServices.CriticalHandle\nSystem.Threading.WaitHandleExtensions\nSystem.IO.HandleInheritability\n \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "0A5BAF1DD554BF9E01BCB4CE082CB26EE82B783364FEB47CBA730FAEECD70EDC528EFAD0394DCCE11F37D7F9507F8608F15629EBAF051906BFD3513E46AF0F11"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/System.Runtime.Handles@4.3.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Runtime.InteropServices@4.3.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Runtime.InteropServices",
+      "version": "4.3.0",
+      "description": "Provides types that support COM interop and platform invoke services.\n\nCommonly Used Types:\nSystem.Runtime.InteropServices.GCHandle\nSystem.Runtime.InteropServices.GuidAttribute\nSystem.Runtime.InteropServices.COMException\nSystem.DllNotFoundException\nSystem.Runtime.InteropServices.DllImportAttribute\n \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "650799C3E654EFBB9AD67157C9C60CE46F288A81597BE37CE2A0BF5D4835044065EF3F65B997328CBBBBFB81F4C89B8D7E7D61380880019DEEE6EB3F963F70D9"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/System.Runtime.InteropServices@4.3.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Runtime.Numerics@4.3.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Runtime.Numerics",
+      "version": "4.3.0",
+      "description": "Provides the numeric types System.Numerics.BigInteger and System.Numerics.Complex, which complement the numeric primitives, such as System.Byte, System.Double and System.Int32.\n\nCommonly Used Types:\nSystem.Numerics.BigInteger\nSystem.Numerics.Complex\n \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "3E347FAA8E7EC484D481E53B1C219FE1CE346AE8278A214B4508CF0E233C1627BD9C6C6C7C654E8C1F4143271838DDD9593F63A1043577AD87C40E392AF7FD34"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/System.Runtime.Numerics@4.3.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Security.Cryptography.Algorithms@4.3.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Security.Cryptography.Algorithms",
+      "version": "4.3.0",
+      "description": "Provides base types for cryptographic algorithms, including hashing, encryption, and signing operations.\n\nCommonly Used Types:\nSystem.Security.Cryptography.Aes\nSystem.Security.Cryptography.RSA\nSystem.Security.Cryptography.RSAParameters\nSystem.Security.Cryptography.HMACSHA1\nSystem.Security.Cryptography.SHA256\nSystem.Security.Cryptography.SHA1\nSystem.Security.Cryptography.SHA512\nSystem.Security.Cryptography.SHA384\nSystem.Security.Cryptography.HMACSHA256\nSystem.Security.Cryptography.MD5\nSystem.Security.Cryptography.HMACSHA384\nSystem.Security.Cryptography.HMACSHA512\n \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "7641D70C2BA6F37BF429D5D949BDA427F078098C2DCB8924FD79B23BB22C4B956EF14235422D8B1CC5720CBBCC6CFEE8943D5FF87CE7ABF0D54C5E8BCE2AA5E2"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/System.Security.Cryptography.Algorithms@4.3.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Security.Cryptography.Cng@4.3.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Security.Cryptography.Cng",
+      "version": "4.3.0",
+      "description": "Provides cryptographic algorithm implementations and key management with Windows Cryptographic Next Generation API (CNG).\n\nCommonly Used Types:\nSystem.Security.Cryptography.RSACng\nSystem.Security.Cryptography.ECDsaCng\nSystem.Security.Cryptography.CngKey\n \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "6272273414EAA777E78DCA1B5ECBBDF65E9659908082AEA924DF0975E71F4C1B47F85617EDF90EAD57078C29513A160CA62F123BE9F9F339DFB9C9386844F5EA"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/System.Security.Cryptography.Cng@4.3.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Security.Cryptography.Csp@4.3.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Security.Cryptography.Csp",
+      "version": "4.3.0",
+      "description": "Provides cryptographic algorithm implementations and key management with Windows Cryptographic API (CryptoAPI).\n\nCommonly Used Types:\nSystem.Security.Cryptography.RSACryptoServiceProvider\nSystem.Security.Cryptography.CspParameters\n \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "43317591747A18F52F683187E09ADFE0E03573E6DAC430BF3BA13F440CDB1C7BB1F9205369D5F3B2A0F3FDF9604D5BA1E6D94A899A25D2C533E453338578F351"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/System.Security.Cryptography.Csp@4.3.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Security.Cryptography.Encoding@4.3.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Security.Cryptography.Encoding",
+      "version": "4.3.0",
+      "description": "Provides types for representing Abstract Syntax Notation One (ASN.1)-encoded data.\n\nCommonly Used Types:\nSystem.Security.Cryptography.AsnEncodedData\nSystem.Security.Cryptography.Oid\nSystem.Security.Cryptography.OidCollection\n \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "5C26ADD23E63542F37506F5FA1F72E8980F03743D529CD8E583D1054B8D8A579FB773FA035A00D9073DB84DB6BE4F47CAC340D1EBC6D23DD761DBDBD600075E0"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/System.Security.Cryptography.Encoding@4.3.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Security.Cryptography.OpenSsl@4.3.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Security.Cryptography.OpenSsl",
+      "version": "4.3.0",
+      "description": "Provides cryptographic algorithm implementations and key management for non-Windows systems with OpenSSL.\n\nCommonly Used Types:\nSystem.Security.Cryptography.RSAOpenSsl\n \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "64530A19489730F873F8C68E6B245135EA260C02D68591880261768358D0145795132BA5EE877741822FF05DCD0C61EDCA27696EF99E8F9302A21CADF3B1329F"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/System.Security.Cryptography.OpenSsl@4.3.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Security.Cryptography.Primitives@4.3.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Security.Cryptography.Primitives",
+      "version": "4.3.0",
+      "description": "Provides common types for the cryptographic libraries.\n\nCommonly Used Types:\nSystem.Security.Cryptography.ICryptoTransform\nSystem.Security.Cryptography.AsymmetricAlgorithm\nSystem.Security.Cryptography.SymmetricAlgorithm\nSystem.Security.Cryptography.HashAlgorithm\nSystem.Security.Cryptography.KeyedHashAlgorithm\nSystem.Security.Cryptography.HMAC\nSystem.Security.Cryptography.KeySizes\nSystem.Security.Cryptography.CryptographicException\nSystem.Security.Cryptography.CipherMode\nSystem.Security.Cryptography.PaddingMode\nSystem.Security.Cryptography.CryptoStream\nSystem.Security.Cryptography.CryptoStreamMode\n \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "5AD8273F998EBB9CCA2F7BD03143D3F6D57B5D560657B26D6F4E78D038010FB30C379A23A27C08730F15C9B66F4BA565A06984EC246DFC79ACF1A741B0DD4347"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/System.Security.Cryptography.Primitives@4.3.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Security.Cryptography.ProtectedData@8.0.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Security.Cryptography.ProtectedData",
+      "version": "8.0.0",
+      "description": "Provides access to Windows Data Protection Api.\n\nCommonly Used Types:\nSystem.Security.Cryptography.DataProtectionScope\nSystem.Security.Cryptography.ProtectedData",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "86F71767F211F8A5F163D942F52DA2CF0E7F7C6628383251DABF64412BECE6FFC75009C146E61864F26B1F3693D02783449CC89BC04725BD59AF01D0E7D8F7B9"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/System.Security.Cryptography.ProtectedData@8.0.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/dotnet/runtime",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Security.Cryptography.X509Certificates@4.3.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Security.Cryptography.X509Certificates",
+      "version": "4.3.0",
+      "description": "Provides types for reading, exporting and verifying Authenticode X.509 v3 certificates. These certificates are signed with a private key that uniquely and positively identifies the holder of the certificate.\n\nCommonly Used Types:\nSystem.Security.Cryptography.X509Certificates.X509Certificate2\nSystem.Security.Cryptography.X509Certificates.X509Certificate\nSystem.Security.Cryptography.X509Certificates.X509ContentType\nSystem.Security.Cryptography.X509Certificates.StoreLocation\nSystem.Security.Cryptography.X509Certificates.StoreName\nSystem.Security.Cryptography.X509Certificates.X509FindType\nSystem.Security.Cryptography.X509Certificates.X509ChainStatus\nSystem.Security.Cryptography.X509Certificates.X509Certificate2Collection\nSystem.Security.Cryptography.X509Certificates.X509EnhancedKeyUsageExtension\nSystem.Security.Cryptography.X509Certificates.X509Chain\n \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "318D86AB5528E2B444EC3E4B9824C1BE82BB93DB513EAB34B238E486F886C4D74310ED82C2110401FE5CD790E4D97F4A023A0B2D5C2E29952D3FD02E42734D00"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/System.Security.Cryptography.X509Certificates@4.3.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Text.Encoding@4.3.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Text.Encoding",
+      "version": "4.3.0",
+      "description": "Provides base abstract encoding classes for converting blocks of characters to and from blocks of bytes.\n\nCommonly Used Types:\nSystem.Text.Encoding\nSystem.Text.DecoderFallbackException\nSystem.Text.Decoder\nSystem.Text.EncoderFallbackException\nSystem.Text.Encoder\nSystem.Text.EncoderFallback\nSystem.Text.EncoderFallbackBuffer\nSystem.Text.DecoderFallback\nSystem.Text.DecoderFallbackBuffer\nSystem.Text.DecoderExceptionFallback\n \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "6FF7FEEC7313A7121F795EC7D376E4B8728C17294219FAFDFD4EA078F9DF1455B4685F0B3962C3810098E95D68594A8392C0B799D36EC8284CD6FCBD4CFE2C67"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/System.Text.Encoding@4.3.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Threading@4.3.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Threading",
+      "version": "4.3.0",
+      "description": "Provides the fundamental synchronization primitives, including System.Threading.Monitor and System.Threading.Mutex, that are required when writing asynchronous code.\n\nCommonly Used Types:\nSystem.Threading.Monitor\nSystem.Threading.SynchronizationContext\nSystem.Threading.ManualResetEvent\nSystem.Threading.AutoResetEvent\nSystem.Threading.ThreadLocal\u003CT\u003E\nSystem.Threading.EventWaitHandle\nSystem.Threading.SemaphoreSlim\nSystem.Threading.Mutex\n \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "97A2751BDCE69FAAF9C54F834A9FD5C60C7A786FAA52F420769828DBC9B5804C1F3721BA1EA945EA1D844835D909810F9E782C9A44D0FAAECCCB230C4CD95A88"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/System.Threading@4.3.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Threading.Tasks@4.3.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Threading.Tasks",
+      "version": "4.3.0",
+      "description": "Provides types that simplify the work of writing concurrent and asynchronous code.\n\nCommonly Used Types:\nSystem.Threading.Tasks.Task\u003CTResult\u003E\nSystem.Runtime.CompilerServices.TaskAwaiter\u003CTResult\u003E\nSystem.Threading.Tasks.TaskCompletionSource\u003CTResult\u003E\nSystem.Threading.Tasks.Task\nSystem.OperationCanceledException\nSystem.AggregateException\n \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "7D488FF82CB20A3B3CEF6380F2DAE5EA9F7BAA66BF75AD711AADE1E3301B25993CCF2694E33C847EA5B9BDB90FF34C46FCD8A6BA7D6F95605BA0C124ED7C5D13"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/System.Threading.Tasks@4.3.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "BIManageRevit@0.0.0",
+      "dependsOn": [
+        "pkg:nuget/CommunityToolkit.Mvvm@8.4.0",
+        "pkg:nuget/MaterialDesignColors@5.3.0",
+        "pkg:nuget/MaterialDesignThemes@5.3.0",
+        "pkg:nuget/Nice3point.Revit.Api.RevitAPI@2025.4.20",
+        "pkg:nuget/Nice3point.Revit.Api.RevitAPIUI@2025.4.20",
+        "pkg:nuget/Nice3point.Revit.Build.Tasks@3.0.1",
+        "pkg:nuget/Nice3point.Revit.Toolkit@2025.1.0",
+        "pkg:nuget/System.Configuration.ConfigurationManager@8.0.0",
+        "pkg:nuget/System.Data.SQLite.Core@1.0.118",
+        "pkg:nuget/System.Drawing.Common@8.0.0",
+        "pkg:nuget/System.Management@10.0.0",
+        "pkg:nuget/System.Net.Http@4.3.4",
+        "pkg:nuget/System.Security.Cryptography.ProtectedData@8.0.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/CommunityToolkit.Mvvm@8.4.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/MaterialDesignColors@5.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/MaterialDesignThemes@5.3.0",
+      "dependsOn": [
+        "pkg:nuget/MaterialDesignColors@5.3.0",
+        "pkg:nuget/Microsoft.Xaml.Behaviors.Wpf@1.1.77"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.NETCore.Platforms@1.1.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.NETCore.Targets@1.1.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.Win32.SystemEvents@8.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.Xaml.Behaviors.Wpf@1.1.77",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Nice3point.Revit.Api.RevitAPI@2025.4.20",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Nice3point.Revit.Api.RevitAPIUI@2025.4.20",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Nice3point.Revit.Build.Tasks@3.0.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Nice3point.Revit.Toolkit@2025.1.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/runtime.fedora.23-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/runtime.fedora.24-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/runtime.native.System.Net.Http@4.3.0",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.NETCore.Platforms@1.1.1",
+        "pkg:nuget/Microsoft.NETCore.Targets@1.1.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/runtime.native.System.Security.Cryptography.Apple@4.3.0",
+      "dependsOn": [
+        "pkg:nuget/runtime.osx.10.10-x64.runtime.native.System.Security.Cryptography.Apple@4.3.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+      "dependsOn": [
+        "pkg:nuget/runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+        "pkg:nuget/runtime.fedora.23-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+        "pkg:nuget/runtime.fedora.24-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+        "pkg:nuget/runtime.opensuse.13.2-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+        "pkg:nuget/runtime.opensuse.42.1-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+        "pkg:nuget/runtime.osx.10.10-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+        "pkg:nuget/runtime.rhel.7-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+        "pkg:nuget/runtime.ubuntu.14.04-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+        "pkg:nuget/runtime.ubuntu.16.04-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+        "pkg:nuget/runtime.ubuntu.16.10-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/runtime.native.System@4.3.0",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.NETCore.Platforms@1.1.1",
+        "pkg:nuget/Microsoft.NETCore.Targets@1.1.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/runtime.opensuse.13.2-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/runtime.opensuse.42.1-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/runtime.osx.10.10-x64.runtime.native.System.Security.Cryptography.Apple@4.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/runtime.osx.10.10-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/runtime.rhel.7-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/runtime.ubuntu.14.04-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/runtime.ubuntu.16.04-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/runtime.ubuntu.16.10-x64.runtime.native.System.Security.Cryptography.OpenSsl@4.3.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Stub.System.Data.SQLite.Core.NetStandard@1.0.118",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/System.CodeDom@10.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/System.Collections.Concurrent@4.3.0",
+      "dependsOn": [
+        "pkg:nuget/System.Collections@4.3.0",
+        "pkg:nuget/System.Diagnostics.Debug@4.3.0",
+        "pkg:nuget/System.Diagnostics.Tracing@4.3.0",
+        "pkg:nuget/System.Globalization@4.3.0",
+        "pkg:nuget/System.Reflection@4.3.0",
+        "pkg:nuget/System.Resources.ResourceManager@4.3.0",
+        "pkg:nuget/System.Runtime@4.3.0",
+        "pkg:nuget/System.Runtime.Extensions@4.3.0",
+        "pkg:nuget/System.Threading@4.3.0",
+        "pkg:nuget/System.Threading.Tasks@4.3.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Collections@4.3.0",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.NETCore.Platforms@1.1.1",
+        "pkg:nuget/Microsoft.NETCore.Targets@1.1.0",
+        "pkg:nuget/System.Runtime@4.3.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Configuration.ConfigurationManager@8.0.0",
+      "dependsOn": [
+        "pkg:nuget/System.Diagnostics.EventLog@8.0.0",
+        "pkg:nuget/System.Security.Cryptography.ProtectedData@8.0.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Data.SQLite.Core@1.0.118",
+      "dependsOn": [
+        "pkg:nuget/Stub.System.Data.SQLite.Core.NetStandard@1.0.118"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Diagnostics.Debug@4.3.0",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.NETCore.Platforms@1.1.1",
+        "pkg:nuget/Microsoft.NETCore.Targets@1.1.0",
+        "pkg:nuget/System.Runtime@4.3.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Diagnostics.DiagnosticSource@4.3.0",
+      "dependsOn": [
+        "pkg:nuget/System.Collections@4.3.0",
+        "pkg:nuget/System.Diagnostics.Tracing@4.3.0",
+        "pkg:nuget/System.Reflection@4.3.0",
+        "pkg:nuget/System.Runtime@4.3.0",
+        "pkg:nuget/System.Threading@4.3.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Diagnostics.EventLog@8.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/System.Diagnostics.Tracing@4.3.0",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.NETCore.Platforms@1.1.1",
+        "pkg:nuget/Microsoft.NETCore.Targets@1.1.0",
+        "pkg:nuget/System.Runtime@4.3.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Drawing.Common@8.0.0",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.Win32.SystemEvents@8.0.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Globalization.Calendars@4.3.0",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.NETCore.Platforms@1.1.1",
+        "pkg:nuget/Microsoft.NETCore.Targets@1.1.0",
+        "pkg:nuget/System.Globalization@4.3.0",
+        "pkg:nuget/System.Runtime@4.3.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Globalization.Extensions@4.3.0",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.NETCore.Platforms@1.1.1",
+        "pkg:nuget/System.Globalization@4.3.0",
+        "pkg:nuget/System.Resources.ResourceManager@4.3.0",
+        "pkg:nuget/System.Runtime@4.3.0",
+        "pkg:nuget/System.Runtime.Extensions@4.3.0",
+        "pkg:nuget/System.Runtime.InteropServices@4.3.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Globalization@4.3.0",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.NETCore.Platforms@1.1.1",
+        "pkg:nuget/Microsoft.NETCore.Targets@1.1.0",
+        "pkg:nuget/System.Runtime@4.3.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.IO.FileSystem.Primitives@4.3.0",
+      "dependsOn": [
+        "pkg:nuget/System.Runtime@4.3.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.IO.FileSystem@4.3.0",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.NETCore.Platforms@1.1.1",
+        "pkg:nuget/Microsoft.NETCore.Targets@1.1.0",
+        "pkg:nuget/System.IO@4.3.0",
+        "pkg:nuget/System.IO.FileSystem.Primitives@4.3.0",
+        "pkg:nuget/System.Runtime@4.3.0",
+        "pkg:nuget/System.Runtime.Handles@4.3.0",
+        "pkg:nuget/System.Text.Encoding@4.3.0",
+        "pkg:nuget/System.Threading.Tasks@4.3.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.IO@4.3.0",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.NETCore.Platforms@1.1.1",
+        "pkg:nuget/Microsoft.NETCore.Targets@1.1.0",
+        "pkg:nuget/System.Runtime@4.3.0",
+        "pkg:nuget/System.Text.Encoding@4.3.0",
+        "pkg:nuget/System.Threading.Tasks@4.3.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Linq@4.3.0",
+      "dependsOn": [
+        "pkg:nuget/System.Collections@4.3.0",
+        "pkg:nuget/System.Diagnostics.Debug@4.3.0",
+        "pkg:nuget/System.Resources.ResourceManager@4.3.0",
+        "pkg:nuget/System.Runtime@4.3.0",
+        "pkg:nuget/System.Runtime.Extensions@4.3.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Management@10.0.0",
+      "dependsOn": [
+        "pkg:nuget/System.CodeDom@10.0.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Net.Http@4.3.4",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.NETCore.Platforms@1.1.1",
+        "pkg:nuget/System.Collections@4.3.0",
+        "pkg:nuget/System.Diagnostics.Debug@4.3.0",
+        "pkg:nuget/System.Diagnostics.DiagnosticSource@4.3.0",
+        "pkg:nuget/System.Diagnostics.Tracing@4.3.0",
+        "pkg:nuget/System.Globalization@4.3.0",
+        "pkg:nuget/System.Globalization.Extensions@4.3.0",
+        "pkg:nuget/System.IO@4.3.0",
+        "pkg:nuget/System.IO.FileSystem@4.3.0",
+        "pkg:nuget/System.Net.Primitives@4.3.0",
+        "pkg:nuget/System.Resources.ResourceManager@4.3.0",
+        "pkg:nuget/System.Runtime@4.3.0",
+        "pkg:nuget/System.Runtime.Extensions@4.3.0",
+        "pkg:nuget/System.Runtime.Handles@4.3.0",
+        "pkg:nuget/System.Runtime.InteropServices@4.3.0",
+        "pkg:nuget/System.Security.Cryptography.Algorithms@4.3.0",
+        "pkg:nuget/System.Security.Cryptography.Encoding@4.3.0",
+        "pkg:nuget/System.Security.Cryptography.OpenSsl@4.3.0",
+        "pkg:nuget/System.Security.Cryptography.Primitives@4.3.0",
+        "pkg:nuget/System.Security.Cryptography.X509Certificates@4.3.0",
+        "pkg:nuget/System.Text.Encoding@4.3.0",
+        "pkg:nuget/System.Threading@4.3.0",
+        "pkg:nuget/System.Threading.Tasks@4.3.0",
+        "pkg:nuget/runtime.native.System@4.3.0",
+        "pkg:nuget/runtime.native.System.Net.Http@4.3.0",
+        "pkg:nuget/runtime.native.System.Security.Cryptography.OpenSsl@4.3.2"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Net.Primitives@4.3.0",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.NETCore.Platforms@1.1.1",
+        "pkg:nuget/Microsoft.NETCore.Targets@1.1.0",
+        "pkg:nuget/System.Runtime@4.3.0",
+        "pkg:nuget/System.Runtime.Handles@4.3.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Reflection.Primitives@4.3.0",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.NETCore.Platforms@1.1.1",
+        "pkg:nuget/Microsoft.NETCore.Targets@1.1.0",
+        "pkg:nuget/System.Runtime@4.3.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Reflection@4.3.0",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.NETCore.Platforms@1.1.1",
+        "pkg:nuget/Microsoft.NETCore.Targets@1.1.0",
+        "pkg:nuget/System.IO@4.3.0",
+        "pkg:nuget/System.Reflection.Primitives@4.3.0",
+        "pkg:nuget/System.Runtime@4.3.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Resources.ResourceManager@4.3.0",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.NETCore.Platforms@1.1.1",
+        "pkg:nuget/Microsoft.NETCore.Targets@1.1.0",
+        "pkg:nuget/System.Globalization@4.3.0",
+        "pkg:nuget/System.Reflection@4.3.0",
+        "pkg:nuget/System.Runtime@4.3.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Runtime.Extensions@4.3.0",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.NETCore.Platforms@1.1.1",
+        "pkg:nuget/Microsoft.NETCore.Targets@1.1.0",
+        "pkg:nuget/System.Runtime@4.3.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Runtime.Handles@4.3.0",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.NETCore.Platforms@1.1.1",
+        "pkg:nuget/Microsoft.NETCore.Targets@1.1.0",
+        "pkg:nuget/System.Runtime@4.3.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Runtime.InteropServices@4.3.0",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.NETCore.Platforms@1.1.1",
+        "pkg:nuget/Microsoft.NETCore.Targets@1.1.0",
+        "pkg:nuget/System.Reflection@4.3.0",
+        "pkg:nuget/System.Reflection.Primitives@4.3.0",
+        "pkg:nuget/System.Runtime@4.3.0",
+        "pkg:nuget/System.Runtime.Handles@4.3.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Runtime.Numerics@4.3.0",
+      "dependsOn": [
+        "pkg:nuget/System.Globalization@4.3.0",
+        "pkg:nuget/System.Resources.ResourceManager@4.3.0",
+        "pkg:nuget/System.Runtime@4.3.0",
+        "pkg:nuget/System.Runtime.Extensions@4.3.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Runtime@4.3.0",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.NETCore.Platforms@1.1.1",
+        "pkg:nuget/Microsoft.NETCore.Targets@1.1.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Security.Cryptography.Algorithms@4.3.0",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.NETCore.Platforms@1.1.1",
+        "pkg:nuget/System.Collections@4.3.0",
+        "pkg:nuget/System.IO@4.3.0",
+        "pkg:nuget/System.Resources.ResourceManager@4.3.0",
+        "pkg:nuget/System.Runtime@4.3.0",
+        "pkg:nuget/System.Runtime.Extensions@4.3.0",
+        "pkg:nuget/System.Runtime.Handles@4.3.0",
+        "pkg:nuget/System.Runtime.InteropServices@4.3.0",
+        "pkg:nuget/System.Runtime.Numerics@4.3.0",
+        "pkg:nuget/System.Security.Cryptography.Encoding@4.3.0",
+        "pkg:nuget/System.Security.Cryptography.Primitives@4.3.0",
+        "pkg:nuget/System.Text.Encoding@4.3.0",
+        "pkg:nuget/runtime.native.System.Security.Cryptography.Apple@4.3.0",
+        "pkg:nuget/runtime.native.System.Security.Cryptography.OpenSsl@4.3.2"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Security.Cryptography.Cng@4.3.0",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.NETCore.Platforms@1.1.1",
+        "pkg:nuget/System.IO@4.3.0",
+        "pkg:nuget/System.Resources.ResourceManager@4.3.0",
+        "pkg:nuget/System.Runtime@4.3.0",
+        "pkg:nuget/System.Runtime.Extensions@4.3.0",
+        "pkg:nuget/System.Runtime.Handles@4.3.0",
+        "pkg:nuget/System.Runtime.InteropServices@4.3.0",
+        "pkg:nuget/System.Security.Cryptography.Algorithms@4.3.0",
+        "pkg:nuget/System.Security.Cryptography.Encoding@4.3.0",
+        "pkg:nuget/System.Security.Cryptography.Primitives@4.3.0",
+        "pkg:nuget/System.Text.Encoding@4.3.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Security.Cryptography.Csp@4.3.0",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.NETCore.Platforms@1.1.1",
+        "pkg:nuget/System.IO@4.3.0",
+        "pkg:nuget/System.Reflection@4.3.0",
+        "pkg:nuget/System.Resources.ResourceManager@4.3.0",
+        "pkg:nuget/System.Runtime@4.3.0",
+        "pkg:nuget/System.Runtime.Extensions@4.3.0",
+        "pkg:nuget/System.Runtime.Handles@4.3.0",
+        "pkg:nuget/System.Runtime.InteropServices@4.3.0",
+        "pkg:nuget/System.Security.Cryptography.Algorithms@4.3.0",
+        "pkg:nuget/System.Security.Cryptography.Encoding@4.3.0",
+        "pkg:nuget/System.Security.Cryptography.Primitives@4.3.0",
+        "pkg:nuget/System.Text.Encoding@4.3.0",
+        "pkg:nuget/System.Threading@4.3.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Security.Cryptography.Encoding@4.3.0",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.NETCore.Platforms@1.1.1",
+        "pkg:nuget/System.Collections@4.3.0",
+        "pkg:nuget/System.Collections.Concurrent@4.3.0",
+        "pkg:nuget/System.Linq@4.3.0",
+        "pkg:nuget/System.Resources.ResourceManager@4.3.0",
+        "pkg:nuget/System.Runtime@4.3.0",
+        "pkg:nuget/System.Runtime.Extensions@4.3.0",
+        "pkg:nuget/System.Runtime.Handles@4.3.0",
+        "pkg:nuget/System.Runtime.InteropServices@4.3.0",
+        "pkg:nuget/System.Security.Cryptography.Primitives@4.3.0",
+        "pkg:nuget/System.Text.Encoding@4.3.0",
+        "pkg:nuget/runtime.native.System.Security.Cryptography.OpenSsl@4.3.2"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Security.Cryptography.OpenSsl@4.3.0",
+      "dependsOn": [
+        "pkg:nuget/System.Collections@4.3.0",
+        "pkg:nuget/System.IO@4.3.0",
+        "pkg:nuget/System.Resources.ResourceManager@4.3.0",
+        "pkg:nuget/System.Runtime@4.3.0",
+        "pkg:nuget/System.Runtime.Extensions@4.3.0",
+        "pkg:nuget/System.Runtime.Handles@4.3.0",
+        "pkg:nuget/System.Runtime.InteropServices@4.3.0",
+        "pkg:nuget/System.Runtime.Numerics@4.3.0",
+        "pkg:nuget/System.Security.Cryptography.Algorithms@4.3.0",
+        "pkg:nuget/System.Security.Cryptography.Encoding@4.3.0",
+        "pkg:nuget/System.Security.Cryptography.Primitives@4.3.0",
+        "pkg:nuget/System.Text.Encoding@4.3.0",
+        "pkg:nuget/runtime.native.System.Security.Cryptography.OpenSsl@4.3.2"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Security.Cryptography.Primitives@4.3.0",
+      "dependsOn": [
+        "pkg:nuget/System.Diagnostics.Debug@4.3.0",
+        "pkg:nuget/System.Globalization@4.3.0",
+        "pkg:nuget/System.IO@4.3.0",
+        "pkg:nuget/System.Resources.ResourceManager@4.3.0",
+        "pkg:nuget/System.Runtime@4.3.0",
+        "pkg:nuget/System.Threading@4.3.0",
+        "pkg:nuget/System.Threading.Tasks@4.3.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Security.Cryptography.ProtectedData@8.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/System.Security.Cryptography.X509Certificates@4.3.0",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.NETCore.Platforms@1.1.1",
+        "pkg:nuget/System.Collections@4.3.0",
+        "pkg:nuget/System.Diagnostics.Debug@4.3.0",
+        "pkg:nuget/System.Globalization@4.3.0",
+        "pkg:nuget/System.Globalization.Calendars@4.3.0",
+        "pkg:nuget/System.IO@4.3.0",
+        "pkg:nuget/System.IO.FileSystem@4.3.0",
+        "pkg:nuget/System.IO.FileSystem.Primitives@4.3.0",
+        "pkg:nuget/System.Resources.ResourceManager@4.3.0",
+        "pkg:nuget/System.Runtime@4.3.0",
+        "pkg:nuget/System.Runtime.Extensions@4.3.0",
+        "pkg:nuget/System.Runtime.Handles@4.3.0",
+        "pkg:nuget/System.Runtime.InteropServices@4.3.0",
+        "pkg:nuget/System.Runtime.Numerics@4.3.0",
+        "pkg:nuget/System.Security.Cryptography.Algorithms@4.3.0",
+        "pkg:nuget/System.Security.Cryptography.Cng@4.3.0",
+        "pkg:nuget/System.Security.Cryptography.Csp@4.3.0",
+        "pkg:nuget/System.Security.Cryptography.Encoding@4.3.0",
+        "pkg:nuget/System.Security.Cryptography.OpenSsl@4.3.0",
+        "pkg:nuget/System.Security.Cryptography.Primitives@4.3.0",
+        "pkg:nuget/System.Text.Encoding@4.3.0",
+        "pkg:nuget/System.Threading@4.3.0",
+        "pkg:nuget/runtime.native.System@4.3.0",
+        "pkg:nuget/runtime.native.System.Net.Http@4.3.0",
+        "pkg:nuget/runtime.native.System.Security.Cryptography.OpenSsl@4.3.2"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Text.Encoding@4.3.0",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.NETCore.Platforms@1.1.1",
+        "pkg:nuget/Microsoft.NETCore.Targets@1.1.0",
+        "pkg:nuget/System.Runtime@4.3.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Threading.Tasks@4.3.0",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.NETCore.Platforms@1.1.1",
+        "pkg:nuget/Microsoft.NETCore.Targets@1.1.0",
+        "pkg:nuget/System.Runtime@4.3.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Threading@4.3.0",
+      "dependsOn": [
+        "pkg:nuget/System.Runtime@4.3.0",
+        "pkg:nuget/System.Threading.Tasks@4.3.0"
+      ]
+    }
+  ]
+}

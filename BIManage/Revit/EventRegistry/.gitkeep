@@ -1,0 +1,6 @@
+# Placeholder for EventRegistry components
+# Future files:
+# - DocumentEventRegistry.cs (Phase 1, Task 5)
+# - CommandEventRegistry.cs (Phase 1, Task 6)
+# - IdlingEventRegistry.cs (Phase 1, Task 9)
+# - EventTogglePolicy.cs

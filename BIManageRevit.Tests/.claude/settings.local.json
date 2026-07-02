@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dotnet restore BIManageRevit.Tests/BIManageRevit.Tests.csproj)",
+      "Bash(dotnet restore BIManageRevit.Tests/BIManageRevit.Tests.csproj -p:RevitVersion=2025)",
+      "Bash(dotnet build BIManageRevit.Tests/BIManageRevit.Tests.csproj --no-restore)",
+      "Bash(dotnet build BIManageRevit.Tests/BIManageRevit.Tests.csproj)",
+      "Bash(grep -oP 'Tests\\\\\\\\[^\\(]+')",
+      "Bash(grep -o \"Tests\\\\\\\\[^\\(]*\")",
+      "Read(//tmp/**)",
+      "Bash(tr '\\(' '\\\\n')",
+      "Bash(dotnet test BIManageRevit.Tests/BIManageRevit.Tests.csproj --no-build --verbosity normal)",
+      "Read(//c/Users/Admin/Documents/GitHub_JC/BIManageRevit/$HOME/.nuget/packages/nice3point.revit.api.revitapi/**)",
+      "Bash(dotnet test BIManageRevit.Tests/BIManageRevit.Tests.csproj --no-build --filter \"FullyQualifiedName~CategoryEvaluatorTests.Matches_RuleWithMatchingCategory\" --verbosity detailed)",
+      "Bash(dotnet test BIManageRevit.Tests/BIManageRevit.Tests.csproj --no-build --filter \"FullyQualifiedName~Core.Rules\" --verbosity detailed)",
+      "Bash(grep -v \"^--$\")",
+      "Bash(dotnet test BIManageRevit.Tests/BIManageRevit.Tests.csproj --no-build --filter \"FullyQualifiedName~PersistenceIntegrationTests\" --verbosity normal)"
+    ]
+  }
+}

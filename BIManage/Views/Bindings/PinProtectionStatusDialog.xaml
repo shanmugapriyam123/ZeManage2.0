@@ -1,0 +1,238 @@
+﻿<Window x:Class="BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog"
+        Topmost="False"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Pin Protection"
+        Width="440"
+        Height="Auto"
+        MinHeight="140"
+        MaxHeight="450"
+        SizeToContent="Height"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanMinimize"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ShowInTaskbar="True"
+        KeyDown="Window_KeyDown">
+    <Window.Resources>
+        <Style x:Key="ViewDetailsButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#000000"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}"
+                                Padding="6,4" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#EFF6FF"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Outline Refresh button: orange (#FF5500) hover matches the primary CTA
+             affordance used across EventProtection / Rules / CommandProtection dialogs.
+             Default WPF button gave a blue system hover, which read as broken next
+             to the orange theme elsewhere. -->
+        <Style x:Key="RefreshOutlineButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#000000"/>
+            <Setter Property="BorderBrush" Value="#CBD5E1"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Padding" Value="8,2"/>
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FF5500"/>
+                                <Setter TargetName="border" Property="BorderBrush" Value="#FF5500"/>
+                                <Setter TargetName="border" Property="TextElement.Foreground" Value="White"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5"/>
+                                <Setter Property="Cursor" Value="Arrow"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Border Margin="10" Background="White" CornerRadius="10" ClipToBounds="True">
+        <Border.Effect>
+            <DropShadowEffect Color="#000000" BlurRadius="20" ShadowDepth="0" Opacity="0.18"/>
+        </Border.Effect>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Title bar -->
+            <Border Grid.Row="0" Background="#F8FAFC" CornerRadius="10,10,0,0"
+                    BorderBrush="#E2E8F0" BorderThickness="0,0,0,1"
+                    MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+                <Grid Height="36" Margin="12,0">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Source="pack://application:,,,/BIManageRevit;component/BIManage/Resources/Icons/BIManage.png"
+                               Width="16" Height="16" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
+                                   FontSize="12" FontWeight="SemiBold" Foreground="#1E293B" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <Button HorizontalAlignment="Right" VerticalAlignment="Center"
+                            Click="CloseButton_Click" Width="28" Height="28"
+                            BorderThickness="0" Background="Transparent" Cursor="Hand">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="closeBg" Background="Transparent" CornerRadius="6" Width="28" Height="28">
+                                    <TextBlock Text="&#x2715;" FontSize="10" Foreground="#94A3B8"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="closeBg" Property="Background" Value="#F1F5F9"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </Grid>
+            </Border>
+
+            <!-- Existing content -->
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Header -->
+                <StackPanel Grid.Row="0" Margin="16,16,16,0">
+                    <Grid Margin="0,0,0,6">
+                        <TextBlock Text="Pin Protection Status"
+                                   FontSize="15" FontWeight="SemiBold"
+                                   Foreground="#1E293B"/>
+                        <Button x:Name="BtnRefresh" Content="↻ Refresh"
+                                Click="Refresh_Click"
+                                HorizontalAlignment="Right"
+                                Style="{StaticResource RefreshOutlineButton}"
+                                ToolTip="Re-query the database for the latest protected-element count."/>
+                    </Grid>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Protected Elements:"
+                                   FontSize="12" Foreground="#475569"/>
+                        <TextBlock x:Name="TxtProtectedCount"
+                                   FontSize="12" FontWeight="SemiBold"
+                                   Foreground="#1E293B" Margin="4,0,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- View Details Button -->
+                <Button Grid.Row="1" x:Name="BtnViewDetails"
+                        Style="{StaticResource ViewDetailsButton}"
+                        Click="ViewDetails_Click"
+                        Margin="16,10,0,0" Grid.RowSpan="2" Width="259">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock x:Name="TxtArrow" Text="&#x2192;" FontSize="11" Margin="0,0,4,0"/>
+                        <TextBlock x:Name="TxtViewDetailsTitle" Text="View Details"
+                                   FontSize="12" FontWeight="Medium"/>
+                    </StackPanel>
+                </Button>
+
+                <!-- Details Panel (Initially Collapsed) -->
+                <Border Grid.Row="2" x:Name="DetailsPanel"
+                        Visibility="Collapsed"
+                        Background="#F8FAFC" BorderBrush="#E2E8F0"
+                        BorderThickness="1" CornerRadius="6"
+                        Margin="16,8,16,16" MaxHeight="220">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="8">
+                        <ItemsControl x:Name="CategoryList">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="0,0,0,8">
+                                        <!-- Category Header -->
+                                        <Border Background="#E2E8F0" CornerRadius="6" Padding="8,5" Margin="0,0,0,6">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding CategoryName}"
+                                                           FontSize="12" FontWeight="SemiBold"
+                                                           Foreground="#334155"/>
+                                                <TextBlock Text=" (" FontSize="12" Foreground="#64748B"/>
+                                                <TextBlock Text="{Binding ElementCount}" FontSize="12" FontWeight="SemiBold" Foreground="#64748B"/>
+                                                <TextBlock Text=")" FontSize="12" Foreground="#64748B"/>
+                                            </StackPanel>
+                                        </Border>
+                                        <!-- Elements in Category -->
+                                        <ItemsControl ItemsSource="{Binding Elements}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border Background="White" BorderBrush="#E2E8F0"
+                                                            BorderThickness="1" CornerRadius="6"
+                                                            Padding="10,8" Margin="0,0,0,4">
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="90"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition Height="Auto"/>
+                                                                <RowDefinition Height="Auto"/>
+                                                                <RowDefinition Height="Auto"/>
+                                                            </Grid.RowDefinitions>
+
+                                                            <TextBlock Grid.Row="0" Grid.Column="0" Text="ID" FontSize="11" Foreground="#64748B" Margin="0,0,0,4" VerticalAlignment="Center"/>
+                                                            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding ElementId}" FontSize="11" Foreground="#1E293B" FontWeight="SemiBold" Margin="0,0,0,4" VerticalAlignment="Center"/>
+
+                                                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Name" FontSize="11" Foreground="#64748B" Margin="0,0,0,4" VerticalAlignment="Center"/>
+                                                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding ElementName}" FontSize="11" Foreground="#1E293B" FontWeight="Medium" TextTrimming="CharacterEllipsis" Margin="0,0,0,4" VerticalAlignment="Center"/>
+
+                                                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Protected By" FontSize="11" Foreground="#64748B" VerticalAlignment="Center"/>
+                                                            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding ProtectedBy}" FontSize="11" Foreground="#1E293B" FontWeight="Medium" VerticalAlignment="Center"/>
+                                                        </Grid>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Border>
+
+                <!-- Empty State (when no protected elements) -->
+                <Border Grid.Row="2" x:Name="EmptyDetailsPanel"
+                        Visibility="Collapsed"
+                        Background="#F8FAFC" BorderBrush="#E2E8F0"
+                        BorderThickness="1" CornerRadius="6"
+                        Margin="16,8,16,16" Padding="16">
+                    <TextBlock Text="No protected elements found."
+                               FontSize="11" Foreground="#94A3B8"
+                               HorizontalAlignment="Center"/>
+                </Border>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

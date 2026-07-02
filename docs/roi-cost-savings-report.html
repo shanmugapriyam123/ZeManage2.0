@@ -1,0 +1,1441 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Ze'Manage — ROI &amp; Cost Quantification Dashboard</title>
+<style>
+  :root {
+    --bg: #f8fafc;
+    --panel: #ffffff;
+    --ink: #0f172a;
+    --ink-soft: #334155;
+    --muted: #64748b;
+    --muted-soft: #94a3b8;
+    --line: #e2e8f0;
+    --line-soft: #f1f5f9;
+    --soft: #f8fafc;
+
+    --brand: #166534;
+    --brand-light: #16a34a;
+    --brand-bg: #dcfce7;
+    --accent: #2563eb;
+    --accent-bg: #dbeafe;
+    --warn: #d97706;
+    --warn-bg: #fef3c7;
+    --danger: #dc2626;
+    --danger-bg: #fee2e2;
+    --kn: #7c3aed;
+    --kn-bg: #ede9fe;
+    --cmp: #0891b2;
+    --cmp-bg: #cffafe;
+
+    --save: #16a34a; --save-bg: #dcfce7;
+    --time: #2563eb; --time-bg: #dbeafe;
+    --risk: #d97706; --risk-bg: #fef3c7;
+    --loss: #dc2626; --loss-bg: #fee2e2;
+    --info: #475569; --info-bg: #e2e8f0;
+
+    --m1: #1d4ed8; --m1-bg: #dbeafe;
+    --m2: #0891b2; --m2-bg: #cffafe;
+    --m3: #16a34a; --m3-bg: #dcfce7;
+    --m4: #db2777; --m4-bg: #fce7f3;
+    --m5: #64748b; --m5-bg: #e2e8f0;
+
+    --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
+    --shadow-md: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 14px/1.55 -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg); color: var(--ink);
+    margin: 0 auto; padding: 28px 24px 60px;
+    max-width: 1320px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1 { font-size: 24px; margin: 0; letter-spacing: -0.01em; font-weight: 700; }
+  h2 {
+    font-size: 13px; color: var(--muted); margin: 0 0 16px;
+    text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600;
+    padding-bottom: 0; border-bottom: none;
+  }
+  h3 {
+    font-size: 12px; margin: 18px 0 8px; color: var(--muted);
+    font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  small { color: var(--muted); font-size: 12px; }
+  code {
+    font-family: ui-monospace, "SF Mono", Consolas, monospace;
+    font-size: 11.5px; background: var(--line-soft);
+    padding: 1px 5px; border-radius: 4px; color: var(--ink-soft);
+  }
+  p { margin: 6px 0; }
+
+  /* Header */
+  header {
+    background: var(--panel); padding: 18px 24px; border-radius: var(--radius);
+    margin-bottom: 18px; border: 1px solid var(--line); box-shadow: var(--shadow-sm);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  header > div:first-child { display: flex; flex-direction: column; gap: 4px; }
+  header small { font-size: 13px; }
+  header .filters { color: var(--muted); font-size: 13px; }
+  header .filters span { color: var(--ink); font-weight: 600; }
+
+  /* Sections */
+  section {
+    background: var(--panel); padding: 22px 24px; border-radius: var(--radius);
+    margin-bottom: 18px; border: 1px solid var(--line); box-shadow: var(--shadow-sm);
+  }
+
+  /* ===== Headline / Hero ===== */
+  .headline { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 14px; }
+  .hero {
+    padding: 24px;
+    border-radius: var(--radius-sm);
+    background: linear-gradient(135deg, #052e16 0%, #14532d 50%, #166534 100%);
+    color: white; position: relative; overflow: hidden;
+  }
+  .hero::after {
+    content: ''; position: absolute; top: -50%; right: -20%;
+    width: 300px; height: 300px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+  }
+  .hero .label { font-size: 11px; opacity: 0.85; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; position: relative; z-index: 1; }
+  .hero .value { font-size: 42px; font-weight: 700; line-height: 1.05; margin-top: 6px; letter-spacing: -0.02em; position: relative; z-index: 1; }
+  .hero .sub { font-size: 13px; opacity: 0.92; margin-top: 8px; position: relative; z-index: 1; }
+  .hero .sub strong { font-weight: 600; }
+
+  .kpi {
+    padding: 18px; border-radius: var(--radius-sm);
+    background: var(--panel); border: 1px solid var(--line);
+    position: relative; overflow: hidden;
+  }
+  .kpi::before {
+    content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 3px;
+    background: var(--muted-soft);
+  }
+  .kpi.save::before { background: var(--brand-light); }
+  .kpi.loss::before { background: var(--danger); }
+  .kpi.risk::before { background: var(--warn); }
+  .kpi .label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); font-weight: 600; }
+  .kpi .value { font-size: 22px; font-weight: 700; margin-top: 6px; letter-spacing: -0.01em; }
+  .kpi .sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .kpi.save .value { color: var(--brand); }
+  .kpi.loss .value { color: var(--danger); }
+  .kpi.risk .value { color: var(--warn); }
+
+  /* ===== Tables ===== */
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th {
+    text-align: left; padding: 10px 12px;
+    background: var(--soft); color: var(--muted);
+    font-weight: 600; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.04em;
+    border-bottom: 1px solid var(--line);
+  }
+  th:first-child { border-top-left-radius: 6px; }
+  th:last-child { border-top-right-radius: 6px; }
+  td {
+    padding: 10px 12px; border-bottom: 1px solid var(--line-soft);
+    vertical-align: middle;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr.total td { font-weight: 700; background: var(--soft); }
+  tr:hover td { background: var(--soft); }
+  tr.total:hover td, tbody tr:last-child:hover td { background: var(--soft); }
+  .num { text-align: right; font-variant-numeric: tabular-nums; font-family: ui-monospace, "SF Mono", Consolas, monospace; font-size: 12.5px; }
+  .pos { color: var(--brand); font-weight: 600; }
+  .neg { color: var(--danger); font-weight: 600; }
+  .neu { color: var(--muted); }
+
+  /* ===== Badges ===== */
+  .badge {
+    display: inline-block; padding: 3px 9px; border-radius: 12px;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.02em;
+  }
+  .b-save { background: var(--save-bg); color: var(--save); }
+  .b-time { background: var(--time-bg); color: var(--time); }
+  .b-risk { background: var(--risk-bg); color: var(--risk); }
+  .b-loss { background: var(--loss-bg); color: var(--loss); }
+  .b-kn   { background: var(--kn-bg); color: var(--kn); }
+  .b-cmp  { background: var(--cmp-bg); color: var(--cmp); }
+  .b-info { background: var(--info-bg); color: var(--info); }
+  .b-m1   { background: var(--m1-bg); color: var(--m1); }
+  .b-m2   { background: var(--m2-bg); color: var(--m2); }
+  .b-m3   { background: var(--m3-bg); color: var(--m3); }
+  .b-m4   { background: var(--m4-bg); color: var(--m4); }
+  .b-m5   { background: var(--m5-bg); color: var(--m5); }
+  .b-input { background: var(--warn-bg); color: #92400e; font-size: 10.5px; padding: 2px 7px; border: 1px dashed var(--warn); }
+
+  /* ===== Bars ===== */
+  .bar-wrap { height: 10px; background: var(--line-soft); border-radius: 5px; overflow: hidden; }
+  .bar { height: 100%; transition: width 0.3s ease; border-radius: 5px; }
+  .bar.pos { background: var(--brand-light); }
+  .bar.neg { background: var(--danger); }
+  .bar.b   { background: var(--accent); }
+  .bar.r   { background: var(--warn); }
+  .bar.k   { background: var(--kn); }
+  .bar.c   { background: var(--cmp); }
+  .stack { display: flex; height: 18px; border-radius: 4px; overflow: hidden; background: var(--line-soft); }
+  .stack > div { height: 100%; transition: width 0.3s ease; }
+
+  /* ===== Module cards ===== */
+  .modcard {
+    border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 24px; background: var(--panel);
+    margin-bottom: 0;
+    position: relative; overflow: hidden;
+  }
+  .modcard::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--muted-soft);
+  }
+  .modcard.m1::before { background: var(--m1); }
+  .modcard.m2::before { background: var(--m2); }
+  .modcard.m3::before { background: var(--m3); }
+  .modcard.m4::before { background: var(--m4); }
+  .modcard.m5::before { background: var(--m5); }
+  .modcard .mod-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 18px; margin-bottom: 16px; }
+  .modcard h3 {
+    margin: 0; color: var(--ink); font-size: 16px;
+    text-transform: none; letter-spacing: 0; font-weight: 600;
+  }
+  .modcard h3 small { color: var(--muted); font-weight: 400; font-size: 13px; }
+  .modcard p { color: var(--muted); font-size: 13px; line-height: 1.55; max-width: 700px; }
+  .modcard .big {
+    font-size: 30px; font-weight: 700; color: var(--brand);
+    line-height: 1; transition: color 0.15s; letter-spacing: -0.02em;
+    text-align: right; white-space: nowrap;
+  }
+  .modcard .big small {
+    display: block; color: var(--muted); font-size: 11px;
+    font-weight: 500; margin-top: 6px; letter-spacing: 0;
+  }
+
+  /* Submodule tiles */
+  .submods {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 10px; margin: 16px 0;
+  }
+  .submod {
+    padding: 12px 14px; background: var(--soft);
+    border-radius: var(--radius-sm); border: 1px solid var(--line);
+    font-size: 12px;
+  }
+  .submod .sm-lbl { color: var(--muted); font-weight: 600; font-size: 11.5px; }
+  .submod .sm-val {
+    font-weight: 700; color: var(--brand); font-size: 18px;
+    margin-top: 4px; transition: color 0.15s; letter-spacing: -0.01em;
+    font-family: ui-monospace, "SF Mono", Consolas, monospace;
+  }
+  .submod small { display: block; margin-top: 4px; color: var(--muted); font-size: 11px; line-height: 1.4; }
+
+  /* Streams */
+  .modcard .streams {
+    margin-top: 18px; display: flex; flex-direction: column; gap: 2px;
+    border-top: 1px solid var(--line); padding-top: 16px;
+  }
+  .streams .row {
+    display: grid; grid-template-columns: 28px 1fr 110px;
+    gap: 12px; align-items: center; font-size: 13px;
+    padding: 8px 0; border-bottom: 1px solid var(--line-soft);
+  }
+  .streams .row:last-child { border-bottom: none; }
+  .streams .row .lbl { color: var(--ink); font-weight: 500; }
+  .streams .row .lbl small {
+    display: block; color: var(--muted); margin-top: 2px;
+    font-size: 11.5px; font-weight: 400;
+  }
+  .streams .row .val {
+    text-align: right; font-weight: 700; font-variant-numeric: tabular-nums;
+    transition: color 0.15s; font-family: ui-monospace, "SF Mono", Consolas, monospace;
+    font-size: 14px;
+  }
+
+  /* ===== Waterfall ===== */
+  .waterfall {
+    display: flex; align-items: flex-end; gap: 10px;
+    height: 220px; margin: 16px 0 8px; padding: 0 8px;
+  }
+  .wf { display: flex; flex-direction: column; align-items: center; flex: 1; min-width: 0; }
+  .wf .col {
+    width: 100%; border-radius: 4px 4px 0 0;
+    transition: height 0.4s ease;
+    box-shadow: inset 0 -2px 0 rgba(0,0,0,0.08);
+  }
+  .wf .col.m1 { background: var(--m1); }
+  .wf .col.m2 { background: var(--m2); }
+  .wf .col.m3 { background: var(--m3); }
+  .wf .col.m4 { background: var(--m4); }
+  .wf .col.m5 { background: var(--m5); }
+  .wf .col.sub { background: var(--danger); opacity: 0.85; }
+  .wf .col.final { background: var(--ink); }
+  .wf .val { font-size: 12px; font-weight: 700; margin-top: 6px; transition: color 0.15s; font-variant-numeric: tabular-nums; }
+  .wf .lbl { font-size: 11px; color: var(--muted); margin-top: 4px; text-align: center; line-height: 1.3; font-weight: 500; }
+  .wf .lbl small { font-size: 10px; font-weight: 400; }
+
+  /* ===== Pills ===== */
+  .pill {
+    padding: 3px 10px; border-radius: 12px; font-size: 12px;
+    font-weight: 600; display: inline-block; min-width: 52px; text-align: center;
+  }
+  .pill.green  { background: var(--save-bg); color: var(--save); }
+  .pill.yellow { background: var(--risk-bg); color: var(--risk); }
+  .pill.red    { background: var(--loss-bg); color: var(--loss); }
+
+  .cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .flash { animation: flash 0.5s ease; }
+  @keyframes flash { 0% { background-color: var(--warn-bg); } 100% { background-color: transparent; } }
+
+  /* Legend */
+  .legend {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    font-size: 12px; color: var(--muted); margin-top: 12px;
+    align-items: center;
+  }
+  .legend .sw {
+    display: inline-block; width: 11px; height: 11px;
+    border-radius: 3px; margin-right: 5px; vertical-align: middle;
+  }
+  .legend span { display: inline-flex; align-items: center; }
+  .legend .bench {
+    margin-left: auto; color: var(--ink-soft); font-weight: 500;
+    padding: 2px 10px; background: var(--soft); border-radius: 12px;
+  }
+
+  /* ===== Confidence badges ===== */
+  .conf {
+    display: inline-block; padding: 2px 8px; border-radius: 10px;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.05em;
+    vertical-align: middle; margin-left: 6px;
+  }
+  .conf-h { background: var(--save-bg); color: var(--brand); }
+  .conf-m { background: var(--risk-bg); color: var(--warn); }
+  .conf-l { background: var(--loss-bg); color: #991b1b; }
+
+  /* ===== Data source status pills ===== */
+  .src {
+    display: inline-block; padding: 2px 7px; border-radius: 4px;
+    font-size: 10.5px; font-weight: 700; letter-spacing: 0.02em;
+  }
+  .src-ok    { background: var(--save-bg); color: var(--brand); }
+  .src-part  { background: var(--risk-bg); color: var(--warn); }
+  .src-miss  { background: var(--loss-bg); color: #991b1b; }
+
+  /* ===== Scenario presets ===== */
+  .scenarios { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 10px 0 18px; }
+  .scenario {
+    padding: 14px 16px; border-radius: var(--radius-sm); cursor: pointer; text-align: center;
+    border: 1.5px solid var(--line); background: var(--panel);
+    font-size: 13px; transition: all 0.15s ease;
+  }
+  .scenario:hover { border-color: var(--muted-soft); background: var(--soft); }
+  .scenario.active {
+    border-color: var(--accent); background: var(--accent-bg);
+    color: var(--accent); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  }
+  .scenario .scn-label { font-size: 14px; font-weight: 700; }
+  .scenario .scn-sub { font-size: 12px; font-weight: 400; color: var(--muted); margin-top: 4px; }
+  .scenario.active .scn-sub { color: var(--accent); opacity: 0.85; }
+
+  /* ===== Assumptions panel ===== */
+  .assume {
+    background: var(--panel);
+    border: 1px solid var(--line);
+  }
+  .assume > p { color: var(--muted); font-size: 13px; line-height: 1.6; }
+  .assume .grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 12px; margin-top: 12px;
+  }
+  .assume .field {
+    display: flex; flex-direction: column;
+    background: var(--soft); padding: 12px 14px;
+    border-radius: var(--radius-sm); border: 1px solid var(--line);
+    transition: border-color 0.15s;
+  }
+  .assume .field:focus-within { border-color: var(--accent); background: var(--panel); }
+  .assume .field label {
+    font-size: 12px; color: var(--ink); font-weight: 600; letter-spacing: -0.005em;
+  }
+  .assume .field label small { color: var(--muted); font-weight: 400; }
+  .assume .field .input-row { display: flex; align-items: baseline; gap: 6px; margin-top: 8px; }
+  .assume .field .prefix, .assume .field .suffix { font-size: 12px; color: var(--muted); font-weight: 500; }
+  .assume .field input {
+    width: 100%; font: 700 18px ui-monospace, "SF Mono", Consolas, monospace;
+    border: none; border-bottom: 1.5px solid var(--line);
+    padding: 2px 0; background: transparent; color: var(--ink);
+    -moz-appearance: textfield;
+  }
+  .assume .field input::-webkit-outer-spin-button,
+  .assume .field input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .assume .field input:focus { outline: none; border-bottom-color: var(--accent); }
+  .assume .field .hint {
+    font-size: 11.5px; color: var(--muted); margin-top: 8px;
+    line-height: 1.45; padding-top: 8px; border-top: 1px solid var(--line);
+  }
+  .assume .field .hint strong { color: var(--ink-soft); }
+  .assume .controls { display: flex; gap: 10px; margin-top: 18px; align-items: center; }
+  .assume button {
+    padding: 9px 18px; font-size: 13px; font-weight: 600; border-radius: 6px; cursor: pointer;
+    border: 1px solid var(--line); background: var(--panel); color: var(--ink);
+    transition: all 0.15s;
+  }
+  .assume button:hover { background: var(--soft); border-color: var(--muted-soft); }
+  .assume button.primary {
+    background: var(--accent); color: white; border-color: var(--accent);
+  }
+  .assume button.primary:hover { background: #1d4ed8; border-color: #1d4ed8; }
+  .assume .changed-tag {
+    font-size: 12px; color: var(--brand); font-weight: 600;
+    margin-left: auto; opacity: 0; transition: opacity 0.3s;
+  }
+  .assume .changed-tag.show { opacity: 1; }
+
+  /* Group headers in assumptions */
+  .assume .group-head {
+    grid-column: 1 / -1;
+    display: flex; align-items: center; gap: 10px;
+    font-size: 13px; font-weight: 700; color: var(--ink);
+    padding: 14px 0 6px; margin-top: 8px;
+    border-bottom: 1px solid var(--line);
+  }
+  .assume .group-head:first-child { margin-top: 0; }
+  .assume .group-head small {
+    font-weight: 400; color: var(--muted);
+    margin-left: auto; font-size: 12px;
+  }
+
+  /* ===== Data source panel ===== */
+  .data-source { background: var(--panel); }
+  .data-source > p { color: var(--muted); font-size: 13px; line-height: 1.6; }
+  .ds-summary {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 12px; margin: 14px 0;
+  }
+  .ds-card {
+    padding: 16px 18px; border-radius: var(--radius-sm);
+    background: var(--soft); border: 1px solid var(--line);
+    position: relative; overflow: hidden;
+  }
+  .ds-card::before {
+    content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 3px;
+  }
+  .ds-card.ok::before   { background: var(--brand-light); }
+  .ds-card.part::before { background: var(--warn); }
+  .ds-card.miss::before { background: var(--danger); }
+  .ds-card .ds-num {
+    font-size: 26px; font-weight: 700; margin-top: 4px;
+    letter-spacing: -0.02em; font-variant-numeric: tabular-nums;
+  }
+  .ds-card .ds-num small { font-size: 13px; color: var(--muted); font-weight: 500; margin-left: 4px; }
+  .ds-card .ds-label {
+    font-size: 11px; color: var(--muted); text-transform: uppercase;
+    letter-spacing: 0.05em; font-weight: 600;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .ds-card .ds-hint { font-size: 12px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+
+  .ds-table-wrap {
+    max-height: 360px; overflow-y: auto;
+    border: 1px solid var(--line); border-radius: var(--radius-sm);
+    background: var(--panel);
+  }
+  .ds-table-wrap table { font-size: 12.5px; }
+  .ds-table-wrap th { position: sticky; top: 0; z-index: 1; }
+  .ds-table-wrap input.count {
+    width: 90px; padding: 5px 8px;
+    font: 600 12.5px ui-monospace, "SF Mono", Consolas, monospace;
+    border: 1px solid var(--line); border-radius: 4px;
+    text-align: right; background: var(--panel);
+    transition: border-color 0.15s;
+  }
+  .ds-table-wrap input.count:focus { outline: none; border-color: var(--accent); }
+  .ds-table-wrap input.count.assumed { background: var(--warn-bg); border-color: var(--warn); }
+
+  details summary {
+    cursor: pointer; color: var(--muted); font-size: 13px;
+    padding: 6px 0; user-select: none; font-weight: 500;
+  }
+  details summary:hover { color: var(--ink); }
+  details[open] summary { color: var(--ink); margin-bottom: 8px; }
+
+  .csv-import {
+    background: var(--soft); border-radius: var(--radius-sm); padding: 14px 16px;
+    margin-top: 14px; border: 1px dashed var(--muted-soft);
+  }
+  .csv-import label {
+    font-size: 12px; font-weight: 600; color: var(--ink-soft);
+    margin-bottom: 6px; display: block;
+  }
+  .csv-import textarea {
+    width: 100%; min-height: 70px;
+    font: 11.5px/1.5 ui-monospace, "SF Mono", Consolas, monospace;
+    border: 1px solid var(--line); border-radius: 6px;
+    padding: 10px; resize: vertical; background: var(--panel);
+    color: var(--ink-soft);
+  }
+  .csv-import textarea:focus { outline: none; border-color: var(--accent); }
+  .csv-import .csv-actions { display: flex; gap: 8px; align-items: center; margin-top: 10px; flex-wrap: wrap; }
+  .csv-import button {
+    padding: 7px 14px; font-size: 12.5px; font-weight: 600; border-radius: 6px; cursor: pointer;
+    border: 1px solid var(--line); background: var(--panel); color: var(--ink); transition: all 0.15s;
+  }
+  .csv-import button:hover { background: var(--line-soft); }
+  .csv-import button.primary { background: var(--accent); color: white; border-color: var(--accent); }
+  .csv-import button.primary:hover { background: #1d4ed8; }
+  .csv-msg { font-size: 12px; }
+
+  @media (max-width: 900px) {
+    body { padding: 16px 12px 40px; }
+    .headline { grid-template-columns: 1fr 1fr; }
+    .assume .grid { grid-template-columns: 1fr 1fr; }
+    .submods { grid-template-columns: 1fr 1fr; }
+    .scenarios { grid-template-columns: 1fr; }
+    .ds-summary { grid-template-columns: 1fr; }
+    .cols-2 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Ze'Manage — ROI &amp; Cost Quantification</h1>
+    <small>BIM Manager view · 5 modules · proves licence value · drives team coaching</small>
+  </div>
+  <div class="filters">
+    Period <span>12 Apr – 12 May 2026</span> ·
+    Project <span>All</span> ·
+    Hourly cost <span data-key="hdr.hourly_rate">$75/hr</span>
+  </div>
+</header>
+
+<!-- ============================================================== -->
+<!-- DATA SOURCE PANEL — raw counts: measured vs assumed             -->
+<!-- ============================================================== -->
+<section class="assume data-source">
+  <h2>📥 Data Source — what's measured vs assumed</h2>
+  <p><small>Raw counts feed the calculations. Some are derivable from Ze'Manage's current SQLite schema; some need new instrumentation. Edit any value inline, or paste a server-exported CSV to bulk-update the measurable ones.</small></p>
+
+  <div class="ds-summary">
+    <div class="ds-card ok">
+      <div class="ds-label">From server <span class="src src-ok">✓ measured</span></div>
+      <div class="ds-num pos"><span id="ds-count-ok">8</span> <small style="font-size:12px;color:var(--muted);font-weight:400">of 27 counts</small></div>
+      <div class="ds-hint">Query-ready against current schema. Export from server as CSV and load below.</div>
+    </div>
+    <div class="ds-card part">
+      <div class="ds-label">Derivable <span class="src src-part">~ partial</span></div>
+      <div class="ds-num" style="color:var(--risk)"><span id="ds-count-part">10</span> <small style="font-size:12px;color:var(--muted);font-weight:400">of 27</small></div>
+      <div class="ds-hint">Raw fields exist but need aggregation or small schema additions (parent_sync_id, criticality_tier, event_type→category map, etc.).</div>
+    </div>
+    <div class="ds-card miss">
+      <div class="ds-label">Assumed <span class="src src-miss">✗ not collected</span></div>
+      <div class="ds-num neg"><span id="ds-count-miss">9</span> <small style="font-size:12px;color:var(--muted);font-weight:400">of 27</small></div>
+      <div class="ds-hint">Currently filled with industry-grounded estimates. Requires new collectors (idle tracking, collision logging, unpin-blocked audit).</div>
+    </div>
+  </div>
+
+  <details>
+    <summary>Show all 27 raw counts &amp; their sources</summary>
+    <div class="ds-table-wrap" style="margin-top:8px">
+      <table>
+        <thead>
+          <tr><th>Module</th><th>Raw count</th><th>Status</th><th style="text-align:right">Value</th><th>Source / gap</th></tr>
+        </thead>
+        <tbody id="ds-rows">
+          <!-- Populated by JS -->
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <div class="csv-import">
+    <label style="font-size:11.5px;font-weight:600;color:var(--muted)">Paste server-exported CSV (one <code>key,value</code> per line)</label>
+    <textarea id="csv-input" placeholder="active_rules,62&#10;total_sessions,1847&#10;total_syncs,3840&#10;warnings_cleared,1840&#10;..."></textarea>
+    <div class="csv-actions">
+      <button class="primary" onclick="loadCsv()">Load CSV</button>
+      <button onclick="exportCsv()">Export current values</button>
+      <button onclick="resetCounts()">Reset counts</button>
+      <span class="csv-msg" id="csv-msg"></span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================== -->
+<!-- ASSUMPTIONS PANEL — grouped &amp; evidence-graded inputs        -->
+<!-- ============================================================== -->
+<section class="assume">
+  <h2>⚙ Assumptions — tune to match your firm, then recompute</h2>
+  <p><small>Every $ figure is <code>your raw counts × these assumptions</code>. Each input is graded by how confidently you can validate it against your own team:
+    <span class="conf conf-h">HIGH</span> already known by your finance team ·
+    <span class="conf conf-m">MED</span> verifiable from your past projects ·
+    <span class="conf conf-l">LOW</span> industry proxy — sanity-check with your BIM lead.</small>
+  </p>
+
+  <h3 style="margin-top:6px">Quick presets</h3>
+  <div class="scenarios">
+    <div class="scenario" data-scenario="conservative" onclick="applyScenario('conservative')">
+      <div class="scn-label">Conservative</div>
+      <div class="scn-sub">lower bound · safe to present to leadership</div>
+    </div>
+    <div class="scenario active" data-scenario="realistic" onclick="applyScenario('realistic')">
+      <div class="scn-label">Realistic</div>
+      <div class="scn-sub">typical industry values · day-to-day view</div>
+    </div>
+    <div class="scenario" data-scenario="optimistic" onclick="applyScenario('optimistic')">
+      <div class="scn-label">Optimistic</div>
+      <div class="scn-sub">strong case · for high-performing teams</div>
+    </div>
+  </div>
+
+  <div class="grid">
+
+    <!-- ===== Group A: Cost basis (HIGH confidence) ===== -->
+    <div class="group-head">
+      A · Your labor cost <span class="conf conf-h">HIGH</span>
+      <small>things your finance team already knows</small>
+    </div>
+
+    <div class="field">
+      <label>Average designer hourly cost</label>
+      <div class="input-row"><span class="prefix">$</span><input class="param" id="p_hourly_rate" type="number" value="75" step="5" min="0"><span class="suffix">/ hr</span></div>
+      <div class="hint"><strong>How to validate:</strong> ask finance for your "fully-loaded" or "project billing" rate — salary + benefits + overhead. Every dollar in this report scales linearly from this number.</div>
+    </div>
+
+    <div class="field">
+      <label>Late-stage cost multiplier</label>
+      <div class="input-row"><input class="param" id="p_phase_mult" type="number" value="1.8" step="0.1" min="1"><span class="suffix">×</span></div>
+      <div class="hint"><strong>How to validate:</strong> a fix during Construction costs ~5× more than during early Design; CD-stage ~2.5×. Pick the weighted average for your current project portfolio. Default = mostly Design with some CD.</div>
+    </div>
+
+    <!-- ===== Group B: Cascade & risk factors (MED confidence) ===== -->
+    <div class="group-head">
+      B · How errors spread on your team <span class="conf conf-m">MED</span>
+      <small>verify against a recent project · these decide how far one mistake travels</small>
+    </div>
+
+    <div class="field">
+      <label>Avg sheets/views affected per element</label>
+      <div class="input-row"><input class="param" id="p_dependency_factor" type="number" value="2.5" step="0.5" min="1"><span class="suffix">× refs</span></div>
+      <div class="hint"><strong>How to validate:</strong> open a recent project, right-click a typical grid line → "Select All Instances" or check schedules — count the sheets/views that reference it. Most elements appear in 2–5 places.</div>
+    </div>
+
+    <div class="field">
+      <label>Wrong-override rate</label>
+      <div class="input-row"><input class="param" id="p_override_risk" type="number" value="0.3" step="0.05" min="0" max="1"><span class="suffix">fraction</span></div>
+      <div class="hint"><strong>How to validate:</strong> when designers override a warning and proceed, how often is the change reverted/fixed within a day? Industry average is ~30%. Honest estimate from your team's track record.</div>
+    </div>
+
+    <div class="field">
+      <label>Productive time during background sync</label>
+      <div class="input-row"><input class="param" id="p_bg_sync_usable" type="number" value="0.5" step="0.05" min="0" max="1"><span class="suffix">fraction</span></div>
+      <div class="hint"><strong>How to validate:</strong> when Revit syncs in the background, what % of that time do designers keep actively modelling (vs taking a coffee break, alt-tabbing, etc.)? Watch one designer for an hour to gauge.</div>
+    </div>
+
+    <div class="field">
+      <label>Recoverable idle time</label>
+      <div class="input-row"><input class="param" id="p_idle_recovery" type="number" value="0.05" step="0.01" min="0" max="1"><span class="suffix">fraction</span></div>
+      <div class="hint"><strong>How to validate:</strong> of all the "idle" time we measure (Revit open, no clicks), what % could realistically become productive through better scheduling or coaching? Most idle is legitimate breaks/meetings — keep conservative.</div>
+    </div>
+
+    <!-- ===== Group C: Per-intervention time costs (LOW — proxy) ===== -->
+    <div class="group-head">
+      C · How long each mistake costs to fix <span class="conf conf-l">LOW</span>
+      <small>validate from your team's last 10–20 incidents — these are per-event costs avoided</small>
+    </div>
+
+    <div class="field">
+      <label>Rework if a pinned element is moved</label>
+      <div class="input-row"><input class="param" id="p_t_pin_acute" type="number" value="25" step="5" min="0"><span class="suffix">min</span></div>
+      <div class="hint"><strong>How to validate:</strong> last time a designer accidentally unpinned and moved a grid, level, or control point — how long to find every broken sheet/section and put it back? Industry range: 20–60 min.</div>
+    </div>
+
+    <div class="field">
+      <label>Rework if a critical element is deleted/moved</label>
+      <div class="input-row"><input class="param" id="p_t_cmd_critical" type="number" value="15" step="5" min="0"><span class="suffix">min</span></div>
+      <div class="hint"><strong>How to validate:</strong> avg rework when someone deletes/moves a high-impact element (structural grid, level line, key view, datum). Think back to your team's last "near miss" — how long did the recovery take?</div>
+    </div>
+
+    <div class="field">
+      <label>Time saved per "are you sure?" prompt</label>
+      <div class="input-row"><input class="param" id="p_t_cmd_minor" type="number" value="2" step="0.5" min="0"><span class="suffix">min</span></div>
+      <div class="hint"><strong>How to validate:</strong> when the system warns "you're about to delete 12 elements — proceed?" and the designer reconsiders, how much downstream rework does that prevent? Small per event — happens many times a day.</div>
+    </div>
+
+    <div class="field">
+      <label>Cleanup if a stray CAD file gets imported</label>
+      <div class="input-row"><input class="param" id="p_t_event_cad" type="number" value="15" step="5" min="0"><span class="suffix">min</span></div>
+      <div class="hint"><strong>How to validate:</strong> last time a CAD import bloated the model or brought in warnings — how long did it take to purge, remove, re-audit, and restore performance? Typical: 10–40 min.</div>
+    </div>
+
+    <div class="field">
+      <label>Time lost per sync conflict</label>
+      <div class="input-row"><input class="param" id="p_t_collision" type="number" value="20" step="5" min="0"><span class="suffix">min</span></div>
+      <div class="hint"><strong>How to validate:</strong> when two designers try to sync simultaneously and conflict, how long until both are back in sync? Includes the second person waiting + merging/redoing work. Varies wildly: 10 min (minor) to 45+ (major merge).</div>
+    </div>
+
+    <div class="field">
+      <label>Time saved per recovered Revit crash</label>
+      <div class="input-row"><input class="param" id="p_t_crash_recovery" type="number" value="45" step="5" min="0"><span class="suffix">min</span></div>
+      <div class="hint"><strong>How to validate:</strong> when Revit crashes and the system auto-recovers (knows which file, restores last save, re-opens to the right view), how much time does that save vs the designer figuring it out alone — reopen, reload, re-orient, redo lost work?</div>
+    </div>
+
+    <div class="field">
+      <label>Time to resolve one Revit warning</label>
+      <div class="input-row"><input class="param" id="p_t_per_warning" type="number" value="1" step="0.5" min="0"><span class="suffix">min</span></div>
+      <div class="hint"><strong>How to validate:</strong> last time someone did a "warnings cleanup session" on your team — total hours spent ÷ warnings resolved. Typical 30 sec – 3 min depending on warning type.</div>
+    </div>
+
+    <div class="field">
+      <label>Time saved per AI answer</label>
+      <div class="input-row"><input class="param" id="p_t_manual_lookup" type="number" value="3" step="1" min="0"><span class="suffix">min</span></div>
+      <div class="hint"><strong>How to validate:</strong> when AI answers "how do I…" instead of the designer Googling, interrupting a senior, or trial-and-error — how much time does that save? Juniors save 5–10 min/question; seniors 1–3 min.</div>
+    </div>
+
+    <!-- ===== Group D: Vendor / Compliance / Performance (LOW) ===== -->
+    <div class="group-head">
+      D · Indirect team-wide value <span class="conf conf-l">LOW</span>
+      <small>soft savings benefiting the whole team — review with your finance / quality lead</small>
+    </div>
+
+    <div class="field">
+      <label>Team time saved per MB of bloat prevented</label>
+      <div class="input-row"><input class="param" id="p_mb_save_per_mb" type="number" value="1.0" step="0.5" min="0"><span class="suffix">min / MB</span></div>
+      <div class="hint"><strong>How to validate:</strong> when 1 MB of model growth is prevented, the whole team opens a smaller file going forward. Estimate: (team size × opens per day × seconds saved per MB at open). Higher value for bigger teams, larger projects.</div>
+    </div>
+
+    <div class="field">
+      <label>Audit value per active standard rule</label>
+      <div class="input-row"><span class="prefix">$</span><input class="param" id="p_compliance_per_rule" type="number" value="20" step="5" min="0"><span class="suffix">/ month</span></div>
+      <div class="hint"><strong>How to validate:</strong> what's the monthly value of automating one company-standard rule (e.g. "no CAD imports on coordination views")? Think: annual ISO 19650 / BS-1192 audit-prep cost ÷ 12 ÷ # standards covered.</div>
+    </div>
+
+  </div>
+
+  <div class="controls">
+    <button onclick="resetDefaults()">Reset to defaults</button>
+    <button class="primary" onclick="render(true)">Recompute</button>
+    <span class="changed-tag" id="changed-tag">● updated</span>
+  </div>
+</section>
+
+<!-- ============================================================== -->
+<!-- 1. EXECUTIVE HEADLINE                                          -->
+<!-- ============================================================== -->
+<section>
+  <h2>Executive Summary</h2>
+  <div class="headline">
+    <div class="hero">
+      <div class="label">Net value delivered · 30 days</div>
+      <div class="value" data-key="headline.net">—</div>
+      <div class="sub"><span data-key="headline.net_hrs">—</span> productive hours · payback &lt; <span data-key="headline.payback_days">—</span> days</div>
+    </div>
+    <div class="kpi save">
+      <div class="label">Gross value generated</div>
+      <div class="value" data-key="headline.gross">—</div>
+      <div class="sub">Across all 5 modules</div>
+    </div>
+    <div class="kpi loss">
+      <div class="label">Cost &amp; realised loss</div>
+      <div class="value" data-key="headline.cost">—</div>
+      <div class="sub">Token cost · realised time loss</div>
+    </div>
+    <div class="kpi risk">
+      <div class="label">Bypass risk exposure</div>
+      <div class="value" data-key="headline.bypass">—</div>
+      <div class="sub">79 overrides · 12 OTP unlocks</div>
+    </div>
+  </div>
+
+  <h3>Module contribution to net value</h3>
+  <div class="waterfall">
+    <div class="wf"><div class="col m1" data-bar="m1.total"></div><div class="val" data-key="wf.m1">—</div><div class="lbl">M1 Protection<br><small>Pin·Cmd·Event·Rule</small></div></div>
+    <div class="wf"><div class="col m4" data-bar="m4.total"></div><div class="val" data-key="wf.m4">—</div><div class="lbl">M4 Sync<br>Control</div></div>
+    <div class="wf"><div class="col m3" data-bar="m3.total"></div><div class="val" data-key="wf.m3">—</div><div class="lbl">M3 Model<br>Health</div></div>
+    <div class="wf"><div class="col m2" data-bar="m2.total"></div><div class="val" data-key="wf.m2">—</div><div class="lbl">M2 Activity<br>Tracking</div></div>
+    <div class="wf"><div class="col m5" data-bar="m5.total"></div><div class="val" data-key="wf.m5">—</div><div class="lbl">M5 AI<br>(early)</div></div>
+    <div class="wf"><div class="col sub" data-bar="wf.cost"></div><div class="val" data-key="wf.cost">—</div><div class="lbl">Realised<br>loss/cost</div></div>
+    <div class="wf"><div class="col sub" data-bar="wf.bypass"></div><div class="val" data-key="wf.bypass">—</div><div class="lbl">Bypass risk</div></div>
+    <div class="wf"><div class="col final" data-bar="headline.net"></div><div class="val pos" data-key="wf.net">—</div><div class="lbl"><strong>Net ROI</strong></div></div>
+  </div>
+
+  <h3>The 5 modules at a glance</h3>
+  <table>
+    <thead><tr><th>Module</th><th>Primary value engine</th><th class="num">Net $</th><th class="num">% of total</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge b-m1">M1</span> <strong>Protection</strong></td><td>Stops destructive/non-compliant actions before damage spreads · Pin + Command + Event + Rule</td><td class="num pos" data-key="m1.total">—</td><td class="num" data-key="m1.pct">—</td></tr>
+      <tr><td><span class="badge b-m2">M2</span> <strong>Activity Tracking</strong></td><td>Turns invisible Revit time into accountable, billable, coachable data</td><td class="num pos" data-key="m2.total">—</td><td class="num" data-key="m2.pct">—</td></tr>
+      <tr><td><span class="badge b-m3">M3</span> <strong>Model Health</strong></td><td>Keeps models lean — faster open/sync for whole team; audit-ready handover</td><td class="num pos" data-key="m3.total">—</td><td class="num" data-key="m3.pct">—</td></tr>
+      <tr><td><span class="badge b-m4">M4</span> <strong>Sync Control</strong></td><td>Background sync + queue · team never stops modelling, never collides</td><td class="num pos" data-key="m4.total">—</td><td class="num" data-key="m4.pct">—</td></tr>
+      <tr><td><span class="badge b-m5">M5</span> <strong>AI</strong> <small>(early)</small></td><td>Self-service Q&amp;A · minimal impact for now</td><td class="num pos" data-key="m5.total">—</td><td class="num" data-key="m5.pct">—</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================== -->
+<!-- M1 · PROTECTION                                                 -->
+<!-- ============================================================== -->
+<section>
+  <h2><span class="badge b-m1">M1</span> Protection — Pin · Command · Event · Rule</h2>
+  <div class="modcard m1">
+    <div class="mod-head">
+      <div>
+        <h3>What it really does <small>· stops destructive or non-compliant actions before they cascade</small></h3>
+        <p style="margin-top:6px"><small>A single accepted bad action — a moved grid in CD phase, an unauthorised CAD import — costs hours of rework across 30+ sheets and 6 disciplines.</small></p>
+      </div>
+      <div class="big" data-key="m1.total">—<small>837 interventions · raw count</small></div>
+    </div>
+
+    <div class="submods">
+      <div class="submod">
+        <div class="sm-lbl">Pin Protection</div>
+        <div class="sm-val" data-key="m1.pin">—</div>
+        <small>1,420 elem-days · 14 unauth-unpin blocks · 12 OTP unlocks</small>
+      </div>
+      <div class="submod">
+        <div class="sm-lbl">Command Protection</div>
+        <div class="sm-val" data-key="m1.cmd">—</div>
+        <small>184 critical · 41 major · 612 minor · 68 overrides</small>
+      </div>
+      <div class="submod">
+        <div class="sm-lbl">Event Protection</div>
+        <div class="sm-val" data-key="m1.event">—</div>
+        <small>42 CAD-imports · 42 family/other · 11 overrides</small>
+      </div>
+      <div class="submod">
+        <div class="sm-lbl">Rule Engine</div>
+        <div class="sm-val" data-key="m1.rule">—</div>
+        <small>62 active rules · compliance attribution</small>
+      </div>
+    </div>
+
+    <div class="streams">
+      <div class="row"><span class="badge b-save">L</span><span class="lbl">Direct labor saved<small>rework hrs × discipline × phase multiplier</small></span><span class="val pos" data-key="m1.stream.labor">—</span></div>
+      <div class="row"><span class="badge b-time">R</span><span class="lbl">Risk avoidance<small>cascade through dependent views/sheets/disciplines</small></span><span class="val pos" data-key="m1.stream.risk">—</span></div>
+      <div class="row"><span class="badge b-cmp">C</span><span class="lbl">Compliance / standards<small>ISO-19650 audit trail · rule-to-clause mapping</small></span><span class="val pos" data-key="m1.stream.compliance">—</span></div>
+      <div class="row"><span class="badge b-kn">K</span><span class="lbl">In-context coaching (Notify/Assist)<small>each soft intervention is a micro-training event</small></span><span class="val pos" data-key="m1.stream.knowledge">—</span></div>
+      <div class="row"><span class="badge b-risk">⚠</span><span class="lbl">Bypass risk exposure<small>overrides × bad-bet rate × phase cost</small></span><span class="val neg" data-key="m1.stream.bypass">—</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================== -->
+<!-- M2 · ACTIVITY TRACKING                                          -->
+<!-- ============================================================== -->
+<section>
+  <h2><span class="badge b-m2">M2</span> Activity Tracking</h2>
+  <div class="modcard m2">
+    <div class="mod-head">
+      <div>
+        <h3>What it really does <small>· makes Revit time visible, billable, coachable</small></h3>
+        <p style="margin-top:6px"><small>Without telemetry: "who's on Project X this week?" is guesswork. Activity tracking turns it into data — driving billing accuracy, capacity planning, targeted coaching.</small></p>
+      </div>
+      <div class="big" data-key="m2.total">—<small>1,847 sessions · 92 users · 4 crashes recovered</small></div>
+    </div>
+
+    <div class="submods">
+      <div class="submod"><div class="sm-lbl">Billing accuracy</div><div class="sm-val" data-key="m2.billing">—</div><small>45 hrs recovered vs estimate</small></div>
+      <div class="submod"><div class="sm-lbl">Crash detection &amp; recovery</div><div class="sm-val" data-key="m2.crash">—</div><small>4 crashes · last-saved reload</small></div>
+      <div class="submod"><div class="sm-lbl">Idle / active visibility</div><div class="sm-val" data-key="m2.idle">—</div><small>380 idle hrs · coaching candidate</small></div>
+      <div class="submod"><div class="sm-lbl">Audit &amp; evidence trail</div><div class="sm-val" data-key="m2.audit">—</div><small>1,847 sessions · who-did-what</small></div>
+    </div>
+
+    <div class="streams">
+      <div class="row"><span class="badge b-save">L</span><span class="lbl">Billing accuracy<small>actual hrs per project replace estimates · under-billing recovered</small></span><span class="val pos" data-key="m2.stream.labor">—</span></div>
+      <div class="row"><span class="badge b-time">R</span><span class="lbl">Crash recovery acceleration<small>auto-detect via heartbeat + journal · halves recovery friction</small></span><span class="val pos" data-key="m2.stream.risk">—</span></div>
+      <div class="row"><span class="badge b-kn">K</span><span class="lbl">Capacity planning &amp; coaching<small>per-user productivity index drives interventions</small></span><span class="val pos" data-key="m2.stream.knowledge">—</span></div>
+      <div class="row"><span class="badge b-cmp">C</span><span class="lbl">Audit &amp; evidence trail<small>complete log for IP / dispute / legal evidence</small></span><span class="val pos" data-key="m2.stream.compliance">—</span></div>
+    </div>
+
+    <h3>Productivity index — every Revit hour, decomposed</h3>
+    <table>
+      <thead><tr><th>Project</th><th>Total Revit hrs</th><th>Time decomposition</th><th class="num">Productivity %</th><th>Flag</th></tr></thead>
+      <tbody>
+        <tr><td>HSP-Tower-A</td><td class="num">2,140</td>
+          <td><div class="stack"><div class="bar pos" style="width:71%"></div><div class="bar r" style="width:12%"></div><div class="bar b" style="width:6%"></div><div class="bar k" style="width:3%"></div><div class="bar neg" style="width:2%"></div><div class="bar c" style="width:6%"></div></div></td>
+          <td class="num pos">71%</td><td><span class="badge b-save">healthy</span></td></tr>
+        <tr><td>Hospital-Phase-2</td><td class="num">1,180</td>
+          <td><div class="stack"><div class="bar pos" style="width:62%"></div><div class="bar r" style="width:18%"></div><div class="bar b" style="width:8%"></div><div class="bar k" style="width:3%"></div><div class="bar neg" style="width:4%"></div><div class="bar c" style="width:5%"></div></div></td>
+          <td class="num pos">62%</td><td><span class="badge b-risk">below benchmark</span></td></tr>
+        <tr><td>Civic-Plaza</td><td class="num">760</td>
+          <td><div class="stack"><div class="bar pos" style="width:78%"></div><div class="bar r" style="width:8%"></div><div class="bar b" style="width:5%"></div><div class="bar k" style="width:2%"></div><div class="bar neg" style="width:1%"></div><div class="bar c" style="width:6%"></div></div></td>
+          <td class="num pos">78%</td><td><span class="badge b-save">top performer</span></td></tr>
+        <tr><td>Riverside-Mall</td><td class="num">920</td>
+          <td><div class="stack"><div class="bar pos" style="width:54%"></div><div class="bar r" style="width:14%"></div><div class="bar b" style="width:7%"></div><div class="bar k" style="width:5%"></div><div class="bar neg" style="width:3%"></div><div class="bar c" style="width:17%"></div></div></td>
+          <td class="num neg">54%</td><td><span class="badge b-loss">under-protected</span></td></tr>
+      </tbody>
+    </table>
+    <div class="legend">
+      <span><i class="sw" style="background:var(--brand-light)"></i> active</span>
+      <span><i class="sw" style="background:var(--warn)"></i> idle</span>
+      <span><i class="sw" style="background:var(--accent)"></i> dialog wait</span>
+      <span><i class="sw" style="background:var(--kn)"></i> sync/save</span>
+      <span><i class="sw" style="background:var(--danger)"></i> crash &amp; reload</span>
+      <span><i class="sw" style="background:var(--cmp)"></i> rework</span>
+      <span class="bench">Industry benchmark: 65–70% productive</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================== -->
+<!-- M3 · MODEL HEALTH                                               -->
+<!-- ============================================================== -->
+<section>
+  <h2><span class="badge b-m3">M3</span> Model Health</h2>
+  <div class="modcard m3">
+    <div class="mod-head">
+      <div>
+        <h3>What it really does <small>· keeps models lean &amp; audit-ready · prevents the "1 GB Revit model" tax</small></h3>
+        <p style="margin-top:6px"><small>Every MB of bloat is paid daily by every team member who opens the file. Model bloat avoided × team open count = real hours.</small></p>
+      </div>
+      <div class="big" data-key="m3.total">—<small>2.4 GB growth avoided · 1,840 warnings cleared</small></div>
+    </div>
+
+    <div class="submods">
+      <div class="submod"><div class="sm-lbl">File-size control</div><div class="sm-val" data-key="m3.filesize">—</div><small>2,400 MB growth avoided</small></div>
+      <div class="submod"><div class="sm-lbl">Warnings reduction</div><div class="sm-val" data-key="m3.warnings">—</div><small>1,840 cleared</small></div>
+      <div class="submod"><div class="sm-lbl">Duplicates &amp; orphans</div><div class="sm-val" data-key="m3.duplicates">—</div><small>412 dupes flagged</small></div>
+      <div class="submod"><div class="sm-lbl">Linked-file hygiene</div><div class="sm-val" data-key="m3.linked">—</div><small>21 linked DWG/Revit managed</small></div>
+    </div>
+
+    <div class="streams">
+      <div class="row"><span class="badge b-risk">P</span><span class="lbl">Performance — open/sync time<small>MB avoided × team daily opens × open-cost</small></span><span class="val pos" data-key="m3.stream.perf">—</span></div>
+      <div class="row"><span class="badge b-save">L</span><span class="lbl">Cleanup labor avoided<small>warnings auto-tracked · 1 BIM-cleanup session/month avoided</small></span><span class="val pos" data-key="m3.stream.labor">—</span></div>
+      <div class="row"><span class="badge b-cmp">C</span><span class="lbl">Audit-ready handover<small>model health score = contract-clause evidence</small></span><span class="val pos" data-key="m3.stream.compliance">—</span></div>
+      <div class="row"><span class="badge b-time">R</span><span class="lbl">Quality risk avoided<small>duplicates/orphans → quantity-takeoff errors</small></span><span class="val pos" data-key="m3.stream.risk">—</span></div>
+    </div>
+
+    <h3>Top health alerts this period</h3>
+    <table>
+      <thead><tr><th>Project</th><th class="num">File size Δ</th><th class="num">Warnings</th><th class="num">Linked DWGs</th><th class="num">Dupes</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>HSP-Tower-A</td><td class="num neg">+184 MB</td><td class="num">312</td><td class="num">4</td><td class="num">28</td><td><span class="pill yellow">watch</span></td></tr>
+        <tr><td>Hospital-Phase-2</td><td class="num pos">−42 MB</td><td class="num">187</td><td class="num">2</td><td class="num">11</td><td><span class="pill green">healthy</span></td></tr>
+        <tr><td>Civic-Plaza</td><td class="num pos">−18 MB</td><td class="num">94</td><td class="num">1</td><td class="num">4</td><td><span class="pill green">healthy</span></td></tr>
+        <tr><td>Riverside-Mall</td><td class="num neg">+412 MB</td><td class="num">1,247</td><td class="num">14</td><td class="num">369</td><td><span class="pill red">intervene</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================================================== -->
+<!-- M4 · SYNC CONTROL                                               -->
+<!-- ============================================================== -->
+<section>
+  <h2><span class="badge b-m4">M4</span> Sync Control — Sync Queue &amp; Background Sync</h2>
+  <div class="modcard m4">
+    <div class="mod-head">
+      <div>
+        <h3>What it really does <small>· team never stops modelling for a sync, never collides on save</small></h3>
+        <p style="margin-top:6px"><small>Without sync control: 12 users × 4 syncs/day × 3 min avg = 2.4 hr/day stopped just watching the sync bar. Add collisions (15–30 min each to merge) = ~10% of team day lost.</small></p>
+      </div>
+      <div class="big" data-key="m4.total">—<small>3,840 syncs · 22 collisions prevented · 412 hr background</small></div>
+    </div>
+
+    <div class="submods">
+      <div class="submod"><div class="sm-lbl">Background Sync</div><div class="sm-val" data-key="m4.bg_sync">—</div><small>412 hrs reclaimed · WM_NULL→Idling</small></div>
+      <div class="submod"><div class="sm-lbl">Sync queue</div><div class="sm-val" data-key="m4.collision">—</div><small>22 collisions prevented</small></div>
+      <div class="submod"><div class="sm-lbl">Predictable sync windows</div><div class="sm-val" data-key="m4.predictable">—</div><small>3,840 syncs · scheduled</small></div>
+      <div class="submod"><div class="sm-lbl">Failed-sync recovery</div><div class="sm-val" data-key="m4.failed">—</div><small>7 auto-recovered</small></div>
+    </div>
+
+    <div class="streams">
+      <div class="row"><span class="badge b-save">L</span><span class="lbl">Reclaimed modelling time<small>bg-sync hours × usable fraction × hourly rate</small></span><span class="val pos" data-key="m4.stream.labor">—</span></div>
+      <div class="row"><span class="badge b-time">R</span><span class="lbl">Sync collision prevention<small>queue serialises overlapping saves</small></span><span class="val pos" data-key="m4.stream.risk">—</span></div>
+      <div class="row"><span class="badge b-kn">K</span><span class="lbl">Predictable workflow<small>team schedules around known sync windows</small></span><span class="val pos" data-key="m4.stream.knowledge">—</span></div>
+      <div class="row"><span class="badge b-risk">P</span><span class="lbl">Failed-sync auto-recovery<small>retry on transient errors avoids manual triage</small></span><span class="val pos" data-key="m4.stream.perf">—</span></div>
+    </div>
+
+    <h3>Sync activity this period</h3>
+    <table>
+      <thead><tr><th>Project</th><th class="num">Total syncs</th><th class="num">Background</th><th class="num">Avg duration</th><th class="num">Failed</th><th class="num">Collisions prevented</th></tr></thead>
+      <tbody>
+        <tr><td>HSP-Tower-A</td><td class="num">1,420</td><td class="num">1,180</td><td class="num">3m 12s</td><td class="num">3</td><td class="num">11</td></tr>
+        <tr><td>Hospital-Phase-2</td><td class="num">920</td><td class="num">740</td><td class="num">4m 21s</td><td class="num">5</td><td class="num">6</td></tr>
+        <tr><td>Civic-Plaza</td><td class="num">680</td><td class="num">580</td><td class="num">2m 14s</td><td class="num">1</td><td class="num">3</td></tr>
+        <tr><td>Riverside-Mall</td><td class="num">820</td><td class="num">540</td><td class="num">4m 41s</td><td class="num">8</td><td class="num">2</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================================================== -->
+<!-- M5 · AI                                                         -->
+<!-- ============================================================== -->
+<section>
+  <h2><span class="badge b-m5">M5</span> AI <small style="font-weight:400;color:var(--muted);text-transform:none">— early stage · minimal impact</small></h2>
+  <div class="modcard m5">
+    <div class="mod-head">
+      <div>
+        <h3>Status: small but growing<small>· Zest AI / gpt-4o-mini · adoption ramping</small></h3>
+      </div>
+      <div class="big" style="color:var(--info)" data-key="m5.total">—<small>317 Qs · 84% helpful</small></div>
+    </div>
+    <p style="margin-top:0"><small>AI is currently a marginal contributor — not yet integrated into critical workflows. Tracked but de-prioritised in this report.</small></p>
+    <div class="streams">
+      <div class="row"><span class="badge b-save">L</span><span class="lbl">Manual-lookup time avoided</span><span class="val pos" data-key="m5.labor">—</span></div>
+      <div class="row"><span class="badge b-loss">$</span><span class="lbl">API token cost (5.4M tokens · gpt-4o-mini)</span><span class="val neg" data-key="m5.cost">—</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================== -->
+<!-- DATA INPUTS NEEDED                                              -->
+<!-- ============================================================== -->
+<section>
+  <h2>Additional Data Inputs Required <span class="badge b-input">to lift confidence ~60% → ~90%</span></h2>
+  <table>
+    <thead><tr><th>#</th><th>Data input</th><th>For module</th><th>Source / collection</th><th>Effort</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><strong>Element criticality tier</strong> per category/family</td><td><span class="badge b-m1">M1</span></td><td>BIM Manager config (Tier 1/2/3), refined by override-rate feedback</td><td>Low</td></tr>
+      <tr><td>2</td><td><strong>Project phase</strong> (Design / CD / Construction)</td><td><span class="badge b-m1">M1</span> <span class="badge b-m3">M3</span></td><td>New <code>projects</code> table · or BIM-360/ACC integration</td><td>Low</td></tr>
+      <tr><td>3</td><td><strong>Element dependency count</strong></td><td><span class="badge b-m1">M1</span></td><td>Revit API <code>Element.GetDependentElements()</code> sampled at protection time</td><td>Medium</td></tr>
+      <tr><td>4</td><td><strong>Override outcome tracking</strong></td><td><span class="badge b-m1">M1</span></td><td>Watch next N modifications · flag reversion within 24h</td><td>Medium</td></tr>
+      <tr><td>5</td><td><strong>Idle vs active time</strong> inside Revit</td><td><span class="badge b-m2">M2</span></td><td>New collector: Win32 <code>GetLastInputInfo</code> + Revit window focus</td><td>Medium</td></tr>
+      <tr><td>6</td><td><strong>User role &amp; hourly rate</strong> registry</td><td><span class="badge b-m2">M2</span></td><td>Extend user profile · sync from HR / project-staffing system</td><td>Low</td></tr>
+      <tr><td>7</td><td><strong>Daily file-size timeseries</strong></td><td><span class="badge b-m3">M3</span></td><td>Extend <code>ModelFileMetricsCollectorService</code> to daily scheduled snapshot</td><td>Low</td></tr>
+      <tr><td>8</td><td><strong>Team daily open-count per model</strong></td><td><span class="badge b-m3">M3</span></td><td>Aggregate <code>document_sessions</code> · just expose</td><td>Trivial</td></tr>
+      <tr><td>9</td><td><strong>Sync "usable fraction"</strong></td><td><span class="badge b-m4">M4</span></td><td>Sample user input activity during background-sync windows</td><td>Medium</td></tr>
+      <tr><td>10</td><td><strong>Sync collision cost calibration</strong></td><td><span class="badge b-m4">M4</span></td><td>1–2 historical incidents anchor the 30 min/collision constant</td><td>Low</td></tr>
+      <tr><td>11</td><td><strong>Rule → standard mapping</strong></td><td><span class="badge b-m1">M1</span></td><td>Annotate each rule with the ISO-19650 / company clause</td><td>Low</td></tr>
+      <tr><td>12</td><td><strong>Incident cost calibration</strong></td><td>all</td><td>Historical log of 10–20 reference incidents · empirically grounds T_block / T_event</td><td>High (one-off)</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<script>
+/* =====================================================================
+   RAW INSTRUMENTATION COUNTS — each row tagged by collection status
+   so the BIM Manager can see what's measured vs assumed.
+
+   status:
+     'ok'   = derivable from current SQLite schema (export from server CSV)
+     'part' = raw fields exist, needs aggregation or minor schema add
+     'miss' = currently assumed — needs new instrumentation
+===================================================================== */
+const COUNT_META = {
+  // M1 Protection
+  pin_active_element_days:  { v: 1420, status: 'part', mod: 'M1', desc: 'Active pinned element-days (Σ days × elements protected)',     src: 'pin_protection.protected_at / deactivated_at — aggregate via SQL' },
+  pin_unauth_unpin_blocked: { v: 14,   status: 'miss', mod: 'M1', desc: 'Unauthorised unpin attempts blocked',                            src: 'NOT COLLECTED — needs audit event in UnpinCommandBinding cancel' },
+  pin_otp_overrides:        { v: 12,   status: 'miss', mod: 'M1', desc: 'OTP-authorised unpin overrides',                                 src: 'PARTIAL — link OtpRepository validations to unpin outcomes' },
+  cmd_critical_blocks:      { v: 184,  status: 'miss', mod: 'M1', desc: 'Blocked moves/deletes on critical (Tier-1) elements',           src: 'No criticality tier in schema — add column on command_settings' },
+  cmd_major_blocks:         { v: 41,   status: 'miss', mod: 'M1', desc: 'Blocked actions on Tier-2 elements',                            src: 'Same — needs criticality_tier column' },
+  cmd_minor_blocks:         { v: 612,  status: 'miss', mod: 'M1', desc: 'Notify/Assist coaching events (low-severity)',                  src: 'Same — needs criticality_tier column' },
+  cmd_overrides:            { v: 68,   status: 'part', mod: 'M1', desc: 'Command overrides (admin password / OTP)',                      src: 'audit_log.action=\'Override\' — needs aggregation query' },
+  event_cad_blocks:         { v: 42,   status: 'part', mod: 'M1', desc: 'CAD-import event blocks',                                       src: 'event_protection_settings — needs event_type→category map' },
+  event_family_blocks:      { v: 18,   status: 'part', mod: 'M1', desc: 'Unauthorised family-load blocks',                               src: 'Same — needs event_type→category map' },
+  event_other_blocks:       { v: 24,   status: 'part', mod: 'M1', desc: 'Other event blocks (view delete, workset, etc.)',               src: 'Same — needs event_type→category map' },
+  event_overrides:          { v: 11,   status: 'part', mod: 'M1', desc: 'Event overrides',                                               src: 'audit_log.action=\'Override\' filtered by event_source' },
+  active_rules:             { v: 62,   status: 'ok',   mod: 'M1', desc: 'Active rules in rule engine',                                   src: 'rule_repository WHERE is_active=1' },
+  // M2 Activity Tracking
+  total_sessions:           { v: 1847, status: 'ok',   mod: 'M2', desc: 'Total Revit sessions in period',                                src: 'SELECT COUNT(*) FROM sessions' },
+  total_active_hours:       { v: 4520, status: 'miss', mod: 'M2', desc: 'Total active modelling hours (user input detected)',            src: 'NOT COLLECTED — needs idle/active collector (Win32 GetLastInputInfo)' },
+  total_idle_hours:         { v: 380,  status: 'miss', mod: 'M2', desc: 'Total idle hours inside Revit',                                 src: 'Same — needs idle/active collector' },
+  crashes_recovered:        { v: 4,    status: 'part', mod: 'M2', desc: 'Crashes auto-detected + recovered',                             src: 'sessions.crash_detected — needs recovered_by_session_id FK' },
+  billable_hours_recovered: { v: 45,   status: 'miss', mod: 'M2', desc: 'Hours recaptured vs project estimates',                         src: 'NOT COLLECTED — needs business rule + project estimate baseline' },
+  // M3 Model Health
+  mb_growth_avoided:        { v: 2400, status: 'ok',   mod: 'M3', desc: 'MB of file-size growth avoided (sum across projects)',          src: 'model_file_metrics_sync_save.file_size_bytes — compute delta vs baseline' },
+  warnings_cleared:         { v: 1840, status: 'ok',   mod: 'M3', desc: 'Revit warnings cleared this period',                            src: 'model_file_metrics_sync_save.warnings_count — delta vs prior snapshot' },
+  duplicates_flagged:       { v: 412,  status: 'ok',   mod: 'M3', desc: 'Duplicate elements flagged',                                    src: 'model_file_metrics_sync_save.duplicate_elements_count' },
+  linked_files_managed:     { v: 21,   status: 'ok',   mod: 'M3', desc: 'Linked DWG / Revit files actively managed',                     src: 'linked_dwg_count + imported_dwg_count + linked_revit_count' },
+  // M4 Sync Control
+  total_syncs:              { v: 3840, status: 'ok',   mod: 'M4', desc: 'Total sync operations',                                         src: 'SELECT COUNT(*) FROM model_sync' },
+  background_sync_hours:    { v: 412,  status: 'miss', mod: 'M4', desc: 'Hours of background (iSync) sync',                              src: 'NOT COLLECTED — needs sync_type (background/manual) column on model_sync' },
+  collisions_prevented:     { v: 22,   status: 'miss', mod: 'M4', desc: 'Sync collisions prevented by queue',                            src: 'NOT COLLECTED — log when SyncQueueService defers an overlap' },
+  failed_syncs_recovered:   { v: 7,    status: 'part', mod: 'M4', desc: 'Failed syncs auto-recovered',                                   src: 'model_sync.is_succeeded — needs parent_sync_id link for retries' },
+  // M5 AI
+  ai_questions_helpful:     { v: 267,  status: 'part', mod: 'M5', desc: 'AI questions rated helpful',                                    src: 'chat_messages.feedback_rating — verify populate path in UI' },
+  ai_tokens_used_millions:  { v: 5.4,  status: 'ok',   mod: 'M5', desc: 'Total LLM tokens consumed (millions)',                          src: 'SUM(chat_messages.estimated_tokens) / 1e6' },
+};
+
+// Working copy of counts (mutable for CSV import / inline edit)
+const COUNTS_DEFAULTS = Object.fromEntries(Object.entries(COUNT_META).map(([k, m]) => [k, m.v]));
+let COUNTS = { ...COUNTS_DEFAULTS };
+
+// Fixed constants (period and pricing)
+const CONST = {
+  realised_loss_hours: 28,
+  ai_token_cost_per_million: 0.15,
+  license_cost: 5100,
+};
+
+/* =====================================================================
+   SCENARIO PRESETS — Conservative / Realistic / Optimistic
+   Conservative = defensible floor for leadership / finance review
+   Realistic    = middle-of-band, default view
+   Optimistic   = upside case for investment proposals
+===================================================================== */
+const SCENARIOS = {
+  conservative: {
+    p_hourly_rate: 60,  p_phase_mult: 1.2,  p_dependency_factor: 1.5, p_override_risk: 0.50,
+    p_bg_sync_usable: 0.30, p_idle_recovery: 0.02,
+    p_t_pin_acute: 15,  p_t_cmd_critical: 8, p_t_cmd_minor: 1, p_t_event_cad: 8,
+    p_t_collision: 10,  p_t_crash_recovery: 20, p_t_per_warning: 0.5, p_t_manual_lookup: 1.5,
+    p_mb_save_per_mb: 0.4, p_compliance_per_rule: 5,
+  },
+  realistic: {
+    p_hourly_rate: 75,  p_phase_mult: 1.8,  p_dependency_factor: 2.5, p_override_risk: 0.30,
+    p_bg_sync_usable: 0.50, p_idle_recovery: 0.05,
+    p_t_pin_acute: 25,  p_t_cmd_critical: 15, p_t_cmd_minor: 2, p_t_event_cad: 15,
+    p_t_collision: 20,  p_t_crash_recovery: 45, p_t_per_warning: 1.0, p_t_manual_lookup: 3,
+    p_mb_save_per_mb: 1.0, p_compliance_per_rule: 20,
+  },
+  optimistic: {
+    p_hourly_rate: 100, p_phase_mult: 3.0,  p_dependency_factor: 5.0, p_override_risk: 0.20,
+    p_bg_sync_usable: 0.80, p_idle_recovery: 0.20,
+    p_t_pin_acute: 60,  p_t_cmd_critical: 40, p_t_cmd_minor: 5, p_t_event_cad: 40,
+    p_t_collision: 45,  p_t_crash_recovery: 120, p_t_per_warning: 2.5, p_t_manual_lookup: 8,
+    p_mb_save_per_mb: 3.0, p_compliance_per_rule: 50,
+  },
+};
+
+const DEFAULTS = SCENARIOS.realistic;
+
+function readParams() {
+  const p = {};
+  for (const id in DEFAULTS) {
+    const el = document.getElementById(id);
+    p[id] = el ? parseFloat(el.value) || 0 : DEFAULTS[id];
+  }
+  return p;
+}
+
+function compute() {
+  const p = readParams();
+  const c = COUNTS;
+  const k = CONST;
+  const rate = p.p_hourly_rate / 60;    // $ per minute
+  const phase = p.p_phase_mult;
+  const dep = p.p_dependency_factor;
+  const out = {};
+
+  // ---------- M1 PROTECTION ----------
+  // Pin
+  const pin_ongoing = c.pin_active_element_days * 0.1 * rate;
+  const pin_acute   = c.pin_unauth_unpin_blocked * p.p_t_pin_acute * phase * dep * rate;
+  const pin_bypass  = c.pin_otp_overrides * p.p_t_pin_acute * 0.5 * phase * dep * rate;
+  out['m1.pin'] = pin_ongoing + pin_acute - pin_bypass;
+
+  // Command
+  const cmd_critical = c.cmd_critical_blocks * p.p_t_cmd_critical * phase * rate;
+  const cmd_major    = c.cmd_major_blocks * p.p_t_cmd_critical * 0.5 * phase * rate;
+  const cmd_minor    = c.cmd_minor_blocks * p.p_t_cmd_minor * phase * rate;
+  const cmd_bypass   = c.cmd_overrides * p.p_t_cmd_critical * p.p_override_risk * phase * rate;
+  out['m1.cmd'] = cmd_critical + cmd_major + cmd_minor - cmd_bypass;
+
+  // Event
+  const event_cad   = c.event_cad_blocks * p.p_t_event_cad * phase * rate;
+  const event_other = (c.event_family_blocks + c.event_other_blocks) * p.p_t_event_cad * 0.3 * phase * rate;
+  const event_bypass = c.event_overrides * p.p_t_event_cad * p.p_override_risk * phase * rate;
+  out['m1.event'] = event_cad + event_other - event_bypass;
+
+  // Rule (compliance attribution only — labor/risk attributed back to host module)
+  out['m1.rule'] = c.active_rules * p.p_compliance_per_rule;
+
+  out['m1.total'] = out['m1.pin'] + out['m1.cmd'] + out['m1.event'] + out['m1.rule'];
+
+  // M1 streams (allocations of the same total)
+  out['m1.stream.labor']      = pin_acute + cmd_critical * 0.6 + cmd_major * 0.6 + cmd_minor * 0.7 + event_other;
+  out['m1.stream.risk']       = cmd_critical * 0.4 + cmd_major * 0.4 + event_cad * 0.7 + pin_acute * 0.3;
+  out['m1.stream.compliance'] = event_cad * 0.3 + out['m1.rule'];
+  out['m1.stream.knowledge']  = cmd_minor * 0.3 + pin_ongoing;
+  out['m1.stream.bypass']     = -(pin_bypass + cmd_bypass + event_bypass);
+
+  // ---------- M2 ACTIVITY TRACKING ----------
+  const m2_billing = c.billable_hours_recovered * p.p_hourly_rate;
+  const m2_crash   = c.crashes_recovered * p.p_t_crash_recovery * 5 * rate;   // 5× team interruption mult
+  const m2_idle    = c.total_idle_hours * p.p_idle_recovery * p.p_hourly_rate;
+  const m2_audit   = c.total_sessions * 0.5;                                   // $0.50 evidence value per session
+
+  out['m2.billing'] = m2_billing;
+  out['m2.crash']   = m2_crash;
+  out['m2.idle']    = m2_idle;
+  out['m2.audit']   = m2_audit;
+  out['m2.total']   = m2_billing + m2_crash + m2_idle + m2_audit;
+
+  out['m2.stream.labor']      = m2_billing;
+  out['m2.stream.risk']       = m2_crash;
+  out['m2.stream.knowledge']  = m2_idle;
+  out['m2.stream.compliance'] = m2_audit;
+
+  // ---------- M3 MODEL HEALTH ----------
+  const m3_filesize   = c.mb_growth_avoided * p.p_mb_save_per_mb * rate;
+  const m3_warnings   = c.warnings_cleared * p.p_t_per_warning * rate;
+  const m3_duplicates = c.duplicates_flagged * 2 * rate;       // 2 min per dupe flagged
+  const m3_linked     = c.linked_files_managed * 60 * rate;    // 60 min per linked file managed
+
+  out['m3.filesize']   = m3_filesize;
+  out['m3.warnings']   = m3_warnings;
+  out['m3.duplicates'] = m3_duplicates;
+  out['m3.linked']     = m3_linked;
+  out['m3.total']      = m3_filesize + m3_warnings + m3_duplicates + m3_linked;
+
+  out['m3.stream.perf']       = m3_filesize;
+  out['m3.stream.labor']      = m3_warnings + m3_duplicates;
+  out['m3.stream.compliance'] = m3_linked * 0.7;
+  out['m3.stream.risk']       = m3_duplicates * 0.5 + m3_linked * 0.3;
+
+  // ---------- M4 SYNC CONTROL ----------
+  const m4_bg_sync     = c.background_sync_hours * p.p_bg_sync_usable * p.p_hourly_rate;
+  const m4_collision   = c.collisions_prevented * p.p_t_collision * rate;
+  const m4_predictable = c.total_syncs * 0.5 * rate;            // 30 sec planning saving per sync
+  const m4_failed      = c.failed_syncs_recovered * 15 * rate;  // 15 min per recovered sync
+
+  out['m4.bg_sync']     = m4_bg_sync;
+  out['m4.collision']   = m4_collision;
+  out['m4.predictable'] = m4_predictable;
+  out['m4.failed']      = m4_failed;
+  out['m4.total']       = m4_bg_sync + m4_collision + m4_predictable + m4_failed;
+
+  out['m4.stream.labor']     = m4_bg_sync;
+  out['m4.stream.risk']      = m4_collision;
+  out['m4.stream.knowledge'] = m4_predictable;
+  out['m4.stream.perf']      = m4_failed;
+
+  // ---------- M5 AI ----------
+  const m5_labor = c.ai_questions_helpful * p.p_t_manual_lookup * rate;
+  const m5_cost  = c.ai_tokens_used_millions * k.ai_token_cost_per_million;
+  out['m5.labor'] = m5_labor;
+  out['m5.cost']  = -m5_cost;
+  out['m5.total'] = m5_labor - m5_cost;
+
+  // ---------- HEADLINE ----------
+  out['headline.gross']  = out['m1.total'] + out['m2.total'] + out['m3.total'] + out['m4.total'] + out['m5.total'];
+  out['headline.cost']   = -(k.realised_loss_hours * p.p_hourly_rate + m5_cost);
+  out['headline.bypass'] = -(pin_bypass + cmd_bypass + event_bypass);
+  // Net = gross + cost (bypass already inside m1.total)
+  out['headline.net']    = out['headline.gross'] + out['headline.cost'];
+  out['headline.net_hrs']     = out['headline.net'] / p.p_hourly_rate;
+  out['headline.payback_days'] = (k.license_cost / out['headline.net']) * 30;
+
+  // Module % of total
+  const gross = out['headline.gross'] || 1;
+  out['m1.pct'] = (out['m1.total'] / gross) * 100;
+  out['m2.pct'] = (out['m2.total'] / gross) * 100;
+  out['m3.pct'] = (out['m3.total'] / gross) * 100;
+  out['m4.pct'] = (out['m4.total'] / gross) * 100;
+  out['m5.pct'] = (out['m5.total'] / gross) * 100;
+
+  // Waterfall mirrors
+  out['wf.m1'] = out['m1.total'];
+  out['wf.m2'] = out['m2.total'];
+  out['wf.m3'] = out['m3.total'];
+  out['wf.m4'] = out['m4.total'];
+  out['wf.m5'] = out['m5.total'];
+  out['wf.cost']   = out['headline.cost'];
+  out['wf.bypass'] = out['headline.bypass'];
+  out['wf.net']    = out['headline.net'];
+
+  // Header hourly rate
+  out['hdr.hourly_rate'] = p.p_hourly_rate;
+
+  return out;
+}
+
+function formatMoney(n) {
+  if (!isFinite(n)) return '—';
+  const sign = n >= 0 ? '+' : '−';
+  const abs = Math.abs(n);
+  return sign + '$' + Math.round(abs).toLocaleString();
+}
+
+function formatPlain(n, suffix) {
+  if (!isFinite(n)) return '—';
+  return Math.round(n).toLocaleString() + (suffix || '');
+}
+
+function render(flash) {
+  const v = compute();
+
+  // Update text values
+  document.querySelectorAll('[data-key]').forEach(el => {
+    const key = el.dataset.key;
+    if (!(key in v)) return;
+    let formatted;
+
+    if (key === 'hdr.hourly_rate') {
+      formatted = '$' + v[key] + '/hr';
+    } else if (key.endsWith('.pct')) {
+      formatted = Math.round(v[key]) + '%';
+    } else if (key === 'headline.net_hrs') {
+      formatted = '≈ ' + Math.round(v[key]).toLocaleString();
+    } else if (key === 'headline.payback_days') {
+      formatted = Math.max(0.1, v[key]).toFixed(1);
+    } else {
+      formatted = formatMoney(v[key]);
+    }
+
+    if (el.textContent !== formatted) {
+      el.textContent = formatted;
+      if (flash) {
+        el.classList.remove('flash');
+        void el.offsetWidth;
+        el.classList.add('flash');
+      }
+    }
+  });
+
+  // Update waterfall bar heights
+  const maxVal = Math.max(
+    Math.abs(v['m1.total']), Math.abs(v['m2.total']), Math.abs(v['m3.total']),
+    Math.abs(v['m4.total']), Math.abs(v['m5.total']),
+    Math.abs(v['headline.net']), Math.abs(v['headline.cost']), Math.abs(v['headline.bypass'])
+  ) || 1;
+  document.querySelectorAll('[data-bar]').forEach(el => {
+    const key = el.dataset.bar;
+    if (!(key in v)) return;
+    const h = (Math.abs(v[key]) / maxVal) * 95;
+    el.style.height = h + '%';
+  });
+
+  // Toast
+  const tag = document.getElementById('changed-tag');
+  if (tag) {
+    tag.classList.add('show');
+    clearTimeout(tag._t);
+    tag._t = setTimeout(() => tag.classList.remove('show'), 900);
+  }
+}
+
+function resetDefaults() {
+  applyScenario('realistic');
+}
+
+/* =====================================================================
+   SCENARIO presets
+===================================================================== */
+function applyScenario(name) {
+  const scn = SCENARIOS[name];
+  if (!scn) return;
+  for (const id in scn) {
+    const el = document.getElementById(id);
+    if (el) el.value = scn[id];
+  }
+  document.querySelectorAll('.scenario').forEach(s => {
+    s.classList.toggle('active', s.dataset.scenario === name);
+  });
+  render(true);
+}
+
+/* =====================================================================
+   DATA SOURCE table — render all 27 raw counts with status + editable
+===================================================================== */
+function renderDataSourceTable() {
+  const tbody = document.getElementById('ds-rows');
+  if (!tbody) return;
+  const statusLabel = { ok: '✓ measured', part: '~ partial', miss: '✗ assumed' };
+  const statusClass = { ok: 'src-ok',     part: 'src-part', miss: 'src-miss' };
+
+  const rows = Object.entries(COUNT_META).map(([key, m]) => `
+    <tr>
+      <td><span class="badge b-${m.mod.toLowerCase()}">${m.mod}</span></td>
+      <td><strong>${key}</strong><br><small>${m.desc}</small></td>
+      <td><span class="src ${statusClass[m.status]}">${statusLabel[m.status]}</span></td>
+      <td style="text-align:right">
+        <input class="count ${m.status === 'miss' ? 'assumed' : ''}" type="number"
+               data-count-key="${key}" value="${COUNTS[key]}" step="any">
+      </td>
+      <td><small>${m.src}</small></td>
+    </tr>
+  `).join('');
+  tbody.innerHTML = rows;
+
+  // Wire inline count editing
+  tbody.querySelectorAll('input.count').forEach(input => {
+    input.addEventListener('input', () => {
+      const k = input.dataset.countKey;
+      const v = parseFloat(input.value);
+      if (!isNaN(v)) {
+        COUNTS[k] = v;
+        render(false);
+      }
+    });
+  });
+
+  // Update summary counts
+  const tally = { ok: 0, part: 0, miss: 0 };
+  Object.values(COUNT_META).forEach(m => tally[m.status]++);
+  const setText = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+  setText('ds-count-ok',   tally.ok);
+  setText('ds-count-part', tally.part);
+  setText('ds-count-miss', tally.miss);
+}
+
+/* =====================================================================
+   CSV import/export — bulk-load raw counts from the server export
+===================================================================== */
+function loadCsv() {
+  const text = document.getElementById('csv-input').value || '';
+  const lines = text.split(/\r?\n/).filter(l => l.trim() && !l.trim().startsWith('#'));
+  let loaded = 0, unknown = [], invalid = [];
+
+  lines.forEach(line => {
+    // Accept "key,value", "key=value", or "key\tvalue"
+    const parts = line.split(/[,=\t]/).map(s => s.trim());
+    if (parts.length < 2) return;
+    const key = parts[0];
+    const val = parseFloat(parts[1]);
+    if (isNaN(val)) { invalid.push(key); return; }
+    if (!(key in COUNTS)) { unknown.push(key); return; }
+    COUNTS[key] = val;
+    // Reflect in the editable input
+    const inp = document.querySelector(`input.count[data-count-key="${key}"]`);
+    if (inp) inp.value = val;
+    loaded++;
+  });
+
+  const msg = document.getElementById('csv-msg');
+  const bits = [`<strong style="color:var(--save)">✓ loaded ${loaded}</strong>`];
+  if (unknown.length) bits.push(`<span style="color:var(--risk)">unknown: ${unknown.slice(0,3).join(', ')}${unknown.length>3?'…':''}</span>`);
+  if (invalid.length) bits.push(`<span style="color:var(--loss)">invalid: ${invalid.slice(0,3).join(', ')}${invalid.length>3?'…':''}</span>`);
+  if (msg) msg.innerHTML = bits.join(' · ');
+
+  render(true);
+}
+
+function exportCsv() {
+  const lines = ['# Ze'Manage ROI report — raw counts export'];
+  lines.push(`# Generated: ${new Date().toISOString()}`);
+  Object.keys(COUNT_META).forEach(k => {
+    lines.push(`${k},${COUNTS[k]}`);
+  });
+  const csv = lines.join('\n');
+  document.getElementById('csv-input').value = csv;
+  // Also offer download
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'bimanage-roi-counts.csv';
+  a.click();
+  document.getElementById('csv-msg').innerHTML = '<span style="color:var(--save)">✓ exported to clipboard area &amp; download</span>';
+}
+
+function resetCounts() {
+  COUNTS = { ...COUNTS_DEFAULTS };
+  document.querySelectorAll('input.count').forEach(inp => {
+    inp.value = COUNTS[inp.dataset.countKey];
+  });
+  document.getElementById('csv-msg').innerHTML = '<span style="color:var(--muted)">counts reset to defaults</span>';
+  render(true);
+}
+
+/* =====================================================================
+   Wire inputs &amp; initial render
+===================================================================== */
+document.querySelectorAll('input.param').forEach(input => {
+  input.addEventListener('input', () => {
+    // Clear active scenario when user manually edits
+    document.querySelectorAll('.scenario').forEach(s => s.classList.remove('active'));
+    render(false);
+  });
+});
+
+renderDataSourceTable();
+render(false);
+</script>
+
+</body>
+</html>

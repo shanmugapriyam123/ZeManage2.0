@@ -1,0 +1,815 @@
+﻿<Window x:Class="BIManageRevit.BIManage.Views.Protection.EventProtectionDialog"
+        Topmost="False"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:prot="clr-namespace:BIManageRevit.BIManage.Views.Protection"
+        Title="Event Restriction"
+        Width="1320"
+        Height="750"
+        MinWidth="1100"
+        MinHeight="750"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        KeyDown="Window_KeyDown">
+    <Window.Icon>
+        <BitmapImage UriSource="pack://application:,,,/BIManageRevit;component/BIManage/Resources/Icons/BIManage.png"/>
+    </Window.Icon>
+    <Window.Resources>
+        <!-- Color Palette -->
+        <SolidColorBrush x:Key="NotifyBlue" Color="#3B82F6"/>
+        <SolidColorBrush x:Key="AssistOrange" Color="#F59E0B"/>
+        <SolidColorBrush x:Key="ProtectRed" Color="#EF4444"/>
+        <SolidColorBrush x:Key="SuccessGreen" Color="#22C55E"/>
+        <SolidColorBrush x:Key="TextPrimary" Color="#1E293B"/>
+        <SolidColorBrush x:Key="TextSecondary" Color="#64748B"/>
+        <SolidColorBrush x:Key="BorderLight" Color="#E2E8F0"/>
+
+        <!-- Gradient Primary Button -->
+        <Style x:Key="PrimaryGradientButton" TargetType="Button">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="16,0"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" CornerRadius="6" Padding="{TemplateBinding Padding}"
+                                Background="#FF5500">
+                            <Border.Effect>
+                                <DropShadowEffect Color="#000000" BlurRadius="8" ShadowDepth="2" Opacity="0.2"/>
+                            </Border.Effect>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#E5611A"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- White Secondary Button -->
+        <Style x:Key="WhiteButton" TargetType="Button">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#475569"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="14,0"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="White"
+                                BorderBrush="#E2E8F0" BorderThickness="1"
+                                CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FF5500"/>
+                                <Setter TargetName="border" Property="BorderBrush" Value="#FF5500"/>
+                                <Setter TargetName="border" Property="TextElement.Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Icon Button -->
+        <Style x:Key="IconButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Width" Value="28"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- DataGrid Style -->
+        <Style TargetType="DataGrid">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="#F1F5F9"/>
+            <Setter Property="RowBackground" Value="White"/>
+            <Setter Property="AlternatingRowBackground" Value="#FAFBFC"/>
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="CanUserDeleteRows" Value="False"/>
+            <Setter Property="CanUserSortColumns" Value="True"/>
+            <Setter Property="CanUserReorderColumns" Value="False"/>
+            <Setter Property="SelectionMode" Value="Single"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="RowHeight" Value="40"/>
+        </Style>
+
+        <Style TargetType="DataGridRow">
+            <Setter Property="MinHeight" Value="40"/>
+        </Style>
+
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#F8FAFC"/>
+            <Setter Property="Foreground" Value="#475569"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Padding" Value="8,8"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DataGridColumnHeader">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}">
+                            <!-- Word-wrap is intentional: two-word headers like "Req Comment",
+                                 "Capture Before", "Send Email", "Admin Override" render as
+                                 two stacked lines. MinWidth on each column (set below) keeps
+                                 the wrap at the WORD boundary; the horizontal scrollbar on
+                                 the DataGrid kicks in only when the Edit panel squeezes the
+                                 table below those MinWidths. -->
+                            <TextBlock Text="{TemplateBinding Content}"
+                                       TextWrapping="Wrap"
+                                       TextAlignment="Center"
+                                       HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                       VerticalAlignment="Center"
+                                       FontWeight="{TemplateBinding FontWeight}"
+                                       FontSize="{TemplateBinding FontSize}"
+                                       Foreground="{TemplateBinding Foreground}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="DataGridCell">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="4,2"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DataGridCell">
+                        <Border Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}">
+                            <ContentPresenter VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#EFF6FF"/>
+                    <Setter Property="Foreground" Value="#1E293B"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- White Filter ComboBox Style -->
+        <Style x:Key="WhiteFilterComboBox" TargetType="ComboBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="#475569"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="Padding" Value="8,0"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="ComboBoxItem">
+                        <Setter Property="Background" Value="White"/>
+                        <Setter Property="Padding" Value="8,6"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ComboBoxItem">
+                                    <Border x:Name="border" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
+                                        <ContentPresenter/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="border" Property="Background" Value="#F5F5F5"/>
+                                        </Trigger>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter TargetName="border" Property="Background" Value="#F0F0F0"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <Border x:Name="border" Background="White" BorderBrush="#E2E8F0"
+                                    BorderThickness="1" CornerRadius="6">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="20"/>
+                                    </Grid.ColumnDefinitions>
+                                    <ContentPresenter Grid.Column="0" Margin="8,0,0,0"
+                                                      VerticalAlignment="Center"
+                                                      Content="{TemplateBinding SelectionBoxItem}"
+                                                      ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"/>
+                                    <Path Grid.Column="1" Data="M0,0 L4,4 L8,0" Stroke="#64748B" StrokeThickness="1.5"
+                                          HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                </Grid>
+                            </Border>
+                            <ToggleButton x:Name="toggleButton"
+                                          IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                          ClickMode="Press">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Border Background="Transparent"/>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+                            <Popup x:Name="PART_Popup" IsOpen="{TemplateBinding IsDropDownOpen}"
+                                   Placement="Bottom" AllowsTransparency="True" PopupAnimation="Slide">
+                                <Border Background="White" BorderBrush="#E2E8F0" BorderThickness="1"
+                                        CornerRadius="6" Margin="0,2,0,0">
+                                    <Border.Effect>
+                                        <DropShadowEffect Color="#000000" BlurRadius="8" ShadowDepth="2" Opacity="0.15"/>
+                                    </Border.Effect>
+                                    <ScrollViewer MaxHeight="200">
+                                        <ItemsPresenter/>
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#F5F5F5"/>
+                                <Setter TargetName="border" Property="BorderBrush" Value="#CBD5E1"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Converters (reuse from CommandProtectionDialog) -->
+        <prot:ModeToBrushConverter x:Key="ModeToBrushConverter"/>
+        <prot:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <prot:BoolToAlignmentConverter x:Key="BoolToAlignmentConverter"/>
+    </Window.Resources>
+
+    <Border Margin="10" Background="White" CornerRadius="10" ClipToBounds="True">
+        <Border.Effect>
+            <DropShadowEffect Color="#000000" BlurRadius="20" ShadowDepth="0" Opacity="0.18"/>
+        </Border.Effect>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Border Grid.Row="0" Background="#F8FAFC" CornerRadius="10,10,0,0"
+                    BorderBrush="#E2E8F0" BorderThickness="0,0,0,1"
+                    MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+                <Grid Height="36" Margin="12,0">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Source="pack://application:,,,/BIManageRevit;component/BIManage/Resources/Icons/BIManage.png"
+                               Width="16" Height="16" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
+                                   FontSize="12" FontWeight="SemiBold" Foreground="#1E293B" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <Button HorizontalAlignment="Right" VerticalAlignment="Center"
+                            Click="CloseButton_Click" Width="28" Height="28"
+                            BorderThickness="0" Background="Transparent" Cursor="Hand">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="closeBg" Background="Transparent" CornerRadius="6" Width="28" Height="28">
+                                    <TextBlock Text="&#x2715;" FontSize="10" Foreground="#94A3B8"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="closeBg" Property="Background" Value="#F1F5F9"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </Grid>
+            </Border>
+            <Grid Grid.Row="1">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="White" BorderBrush="#E2E8F0" BorderThickness="0,0,0,1">
+            <Grid Margin="16,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Search & Filters (Left Side) -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                    <Border Background="White" BorderBrush="#E2E8F0" BorderThickness="1"
+                            CornerRadius="6" Padding="10,0" Height="32" Width="280">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="&#x1F50D;" FontSize="12" Margin="0,0,8,0" VerticalAlignment="Center" Opacity="0.5"/>
+                            <TextBox Grid.Column="1" x:Name="SearchBox" BorderThickness="0" Background="Transparent"
+                                     VerticalContentAlignment="Center" FontSize="11"
+                                     TextChanged="SearchBox_TextChanged">
+                                <TextBox.Style>
+                                    <Style TargetType="TextBox">
+                                        <Setter Property="Foreground" Value="#1E293B"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="Text" Value="">
+                                                <Setter Property="Background">
+                                                    <Setter.Value>
+                                                        <VisualBrush Stretch="None" AlignmentX="Left">
+                                                            <VisualBrush.Visual>
+                                                                <TextBlock Text="Search events..." Foreground="#94A3B8" FontSize="11"/>
+                                                            </VisualBrush.Visual>
+                                                        </VisualBrush>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
+                        </Grid>
+                    </Border>
+
+                    <ComboBox x:Name="EventTypeFilter" Width="130" Margin="10,0,0,0"
+                              Style="{StaticResource WhiteFilterComboBox}"
+                              SelectionChanged="EventTypeFilter_SelectionChanged">
+                        <ComboBoxItem Content="All Events" IsSelected="True" Tag=""/>
+                        <ComboBoxItem Content="Document Opening" Tag="1"/>
+                        <ComboBoxItem Content="Document Saving" Tag="2"/>
+                        <ComboBoxItem Content="Family Loading" Tag="3"/>
+                        <ComboBoxItem Content="Sync with Central" Tag="4"/>
+                        <ComboBoxItem Content="Document Changed" Tag="DC"/>
+                    </ComboBox>
+
+                    <ComboBox x:Name="StatusFilter" Width="100" Margin="10,0,0,0"
+                              Style="{StaticResource WhiteFilterComboBox}"
+                              SelectionChanged="StatusFilter_SelectionChanged">
+                        <ComboBoxItem Content="All Status" IsSelected="True" Tag=""/>
+                        <ComboBoxItem Content="Active" Tag="Active"/>
+                        <ComboBoxItem Content="Disabled" Tag="Disabled"/>
+                    </ComboBox>
+
+                    <ComboBox x:Name="ModeFilter" Width="100" Margin="10,0,0,0"
+                              Style="{StaticResource WhiteFilterComboBox}"
+                              SelectionChanged="ModeFilter_SelectionChanged">
+                        <ComboBoxItem Content="All Modes" IsSelected="True" Tag=""/>
+                        <ComboBoxItem Content="Notify" Tag="Notify"/>
+                        <ComboBoxItem Content="Assist" Tag="Assist"/>
+                        <ComboBoxItem Content="Protect" Tag="Protect"/>
+                    </ComboBox>
+                </StackPanel>
+
+                <!-- Action Buttons (Right Side) -->
+                <StackPanel Grid.Column="2" Orientation="Horizontal">
+                    <Button Content="Import" Style="{StaticResource WhiteButton}"
+                            Click="Import_Click" Margin="0,0,6,0"/>
+                    <Button Content="Export" Style="{StaticResource WhiteButton}"
+                            Click="Export_Click" Margin="0,0,6,0"/>
+                    <Button Content="Refresh" Style="{StaticResource WhiteButton}"
+                            Click="Refresh_Click" Margin="0,0,10,0"/>
+                    <Button Content="Raise Protection Request" Style="{StaticResource PrimaryGradientButton}"
+                            Click="NeedHelp_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Main Content -->
+        <Grid Grid.Row="1" Margin="12,8,12,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- DataGrid -->
+            <Border Grid.Column="0" Background="White" CornerRadius="6"
+                    BorderBrush="#E2E8F0" BorderThickness="1">
+                <Grid>
+                    <DataGrid x:Name="EventsDataGrid"
+                              ItemsSource="{Binding FilteredSettings}"
+                              SelectedItem="{Binding SelectedSetting, Mode=TwoWay}"
+                              EnableRowVirtualization="False"
+                              EnableColumnVirtualization="False"
+                              CanUserAddRows="False"
+                              CanUserDeleteRows="False"
+                              CanUserResizeColumns="True"
+                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                              ScrollViewer.CanContentScroll="True">
+                        <DataGrid.Columns>
+
+                            <!-- S.No Column -->
+                            <DataGridTemplateColumn Header="S.No" Width="55" MinWidth="55">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding RowNumber}" FontSize="11" FontWeight="Medium"
+                                                   Foreground="#64748B" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- Protection Name -->
+                            <DataGridTemplateColumn Header="Protection Name" Width="3*" MinWidth="140">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding ProtectionName}" FontSize="12" FontWeight="Medium"
+                                                   Foreground="#1E293B" VerticalAlignment="Center"
+                                                   TextTrimming="CharacterEllipsis"
+                                                   ToolTip="{Binding ProtectionNameTooltip}"
+                                                   ToolTipService.ShowDuration="20000"
+                                                   ToolTipService.InitialShowDelay="300"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- Enabled (Toggle Switch) -->
+                            <DataGridTemplateColumn Header="Status" Width="70" MinWidth="70">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Click="ToggleEnabled_Click" Cursor="Hand" HorizontalAlignment="Center"
+                                                ToolTip="Click to toggle enabled/disabled">
+                                            <Button.Template>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Border Width="36" Height="18" CornerRadius="9"
+                                                            Background="{Binding Enabled, Converter={StaticResource ModeToBrushConverter}, ConverterParameter=toggleBg}">
+                                                        <Ellipse Width="14" Height="14" Fill="White" Margin="2,0"
+                                                                 HorizontalAlignment="{Binding Enabled, Converter={StaticResource BoolToAlignmentConverter}}"/>
+                                                    </Border>
+                                                </ControlTemplate>
+                                            </Button.Template>
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- Mode Badge -->
+                            <DataGridTemplateColumn Header="Mode" Width="75" MinWidth="60">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Border Background="{Binding Mode, Converter={StaticResource ModeToBrushConverter}, ConverterParameter=light}"
+                                                CornerRadius="10" Padding="8,3" HorizontalAlignment="Center"
+                                                ToolTip="{Binding ModeTooltip}">
+                                            <TextBlock Text="{Binding ModeDisplay}" FontSize="9" FontWeight="SemiBold"
+                                                       Foreground="{Binding Mode, Converter={StaticResource ModeToBrushConverter}}" TextAlignment="Center"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- Scope -->
+                            <DataGridTemplateColumn Header="Scope" Width="1*" MinWidth="70">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Scope}" FontSize="11"
+                                                   Foreground="#64748B" VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center"
+                                                   TextTrimming="CharacterEllipsis"
+                                                   ToolTip="{Binding Scope}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- Require Comment -->
+                            <DataGridTemplateColumn Header="Req Comment" Width="75" MinWidth="75">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Ellipse Width="8" Height="8" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                 Fill="{Binding RequireComment, Converter={StaticResource ModeToBrushConverter}, ConverterParameter=radio}"
+                                                 Stroke="{Binding RequireComment, Converter={StaticResource ModeToBrushConverter}, ConverterParameter=radioStroke}"
+                                                 StrokeThickness="1"
+                                                 ToolTip="Require user comment before proceeding"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- Capture Before -->
+                            <DataGridTemplateColumn Header="Capture Before" Width="70" MinWidth="70">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Ellipse Width="8" Height="8" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                 Fill="{Binding CaptureBeforeScreenshot, Converter={StaticResource ModeToBrushConverter}, ConverterParameter=radio}"
+                                                 Stroke="{Binding CaptureBeforeScreenshot, Converter={StaticResource ModeToBrushConverter}, ConverterParameter=radioStroke}"
+                                                 StrokeThickness="1"
+                                                 ToolTip="Capture screenshot before event"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- Capture After -->
+                            <DataGridTemplateColumn Header="Capture After" Width="65" MinWidth="65">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Ellipse Width="8" Height="8" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                 Fill="{Binding CaptureAfterScreenshot, Converter={StaticResource ModeToBrushConverter}, ConverterParameter=radio}"
+                                                 Stroke="{Binding CaptureAfterScreenshot, Converter={StaticResource ModeToBrushConverter}, ConverterParameter=radioStroke}"
+                                                 StrokeThickness="1"
+                                                 ToolTip="Capture screenshot after event"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- Notify by Email -->
+                            <DataGridTemplateColumn Header="Notify by Email" Width="60" MinWidth="60">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Ellipse Width="8" Height="8" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                 Fill="{Binding SendEmail, Converter={StaticResource ModeToBrushConverter}, ConverterParameter=radio}"
+                                                 Stroke="{Binding SendEmail, Converter={StaticResource ModeToBrushConverter}, ConverterParameter=radioStroke}"
+                                                 StrokeThickness="1"
+                                                 ToolTip="Send email notification when triggered"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- Admin Override -->
+                            <DataGridTemplateColumn Header="Admin Override" Width="70" MinWidth="70">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Ellipse Width="8" Height="8" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                 Fill="{Binding AllowAdminOverride, Converter={StaticResource ModeToBrushConverter}, ConverterParameter=radio}"
+                                                 Stroke="{Binding AllowAdminOverride, Converter={StaticResource ModeToBrushConverter}, ConverterParameter=radioStroke}"
+                                                 StrokeThickness="1"
+                                                 ToolTip="Allow admin to override protection"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- Modified By -->
+                            <DataGridTemplateColumn Header="Modified By" Width="1*" MinWidth="80">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding ModifiedBy}" FontSize="11"
+                                                   Foreground="#94A3B8" VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center" TextTrimming="CharacterEllipsis"
+                                                   ToolTip="{Binding ModifiedByTooltip}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- Updated At -->
+                            <DataGridTemplateColumn Header="Updated At" Width="1.2*" MinWidth="90">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding UpdatedAtDisplay}" FontSize="10"
+                                                   Foreground="#94A3B8" VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- Actions (Edit + Delete) -->
+                            <DataGridTemplateColumn Header="" Width="40">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Style="{StaticResource IconButton}" ToolTip="Edit Setting"
+                                                Click="EditButton_Click">
+                                            <Path Data="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
+                                                  Fill="#3B82F6" Width="13" Height="13" Stretch="Uniform"/>
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- Delete (Project-scoped rows only) -->
+                            <DataGridTemplateColumn Header="" Width="40">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Style="{StaticResource IconButton}" ToolTip="Delete (Project-scope only)"
+                                                Click="DeleteButton_Click"
+                                                Visibility="{Binding IsProjectLevel, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            <Path Data="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"
+                                                  Fill="#EF4444" Width="13" Height="13" Stretch="Uniform"/>
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <!-- Loading Overlay -->
+                    <Border Background="#E0FFFFFF" CornerRadius="6"
+                            Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <TextBlock Text="Loading..." FontSize="14" FontWeight="Medium" Foreground="#64748B"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!-- Edit Panel — width trimmed so the DataGrid still has room for all
+                 columns without horizontal scrolling when the edit panel is open. -->
+            <Border x:Name="EditPanel" Grid.Column="1" MinWidth="240" MaxWidth="290" Background="White" CornerRadius="6"
+                    BorderBrush="#E2E8F0" BorderThickness="1" Margin="8,0,0,0" Visibility="Collapsed">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Edit Header -->
+                    <Border Grid.Row="0" Background="#F8FAFC" CornerRadius="6,6,0,0" Padding="12,8">
+                        <Grid>
+                            <TextBlock Text="Edit Event Protection" FontSize="12" FontWeight="SemiBold" Foreground="#1E293B"/>
+                            <Button HorizontalAlignment="Right" Style="{StaticResource IconButton}" Click="CloseEditPanel_Click"
+                                    Width="20" Height="20">
+                                <TextBlock Text="&#x2715;" FontSize="10" Foreground="#64748B"/>
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <!-- Edit Form -->
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="12,8">
+                        <StackPanel>
+                            <!-- Protection Name (Read-only) -->
+                            <TextBlock Text="Protection Name" FontSize="9" FontWeight="SemiBold" Foreground="#64748B" Margin="0,0,0,3"/>
+                            <TextBox x:Name="EditProtectionName" Height="30" FontSize="11" Padding="8,5" Margin="0,0,0,10"
+                                     BorderBrush="#E2E8F0" BorderThickness="1" IsReadOnly="True" Background="#F9FAFB"/>
+
+                            <!-- Mode -->
+                            <TextBlock Text="Mode" FontSize="9" FontWeight="SemiBold" Foreground="#64748B" Margin="0,0,0,3"/>
+                            <ComboBox x:Name="EditMode" Height="30" FontSize="11" Padding="8,5" Margin="0,0,0,10"
+                                      BorderBrush="#E2E8F0" BorderThickness="1">
+                                <ComboBoxItem Content="Notify" Tag="Notify"/>
+                                <ComboBoxItem Content="Assist" Tag="Assist"/>
+                                <ComboBoxItem Content="Protect" Tag="Protect"/>
+                            </ComboBox>
+
+                            <!-- Scope -->
+                            <TextBlock Text="Scope" FontSize="9" FontWeight="SemiBold" Foreground="#64748B" Margin="0,0,0,3"/>
+                            <ComboBox x:Name="EditScope" Height="30" FontSize="11" Padding="8,5" Margin="0,0,0,10"
+                                      BorderBrush="#E2E8F0" BorderThickness="1">
+                                <ComboBoxItem Content="Company" Tag="Company"/>
+                                <ComboBoxItem Content="Project" Tag="Project"/>
+                            </ComboBox>
+
+                            <!-- Custom Message -->
+                            <TextBlock Text="Custom Message" FontSize="9" FontWeight="SemiBold" Foreground="#64748B" Margin="0,0,0,3"/>
+                            <TextBox x:Name="EditMessage" Height="60" FontSize="11" Padding="8,5" Margin="0,0,0,10"
+                                     BorderBrush="#E2E8F0" BorderThickness="1" TextWrapping="Wrap" AcceptsReturn="True"/>
+
+                            <!-- Checkboxes -->
+                            <Border Background="#F8FAFC" CornerRadius="6" Padding="10" Margin="0,0,0,10">
+                                <StackPanel>
+                                    <CheckBox x:Name="EditEnabled" Content="Enabled" FontSize="10" Margin="0,0,0,6"/>
+                                    <!-- Require Comment is disabled when Mode = Notify, since Notify mode does not
+                                         show a dialog and therefore has no opportunity to collect a user comment. -->
+                                    <CheckBox x:Name="EditRequireComment" Content="Require Comment" FontSize="10" Margin="0,0,0,6">
+                                        <CheckBox.Style>
+                                            <Style TargetType="CheckBox">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ElementName=EditMode, Path=SelectedItem.Tag}" Value="Notify">
+                                                        <Setter Property="IsEnabled" Value="False"/>
+                                                        <Setter Property="IsChecked" Value="False"/>
+                                                        <Setter Property="ToolTip" Value="Notify mode does not show a dialog, so a comment cannot be collected."/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </CheckBox.Style>
+                                    </CheckBox>
+                                    <CheckBox x:Name="EditCaptureBeforeScreenshot" Content="Capture Before Screenshot" FontSize="10" Margin="0,0,0,6"/>
+                                    <CheckBox x:Name="EditCaptureAfterScreenshot" Content="Capture After Screenshot" FontSize="10" Margin="0,0,0,6"/>
+                                    <CheckBox x:Name="EditSendEmail" Content="Notify by Email" FontSize="10" Margin="0,0,0,6"/>
+                                    <CheckBox x:Name="EditAllowAdminOverride" Content="Allow Admin Override" FontSize="10" Margin="0,0,0,0"/>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- Edit Actions -->
+                    <Border Grid.Row="2" Background="#F8FAFC" CornerRadius="0,0,6,6" Padding="12,8">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button Content="Cancel" Style="{StaticResource WhiteButton}" Width="65" Height="28"
+                                    Click="CancelEdit_Click"/>
+                            <Button Content="Save" Style="{StaticResource PrimaryGradientButton}" Width="65" Height="28" Margin="6,0,0,0"
+                                    Click="SaveEdit_Click"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- Status Bar -->
+        <Border Grid.Row="2" Background="White" BorderBrush="#E2E8F0"
+                BorderThickness="0,1,0,0" Padding="16,6" Margin="0,8,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                    <TextBlock x:Name="StatusMessage" Foreground="#22C55E" FontWeight="SemiBold" FontSize="10" Margin="0,0,12,0"/>
+                    <TextBlock x:Name="SettingCount" Foreground="#94A3B8" FontSize="10"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" Orientation="Horizontal">
+                    <Button Content="Support Centre" Click="NeedHelp_Click" Cursor="Hand" Margin="0,0,14,0"
+                            FontSize="10" FontWeight="SemiBold" VerticalAlignment="Center">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <TextBlock x:Name="txt" Text="{TemplateBinding Content}"
+                                           FontSize="10" FontWeight="SemiBold" Foreground="#3B82F6"
+                                           TextDecorations="Underline" Cursor="Hand"/>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="txt" Property="Foreground" Value="#1D4ED8"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                    <TextBlock x:Name="DatabaseStatus" VerticalAlignment="Center" FontSize="10" Foreground="#22C55E"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Success Popup (Toast) -->
+        <Border x:Name="SuccessPopup" Grid.RowSpan="3" HorizontalAlignment="Center" VerticalAlignment="Top"
+                Margin="0,20,0,0" Visibility="Collapsed">
+            <Border Background="White" CornerRadius="12" MinWidth="280" MaxWidth="400"
+                    BorderBrush="#E2E8F0" BorderThickness="1">
+                <Border.Effect>
+                    <DropShadowEffect Color="#000000" BlurRadius="20" ShadowDepth="0" Opacity="0.15"/>
+                </Border.Effect>
+                <Grid Margin="16,14">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Success Icon -->
+                    <Border Grid.Column="0" Background="#DCFCE7" CornerRadius="16" Width="32" Height="32" Margin="0,0,12,0">
+                        <TextBlock Text="✓" FontSize="16" FontWeight="Bold" Foreground="#22C55E"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+
+                    <!-- Message -->
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock x:Name="SuccessTitle" Text="Success" FontSize="13" FontWeight="SemiBold" Foreground="#1E293B"/>
+                        <TextBlock x:Name="SuccessMessage" Text="Operation completed" FontSize="11" Foreground="#64748B"
+                                   TextWrapping="Wrap" Margin="0,2,0,0"/>
+                    </StackPanel>
+
+                    <!-- Close Button -->
+                    <Button Grid.Column="2" Click="CloseSuccessPopup_Click" Cursor="Hand" Margin="10,0,0,0"
+                            Width="24" Height="24" VerticalAlignment="Top">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="border" Background="Transparent" CornerRadius="12">
+                                    <TextBlock Text="x" FontSize="16" Foreground="#94A3B8"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-2,0,0"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="border" Property="Background" Value="#F1F5F9"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </Grid>
+            </Border>
+        </Border>
+        </Grid>
+        </Grid>
+    </Border>
+</Window>

@@ -1,0 +1,12 @@
+EventType,DummyCommandId,ProtectionName,IsEnabled,InterventionMode,CustomMessage,ConfigurationJson,CaptureBeforeScreenshot,CaptureAfterScreenshot,RequireComment,AllowAdminOverride,SendEmail,UpdatedAt,ModelGuid,ProjectId,EventProtectionId,CreatedAt,CreatedBy,UpdatedBy,IsDefault,LevelScope
+1,Ze_DuplicateUserSessionProtection,Duplicate Username in Same Model,FALSE,0,,"{""blockDuplicateUsername"":true,""checkApiForRemoteSessions"":true}",FALSE,FALSE,FALSE,FALSE,FALSE,,,,,,,TRUE,0,
+1,Ze_OpenCentralFileProtection,Open Central File Directly,FALSE,0,,"{""warnOnCentralAccess"":true,""blockDirectCentralOpen"":false}",FALSE,FALSE,FALSE,FALSE,FALSE,,,,,,,TRUE,0,
+1,Ze_ModelUpgradeProtection,Model Upgrade Protection,FALSE,0,,"{""protectProjectFiles"":true,""protectFamilyFiles"":true,""minimumVersionDifference"":1}",FALSE,FALSE,FALSE,FALSE,FALSE,,,,,,,TRUE,0,
+2,Ze_SaveOverEarlierFileVersionProtection,Save Over Earlier File Version,FALSE,0,,"{""warnOnDowngrade"":true,""blockDowngrade"":false}",FALSE,FALSE,FALSE,FALSE,FALSE,,,,,,,TRUE,0,
+4,Ze_DocumentPrintingProtection,Document Printing Protection,FALSE,0,,"{""blockAllPrinting"":false,""requireApprovalForPdf"":false}",FALSE,FALSE,FALSE,FALSE,FALSE,,,,,,,TRUE,0,
+6,Ze_DocumentExportingProtection,Document Exporting Protection,FALSE,0,,"{""blockAllExports"":false,""blockedFormats"":[],""allowedFormats"":[]}",FALSE,FALSE,FALSE,FALSE,FALSE,,,,,,,TRUE,0,
+6,Ze_TransferProjectStandardsProtection,Transfer Project Standards Protection,FALSE,0,,"{""verifyProjectRegistration"":true,""autoResetProjectCookie"":true,""notifyOnRegistrationFix"":true,""logTransferEvents"":true}",FALSE,FALSE,FALSE,FALSE,FALSE,,,,,,,TRUE,0,
+3,Ze_FamilyLibrarySettings,Load Family from Non-Approved Location,FALSE,0,,"{""approvedLibraryPaths"":[],""nonApprovedPaths"":[""C:\\""],""protectedCategories"":[],""checkVersionMismatch"":true}",FALSE,FALSE,FALSE,FALSE,FALSE,,,,,,,TRUE,0,
+6,Ze_CADImportProtection,CAD Import Protection,FALSE,0,,"{""blockAllImports"":false,""allowedExtensions"":[],""suggestLinkInstead"":true,""maxFileSizeMB"":0}",FALSE,FALSE,FALSE,FALSE,FALSE,,,,,,,TRUE,0,
+6,Ze_CADExplodeProtection,CAD Explode Protection,FALSE,0,,"{""blockFullExplode"":true,""blockPartialExplode"":true,""allowedCategories"":[]}",FALSE,FALSE,FALSE,FALSE,FALSE,,,,,,,TRUE,0,
+5,Ze_RVTLinkPinPrompt,Revit Link Pin Prompt,FALSE,0,,"{""promptToPinAfterInsert"":true,""autoPinWithoutPrompt"":false}",FALSE,FALSE,FALSE,FALSE,FALSE,,,,,,,TRUE,0,

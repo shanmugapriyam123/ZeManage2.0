@@ -1,0 +1,28 @@
+<?xml version='1.0'?>
+<!--
+  Obfuscar config: BIManageRevit R25 (net8.0-windows / Revit 2025).
+  See ObfuscarR26.xml for the full multi-version probe-path rationale.
+  R25 = R26 except for the Revit install path - same .NET 8.0 ref graph.
+-->
+<Obfuscator>
+  <Var name="InPath"           value="BIManageRevit.org\Contents\2025" />
+  <Var name="OutPath"          value="BIManageRevit.org\Confused\2025" />
+  <Var name="HideStrings"      value="true" />
+  <Var name="KeepPublicApi"    value="true" />
+  <Var name="HidePrivateApi"   value="false" />
+  <Var name="RenameMethods"    value="false" />
+  <Var name="RenameProperties" value="false" />
+  <Var name="RenameEvents"     value="false" />
+  <Var name="RenameFields"     value="false" />
+  <Var name="UseUnicodeNames"  value="false" />
+
+  <AssemblySearchPath path="C:\Program Files\Autodesk\Revit 2025" />
+  <AssemblySearchPath path="C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.27" />
+  <AssemblySearchPath path="C:\Program Files\dotnet\shared\Microsoft.NETCore.App\7.0.20" />
+  <AssemblySearchPath path="C:\Program Files\dotnet\shared\Microsoft.NETCore.App\6.0.36" />
+  <AssemblySearchPath path="C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\8.0.27" />
+  <AssemblySearchPath path="C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\6.0.36" />
+
+  <Module file="BIManageRevit.org\Contents\2025\BIManageRevit.dll" />
+  <Module file="BIManageRevit.org\Contents\2025\BIManage.Addons.dll" />
+</Obfuscator>

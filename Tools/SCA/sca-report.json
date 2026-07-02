@@ -1,0 +1,22 @@
+﻿{
+    "scanDate":  "2026-04-03T09:39:40Z",
+    "buildUser":  "GF_S_052",
+    "project":  "BIManageRevit",
+    "tool":  "dotnet list package (.NET CLI)",
+    "toolVersion":  "10.0.103",
+    "jsonFormat":  true,
+    "summary":  {
+                    "vulnerablePackages":  0,
+                    "outdatedPackages":  0,
+                    "deprecatedPackages":  0
+                },
+    "vulnerabilities":  {
+
+                        },
+    "outdated":  {
+
+                 },
+    "deprecated":  {
+
+                   }
+}

@@ -1,0 +1,98 @@
+[
+  {
+    "ruleId": "STRUCT-WALL-DELETE",
+    "name": "Prevent Structural Wall Deletion",
+    "description": "Prevents deletion of structural walls using BuiltInParameter for type-safe matching",
+    "mode": 3,
+    "priority": 100,
+    "isEnabled": true,
+    "categoryId": -2000011,
+    "categoryName": "Walls",
+    "message": "Cannot delete structural walls. Contact structural engineer for approval.",
+    "captureBeforeScreenshot": true,
+    "captureAfterScreenshot": false,
+    "requireComment": true,
+    "allowAdminOverride": true,
+    "commandIds": [32778, 32779],
+    "commandNames": ["Delete", "Cut"],
+    "builtInParameters": {
+      "WALL_STRUCTURAL_SIGNIFICANT": {
+        "value": "1",
+        "operator": 0,
+        "ignoreCase": true
+      }
+    }
+  },
+  {
+    "ruleId": "LEVEL-CHANGE-GUIDE",
+    "name": "Guide Level Changes",
+    "description": "Warns when changing element level using BuiltInParameter.LEVEL_PARAM",
+    "mode": 2,
+    "priority": 80,
+    "isEnabled": true,
+    "categoryId": null,
+    "categoryName": "All Categories",
+    "message": "You are changing the element's level. Verify coordination with other disciplines.",
+    "captureBeforeScreenshot": true,
+    "captureAfterScreenshot": true,
+    "requireComment": true,
+    "allowAdminOverride": false,
+    "commandIds": [33066],
+    "commandNames": ["Move"],
+    "builtInParameters": {
+      "LEVEL_PARAM": {
+        "value": "",
+        "operator": 7,
+        "ignoreCase": true
+      }
+    }
+  },
+  {
+    "ruleId": "FIRE-RATING-DOOR",
+    "name": "Fire-Rated Door Protection",
+    "description": "Prevents modification of fire-rated doors using BuiltInParameter.DOOR_FIRE_RATING",
+    "mode": 3,
+    "priority": 95,
+    "isEnabled": true,
+    "categoryId": -2000023,
+    "categoryName": "Doors",
+    "message": "This door has a fire rating and cannot be modified without MEP approval.",
+    "captureBeforeScreenshot": true,
+    "captureAfterScreenshot": false,
+    "requireComment": true,
+    "allowAdminOverride": true,
+    "commandIds": [32778, 32779, 33066, 33068],
+    "commandNames": ["Delete", "Cut", "Move", "Rotate"],
+    "builtInParameters": {
+      "DOOR_FIRE_RATING": {
+        "value": "",
+        "operator": 7,
+        "ignoreCase": true
+      }
+    }
+  },
+  {
+    "ruleId": "PHASE-DEMO-MONITOR",
+    "name": "Monitor Demolition Phase Changes",
+    "description": "Tracks elements being set to demolition phase",
+    "mode": 1,
+    "priority": 50,
+    "isEnabled": true,
+    "categoryId": null,
+    "categoryName": "All Categories",
+    "message": "",
+    "captureBeforeScreenshot": true,
+    "captureAfterScreenshot": true,
+    "requireComment": false,
+    "allowAdminOverride": false,
+    "commandIds": [33310],
+    "commandNames": ["Demolish"],
+    "builtInParameters": {
+      "PHASE_DEMOLISHED": {
+        "value": "",
+        "operator": 7,
+        "ignoreCase": true
+      }
+    }
+  }
+]

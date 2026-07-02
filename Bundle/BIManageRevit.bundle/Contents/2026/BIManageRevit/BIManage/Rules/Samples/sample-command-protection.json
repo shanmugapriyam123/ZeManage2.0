@@ -1,0 +1,98 @@
+[
+  {
+    "commandCode": "ID_EDIT_DELETE",
+    "commandName": "Delete",
+    "mode": 2,
+    "isEnabled": true,
+    "isCompanyLevel": true,
+    "customMessage": "Deleting elements cannot be undone. Are you sure?",
+    "captureBeforeScreenshot": true,
+    "captureAfterScreenshot": false,
+    "requireComment": true,
+    "allowAdminOverride": true
+  },
+  {
+    "commandCode": "ID_EDIT_MOVE",
+    "commandName": "Move",
+    "mode": 1,
+    "isEnabled": true,
+    "isCompanyLevel": true,
+    "customMessage": "",
+    "captureBeforeScreenshot": false,
+    "captureAfterScreenshot": false,
+    "requireComment": false,
+    "allowAdminOverride": true
+  },
+  {
+    "commandCode": "ID_EDIT_COPY",
+    "commandName": "Copy",
+    "mode": 1,
+    "isEnabled": false,
+    "isCompanyLevel": true,
+    "customMessage": "",
+    "captureBeforeScreenshot": false,
+    "captureAfterScreenshot": false,
+    "requireComment": false,
+    "allowAdminOverride": true
+  },
+  {
+    "commandCode": "ID_OBJECTS_WALL",
+    "commandName": "Wall",
+    "mode": 2,
+    "isEnabled": true,
+    "isCompanyLevel": false,
+    "customMessage": "Creating walls requires BIM coordination approval.",
+    "captureBeforeScreenshot": false,
+    "captureAfterScreenshot": true,
+    "requireComment": true,
+    "allowAdminOverride": true
+  },
+  {
+    "commandCode": "ID_FILE_SAVE",
+    "commandName": "Save",
+    "mode": 3,
+    "isEnabled": true,
+    "isCompanyLevel": true,
+    "customMessage": "Saving requires admin authorization.",
+    "captureBeforeScreenshot": true,
+    "captureAfterScreenshot": true,
+    "requireComment": true,
+    "allowAdminOverride": true
+  },
+  {
+    "commandCode": "ID_RVTLINK_LINK",
+    "commandName": "Link Revit",
+    "mode": 3,
+    "isEnabled": true,
+    "isCompanyLevel": true,
+    "customMessage": "Linking external files requires BIM manager approval.",
+    "captureBeforeScreenshot": false,
+    "captureAfterScreenshot": true,
+    "requireComment": true,
+    "allowAdminOverride": false
+  },
+  {
+    "commandCode": "ID_EDIT_PIN",
+    "commandName": "Pin",
+    "mode": 1,
+    "isEnabled": true,
+    "isCompanyLevel": true,
+    "customMessage": "",
+    "captureBeforeScreenshot": false,
+    "captureAfterScreenshot": false,
+    "requireComment": false,
+    "allowAdminOverride": true
+  },
+  {
+    "commandCode": "ID_EDIT_UNPIN",
+    "commandName": "Unpin",
+    "mode": 2,
+    "isEnabled": true,
+    "isCompanyLevel": true,
+    "customMessage": "Unpinning protected elements requires confirmation.",
+    "captureBeforeScreenshot": true,
+    "captureAfterScreenshot": false,
+    "requireComment": true,
+    "allowAdminOverride": true
+  }
+]

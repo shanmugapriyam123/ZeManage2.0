@@ -1,0 +1,117 @@
+﻿<Window x:Class="BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Width="380" Height="230"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        KeyDown="Window_KeyDown">
+    <Border Background="White" CornerRadius="10" Margin="8" ClipToBounds="True">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="20" Opacity="0.18" ShadowDepth="0" Color="#000000"/>
+        </Border.Effect>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Standard title bar -->
+            <Border Grid.Row="0" Background="#F8FAFC" CornerRadius="10,10,0,0"
+                    BorderBrush="#E2E8F0" BorderThickness="0,0,0,1"
+                    MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+                <Grid Height="36" Margin="12,0">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Source="pack://application:,,,/BIManageRevit;component/BIManage/Resources/Icons/BIManage.png"
+                               Width="16" Height="16" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
+                                   FontSize="12" FontWeight="SemiBold" Foreground="#1E293B" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <Button HorizontalAlignment="Right" VerticalAlignment="Center"
+                            Click="CloseButton_Click" Width="28" Height="28"
+                            BorderThickness="0" Background="Transparent" Cursor="Hand">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="closeBg" Background="Transparent" CornerRadius="6" Width="28" Height="28">
+                                    <TextBlock Text="&#x2715;" FontSize="10" Foreground="#94A3B8"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="closeBg" Property="Background" Value="#F1F5F9"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </Grid>
+            </Border>
+
+            <Grid Grid.Row="1">
+            <StackPanel x:Name="LoadingSection" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <ProgressBar IsIndeterminate="True" Width="180" Height="3" Margin="0,0,0,10"
+                             Foreground="#033465" Background="#E2E8F0" BorderThickness="0"/>
+                <TextBlock Text="Preparing dashboard..." FontSize="13" FontWeight="SemiBold"
+                           Foreground="#033465" HorizontalAlignment="Center"/>
+                <TextBlock Text="Loading metrics data" FontSize="10" Foreground="#9CA3AF"
+                           HorizontalAlignment="Center" Margin="0,3,0,0"/>
+            </StackPanel>
+            <StackPanel x:Name="NoDataSection" HorizontalAlignment="Center" VerticalAlignment="Center"
+                        Visibility="Collapsed">
+                <TextBlock Text="No metrics data available" FontSize="13" FontWeight="SemiBold"
+                           Foreground="#374151" HorizontalAlignment="Center"/>
+                <TextBlock Text="Run a sync or manual analysis first." FontSize="10"
+                           Foreground="#9CA3AF" HorizontalAlignment="Center" Margin="0,3,0,0"/>
+            </StackPanel>
+            <StackPanel x:Name="NoSyncDataSection" HorizontalAlignment="Center" VerticalAlignment="Center"
+                        Visibility="Collapsed">
+                <TextBlock Text="&#x26A0;" FontSize="22" Foreground="#D97706" HorizontalAlignment="Center" Margin="0,0,0,6"/>
+                <TextBlock Text="No analysis data found" FontSize="13" FontWeight="SemiBold"
+                           Foreground="#374151" HorizontalAlignment="Center"/>
+                <TextBlock Text="Run a Deep Analysis first to populate the health report." FontSize="10"
+                           Foreground="#9CA3AF" HorizontalAlignment="Center" Margin="0,3,0,12"
+                           TextWrapping="Wrap" TextAlignment="Center" MaxWidth="300"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button x:Name="SkipButton" Content="Skip" Click="SkipButton_Click"
+                            Width="90" Height="36" FontSize="11" FontWeight="Medium" Cursor="Hand"
+                            Background="Transparent" Foreground="#64748B" BorderBrush="#E2E8F0" BorderThickness="1">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="bd" Background="Transparent" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="6">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="bd" Property="Background" Value="#F8FAFC"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                    <Button x:Name="RunAnalysisButton" Content="Run Deep Analysis" Click="RunAnalysisButton_Click"
+                            Width="130" Height="36" Margin="10,0,0,0" FontSize="11" FontWeight="Medium" Cursor="Hand"
+                            Foreground="White">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="bd" Background="#FF5500" CornerRadius="6">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="bd" Property="Background" Value="#E5611A"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

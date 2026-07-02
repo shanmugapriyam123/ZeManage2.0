@@ -1,0 +1,56 @@
+#,Method,Endpoint,Used By,Auth,Notes
+1,GET,/api/v1/Revit/categories,CategoryService,Device,List all Revit categories
+2,GET,/api/v1/Revit/commands,CommandApiService,Device,List all Revit commands
+3,GET,/api/v1/Revit/command-protections/by-model/{modelGuid},CommandProtectionSyncService,Admin,Fetch command protections per model
+4,GET,/api/v1/Revit/event-protections/by-model/{modelGuid},EventProtectionSyncService,Admin,Fetch event protections per model
+5,GET,/api/v1/Revit/rule-protections/by-model/{modelGuid},RulesSyncService,Admin,Fetch rule protections per model
+6,GET,/api/v1/Revit/pin-protections/by-model/{modelGuid},PinProtectionSyncService,Admin,Fetch pin protections per model
+7,GET,/api/v1/Revit/health-monitor-protections/by-model/{modelGuid},HealthMonitorProtectionSyncService,Admin,Fetch health monitor thresholds per model
+8,GET,/api/v1/Revit/models/{modelGuid},ModelSyncService,Device,Fetch registered model info
+9,GET,/api/v1/Revit/models/StaticModelInfo/{modelGuid},ModelSyncService,Device,Fetch model static metadata
+10,GET,/api/v1/Revit/models/{modelGuid}/sessions,ModelSessionSyncService,Device,List active sessions for a model
+11,GET,/api/v1/Revit/project-model-admins/admins/{projectId},ModelAdminsSyncService,Admin,List project admins
+12,GET,/api/v1/Revit/session,SessionSyncService,Device,Fetch latest session
+13,GET,/api/v1/Revit/metrics/manual/latest,MetricsSyncService,Device,Latest Deep Analysis metrics
+14,GET,/api/v1/Revit/metrics/periodic/latest,MetricsSyncService,Device,Latest 24h periodic metrics
+15,GET,/api/v1/Revit/metrics/syncsave/latest,MetricsSyncService,Device,Latest sync-save metrics
+16,POST,/api/v1/tenant/company-auth/login,AuthApiService,Anon,User-credentials sign in
+17,POST,/api/v1/tenant/company-auth/select-company,AuthApiService,Bearer,Multi-company picker after login
+18,POST,/api/v1/tenant/device/auth/register-device,AuthApiService,Anon,First-time device registration
+19,POST,/api/v1/tenant/device/auth/validate-device,AuthApiService,Anon,Every startup device validation
+20,POST,/api/v1/tenant/device/auth/refresh,AuthApiService,Refresh token,Device token refresh
+21,POST,/api/v1/tenant/device/auth/admin-login,AuthApiService,Device + creds,Admin sign-in dialog
+22,POST,/api/v1/tenant/device/auth/admin-logout,AuthApiService,Admin,Admin sign-out
+23,POST,/api/v1/tenant/device/auth/admin-refresh,AuthApiService,Refresh token,Admin token refresh
+24,POST,/api/v1/Revit/session,SessionSyncService,Device,Create new Revit session
+25,POST,/api/v1/Revit/session/Open,SessionSyncService,Device,Mark session opened
+26,POST,/api/v1/Revit/models/register,ModelSyncService,Device,Register a workshared model
+27,POST,/api/v1/Revit/models/model-sessions,ModelSessionSyncService,Device,Open model session record
+28,POST,/api/v1/Revit/model-syncs,SyncRepository,Device,Record a sync-to-central event
+29,POST,/api/v1/Revit/command-protections,CommandProtectionSyncService,Admin,Create command protection
+30,POST,/api/v1/Revit/event-protections,EventProtectionSyncService,Admin,Create event protection
+31,POST,/api/v1/Revit/rule-protections,RulesSyncService,Admin,Create rule protection
+32,POST,/api/v1/Revit/pin-protections,PinProtectionSyncService,Admin,Create pin protection
+33,POST,/api/v1/Revit/project-model-admins/model,ModelAdminsSyncService,Admin,Assign model admin
+34,POST,/api/v1/Revit/metrics/manual,MetricsSyncService,Device,Upload Deep Analysis metrics
+35,POST,/api/v1/Revit/metrics/periodic,MetricsSyncService,Device,Upload 24h periodic metrics
+36,POST,/api/v1/Revit/metrics/syncsave,MetricsSyncService,Device,Upload sync-save metrics
+37,POST,/api/v1/Revit/audit-logs,AuditLogSyncService,Admin,Upload audit log batch
+38,POST,/api/v1/Revit/audit-logs/{id}/send-mail,AuditLogMailDispatchService,Admin,Trigger audit-log email
+39,POST,/api/v1/Revit/otp/generate,OtpRepository,Admin,Generate one-time admin override code
+40,POST,/api/v1/Revit/unmonitored-users,UnmonitoredUserReportService,Device,Report unmonitored Revit users
+41,POST,/api/v1/master/tickets,ReportIssueDialog,Bearer,Submit Help / Support ticket
+42,PUT,/api/v1/Revit/command-protections/{commandId},CommandProtectionSyncService,Admin,Update command protection
+43,PUT,/api/v1/Revit/event-protections/for-Project/{eventProtectionId},EventProtectionSyncService,Admin,Update event protection (Project scope)
+44,PUT,/api/v1/Revit/event-protections/for-Model/{eventProtectionId},EventProtectionSyncService,Admin,Update event protection (Model scope)
+45,PUT,/api/v1/Revit/rule-protections/{ruleId},RulesSyncService,Admin,Update rule protection
+46,PATCH,/api/v1/Revit/command-protections/{commandId},CommandProtectionSyncService,Admin,Partial update command protection
+47,PATCH,/api/v1/Revit/event-protections/{eventProtectionId}/is-enabled,EventProtectionSyncService,Admin,Toggle event protection on/off
+48,PATCH,/api/v1/Revit/company-defaults/company/event-protections/{eventProtectionId},EventProtectionSyncService,Admin,Update event protection (Company scope)
+49,PATCH,/api/v1/Revit/session/{sessionId},SessionSyncService,Device,Close / update session
+50,PATCH,/api/v1/Revit/session/{sessionId}/heartbeat,SessionSyncService,Device,Session keep-alive ping
+51,PATCH,/api/v1/Revit/models/model-sessions/{modelSessionId},ModelSessionSyncService,Device,Close model session
+52,DELETE,/api/v1/Revit/command-protections/{commandId},CommandProtectionSyncService,Admin,Delete command protection
+53,DELETE,/api/v1/Revit/event-protections/{eventProtectionId},EventProtectionSyncService,Admin,Delete event protection
+54,DELETE,/api/v1/Revit/rule-protections/{ruleId},RulesSyncService,Admin,Delete rule protection
+55,DELETE,/api/v1/Revit/pin-protections/{pinProtectionId},PinProtectionSyncService,Admin,Delete pin protection

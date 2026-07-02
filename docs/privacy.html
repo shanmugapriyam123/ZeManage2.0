@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zestine Technologies — Privacy Policy</title>
+<!-- Favicon: use the same ZestineTech logo PNG so the browser tab shows
+     the lime "N" mark instead of the previous BIManage placeholder. -->
+<link rel="icon" type="image/png" href="zestinetech-logo.png">
+<link rel="shortcut icon" type="image/png" href="zestinetech-logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ──────────────────────────────────────────────────────────────────────
+   Black + Electric Lime — ZestineTech brand
+   GREEN 500 #B7FF3C · GREEN 400 #C9FF66 · GREEN 300 #DBFF99
+   GREEN 200 #ECFFCC · GREEN 100 #F5FFE5
+   BLACK   #000000 · INK   #0a0a0a · INK-2 #111111 · LINE #1f2937
+   ────────────────────────────────────────────────────────────────────── */
+:root{
+  --lime-500:#B7FF3C;
+  --lime-400:#C9FF66;
+  --lime-300:#DBFF99;
+  --lime-200:#ECFFCC;
+  --lime-100:#F5FFE5;
+  --black:#000000;
+  --ink:#0a0a0a;
+  --ink-2:#111111;
+  --ink-3:#171717;
+  --line:#1f2937;
+  --line-2:#262626;
+  --text:#e5e7eb;
+  --text-2:#cbd5e1;
+  --muted:#9ca3af;
+  --muted-2:#6b7280;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{scroll-behavior:smooth;background:var(--black);}
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--black);
+  color:var(--text);
+  line-height:1.7;
+  min-height:100vh;
+}
+a{color:var(--lime-500);text-decoration:none;border-bottom:1px dotted rgba(183,255,60,0.4);}
+a:hover{color:var(--lime-400);border-bottom-color:var(--lime-400);}
+
+/* ─── Sidebar ─── */
+.sidebar{
+  position:fixed;top:0;left:0;width:280px;height:100vh;
+  background:var(--ink);
+  border-right:1px solid var(--line);
+  overflow-y:auto;z-index:100;padding:24px 0;
+}
+.sidebar::-webkit-scrollbar{width:6px;}
+.sidebar::-webkit-scrollbar-thumb{background:rgba(183,255,60,0.25);border-radius:6px;}
+
+.sidebar-brand{padding:6px 22px 22px;border-bottom:1px solid var(--line);}
+.sidebar-brand .brand-lockup-sm{
+  display:block;width:100%;max-width:236px;height:auto;
+  /* PNG already has a near-white wordmark; render on dark sidebar as-is. */
+}
+
+.nav-group{padding:16px 0;}
+.nav-group-title{
+  font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;
+  color:var(--muted-2);padding:0 24px;margin-bottom:8px;
+}
+.nav-link{
+  display:block;padding:8px 24px;font-size:13px;
+  color:var(--text-2);transition:all .15s;cursor:pointer;
+  border-left:3px solid transparent;border-bottom:none;
+}
+.nav-link:hover{
+  background:rgba(183,255,60,0.06);color:#fff;
+  border-left-color:rgba(183,255,60,0.5);text-decoration:none;
+}
+.nav-link.active{
+  background:rgba(183,255,60,0.12);color:var(--lime-500);
+  border-left-color:var(--lime-500);font-weight:600;
+}
+
+/* ─── Main ─── */
+/* No fixed max-width: the content area flexes to fill everything right of
+   the sidebar so the page feels full-bleed on wide monitors. Individual text
+   blocks below use .content-stack to keep paragraph line length readable. */
+.main{
+  margin-left:280px;
+  padding:48px 64px 100px;
+  min-height:100vh;
+}
+.content-stack{max-width:980px;margin:0 auto;}
+.content-stack > p,
+.content-stack > ul,
+.content-stack > ol,
+.content-stack > .gdpr,
+.content-stack > .facts,
+.content-stack > .tagged-list,
+.content-stack > h2,
+.content-stack > h3{max-width:none;}
+
+/* Hero — big black header with the full ZestineTech logo lockup centred.
+   Spans the full content-area width above the constrained reading column,
+   so the brand plate occupies the whole top band of the page. */
+.hero{
+  background:linear-gradient(135deg,var(--ink) 0%,var(--ink-2) 50%,var(--black) 100%);
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:72px 64px;
+  margin:0 auto 56px;
+  max-width:1360px;
+  position:relative;
+  overflow:hidden;
+  text-align:center;
+}
+.hero::before{
+  content:"";position:absolute;top:-100px;right:-100px;width:380px;height:380px;
+  background:radial-gradient(circle,var(--lime-500) 0%,transparent 60%);
+  opacity:0.18;pointer-events:none;
+}
+.hero::after{
+  content:"";position:absolute;bottom:-80px;left:-80px;width:280px;height:280px;
+  background:radial-gradient(circle,var(--lime-400) 0%,transparent 60%);
+  opacity:0.12;pointer-events:none;
+}
+.hero-inner{position:relative;z-index:1;}
+
+.hero-logo{display:flex;align-items:center;justify-content:center;margin-bottom:36px;}
+.hero-logo .brand-lockup-lg{
+  display:block;width:100%;max-width:640px;height:auto;
+  /* Glow halo behind the wordmark to lift it off the dark hero. */
+  filter:drop-shadow(0 0 22px rgba(183,255,60,0.18));
+}
+
+.eyebrow{
+  display:inline-block;background:var(--lime-500);color:var(--black);
+  font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
+  padding:6px 14px;border-radius:20px;margin-bottom:18px;
+}
+.hero h1{
+  font-size:38px;font-weight:800;margin-bottom:14px;
+  letter-spacing:-0.8px;color:#fff;
+}
+.hero p{font-size:15px;color:var(--text-2);max-width:760px;margin:0 auto;}
+.hero-meta{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap;justify-content:center;font-size:12px;}
+.hero-meta span{
+  background:rgba(255,255,255,0.06);border:1px solid var(--line);
+  padding:6px 13px;border-radius:20px;color:var(--text-2);
+}
+.hero-meta span strong{color:var(--lime-500);font-weight:700;}
+
+/* ─── Typography ─── */
+h2{
+  font-size:24px;font-weight:800;color:#fff;
+  margin:56px 0 18px;padding-bottom:14px;
+  border-bottom:2px solid var(--line);
+  display:flex;align-items:center;gap:14px;
+}
+h2 .num{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:36px;height:36px;background:var(--lime-500);color:var(--black);
+  border-radius:10px;font-size:16px;font-weight:800;
+  box-shadow:0 0 0 4px rgba(183,255,60,0.12);
+}
+h2:first-of-type{margin-top:0;}
+h3{font-size:16px;font-weight:700;color:#fff;margin:24px 0 8px;}
+
+p,li{font-size:14px;color:var(--text-2);}
+p{margin-bottom:14px;}
+ul,ol{padding-left:22px;margin:8px 0 18px;}
+li{margin-bottom:6px;}
+li::marker{color:var(--lime-500);}
+strong{color:#fff;font-weight:700;}
+.lead{font-size:15.5px;color:var(--text);}
+
+/* GDPR call-out boxes (lime accent on near-black) */
+.gdpr{
+  background:linear-gradient(90deg,rgba(183,255,60,0.06) 0%,rgba(183,255,60,0.02) 100%);
+  border:1px solid var(--line);
+  border-left:4px solid var(--lime-500);
+  border-radius:10px;
+  padding:14px 18px;
+  margin:16px 0 20px;
+  font-size:13px;
+  color:var(--text-2);
+}
+.gdpr strong{color:var(--lime-300);}
+
+/* Facts card (company / contact info) */
+.facts{
+  background:var(--ink-2);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:22px 26px;
+  margin:18px 0 26px;
+}
+.facts dl{display:grid;grid-template-columns:210px 1fr;gap:12px 28px;}
+.facts dt{
+  font-size:11.5px;font-weight:700;text-transform:uppercase;
+  color:var(--lime-500);letter-spacing:0.8px;align-self:center;
+}
+.facts dd{font-size:14px;color:var(--text);}
+.facts a{color:var(--lime-400);}
+
+/* Tagged-list cards for the four data categories */
+.tagged-list{list-style:none;padding:0;}
+.tagged-list li{
+  background:var(--ink-2);
+  border:1px solid var(--line);
+  border-left:4px solid var(--lime-500);
+  border-radius:10px;
+  padding:16px 20px;
+  margin-bottom:12px;
+}
+.tagged-list li strong{
+  display:block;color:var(--lime-300);margin-bottom:6px;
+  font-size:14px;font-weight:700;letter-spacing:0.2px;
+}
+.tagged-list li{color:var(--text-2);}
+
+/* Footer */
+.footer{
+  margin-top:70px;padding-top:34px;
+  border-top:1px solid var(--line);
+  color:var(--muted);font-size:12px;text-align:center;
+}
+.footer .lime-bar{
+  display:inline-block;width:80px;height:4px;
+  background:var(--lime-500);border-radius:4px;margin-bottom:18px;
+  box-shadow:0 0 16px rgba(183,255,60,0.4);
+}
+.footer p{color:var(--muted);}
+.footer .links{margin-top:10px;}
+.footer .links a{color:var(--muted);margin:0 12px;border-bottom-color:transparent;}
+.footer .links a:hover{color:var(--lime-500);}
+
+/* Mobile */
+@media (max-width:900px){
+  .sidebar{position:relative;width:100%;height:auto;border-right:none;border-bottom:1px solid var(--line);}
+  .main{margin-left:0;padding:28px 22px;}
+  .hero{padding:40px 24px;margin:0 0 32px;}
+  .hero-logo{margin-bottom:24px;}
+  .hero-logo .brand-lockup-lg{max-width:88%;}
+  .hero h1{font-size:26px;}
+  .content-stack{max-width:100%;}
+  .facts dl{grid-template-columns:1fr;}
+  .facts dt{margin-top:4px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ─────────── Sidebar ─────────── -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <!-- Full ZestineTech lockup (mark + wordmark) — transparent PNG renders
+         crisply on the near-black sidebar. -->
+    <img src="zestinetech-logo.png" alt="ZestineTech" class="brand-lockup-sm"/>
+  </div>
+  <nav class="nav-group">
+    <div class="nav-group-title">Policy</div>
+    <a class="nav-link active" href="#overview">Overview</a>
+    <a class="nav-link" href="#section-1">1. Scope &amp; Applicability</a>
+    <a class="nav-link" href="#section-2">2. Data Governance</a>
+    <a class="nav-link" href="#section-3">3. Information We Collect</a>
+    <a class="nav-link" href="#section-4">4. AI in Our Interface</a>
+    <a class="nav-link" href="#section-5">5. Your Privacy Rights</a>
+    <a class="nav-link" href="#section-6">6. Cookies &amp; Tracking</a>
+    <a class="nav-link" href="#section-7">7. Updates to Policy</a>
+    <a class="nav-link" href="#section-8">8. Contact Us</a>
+  </nav>
+  <nav class="nav-group">
+    <div class="nav-group-title">Resources</div>
+    <a class="nav-link" href="https://www.zestinetech.com/" target="_blank" rel="noopener">Website</a>
+    <a class="nav-link" href="mailto:support@zestinetech.com">support@zestinetech.com</a>
+  </nav>
+</aside>
+
+<!-- ─────────── Main ─────────── -->
+<main class="main">
+
+  <!-- Hero with full logo lockup -->
+  <section class="hero" id="overview">
+    <div class="hero-inner">
+      <div class="hero-logo">
+        <!-- Full ZestineTech lockup at brand-plate scale — fills the hero
+             the way the corporate logo plate is meant to be presented. -->
+        <img src="zestinetech-logo.png" alt="ZestineTech" class="brand-lockup-lg"/>
+      </div>
+      <span class="eyebrow">Privacy Policy</span>
+      <h1>How Zestine handles your data.</h1>
+      <p>This Privacy Policy (“Policy”) governs how Zestine Technologies, Inc. (“Zestine,” “we,” “us,” or “our”) collects, uses, discloses, retains, and protects personal information obtained from individuals and organizations that access or use our website at <a href="https://www.zestinetech.com/">https://www.zestinetech.com/</a>, our intelligent engineering platforms, software applications, APIs, and related services (collectively, the “Services”).</p>
+      <div class="hero-meta">
+        <span><strong>Effective</strong> · 2026</span>
+        <span><strong>Governs</strong> · Zestine Services &amp; Platforms</span>
+        <span><strong>Region</strong> · Global</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="content-stack">
+
+  <p class="lead">Zestine is a U.S.-based technology company provides services for Engineering organizations. Our Services replace fragmented, manual workflows with intelligent, guided operational systems designed for precision and scale. By using our Services, you acknowledge and agree to the terms described in this Policy.</p>
+
+  <p>If you do not agree to this Policy, please discontinue use of our Services and contact us at <a href="mailto:support@zestinetech.com">support@zestinetech.com</a> to request deletion of any previously collected data.</p>
+
+  <p>This Privacy Policy governs the processing of Personal Data by Zestine on behalf of the Authorised user / Organization in connection with the provision of the Zestine Products and Services, in compliance with Regulation (EU) 2016/679 of the European Parliament and of the Council of 27 April 2016 (“GDPR”), the UK GDPR (as incorporated into UK law by the European Union (Withdrawal) Act 2018), the California Consumer Privacy Act (“CCPA”) as amended by the CPRA, and all other applicable data protection laws (collectively, “Applicable Data Protection Law”).</p>
+
+  <p>For GDPR Clauses mentioned &amp; referring in privacy policy document, please refer our Data Processing Agreement and respective Appendix A – processing details, Appendix B — Technical and Organisational Security Measures, Appendix C — Authorised Subprocessors and Appendix D — Standard Contractual Clauses (SCCs) for better understanding of the policy.</p>
+
+  <!-- ─── 1 ─── -->
+  <h2 id="section-1"><span class="num">1</span>Scope and Applicability</h2>
+  <p>This Policy applies to:</p>
+  <ul>
+    <li>All visitors to our website at <a href="https://www.zestinetech.com/" target="_blank" rel="noopener">https://www.zestinetech.com/</a></li>
+    <li>Individual professionals who create accounts or use our platform</li>
+    <li>Business and enterprise clients (B2B) who deploy Zestine for their organization</li>
+    <li>Government and public-sector entities that contract or interact with Zestine</li>
+    <li>Authorized users within client organizations who access the Services under a client account</li>
+    <li>Third parties who communicate with us for support, partnership, or business purposes</li>
+  </ul>
+  <p>This Policy does not apply to third-party products, services, or websites that may be linked from within the Services. We encourage you to review the privacy policies of those third parties independently.</p>
+
+  <!-- ─── 2 ─── -->
+  <h2 id="section-2"><span class="num">2</span>Data Governance and Compliance</h2>
+  <p>Zestine Technologies, Inc. acts as the Data Controller for personal and technical information collected through our Services and is committed to maintaining data privacy and protection practices in alignment with applicable compliance standards, including GDPR, CCPA, and PIPEDA requirements where applicable.</p>
+
+  <div class="facts">
+    <dl>
+      <dt>Registered Name</dt>     <dd>Zestine Technologies, Inc.</dd>
+      <dt>Country of Incorporation</dt> <dd>United States of America</dd>
+      <dt>Website</dt>             <dd><a href="https://www.zestinetech.com/" target="_blank" rel="noopener">https://www.zestinetech.com/</a></dd>
+      <dt>Privacy Contact</dt>     <dd><a href="mailto:support@zestinetech.com">support@zestinetech.com</a></dd>
+    </dl>
+  </div>
+
+  <!-- ─── 3 ─── -->
+  <h2 id="section-3"><span class="num">3</span>Personal &amp; Technical Information We Collect</h2>
+  <p>We collect limited personal, technical, operational, and usage information depending on how you interact with our Services / System, including:</p>
+
+  <div class="gdpr"><strong>GDPR Art. 5(1)(b):</strong> Personal data shall be collected for specified, explicit and legitimate purposes and not further processed in a manner that is incompatible with those purposes (purpose limitation).</div>
+  <div class="gdpr"><strong>GDPR Art. 28(3)(a):</strong> The processor shall process personal data only on documented instructions from the controller.</div>
+  <div class="gdpr"><strong>GDPR Art. 28(3)(g):</strong> At the choice of the controller, delete or return all personal data to the controller after the end of the provision of services relating to processing, and delete existing copies unless Union or Member State law requires storage.</div>
+
+  <ul class="tagged-list">
+    <li><strong>Identity &amp; Account Information</strong>Name, business email, phone number, username, organization details, and account preferences.</li>
+    <li><strong>Device &amp; Licensing Information</strong>Machine identifier, operating system details, Autodesk Revit version, plugin version, license registration information, and installed add-ins.</li>
+    <li><strong>Usage &amp; Session Information</strong>Revit session activity, model performance metrics, sync activity, file statistics, system resource usage, audit logs, and collaboration presence data.</li>
+    <li><strong>Support &amp; Diagnostic Information</strong>Support tickets, browser and environment information, IP address, API usage data, system logs, error reports, and technical diagnostics used for troubleshooting and service improvement.</li>
+  </ul>
+
+  <p>All account, authentication, and operational data are stored within secure cloud-based infrastructure protected through access controls, encryption, monitoring systems, and industry-standard security practices. Passwords are securely hashed and are never stored in plain-text format.</p>
+
+  <p>Multi-factor authentication (MFA) may not currently be available for all subscribed users. Users are responsible for maintaining the confidentiality of their account credentials. Password recovery and account assistance features are available where applicable.</p>
+
+  <div class="gdpr"><strong>GDPR Art. 28(3)(b):</strong> The processor shall ensure that persons authorised to process personal data have committed themselves to confidentiality or are under an appropriate statutory obligation of confidentiality.</div>
+
+  <p>Zestine may collect and process information for product activation, licensing validation, customer support, service delivery, operational monitoring, and platform security purposes. We do not sell or share personal information with third-party marketers.</p>
+
+  <p>Personal information and operational logs are retained only for as long as necessary to provide Services, comply with legal obligations, maintain security, resolve disputes, and enforce contractual agreements.</p>
+
+  <div class="gdpr"><strong>GDPR Art. 5(1)(e):</strong> Personal data shall be kept in a form which permits identification of data subjects for no longer than is necessary for the purposes for which the personal data are processed (storage limitation).</div>
+
+  <!-- ─── 4 ─── -->
+  <h2 id="section-4"><span class="num">4</span>Artificial Intelligence usage in our interface</h2>
+  <p>Zestine uses Ze AI, an AI-powered assistance system built on OpenAI technology. Ze AI may process user requests through OpenAI services in accordance with the applicable OpenAI Privacy Policy.</p>
+  <p>Ze AI is trained to assist engineering teams with product-related queries, technical guidance, operational support, and industry best practices related to Zestine products and services.</p>
+  <p>Users are strongly advised not to enter personal, confidential, sensitive, proprietary, or client-specific information through the AI chat interface.</p>
+  <p>All AI-generated responses are advisory in nature and are intended solely for informational and support purposes. Ze AI does not make fully automated technical, operational, or account-related decisions without meaningful human oversight.</p>
+  <p>Where AI-generated outputs may influence workflows, processes, or account-related activities, users may request human review or intervention by contacting <a href="mailto:support@zestinetech.com">support@zestinetech.com</a>.</p>
+  <p>Ze AI processes only the information necessary to provide relevant technical assistance, product information, and operational guidance. Discussions or inputs unrelated to product support, technical usage, or operational assistance may be restricted, excluded, or not processed.</p>
+  <p>Screenshots, images, raw project files, engineering drawings, BIM models, proprietary datasets, and client-specific design information are not intentionally retained, curated, or used beyond the scope required to provide the requested response or support.</p>
+  <p>Zestine follows responsible and privacy-conscious AI practices. Any data processed through Ze AI is handled using anonymization or pseudonymization practices where applicable.</p>
+
+  <!-- ─── 5 ─── -->
+  <h2 id="section-5"><span class="num">5</span>Your Privacy Rights</h2>
+  <div class="gdpr"><strong>GDPR Art. 33:</strong> The processor shall notify the controller without undue delay after becoming aware of a personal data breach. The controller must notify the supervisory authority within 72 hours of becoming aware.</div>
+  <div class="gdpr"><strong>GDPR Art. 34:</strong> Where a breach is likely to result in a high risk to the rights and freedoms of natural persons, the controller shall communicate the breach to the data subject without undue delay.</div>
+  <p>You may request access, correction, deletion, restriction, or portability of your personal information, subject to applicable laws and operational requirements. You may also withdraw consent or object to certain types of data processing, including marketing communications, at any time.</p>
+  <p>To exercise your privacy rights or request human review of significant AI-generated outputs, contact: <a href="mailto:support@zestinetech.com">support@zestinetech.com</a>. Zestine will respond to verified requests within the timeframe required by applicable law.</p>
+
+  <!-- ─── 6 ─── -->
+  <h2 id="section-6"><span class="num">6</span>Cookies and Tracking Technologies</h2>
+  <p>Zestine uses cookies and similar technologies to maintain platform functionality, improve user experience, analyze usage, and support platform performance. These may include necessary, functional, analytics, and consent-based marketing cookies.</p>
+  <p>We may use third-party analytics and monitoring services, including Google Analytics and Microsoft Clarity, to understand platform usage, diagnose technical issues, and improve our Services.</p>
+  <div class="gdpr"><strong>GDPR Arts. 44–49:</strong> Any transfer of personal data to a third country or international organisation may only take place if adequate protections are in place, including adequacy decisions, Standard Contractual Clauses (SCCs), or Binding Corporate Rules.</div>
+  <p>Users may manage or disable cookies through browser settings or our cookie consent preferences where applicable. Disabling certain cookies may affect some platform features or functionality.</p>
+
+  <!-- ─── 7 ─── -->
+  <h2 id="section-7"><span class="num">7</span>Updates to This Privacy Policy</h2>
+  <p>Zestine may update this Privacy Policy periodically to reflect changes in our Services, operational practices, or legal requirements. Material updates may be communicated through our website, email notifications, or in-platform notices. Continued use of the Services after such updates constitutes acceptance of the revised Policy.</p>
+
+  <!-- ─── 8 ─── -->
+  <h2 id="section-8"><span class="num">8</span>Contact Us</h2>
+  <p>Zestine shall notify the Controller without undue delay, and in any event within 48 hours of becoming aware of a confirmed or reasonably suspected Personal Data Breach, to enable the Controller to meet the 72-hour notification deadline to the Supervisory Authority under GDPR Art. 33.</p>
+  <p>For questions, concerns, or privacy-related requests, please contact:</p>
+
+  <div class="facts">
+    <dl>
+      <dt>Email</dt>   <dd><a href="mailto:support@zestinetech.com">support@zestinetech.com</a></dd>
+      <dt>Phone</dt>   <dd>+1 832 206 9137</dd>
+      <dt>Website</dt> <dd><a href="https://www.zestinetech.com/" target="_blank" rel="noopener">https://www.zestinetech.com/</a></dd>
+    </dl>
+  </div>
+
+  <div class="footer">
+    <div class="lime-bar"></div>
+    <p>&copy; 2026 Zestine Technologies, Inc. All rights reserved.</p>
+    <div class="links">
+      <a href="https://www.zestinetech.com/" target="_blank" rel="noopener">zestinetech.com</a>
+      <a href="mailto:support@zestinetech.com">support@zestinetech.com</a>
+    </div>
+  </div>
+
+  </div><!-- /.content-stack -->
+
+<<<<<<< Updated upstream
+<!-- Hero -->
+<div class="hero" id="overview">
+    <h1>Privacy Policy</h1>
+    <p>How ZeManage collects, uses, stores, and protects your information within Autodesk Revit.</p>
+    <div class="hero-badges">
+        <span class="hero-badge">Effective: April 2, 2026</span>
+        <span class="hero-badge">Last Updated: April 2, 2026</span>
+        <span class="hero-badge">ZestineTech</span>
+        <span class="hero-badge">v0.1.2</span>
+    </div>
+</div>
+
+<p>This Privacy Policy describes how ZestineTech ("we", "us", "our") collects, uses, stores, protects, and shares information through the <strong>ZeManage BIM Plugin for Autodesk Revit</strong> ("the Software").</p>
+<p>ZeManage provides command protection, element protection, rules enforcement, activity monitoring, model health analytics, and team collaboration features within Autodesk Revit.</p>
+<div class="note">By installing and using ZeManage, you acknowledge and agree to the practices described in this Privacy Policy.</div>
+
+<!-- Information We Collect -->
+<h2 id="data-collected">Information We Collect</h2>
+
+<h3>User Identity Information</h3>
+<table>
+<tr><th>Data</th><th>Purpose</th></tr>
+<tr><td>Email address</td><td>Primary user identification and authentication</td></tr>
+<tr><td>Display name</td><td>Displayed in audit logs and team presence</td></tr>
+<tr><td>Revit username</td><td>Mapping the Revit user to the ZeManage account</td></tr>
+<tr><td>User ID / Profile ID</td><td>Internal unique identifier for API communication</td></tr>
+<tr><td>Company ID and name</td><td>Multi-tenant organization scoping</td></tr>
+<tr><td>Role information</td><td>Access level: <span class="mode mode-gray">Normal User</span> <span class="mode mode-blue">Project Admin</span> <span class="mode mode-red">Company Admin</span></td></tr>
+<tr><td>Project assignments</td><td>Controls which projects the user can manage</td></tr>
+</table>
+<p><strong>When collected:</strong> During device registration, authentication, and login.</p>
+
+<h3>Device and Machine Information</h3>
+<table>
+<tr><th>Data</th><th>Purpose</th></tr>
+<tr><td>Machine ID</td><td>Deterministic hash derived from Windows MachineGuid, motherboard serial, and processor ID &mdash; for license binding</td></tr>
+<tr><td>Computer name</td><td>Identifies the workstation in session logs</td></tr>
+<tr><td>Windows username</td><td>Associates the OS user with the session</td></tr>
+</table>
+<div class="note note-green"><strong>How Machine ID works:</strong> A one-way hash (MD5) is computed from hardware characteristics. The raw hardware serial numbers are never stored or transmitted &mdash; only the derived hash.</div>
+
+<h3>Session and Activity Data</h3>
+<table>
+<tr><th>Data</th><th>Purpose</th></tr>
+<tr><td>Session ID</td><td>Unique identifier for each Revit session</td></tr>
+<tr><td>Start / end timestamps</td><td>Duration tracking and usage analytics</td></tr>
+<tr><td>Revit version and build</td><td>Compatibility tracking and support</td></tr>
+<tr><td>Plugin version</td><td>Version management</td></tr>
+<tr><td>Loaded add-in counts</td><td>Environment info for troubleshooting</td></tr>
+<tr><td>Session status</td><td>Active, Inactive, Closed, or Crashed</td></tr>
+<tr><td>Total commands / events</td><td>Activity volume metrics</td></tr>
+</table>
+<p><strong>Per-document data:</strong> Model GUID, central model path and name, project name, open/close timestamps, opening duration, modification count, worksets count, last save timestamp.</p>
+
+<h3>System Performance Data (Heartbeats)</h3>
+<table>
+<tr><th>Data</th><th>Purpose</th></tr>
+<tr><td>Memory usage (%)</td><td>RAM resource monitoring</td></tr>
+<tr><td>CPU usage (%)</td><td>Processor performance tracking</td></tr>
+<tr><td>Disk usage (%)</td><td>Storage capacity monitoring</td></tr>
+<tr><td>GPU usage (%)</td><td>Rendering performance tracking</td></tr>
+</table>
+
+<h3>Protection and Audit Data</h3>
+<p>When protection features are active (command, pin, rule, or event protection), ZeManage logs enforcement actions:</p>
+<table>
+<tr><th>Data</th><th>Purpose</th></tr>
+<tr><td>Audit log ID and timestamp</td><td>Unique tracking of each action</td></tr>
+<tr><td>Username and admin status</td><td>Who performed the action and their role</td></tr>
+<tr><td>Model GUID</td><td>Which Revit model was affected</td></tr>
+<tr><td>Command or event name</td><td>What action was attempted</td></tr>
+<tr><td>Protection mode</td><td><span class="mode mode-green">Monitor</span> <span class="mode mode-yellow">Guide</span> <span class="mode mode-red">Prevent</span></td></tr>
+<tr><td>Action taken</td><td>Allowed, Blocked, Override, or Detected</td></tr>
+<tr><td>Element IDs, count, category, family, name</td><td>Which Revit elements were involved</td></tr>
+<tr><td>User comment</td><td>User's explanation (when required by policy)</td></tr>
+<tr><td>Override method</td><td>OTP, Admin Password, or none</td></tr>
+</table>
+<div class="note note-amber"><strong>Data integrity:</strong> Every audit entry is protected with HMAC-SHA256 covering all critical fields, making the audit trail tamper-evident.</div>
+
+<h3>Screenshots and Visual Evidence</h3>
+<table>
+<tr><th>Data</th><th>Purpose</th></tr>
+<tr><td>Before / after screenshots (PNG)</td><td>Visual state of the model before/after the action</td></tr>
+<tr><td>Capture timestamps</td><td>Exact time each screenshot was taken</td></tr>
+<tr><td>File hash (SHA-256)</td><td>Cryptographic integrity verification</td></tr>
+<tr><td>Associated audit log ID</td><td>Links screenshot to the audit event</td></tr>
+</table>
+<div class="note"><strong>Important:</strong> Screenshots capture only the <strong>Revit viewport</strong>, not the entire screen. Capture is <strong>opt-in per rule</strong> &mdash; administrators explicitly enable it. Screenshots are never captured unless configured.</div>
+
+<h3>Model Health Metrics</h3>
+<div class="features">
+    <div class="feature-card">
+        <h4><span class="mode mode-green">Fast Metrics</span> &mdash; Sync/Save</h4>
+        <p>File size, levels, grids, design options, linked DWGs/Revit models, raster images, warnings, duplicates, groups, views, sheets, families, worksets, view templates, shared coordinates.</p>
+    </div>
+    <div class="feature-card">
+        <h4><span class="mode mode-yellow">Medium Metrics</span> &mdash; Every 24h</h4>
+        <p>Total/model/annotative elements, in-place families, unplaced/unenclosed rooms, views not on sheets, disconnected walls/pipes/ducts.</p>
+    </div>
+    <div class="feature-card">
+        <h4><span class="mode mode-red">Expensive Metrics</span> &mdash; Manual Only</h4>
+        <p>Families over 5MB count, purgeable elements count. Only captured when user explicitly requests.</p>
+    </div>
+    <div class="feature-card">
+        <h4>Metric Metadata</h4>
+        <p>Each capture includes session ID, model identifier, timestamp, captured-by username, and capture reason.</p>
+    </div>
+</div>
+
+<h3>Pin Protection Data</h3>
+<table>
+<tr><th>Data</th><th>Purpose</th></tr>
+<tr><td>Element ID, GUID, name, category</td><td>Identifies the protected element</td></tr>
+<tr><td>Model GUID and project name</td><td>Scoping to correct model/project</td></tr>
+<tr><td>Protection mode</td><td><span class="mode mode-green">Monitor</span> <span class="mode mode-yellow">Guide</span> <span class="mode mode-red">Prevent</span></td></tr>
+<tr><td>Protected by and timestamp</td><td>Who applied and when</td></tr>
+<tr><td>Admin comment</td><td>Reason for protection</td></tr>
+<tr><td>Deactivation details</td><td>Who removed, when, and why</td></tr>
+</table>
+
+<h3>Authentication and Security Data</h3>
+<table>
+<tr><th>Data</th><th>Purpose</th><th>Security</th></tr>
+<tr><td>Admin password</td><td>Local protection overrides</td><td><span class="mode mode-green">Bcrypt hash &mdash; plaintext never stored</span></td></tr>
+<tr><td>OTP codes (6-digit)</td><td>One-time override authorization</td><td><span class="mode mode-green">AES-256-CBC encrypted</span></td></tr>
+<tr><td>Auth tokens (JWT)</td><td>API session management</td><td><span class="mode mode-green">Auto-expiring with refresh</span></td></tr>
+</table>
+<div class="note note-green"><strong>Never transmitted:</strong> Passwords and OTP codes are used locally only. Encryption key derived from machine hardware via PBKDF2 (100,000 iterations).</div>
+
+<h3>Real-Time Collaboration Data</h3>
+<table>
+<tr><th>Data</th><th>Purpose</th></tr>
+<tr><td>User presence (username, session, model)</td><td>Shows who is working on which model</td></tr>
+<tr><td>Chat messages (sender, text, scope)</td><td>Team communication within Revit</td></tr>
+<tr><td>Sync queue status</td><td>Coordinates model sync between users</td></tr>
+<tr><td>Protection change notifications</td><td>Real-time protection updates</td></tr>
+</table>
+
+<h3>Licensing Data</h3>
+<table>
+<tr><th>Data</th><th>Purpose</th></tr>
+<tr><td>License key</td><td>Software activation</td></tr>
+<tr><td>License status and expiration</td><td>Entitlement verification</td></tr>
+<tr><td>Enabled modules</td><td>Feature access control</td></tr>
+<tr><td>Seat count (total and active)</td><td>Concurrent usage enforcement</td></tr>
+</table>
+
+<h3>Crash Detection</h3>
+<p>ZeManage reads the last 200 lines of the Revit journal file <strong>locally</strong> to detect crash signatures. Journal content is <strong>never transmitted</strong> &mdash; only the boolean result (crashed or not) is stored in the session record.</p>
+
+<!-- How We Use Data -->
+<h2 id="how-we-use">How We Use Information</h2>
+<table>
+<tr><th>Purpose</th><th>Data Used</th></tr>
+<tr><td>Software licensing and activation</td><td>Machine ID, license key, seat count</td></tr>
+<tr><td>User authentication and authorization</td><td>Email, credentials, roles, tokens</td></tr>
+<tr><td>BIM protection enforcement</td><td>Audit logs, element data, screenshots, settings</td></tr>
+<tr><td>Activity monitoring and reporting</td><td>Session data, heartbeats, command/event counts</td></tr>
+<tr><td>Model health analytics</td><td>File metrics, element counts, quality indicators</td></tr>
+<tr><td>Team collaboration</td><td>Presence data, chat messages, sync coordination</td></tr>
+<tr><td>Crash detection and reliability</td><td>Session status, journal analysis result</td></tr>
+<tr><td>Administrative oversight</td><td>Audit trails, role management, protection config</td></tr>
+<tr><td>Data integrity verification</td><td>HMAC signatures, SHA-256 file hashes</td></tr>
+</table>
+<div class="note note-red"><strong>We do not</strong> use collected information for advertising, marketing profiling, or sale to third parties.</div>
+
+<!-- Data Storage -->
+<h2 id="storage">Data Storage</h2>
+<h3>Local Storage</h3>
+<table>
+<tr><th>Storage</th><th>Location</th><th>Contents</th></tr>
+<tr><td>SQLite database</td><td>Revit Addins directory</td><td>Sessions, audit logs, protections, metrics, offline queue</td></tr>
+<tr><td>Temporary screenshots</td><td>Session temp directory</td><td>PNG files (deleted after upload or session end)</td></tr>
+<tr><td>Configuration</td><td>App.config</td><td>API endpoint URL, plugin settings</td></tr>
+</table>
+<p>Sensitive columns (passwords, OTP codes) encrypted with AES-256-CBC. HMAC integrity checks on audit logs and protection tables. Data accessible only to the Windows user running Revit.</p>
+
+<h3>Server Storage</h3>
+<table>
+<tr><th>Component</th><th>Service</th></tr>
+<tr><td>API server</td><td>Microsoft Azure App Service (Central US)</td></tr>
+<tr><td>Transport</td><td>HTTPS (TLS 1.2+)</td></tr>
+<tr><td>Real-time</td><td>SignalR over WebSocket (TLS)</td></tr>
+</table>
+
+<h3>Offline Queue</h3>
+<p>When the server is unreachable, operations queue locally and sync automatically when connectivity resumes (max 3 retries per operation).</p>
+
+<!-- Data Transmission -->
+<h2 id="transmission">Data Transmission</h2>
+<h3>Data Sent to Server</h3>
+<table>
+<tr><th>Data Category</th><th>Trigger</th></tr>
+<tr><td>Device registration (Machine ID, computer name, license key)</td><td>First launch</td></tr>
+<tr><td>Authentication (email, password &mdash; over HTTPS)</td><td>Login</td></tr>
+<tr><td>Session metadata and timestamps</td><td>Session start / end</td></tr>
+<tr><td>Audit log entries</td><td>Each protection trigger</td></tr>
+<tr><td>Screenshot images with metadata</td><td>When capture enabled</td></tr>
+<tr><td>Model health metrics</td><td>Sync/save, periodic, manual</td></tr>
+<tr><td>Protection configurations</td><td>Settings changed</td></tr>
+<tr><td>Real-time presence and chat</td><td>While connected</td></tr>
+</table>
+
+<h3>Data Never Transmitted</h3>
+<div class="note note-green">
+<strong>The following data never leaves your machine:</strong>
+<ul>
+<li>Admin passwords (bcrypt hashes stored locally only)</li>
+<li>OTP codes (encrypted locally, local auth only)</li>
+<li>Encryption keys, salts, and derivation parameters</li>
+<li>Raw hardware identifiers (only derived hash transmitted)</li>
+<li>Revit journal file contents (only boolean crash result)</li>
+<li>Windows registry values (used locally for Machine ID only)</li>
+</ul>
+</div>
+
+<!-- Administrator Controls -->
+<h2 id="admin-controls">Administrator Controls</h2>
+<h3>Protection Configuration</h3>
+<ul>
+<li><strong>Protection mode</strong> &mdash; <span class="mode mode-green">Monitor</span> (log only), <span class="mode mode-yellow">Guide</span> (warn), or <span class="mode mode-red">Prevent</span> (block)</li>
+<li><strong>Screenshot capture</strong> &mdash; Enable/disable before/after screenshots per rule</li>
+<li><strong>Comment requirements</strong> &mdash; Require users to explain overrides</li>
+<li><strong>Email notifications</strong> &mdash; Enable/disable alerts per protection</li>
+<li><strong>Override permissions</strong> &mdash; Allow/disallow admin overrides per rule</li>
+<li><strong>OTP scope</strong> &mdash; Limit codes to specific rules, commands, or global</li>
+</ul>
+
+<h3>Scope Levels</h3>
+<table>
+<tr><th>Scope</th><th>Description</th></tr>
+<tr><td><span class="mode mode-blue">Company</span></td><td>Applies to all projects and models in the organization</td></tr>
+<tr><td><span class="mode mode-yellow">Project</span></td><td>Applies to all models within a specific project</td></tr>
+<tr><td><span class="mode mode-gray">Model</span></td><td>Applies only to a specific Revit model</td></tr>
+</table>
+
+<h3>Role-Based Access Control</h3>
+<table>
+<tr><th>Role</th><th>Permissions</th></tr>
+<tr><td><strong>Normal User</strong></td><td>Subject to protections, can view own activity</td></tr>
+<tr><td><strong>Project Administrator</strong></td><td>Configure protections for assigned projects, manage project users</td></tr>
+<tr><td><strong>Company Administrator</strong></td><td>Full access: all protections, all users, all audit data</td></tr>
+</table>
+
+<!-- Data Security -->
+<h2 id="security">Data Security</h2>
+<h3>Encryption</h3>
+<table>
+<tr><th>Data</th><th>Method</th></tr>
+<tr><td>All data in transit</td><td><span class="mode mode-green">TLS 1.2+</span> (HTTPS and WebSocket)</td></tr>
+<tr><td>Admin passwords</td><td><span class="mode mode-green">Bcrypt</span> hash with unique salt</td></tr>
+<tr><td>OTP codes</td><td><span class="mode mode-green">AES-256-CBC</span> with PBKDF2 key (100K iterations)</td></tr>
+<tr><td>Audit integrity</td><td><span class="mode mode-green">HMAC-SHA256</span> per row</td></tr>
+<tr><td>Screenshot integrity</td><td><span class="mode mode-green">SHA-256</span> file hash</td></tr>
+</table>
+
+<h3>Access Controls</h3>
+<ul>
+<li>API authentication via JWT tokens with expiration and refresh</li>
+<li>Device binding via hardware-derived Machine ID</li>
+<li>Role-based access for administrative features</li>
+<li>Machine-specific encryption keys (non-transferable)</li>
+</ul>
+
+<h3>Data Integrity</h3>
+<ul>
+<li>Audit log entries include HMAC-SHA256 signatures on all critical fields</li>
+<li>Protection settings include row-level HMAC verification</li>
+<li>Screenshot files include SHA-256 hashes for tamper detection</li>
+<li>Database tampering detectable via automatic HMAC verification on read</li>
+</ul>
+
+<!-- Data Retention -->
+<h2 id="retention">Data Retention</h2>
+<table>
+<tr><th>Data Type</th><th>Retention Period</th></tr>
+<tr><td>Session records</td><td>Duration of the software license agreement</td></tr>
+<tr><td>Audit logs</td><td>As required by organization compliance policies</td></tr>
+<tr><td>Screenshots / evidence</td><td>As configured by the administrator</td></tr>
+<tr><td>Model health metrics</td><td>Retained for historical trend analysis</td></tr>
+<tr><td>OTP codes</td><td>Automatically expire (time-limited)</td></tr>
+<tr><td>Offline queue</td><td>Cleared after successful synchronization</td></tr>
+<tr><td>Temporary files</td><td>Deleted at session end or after upload</td></tr>
+</table>
+<p>Organizations may request data export or deletion by contacting ZestineTech.</p>
+
+<!-- Third-Party Services -->
+<h2 id="third-party">Third-Party Services</h2>
+<table>
+<tr><th>Service</th><th>Provider</th><th>Purpose</th></tr>
+<tr><td>Cloud hosting</td><td>Microsoft Azure</td><td>API server and data storage</td></tr>
+<tr><td>Real-time communication</td><td>Azure SignalR Service</td><td>WebSocket notifications</td></tr>
+</table>
+<p><strong>Optional AI:</strong> If enabled by the organization, user queries may be sent to OpenAI. No data is sent unless explicitly configured.</p>
+<p><strong>Autodesk Revit:</strong> ZeManage operates as a Revit plugin via its API. It does not transmit data to Autodesk beyond what Revit itself transmits.</p>
+
+<!-- Your Rights -->
+<h2 id="rights">Your Rights</h2>
+<ul>
+<li><strong>Access</strong> &mdash; Request a copy of your personal data</li>
+<li><strong>Correction</strong> &mdash; Request correction of inaccurate data</li>
+<li><strong>Deletion</strong> &mdash; Request deletion (subject to legal retention)</li>
+<li><strong>Export</strong> &mdash; Request data in machine-readable format</li>
+<li><strong>Restriction</strong> &mdash; Request restriction of processing</li>
+<li><strong>Objection</strong> &mdash; Object to processing based on legitimate interest</li>
+<li><strong>Portability</strong> &mdash; Receive data in structured, commonly used format</li>
+</ul>
+
+<!-- Additional Provisions -->
+<h2 id="additional">Additional Provisions</h2>
+
+<h3>Cookies and Tracking</h3>
+<p>ZeManage is a desktop plugin. It does <strong>not</strong> use cookies, web beacons, pixel tags, or browser-based tracking.</p>
+
+<h3>Children's Privacy</h3>
+<p>ZeManage is for licensed AEC professionals. It is not directed at individuals under 16. We do not knowingly collect data from children.</p>
+
+<h3>Changes to This Policy</h3>
+<p>We may update this policy to reflect changes in practices, technology, or legal requirements. Material changes will be communicated via the "Last Updated" date and the software update mechanism.</p>
+
+<!-- Contact Us -->
+<h2 id="contact">Contact Us</h2>
+<p>For privacy inquiries, data requests, or concerns:</p>
+<div class="note">
+<strong>ZestineTech</strong><br>
+Email: <a href="mailto:privacy@zestinetechnologies.com" style="color:#1e40af;">privacy@zestinetechnologies.com</a><br>
+Website: <a href="https://zestinetechnologies.com" style="color:#1e40af;">zestinetechnologies.com</a>
+</div>
+
+<!-- Compliance -->
+<h2 id="compliance">Compliance</h2>
+<table>
+<tr><th>Regulation</th><th>Jurisdiction</th></tr>
+<tr><td><strong>GDPR</strong> (General Data Protection Regulation)</td><td>European Union</td></tr>
+<tr><td><strong>CCPA</strong> (California Consumer Privacy Act)</td><td>United States</td></tr>
+<tr><td><strong>PIPEDA</strong> (Personal Information Protection and Electronic Documents Act)</td><td>Canada</td></tr>
+<tr><td><strong>Australian Privacy Act 1988</strong></td><td>Australia</td></tr>
+</table>
+
+<!-- Data Inventory -->
+<h2 id="data-summary">Complete Data Inventory</h2>
+<table>
+<tr><th>#</th><th>Category</th><th>Stored</th><th>Transmitted</th><th>Encryption</th></tr>
+<tr><td>1</td><td>User identity</td><td>SQLite</td><td><span class="mode mode-blue">HTTPS</span></td><td>TLS</td></tr>
+<tr><td>2</td><td>Machine ID</td><td>SQLite</td><td><span class="mode mode-blue">HTTPS</span></td><td>TLS</td></tr>
+<tr><td>3</td><td>Session activity</td><td>SQLite</td><td><span class="mode mode-blue">HTTPS</span></td><td>TLS</td></tr>
+<tr><td>4</td><td>Performance</td><td>SQLite</td><td><span class="mode mode-blue">HTTPS</span></td><td>TLS</td></tr>
+<tr><td>5</td><td>Audit logs</td><td>SQLite + HMAC</td><td><span class="mode mode-blue">HTTPS</span></td><td>HMAC-SHA256 + TLS</td></tr>
+<tr><td>6</td><td>Screenshots</td><td>Temp + SQLite</td><td><span class="mode mode-yellow">Admin opt-in</span></td><td>SHA-256 + TLS</td></tr>
+<tr><td>7</td><td>Model metrics</td><td>SQLite</td><td><span class="mode mode-blue">HTTPS</span></td><td>TLS</td></tr>
+<tr><td>8</td><td>Pin protection</td><td>SQLite + HMAC</td><td><span class="mode mode-blue">HTTPS</span></td><td>HMAC + TLS</td></tr>
+<tr><td>9</td><td>Admin passwords</td><td>SQLite</td><td><span class="mode mode-green">Never</span></td><td>Bcrypt + AES-256</td></tr>
+<tr><td>10</td><td>OTP codes</td><td>SQLite</td><td><span class="mode mode-green">Never</span></td><td>AES-256-CBC</td></tr>
+<tr><td>11</td><td>Chat messages</td><td>Memory</td><td><span class="mode mode-blue">WebSocket</span></td><td>TLS</td></tr>
+<tr><td>12</td><td>Licensing</td><td>Memory</td><td><span class="mode mode-blue">HTTPS</span></td><td>TLS</td></tr>
+<tr><td>13</td><td>Crash detection</td><td>SQLite</td><td><span class="mode mode-blue">In session</span></td><td>TLS</td></tr>
+</table>
+
+<!-- API Endpoints -->
+<h2 id="api-ref">API Endpoints</h2>
+<table>
+<tr><th>Method</th><th>Endpoint</th><th>Data</th></tr>
+<tr><td><span class="mode mode-green">POST</span></td><td>/api/v1/tenant/device/auth/register-device</td><td>License key, machine ID, computer name</td></tr>
+<tr><td><span class="mode mode-green">POST</span></td><td>/api/v1/tenant/device/auth/validate-device</td><td>Machine ID</td></tr>
+<tr><td><span class="mode mode-green">POST</span></td><td>/api/v1/tenant/device/auth/admin-login</td><td>Machine ID, username, password</td></tr>
+<tr><td><span class="mode mode-green">POST</span></td><td>/api/v1/Revit/sessions</td><td>Session metadata</td></tr>
+<tr><td><span class="mode mode-green">POST</span></td><td>/api/v1/Revit/audit-logs</td><td>Audit entries</td></tr>
+<tr><td><span class="mode mode-green">POST</span></td><td>/api/v1/Revit/evidence-images/with-images</td><td>Screenshots (multipart)</td></tr>
+<tr><td><span class="mode mode-green">POST</span></td><td>/api/v1/Revit/metrics/syncsave</td><td>Fast model metrics</td></tr>
+<tr><td><span class="mode mode-green">POST</span></td><td>/api/v1/Revit/metrics/periodic</td><td>Medium model metrics</td></tr>
+<tr><td><span class="mode mode-green">POST</span></td><td>/api/v1/Revit/metrics/manual</td><td>Expensive model metrics</td></tr>
+<tr><td><span class="mode mode-blue">CRUD</span></td><td>/api/v1/Revit/pin-protections</td><td>Pin protection data</td></tr>
+<tr><td><span class="mode mode-blue">CRUD</span></td><td>/api/v1/Revit/rule-protections</td><td>Rule protection data</td></tr>
+<tr><td><span class="mode mode-blue">CRUD</span></td><td>/api/v1/Revit/command-protection</td><td>Command protection settings</td></tr>
+<tr><td><span class="mode mode-blue">CRUD</span></td><td>/api/v1/Revit/event-protection</td><td>Event protection settings</td></tr>
+</table>
+
+<!-- Database Tables -->
+<h2 id="db-ref">Local Database Tables</h2>
+<table>
+<tr><th>Table</th><th>Contents</th><th>Security</th></tr>
+<tr><td>sessions</td><td>Session lifecycle data</td><td><span class="mode mode-gray">Plain</span></td></tr>
+<tr><td>document_sessions</td><td>Per-document tracking</td><td><span class="mode mode-gray">Plain</span></td></tr>
+<tr><td>session_heartbeats</td><td>Performance metrics</td><td><span class="mode mode-gray">Plain</span></td></tr>
+<tr><td>audit_log</td><td>Protection audit trail</td><td><span class="mode mode-green">HMAC-SHA256</span></td></tr>
+<tr><td>evidence_capture</td><td>Screenshot metadata</td><td><span class="mode mode-green">SHA-256</span></td></tr>
+<tr><td>pin_protection</td><td>Protected elements</td><td><span class="mode mode-green">HMAC-SHA256</span></td></tr>
+<tr><td>command_settings</td><td>Command protections</td><td><span class="mode mode-green">HMAC-SHA256</span></td></tr>
+<tr><td>event_protection_settings</td><td>Event protections</td><td><span class="mode mode-green">HMAC-SHA256</span></td></tr>
+<tr><td>rules</td><td>Rule definitions</td><td><span class="mode mode-green">HMAC-SHA256</span></td></tr>
+<tr><td>protection_passwords</td><td>Admin password hashes</td><td><span class="mode mode-green">Bcrypt + AES-256</span></td></tr>
+<tr><td>otps</td><td>One-time passwords</td><td><span class="mode mode-green">AES-256-CBC</span></td></tr>
+<tr><td>protection_overrides</td><td>Admin override records</td><td><span class="mode mode-gray">Plain</span></td></tr>
+<tr><td>registered_models</td><td>Model registration</td><td><span class="mode mode-gray">Plain</span></td></tr>
+<tr><td>model_file_metrics_*</td><td>Model health (3 tables)</td><td><span class="mode mode-gray">Plain</span></td></tr>
+<tr><td>offline_queue</td><td>Queued API operations</td><td><span class="mode mode-gray">Plain</span></td></tr>
+</table>
+
+<!-- Footer -->
+<div class="footer">
+    &copy; 2026 ZestineTech. All rights reserved. &nbsp;|&nbsp; <a href="ZeManage_Product_Guide.html">Product Guide</a> &nbsp;|&nbsp; <a href="index.html">Documentation</a>
+</div>
+
+</div>
+=======
+</main>
+>>>>>>> Stashed changes
+
+<script>
+  // Scroll-spy for sidebar nav-links.
+  const links = document.querySelectorAll('.nav-link[href^="#"]');
+  const sections = Array.from(links).map(l => {
+    const id = l.getAttribute('href').slice(1);
+    return { id, el: document.getElementById(id), link: l };
+  }).filter(x => x.el);
+  function onScroll(){
+    const y = window.scrollY + 140;
+    let active = sections[0];
+    for (const s of sections) if (s.el.offsetTop <= y) active = s;
+    links.forEach(l => l.classList.remove('active'));
+    active.link.classList.add('active');
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+</script>
+
+</body>
+</html>

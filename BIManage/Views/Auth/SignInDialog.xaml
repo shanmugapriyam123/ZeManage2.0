@@ -1,0 +1,306 @@
+﻿<Window x:Class="BIManageRevit.BIManage.Views.Auth.SignInDialog"
+        Topmost="False"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Sign In - ZeManage"
+        Height="560" Width="940"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanMinimize"
+        ShowInTaskbar="True"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        KeyDown="Window_KeyDown"
+        MouseLeftButtonDown="Header_MouseDown">
+    <Window.Icon>
+        <BitmapImage UriSource="pack://application:,,,/BIManageRevit;component/BIManage/Resources/Icons/BIManage.png"/>
+    </Window.Icon>
+
+    <Border Margin="10" CornerRadius="10" Background="White" ClipToBounds="True">
+        <Border.Effect>
+            <DropShadowEffect Color="#000000" BlurRadius="20" ShadowDepth="0" Opacity="0.18"/>
+        </Border.Effect>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Close button (top-right) -->
+            <Button Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top"
+                    Margin="0,12,12,0" Click="Close_Click" Cursor="Hand" Panel.ZIndex="10">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="closeBg" Width="28" Height="28" CornerRadius="6" Background="Transparent">
+                            <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="10"
+                                       Foreground="#64748B"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="closeBg" Property="Background" Value="#F1F5F9"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+            <!-- ============================================ -->
+            <!-- LEFT: Illustration                            -->
+            <!-- ============================================ -->
+            <Border Grid.Column="0" ClipToBounds="True">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#F8FAFC" Offset="0"/>
+                        <GradientStop Color="#E2E8F0" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Image x:Name="IllustrationImage"
+                       Source="pack://application:,,,/BIManageRevit;component/BIManage/Resources/Images/LoginIllustration.png"
+                       Stretch="UniformToFill"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       RenderOptions.BitmapScalingMode="HighQuality"/>
+            </Border>
+
+            <!-- ============================================ -->
+            <!-- RIGHT: Form area (white)                      -->
+            <!-- ============================================ -->
+            <Grid Grid.Column="1" Background="White">
+
+                <!-- ═══════════════════════════════════════════════ -->
+                <!-- STATE 1: Sign-In Form                          -->
+                <!-- ═══════════════════════════════════════════════ -->
+                <StackPanel x:Name="FormPanel" Margin="56,0,56,0" VerticalAlignment="Center">
+
+                    <!-- Brand wordmark (combined logo + text) -->
+                    <Image Source="pack://application:,,,/BIManageRevit;component/BIManage/Resources/Images/ZeManageLogo.png"
+                           Height="40" HorizontalAlignment="Left" Margin="0,0,0,32"
+                           RenderOptions.BitmapScalingMode="HighQuality"/>
+
+                    <!-- Heading -->
+                    <TextBlock Text="Welcome back!" FontSize="26" FontWeight="Bold" Foreground="#0F172A"
+                               Margin="0,0,0,8"/>
+                    <TextBlock Text="Enter your Credentials to access your account"
+                               FontSize="12" Foreground="#475569" Margin="0,0,0,24"/>
+
+                    <!-- Email field -->
+                    <TextBlock Text="Email address" FontSize="11" FontWeight="SemiBold"
+                               Foreground="#0F172A" Margin="0,0,0,6"/>
+                    <Border x:Name="EmailBorder" CornerRadius="6" BorderThickness="1" BorderBrush="#E2E8F0"
+                            Background="White" Height="40" Margin="0,0,0,14">
+                        <Grid>
+                            <TextBlock x:Name="EmailPlaceholder" Text="Enter your email"
+                                       FontSize="12" Foreground="#94A3B8" Padding="12,0"
+                                       VerticalAlignment="Center" IsHitTestVisible="False"/>
+                            <TextBox x:Name="EmailBox"
+                                     Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
+                                     FontSize="12" Padding="12,0"
+                                     BorderThickness="0" Background="Transparent"
+                                     VerticalContentAlignment="Center" Foreground="#0F172A"
+                                     GotFocus="EmailBox_GotFocus" LostFocus="EmailBox_LostFocus"
+                                     TextChanged="EmailBox_TextChanged"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- Password field -->
+                    <TextBlock Text="Password" FontSize="11" FontWeight="SemiBold"
+                               Foreground="#0F172A" Margin="0,0,0,6"/>
+                    <Border x:Name="PasswordBorder" CornerRadius="6" BorderThickness="1" BorderBrush="#E2E8F0"
+                            Background="White" Height="40" Margin="0,0,0,14">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="36"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid Grid.Column="0">
+                                <TextBlock x:Name="PasswordPlaceholder" Text="Enter your password"
+                                           FontSize="12" Foreground="#94A3B8" Padding="12,0"
+                                           VerticalAlignment="Center" IsHitTestVisible="False"/>
+                                <PasswordBox x:Name="PasswordBox"
+                                             FontSize="12" Padding="12,0"
+                                             BorderThickness="0" Background="Transparent"
+                                             VerticalContentAlignment="Center"
+                                             KeyDown="PasswordBox_KeyDown"
+                                             GotFocus="PasswordBox_GotFocus" LostFocus="PasswordBox_LostFocus"
+                                             PasswordChanged="PasswordBox_PasswordChanged"/>
+                                <TextBox x:Name="PasswordVisibleBox"
+                                         FontSize="12" Padding="12,0"
+                                         BorderThickness="0" Background="Transparent"
+                                         VerticalContentAlignment="Center" Foreground="#0F172A"
+                                         Visibility="Collapsed"
+                                         KeyDown="PasswordBox_KeyDown"
+                                         GotFocus="PasswordBox_GotFocus" LostFocus="PasswordBox_LostFocus"
+                                         TextChanged="PasswordVisibleBox_TextChanged"/>
+                            </Grid>
+
+                            <!-- Eye toggle — EyeIcon.Text is swapped in code-behind by
+                                 PasswordToggle_Click: E7B3 (RedEye) while password is masked,
+                                 ED1A (Hide / eye with strikethrough) while password is visible.
+                                 Icon lives in Button.Content (not the ControlTemplate) so x:Name
+                                 is reachable from code-behind. -->
+                            <Button Grid.Column="1" Cursor="Hand" Click="PasswordToggle_Click">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border x:Name="eyeBg" Background="Transparent" CornerRadius="6"
+                                                Width="28" Height="28" VerticalAlignment="Center">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="eyeBg" Property="Background" Value="#F1F5F9"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                                <TextBlock x:Name="EyeIcon" Text="&#xE7B3;" FontFamily="Segoe MDL2 Assets"
+                                           FontSize="12" Foreground="#94A3B8"/>
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <!-- Remember row (Forgot password removed) -->
+                    <Grid Margin="0,4,0,20"/>
+
+                    <!-- Login button (full width, orange) -->
+                    <Button x:Name="SignInButton" Height="44" Cursor="Hand" Click="SignIn_Click">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="btnBorder" CornerRadius="6" Background="#FF5500">
+                                    <TextBlock Text="Login" FontSize="14" FontWeight="SemiBold" Foreground="White"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="btnBorder" Property="Background" Value="#E5611A"/>
+                                    </Trigger>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter TargetName="btnBorder" Property="Opacity" Value="0.55"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+
+                    <!-- Status panel -->
+                    <Border x:Name="StatusPanel" CornerRadius="6" Padding="12,8" Margin="0,12,0,0"
+                            Visibility="Collapsed">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBlock x:Name="StatusIcon" FontSize="11" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                            <TextBlock x:Name="StatusText" FontSize="11" TextWrapping="Wrap"
+                                       VerticalAlignment="Center" FontWeight="Medium"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <!-- ═══════════════════════════════════════════════ -->
+                <!-- STATE 2: Signed-In Profile                     -->
+                <!-- ═══════════════════════════════════════════════ -->
+                <StackPanel x:Name="SignedInPanel" Margin="56,0,56,0" VerticalAlignment="Center"
+                            Visibility="Collapsed">
+
+                    <!-- Brand wordmark (combined logo + text) -->
+                    <Image Source="pack://application:,,,/BIManageRevit;component/BIManage/Resources/Images/ZeManageLogo.png"
+                           Height="40" HorizontalAlignment="Left" Margin="0,0,0,28"
+                           RenderOptions.BitmapScalingMode="HighQuality"/>
+
+                    <!-- Welcome heading -->
+                    <TextBlock FontSize="22" FontWeight="Bold" Margin="0,0,0,4" TextWrapping="Wrap">
+                        <Run Text="Welcome " Foreground="#0F172A"/>
+                        <Run x:Name="SignedInWelcomeName" Text="Back!" Foreground="#F36F21"/>
+                    </TextBlock>
+                    <TextBlock Text="You are signed in" FontSize="12" Foreground="#94A3B8" Margin="0,0,0,20"/>
+
+                    <!-- Account card -->
+                    <Border CornerRadius="6" BorderThickness="1" BorderBrush="#E2E8F0"
+                            Background="White" Padding="14,12" Margin="0,0,0,12">
+                        <StackPanel Orientation="Horizontal">
+                            <Border Width="40" Height="40" CornerRadius="20" Background="#F36F21"
+                                    VerticalAlignment="Center">
+                                <TextBlock x:Name="UserInitial" Text="U" FontSize="16" FontWeight="Bold"
+                                           Foreground="White"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel VerticalAlignment="Center" Margin="12,0,0,0">
+                                <TextBlock x:Name="SignedInUsername" Text="{Binding AuthenticatedUser}"
+                                           FontSize="13" FontWeight="SemiBold" Foreground="#0F172A"
+                                           TextTrimming="CharacterEllipsis" MaxWidth="260"/>
+                                <TextBlock x:Name="SignedInEmail" Text="{Binding Email}"
+                                           FontSize="11" Foreground="#475569" Margin="0,2,0,0"
+                                           TextTrimming="CharacterEllipsis" MaxWidth="260"
+                                           ToolTip="{Binding Email}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Role badge -->
+                    <Border x:Name="RoleBadge" CornerRadius="6" Padding="14,12" Margin="0,0,0,12"
+                            Background="#FEF3EC">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" Width="32" Height="32" CornerRadius="6"
+                                    Background="#F36F21" VerticalAlignment="Center" Margin="0,0,10,0">
+                                <TextBlock x:Name="RoleInitial" Text="U" FontSize="14" FontWeight="Bold"
+                                           Foreground="White"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                <TextBlock x:Name="RoleBadgeText" Text="{Binding RoleDisplay}"
+                                           FontSize="13" FontWeight="SemiBold" Foreground="#0F172A"/>
+                                <TextBlock x:Name="RoleDescription" Text="Standard access with protections"
+                                           FontSize="11" Foreground="#475569" Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- Company row -->
+                    <Grid x:Name="CompanyRow" Margin="0,0,0,18">
+                        <Border CornerRadius="6" BorderThickness="1" BorderBrush="#E2E8F0"
+                                Background="White" Padding="14,10">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE731;" FontFamily="Segoe MDL2 Assets" FontSize="13"
+                                           Foreground="#F36F21" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                <TextBlock x:Name="CompanyText" Text="{Binding CompanyDisplay}"
+                                           FontSize="12" Foreground="#0F172A" FontWeight="Medium"
+                                           TextTrimming="CharacterEllipsis" VerticalAlignment="Center"
+                                           ToolTip="{Binding CompanyDisplay}"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <!-- Sign Out button (full width, orange) -->
+                    <Button x:Name="SignOutButton" Height="44" Cursor="Hand" Click="SignOut_Click">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="soBorder" CornerRadius="6" Background="#FF5500">
+                                    <TextBlock Text="Sign out" FontSize="14" FontWeight="SemiBold" Foreground="White"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="soBorder" Property="Background" Value="#E5611A"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+
+                    <!-- Status panel -->
+                    <Border x:Name="SignedInStatusPanel" CornerRadius="6" Padding="10,6" Margin="0,10,0,0"
+                            Visibility="Collapsed">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBlock x:Name="SignedInStatusIcon" FontSize="11" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                            <TextBlock x:Name="SignedInStatusText" FontSize="11" TextWrapping="Wrap"
+                                       VerticalAlignment="Center" FontWeight="Medium"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

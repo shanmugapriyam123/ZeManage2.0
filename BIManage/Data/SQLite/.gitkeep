@@ -1,0 +1,5 @@
+# Placeholder for SQLite persistence (Phase 3)
+# Future files:
+# - Schema.sql
+# - MigrationRunner.cs
+# Note: BIManage.db should NOT be in source control
