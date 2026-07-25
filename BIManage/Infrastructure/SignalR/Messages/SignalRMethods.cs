@@ -83,5 +83,14 @@ namespace BIManage.Infrastructure.SignalR.Messages
 
         public const string SendChatMessage = "SendChatMessage";
         public const string ChatMessageReceived = "ChatMessageReceived";
+
+        // =============================================
+        // Idle Time Tracking
+        // =============================================
+
+        // Sent by the Revit add-in when the user has been idle for >= company-settings
+        // idleThresholdMinutes. Carries the cumulative idle seconds so the server can
+        // record productivity loss without polling.
+        public const string IdleTimeUpdate = "IdleTimeUpdate";
     }
 }

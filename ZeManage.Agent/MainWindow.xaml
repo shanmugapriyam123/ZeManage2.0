@@ -4,7 +4,8 @@
         Title="ZeManage Agent" Height="640" Width="980"
         Background="{StaticResource BgBrush}"
         Foreground="{StaticResource TextBrush}"
-        FontFamily="Segoe UI" WindowStartupLocation="CenterScreen">
+        FontFamily="Segoe UI" WindowStartupLocation="CenterScreen"
+        ShowInTaskbar="False">
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

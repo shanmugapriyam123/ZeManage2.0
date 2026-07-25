@@ -741,6 +741,7 @@ namespace BIManage.Data.SQLite
                     fixes += EnsureColumnExists(connection, "sessions", "opened_at", "TEXT");
                     fixes += EnsureColumnExists(connection, "sessions", "opening_completed_at", "TEXT");
                     fixes += EnsureColumnExists(connection, "sessions", "opening_duration", "REAL");
+                    fixes += EnsureColumnExists(connection, "sessions", "external_addin_names", "TEXT");
 
                     // Session status code columns (enhanced crash detection)
                     fixes += EnsureColumnExists(connection, "sessions", "status_code", "INTEGER NULL");

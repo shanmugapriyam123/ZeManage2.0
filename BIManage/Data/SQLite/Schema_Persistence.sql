@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS sessions (
     bimanage_version TEXT NULL,
     autodesk_addins INTEGER NULL,
     external_addins INTEGER NULL,
+    external_addin_names TEXT NULL,
     loaded_plugin_count INTEGER NULL,          -- DEPRECATED: Use autodesk_addins + external_addins
     journal_file_name TEXT NULL,
 

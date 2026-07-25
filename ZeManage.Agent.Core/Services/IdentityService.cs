@@ -21,42 +21,46 @@ public sealed class IdentityService
         string? sid = null;
         try { sid = WindowsIdentity.GetCurrent().User?.Value; } catch { }
 
-        var machineId = GetMachineId();
+        var (storageTotalGB, storageUsedGB) = ReadSystemDisk();
 
         _cached = new AgentIdentity
         {
-            MachineId    = machineId,
-            WindowsSid   = sid,
-            ZeUserId     = null,
-            MachineName  = Environment.MachineName,
-            UserName     = Environment.UserName,
-            OsVersion    = Environment.OSVersion.VersionString,
-            CpuModel     = ReadCpuModel(),
-            TotalRamGB   = ReadTotalRamGB(),
-            MacAddress   = ReadMacAddress(),
-            SerialNumber = ReadSerialNumber(),
-            IpAddress    = ReadLocalIp(),
+            MachineId      = GetMachineId(),
+            WindowsSid     = sid,
+            MachineName    = Environment.MachineName,
+            UserName       = Environment.UserName,
+            CpuModel       = ReadCpuModel(),
+            TotalRamGB     = ReadTotalRamGB(),
+            UsableRamGB    = ReadUsableRamGB(),
+            GpuModel       = ReadGpuModel(),
+            StorageTotalGB = storageTotalGB,
+            StorageUsedGB  = storageUsedGB,
+            MacAddress     = ReadMacAddress(),
+            IpAddress      = ReadLocalIp(),
+            SerialNumber   = ReadSerialNumber(),
+            DeviceId       = ReadDeviceId(),
+            SystemType     = ReadSystemType(),
+            BiosVersion    = ReadBiosVersion(),
+            MotherboardModel = ReadMotherboardModel(),
+            OsVersion      = Environment.OSVersion.VersionString,
+            WindowsEdition = ReadRegistryString(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion", "ProductName"),
+            WindowsVersion = ReadRegistryString(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion", "DisplayVersion"),
+            OsBuild        = ReadOsBuild(),
         };
         return _cached;
-    }
-
-    public void SetZeUserId(Guid zeUserId)
-    {
-        if (_cached is null) Get();
-        _cached = _cached! with { ZeUserId = zeUserId };
     }
 
     private static string GetMachineId()
     {
         try
         {
-            var machineGuid = "";
             using (var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Cryptography"))
-                machineGuid = key?.GetValue("MachineGuid")?.ToString()?.Trim() ?? "";
-
-            var mb  = GetWmicValue("baseboard get SerialNumber");
-            var cpu = GetWmicValue("cpu get ProcessorId");
-            return DeterministicGuid($"{machineGuid}|{mb}|{cpu}");
+            {
+                var machineGuid = key?.GetValue("MachineGuid")?.ToString()?.Trim() ?? "";
+                var mb  = GetWmicValue("baseboard get SerialNumber");
+                var cpu = GetWmicValue("cpu get ProcessorId");
+                return DeterministicGuid($"{machineGuid}|{mb}|{cpu}");
+            }
         }
         catch
         {
@@ -111,12 +115,61 @@ public sealed class IdentityService
     {
         try
         {
+            using var s = new ManagementObjectSearcher("SELECT TotalPhysicalMemory FROM Win32_ComputerSystem");
+            foreach (var o in s.Get())
+                return Math.Round(Convert.ToDouble(o["TotalPhysicalMemory"]) / 1024.0 / 1024.0 / 1024.0, 1);
+        }
+        catch { }
+        return 0;
+    }
+
+    private static double ReadUsableRamGB()
+    {
+        try
+        {
             using var s = new ManagementObjectSearcher("SELECT TotalVisibleMemorySize FROM Win32_OperatingSystem");
             foreach (var o in s.Get())
                 return Math.Round(Convert.ToDouble(o["TotalVisibleMemorySize"]) / 1024.0 / 1024.0, 1);
         }
         catch { }
         return 0;
+    }
+
+    private static string? ReadGpuModel()
+    {
+        try
+        {
+            var gpus = new List<string>();
+            using var s = new ManagementObjectSearcher("SELECT Name, AdapterRAM FROM Win32_VideoController");
+            foreach (var o in s.Get())
+            {
+                var name = o["Name"]?.ToString()?.Trim();
+                if (string.IsNullOrEmpty(name)) continue;
+                var ramBytes = Convert.ToDouble(o["AdapterRAM"]);
+                var ramMB = (int)Math.Round(ramBytes / 1024.0 / 1024.0);
+                gpus.Add(ramMB > 0 ? $"{name} ({ramMB} MB)" : name);
+            }
+            return gpus.Count > 0 ? string.Join("; ", gpus) : null;
+        }
+        catch { }
+        return null;
+    }
+
+    private static (double totalGB, double usedGB) ReadSystemDisk()
+    {
+        try
+        {
+            var sysDrive = Path.GetPathRoot(Environment.SystemDirectory) ?? "C:\\";
+            var di = new DriveInfo(sysDrive);
+            if (di.IsReady)
+            {
+                var totalGB = Math.Round(di.TotalSize / 1024.0 / 1024.0 / 1024.0, 1);
+                var usedGB  = Math.Round((di.TotalSize - di.AvailableFreeSpace) / 1024.0 / 1024.0 / 1024.0, 1);
+                return (totalGB, usedGB);
+            }
+        }
+        catch { }
+        return (0, 0);
     }
 
     private static string? ReadMacAddress()
@@ -168,6 +221,80 @@ public sealed class IdentityService
                         return addr.Address.ToString();
                 }
             }
+        }
+        catch { }
+        return null;
+    }
+
+    private static string? ReadDeviceId()
+    {
+        try
+        {
+            using var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\SQMClient");
+            return key?.GetValue("MachineId")?.ToString()?.Trim('{', '}');
+        }
+        catch { }
+        return null;
+    }
+
+    private static string? ReadBiosVersion()
+    {
+        try
+        {
+            using var s = new ManagementObjectSearcher("SELECT SMBIOSBIOSVersion FROM Win32_BIOS");
+            foreach (var o in s.Get())
+                return o["SMBIOSBIOSVersion"]?.ToString()?.Trim();
+        }
+        catch { }
+        return null;
+    }
+
+    private static string? ReadMotherboardModel()
+    {
+        try
+        {
+            using var s = new ManagementObjectSearcher("SELECT Manufacturer, Product FROM Win32_BaseBoard");
+            foreach (var o in s.Get())
+            {
+                var mfr     = o["Manufacturer"]?.ToString()?.Trim();
+                var product = o["Product"]?.ToString()?.Trim();
+                if (!string.IsNullOrEmpty(mfr) && !string.IsNullOrEmpty(product))
+                    return $"{mfr} {product}";
+                return product ?? mfr;
+            }
+        }
+        catch { }
+        return null;
+    }
+
+    private static string ReadSystemType()
+    {
+        var os  = Environment.Is64BitOperatingSystem ? "64-bit operating system" : "32-bit operating system";
+        var cpu = Environment.Is64BitProcess ? "x64-based processor" : "x86-based processor";
+        return $"{os}, {cpu}";
+    }
+
+    private static string? ReadRegistryString(string subKey, string valueName)
+    {
+        try
+        {
+            using var key = Registry.LocalMachine.OpenSubKey(subKey);
+            return key?.GetValue(valueName)?.ToString()?.Trim();
+        }
+        catch { }
+        return null;
+    }
+
+    private static string? ReadOsBuild()
+    {
+        try
+        {
+            using var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion");
+            if (key is null) return null;
+            var build = key.GetValue("CurrentBuildNumber")?.ToString();
+            var ubr   = key.GetValue("UBR")?.ToString();
+            if (build is null) return null;
+            return ubr is not null ? $"{build}.{ubr}" : build;
         }
         catch { }
         return null;

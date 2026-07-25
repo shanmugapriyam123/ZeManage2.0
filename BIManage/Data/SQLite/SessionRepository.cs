@@ -804,7 +804,8 @@ namespace BIManage.Data.SQLite
             int? loadedPluginCount,
             string journalFileName,
             int? autodeskAddins = null,
-            int? externalAddins = null)
+            int? externalAddins = null,
+            string? externalAddinNames = null)
         {
             try
             {
@@ -852,6 +853,7 @@ namespace BIManage.Data.SQLite
                             loaded_plugin_count = @loadedPluginCount,
                             autodesk_addins = @autodeskAddins,
                             external_addins = @externalAddins,
+                            external_addin_names = @externalAddinNames,
                             journal_file_name = @journalFileName
                         WHERE session_id = @sessionId";
 
@@ -864,6 +866,7 @@ namespace BIManage.Data.SQLite
                         command.Parameters.AddWithValue("@loadedPluginCount", loadedPluginCount.HasValue ? (object)loadedPluginCount.Value : DBNull.Value);
                         command.Parameters.AddWithValue("@autodeskAddins", autodeskAddins.HasValue ? (object)autodeskAddins.Value : DBNull.Value);
                         command.Parameters.AddWithValue("@externalAddins", externalAddins.HasValue ? (object)externalAddins.Value : DBNull.Value);
+                        command.Parameters.AddWithValue("@externalAddinNames", externalAddinNames ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@journalFileName", journalFileNameOnly ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@sessionId", sessionId);
 
@@ -1182,7 +1185,7 @@ namespace BIManage.Data.SQLite
                                username, revit_username, user_email, computer_name, is_active, crash_detected,
                                total_commands, total_events, last_heartbeat, machine_id, process_id,
                                opened_at, opening_duration_seconds, closed_at, status, loaded_plugin_count, journal_file_name,
-                               desktop_connector_version, bimanage_version, autodesk_addins, external_addins, status_code
+                               desktop_connector_version, bimanage_version, autodesk_addins, external_addins, status_code, external_addin_names
                         FROM sessions
                         WHERE session_id = @sessionId";
 
@@ -1201,6 +1204,7 @@ namespace BIManage.Data.SQLite
                                 session.AutodeskAddins = reader.IsDBNull(24) ? null : (int?)reader.GetInt32(24);
                                 session.ExternalAddins = reader.IsDBNull(25) ? null : (int?)reader.GetInt32(25);
                                 session.StatusCode = reader.IsDBNull(26) ? null : (int?)reader.GetInt32(26);
+                                session.ExternalAddinNames = reader.IsDBNull(27) ? null : reader.GetString(27);
                                 return session;
                             }
                         }
@@ -2362,6 +2366,7 @@ namespace BIManage.Data.SQLite
         public string BimanageVersion { get; set; }
         public int? AutodeskAddins { get; set; }
         public int? ExternalAddins { get; set; }
+        public string? ExternalAddinNames { get; set; }
         public int? StatusCode { get; set; }
         public bool IsActive { get; set; } // Deprecated, use Status field
         public bool CrashDetected { get; set; }

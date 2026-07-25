@@ -4,7 +4,6 @@ namespace ZeManage.Agent.Core.Services;
 
 public sealed class AgentState
 {
-    public AttendanceSession? CurrentAttendance { get; set; }
     public HardwareSnapshot? LatestHardware { get; set; }
     public NetworkSnapshot? LatestNetwork { get; set; }
 
@@ -24,6 +23,23 @@ public sealed class AgentState
     // V2: Screenshots
     public DateTime? LatestScreenshotAt { get; set; }
     public int ScreenshotCount          { get; set; }
+
+    // Server-configured idle threshold (from /api/v1/agentdb/company-settings)
+    public bool IsIdleTrackingEnabled { get; set; } = true;
+    public int IdleThresholdMinutes { get; set; } = 5;
+
+    // Server-configured screenshot schedule (from /api/v1/agentdb/company-settings)
+    public bool IsScreenshotEnabled { get; set; }
+    public int ScreenshotIntervalMinutes { get; set; } = 10;
+    public TimeSpan ScreenshotStartTime { get; set; } = TimeSpan.FromHours(9);
+    public TimeSpan ScreenshotEndTime { get; set; } = TimeSpan.FromHours(20);
+    public bool ScreenshotMonday { get; set; } = true;
+    public bool ScreenshotTuesday { get; set; } = true;
+    public bool ScreenshotWednesday { get; set; } = true;
+    public bool ScreenshotThursday { get; set; } = true;
+    public bool ScreenshotFriday { get; set; } = true;
+    public bool ScreenshotSaturday { get; set; }
+    public bool ScreenshotSunday { get; set; }
 
     // Sync
     public DateTime? LastSyncAt   { get; set; }

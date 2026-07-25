@@ -109,13 +109,10 @@ namespace BIManage.ViewModels.Auth
                 Email = user?.Email ?? string.Empty;
                 CompanyDisplay = user?.CompanyName ?? string.Empty;
 
-                // Always use our consistent 3-name display ("Company Admin" / "Project Admin"
-                // / "User") regardless of what the server stored as RoleName. The server's
-                // RoleName field can vary ("Super Admin", "CompanyAdministrator", etc.) so we
-                // derive the label from the boolean flags instead for a stable UI.
                 var storedIdentity = secureStorage?.LoadUserIdentity();
-                _ = storedIdentity; // referenced to keep the local for future use if needed
-                RoleDisplay = GetRoleDisplayName(user);
+                RoleDisplay = !string.IsNullOrEmpty(storedIdentity?.RoleName)
+                    ? storedIdentity.RoleName
+                    : GetRoleDisplayName(user);
 
                 // Populate user display name cache for current user
                 if (!string.IsNullOrWhiteSpace(user?.ProfileId) && !string.IsNullOrWhiteSpace(user?.UserName))
@@ -169,6 +166,10 @@ namespace BIManage.ViewModels.Auth
                     var isCompanyAdmin = roleName.Contains("company") && roleName.Contains("admin");
                     var isProjectAdmin = !isCompanyAdmin && (roleName.Contains("project") && roleName.Contains("admin"));
 
+                    // Super Admin / any other admin role → treat as Company Admin
+                    if (!isCompanyAdmin && !isProjectAdmin && roleName.Contains("admin"))
+                        isCompanyAdmin = true;
+
                     _logger?.LogInfo($"API roleName: \"{response.RoleName}\" → CompanyAdmin={isCompanyAdmin}, ProjectAdmin={isProjectAdmin}");
 
                     // Populate user display name cache
@@ -218,10 +219,7 @@ namespace BIManage.ViewModels.Auth
                     AuthenticatedUser = username;
                     Email = response.Email ?? response.User?.Email ?? Email;
                     CompanyDisplay = companyName ?? string.Empty;
-                    // Always use our consistent label (Company Admin / Project Admin / User)
-                    // — ignore response.RoleName for display purposes, since the server may
-                    // return variants like "Super Admin" or "CompanyAdministrator".
-                    RoleDisplay = GetRoleDisplayName(_userService?.CurrentUser);
+                    RoleDisplay = response.RoleName ?? GetRoleDisplayName(_userService?.CurrentUser);
 
                     HasError = false;
                     StatusMessage = "Signed in successfully";

@@ -1,3 +1,5 @@
+using System.IO;
+using System.Threading;
 using System.Windows;
 using Application = System.Windows.Application;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,24 +16,39 @@ public partial class App : Application
 {
     private const string AutoStartKey  = "ZeManageAgent";
     private const string AutoStartPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
+    private const string MutexName     = "ZeManageAgent-SingleInstance";
 
     public static IHost? Host { get; private set; }
     private TrayIconManager? _tray;
+    private Mutex? _mutex;
 
     protected override async void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
 
-        // Register in Windows startup so the agent runs on every boot (minimized in tray).
+        // Prevent duplicate instances (HKCU Run + Task Scheduler both fire at login)
+        _mutex = new Mutex(initiallyOwned: true, name: MutexName, out bool isFirst);
+        if (!isFirst)
+        {
+            _mutex.Dispose();
+            Shutdown();
+            return;
+        }
+
+        // Belt-and-suspenders: keep HKCU Run key current (installer is primary, this is backup)
         RegisterAutoStart();
+
+        var logPath = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "BIManageRevit", "Logs", "agent.log");
 
         Host = Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder()
             .ConfigureLogging(lb =>
             {
                 lb.ClearProviders();
                 lb.AddDebug();
-                lb.AddConsole();
-                lb.SetMinimumLevel(LogLevel.Information);
+                lb.AddProvider(new FileLoggerProvider(logPath));
+                lb.SetMinimumLevel(LogLevel.Debug);
             })
             .ConfigureServices((ctx, services) =>
             {
@@ -40,27 +57,29 @@ public partial class App : Application
             })
             .Build();
 
-        // Ensure both the agent DB schema and the BrowserActivities upgrade table exist
-        // before any monitor tries to write to them.
         var store = Host.Services.GetRequiredService<LocalStore>();
         await store.EnsureCreatedAsync();
 
-        // Capture machine/user identity into agent.db on every startup.
-        // captured_at is preserved from the first run (COALESCE in UPSERT).
         var identity = Host.Services.GetRequiredService<IdentityService>().Get();
-        _ = store.SaveIdentityAsync(identity).ContinueWith(t =>
+        var log = Host.Services.GetRequiredService<ILogger<App>>();
+        try
         {
-            if (t.IsFaulted)
-                System.Diagnostics.Debug.WriteLine($"[ZeManage] SaveIdentity failed: {t.Exception?.InnerException?.Message}");
-        });
+            var localId = await store.SaveIdentityAsync(identity);
+            log.LogInformation("machine_info saved: {MachineId} (local_id={LocalId})", identity.MachineId, localId);
+        }
+        catch (Exception ex)
+        {
+            log.LogError(ex, "SaveIdentityAsync failed — machine_info not written");
+        }
 
         await Host.StartAsync();
 
-        var state = Host.Services.GetRequiredService<AgentState>();
+        var state  = Host.Services.GetRequiredService<AgentState>();
         var window = Host.Services.GetRequiredService<MainWindow>();
-        _tray = new TrayIconManager(window, state, this);
+        _tray = new TrayIconManager(window, state);
 
-        // Start minimized when launched by Windows startup (--minimized flag)
+        // Always start minimized (tray only). User opens window via tray double-click.
+        // --minimized flag is passed by both HKCU Run key and Task Scheduler.
         if (!e.Args.Contains("--minimized"))
             window.Show();
     }
@@ -73,13 +92,11 @@ public partial class App : Application
             await Host.StopAsync(TimeSpan.FromSeconds(5));
             Host.Dispose();
         }
+        _mutex?.ReleaseMutex();
+        _mutex?.Dispose();
         base.OnExit(e);
     }
 
-    /// <summary>
-    /// Writes the exe path + --minimized to HKCU Run so Windows starts the agent on every login.
-    /// Uses HKCU (per-user) so no elevation is required.
-    /// </summary>
     private static void RegisterAutoStart()
     {
         try
@@ -93,25 +110,8 @@ public partial class App : Application
             var existing = key.GetValue(AutoStartKey) as string;
             var desired  = $"\"{exePath}\" --minimized";
 
-            // Only write if the value is missing or the path changed (handles reinstall/move).
             if (!string.Equals(existing, desired, StringComparison.OrdinalIgnoreCase))
                 key.SetValue(AutoStartKey, desired);
-        }
-        catch
-        {
-            // Non-fatal: agent still works without auto-start if registry write fails.
-        }
-    }
-
-    /// <summary>
-    /// Removes the auto-start entry. Call from settings UI or tray "Disable Auto-Start" menu item.
-    /// </summary>
-    public static void UnregisterAutoStart()
-    {
-        try
-        {
-            using var key = Registry.CurrentUser.OpenSubKey(AutoStartPath, writable: true);
-            key?.DeleteValue(AutoStartKey, throwOnMissingValue: false);
         }
         catch { }
     }

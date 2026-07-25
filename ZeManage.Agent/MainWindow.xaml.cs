@@ -22,7 +22,7 @@ public partial class MainWindow : Window
         var id = _identity.Get();
         UserText.Text    = id.UserName;
         MachineText.Text = id.MachineName;
-        AgentIdText.Text = (id.ZeUserId?.ToString() ?? id.MachineId)[..8] + "…";
+        AgentIdText.Text = id.MachineId[..8] + "…";
         OsText.Text      = id.OsVersion;
         VersionText.Text = "v0.1.0";
         DbPathText.Text  = "DB: " + _opts.DatabasePath;
@@ -48,14 +48,6 @@ public partial class MainWindow : Window
 
     private void Refresh()
     {
-        var att = _state.CurrentAttendance;
-        if (att is not null)
-        {
-            ActiveText.Text = FormatDuration(att.ActiveSeconds);
-            IdleText.Text = FormatDuration(att.IdleSeconds);
-            LoginText.Text = att.LoginTime.ToLocalTime().ToString("HH:mm");
-        }
-
         var hw = _state.LatestHardware;
         if (hw is not null)
         {

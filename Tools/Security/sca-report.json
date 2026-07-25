@@ -1,9 +1,9 @@
 ﻿{
-    "scanDate":  "2026-06-15T10:33:21Z",
-    "buildUser":  "Jenish",
+    "scanDate":  "2026-07-24T11:50:09Z",
+    "buildUser":  "GF_S_037",
     "project":  "BIManageRevit",
     "tool":  "dotnet list package (.NET CLI)",
-    "toolVersion":  "10.0.300",
+    "toolVersion":  "10.0.102",
     "jsonFormat":  true,
     "summary":  {
                     "vulnerablePackages":  0,

@@ -776,12 +776,17 @@ namespace BIManage.Infrastructure.Api
         private static SessionApiRequest MapToApiRequest(RevitSession session)
         {
             var startedAtUtc = session.StartedAt.ToUniversalTime();
+            string sid = "";
+            try { sid = System.Security.Principal.WindowsIdentity.GetCurrent().User?.Value ?? ""; } catch { }
+            if (string.IsNullOrEmpty(sid))
+                sid = Environment.UserName;
 
             // Match Swagger payload format exactly
             return new SessionApiRequest
             {
                 SessionId = session.SessionId,
                 MachineId = session.MachineId,
+                Sid = sid,
                 ProcessId = session.ProcessId ?? 0,
                 StartedAt = startedAtUtc,
                 OpenedAt = (session.OpenedAt ?? session.StartedAt).ToUniversalTime(),
@@ -797,6 +802,7 @@ namespace BIManage.Infrastructure.Api
                 ComputerName = session.ComputerName ?? Environment.MachineName,
                 AutodeskAddins = session.AutodeskAddins ?? 0,
                 ExternalAddins = session.ExternalAddins ?? 0,
+                ExternalAddinNames = session.ExternalAddinNames,
                 LoadedPluginCount = session.LoadedPluginCount ?? 0,
                 JournalFileName = session.JournalFileName ?? "unknown.txt",
                 Status = MapStatusToString(session.Status ?? "Active"),
@@ -957,6 +963,91 @@ namespace BIManage.Infrastructure.Api
             }
             return sb.ToString();
         }
+
+        #region Company Settings + Idle Time SignalR
+
+        private const string CompanySettingsEndpoint = "/api/v1/agentdb/company-settings";
+
+        // In-memory cache so we don't hit the endpoint every 60s heartbeat tick.
+        // Refreshed once per hour; null until first successful fetch.
+        private CompanySettingsData? _cachedCompanySettings;
+        private DateTime _companySettingsFetchedAt = DateTime.MinValue;
+
+        /// <summary>
+        /// Returns cached company settings, re-fetching from
+        /// GET /api/v1/agentdb/company-settings at most once per hour.
+        /// Returns null when the HTTP client is unavailable or the request fails.
+        /// </summary>
+        public async Task<CompanySettingsData?> GetCompanySettingsAsync()
+        {
+            if (_cachedCompanySettings != null &&
+                (DateTime.UtcNow - _companySettingsFetchedAt).TotalHours < 1)
+                return _cachedCompanySettings;
+
+            if (_httpClient == null || !_httpClient.IsAuthenticated)
+                return _cachedCompanySettings; // return stale cache rather than null when just unauthenticated
+
+            try
+            {
+                var response = await _httpClient.GetAsync(CompanySettingsEndpoint);
+                if (!response.IsSuccessStatusCode)
+                {
+                    _logger?.LogDebug($"Company settings fetch returned {(int)response.StatusCode} — using cached/default");
+                    return _cachedCompanySettings;
+                }
+
+                var json = await response.Content.ReadAsStringAsync();
+                var opts = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+
+                using var doc = JsonDocument.Parse(json);
+                CompanySettingsData? parsed = null;
+
+                if (doc.RootElement.TryGetProperty("data", out var dataEl))
+                    parsed = JsonSerializer.Deserialize<CompanySettingsData>(dataEl.GetRawText(), opts);
+                else
+                    parsed = JsonSerializer.Deserialize<CompanySettingsData>(json, opts);
+
+                if (parsed != null)
+                {
+                    _cachedCompanySettings = parsed;
+                    _companySettingsFetchedAt = DateTime.UtcNow;
+                    _logger?.LogDebug($"Company settings refreshed: idleThreshold={parsed.IdleThresholdMinutes}min isIdleTracking={parsed.IsIdleTrackingEnabled}");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogDebug($"Company settings fetch failed (non-critical): {ex.Message}");
+            }
+
+            return _cachedCompanySettings;
+        }
+
+        /// <summary>
+        /// Sends the accumulated idle seconds for a session via SignalR (fire-and-forget).
+        /// Called every heartbeat tick while the user is idle past the company threshold.
+        /// </summary>
+        public async Task SendIdleTimeViaSignalRAsync(string sessionId, int durationSeconds)
+        {
+            if (_signalRService == null || !_signalRService.IsConnected) return;
+            try
+            {
+                await _signalRService.SendAsync(
+                    SignalR.Messages.SignalRMethods.IdleTimeUpdate,
+                    new
+                    {
+                        sessionId,
+                        durationSeconds,
+                        timestamp = DateTime.UtcNow
+                    });
+                _logger?.LogDebug($"IdleTimeUpdate sent: sessionId={sessionId} durationSeconds={durationSeconds}");
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogDebug($"IdleTimeUpdate SignalR send failed (non-critical): {ex.Message}");
+            }
+        }
+
+        #endregion
     }
 
     #region Session API Request DTO
@@ -972,6 +1063,9 @@ namespace BIManage.Infrastructure.Api
 
         [JsonPropertyName("machineId")]
         public string? MachineId { get; set; }
+
+        [JsonPropertyName("sid")]
+        public string? Sid { get; set; }
 
         [JsonPropertyName("processId")]
         public int? ProcessId { get; set; }
@@ -1011,6 +1105,9 @@ namespace BIManage.Infrastructure.Api
 
         [JsonPropertyName("externalAddins")]
         public int? ExternalAddins { get; set; }
+
+        [JsonPropertyName("externalAddinNames")]
+        public string? ExternalAddinNames { get; set; }
 
         [JsonPropertyName("loadedPluginCount")]
         public int? LoadedPluginCount { get; set; }
@@ -1155,6 +1252,60 @@ namespace BIManage.Infrastructure.Api
 
         [JsonPropertyName("modifiedBy")]
         public string ModifiedBy { get; set; } = "";
+    }
+
+    #endregion
+
+    #region Company Settings DTO
+
+    /// <summary>
+    /// Subset of GET /api/v1/agentdb/company-settings used for idle tracking
+    /// and screenshot configuration.
+    /// </summary>
+    public class CompanySettingsData
+    {
+        [JsonPropertyName("isScreenshotEnabled")]
+        public bool IsScreenshotEnabled { get; set; }
+
+        [JsonPropertyName("screenshotIntervalMinutes")]
+        public int ScreenshotIntervalMinutes { get; set; }
+
+        [JsonPropertyName("screenshotStartTime")]
+        public string? ScreenshotStartTime { get; set; }
+
+        [JsonPropertyName("screenshotEndTime")]
+        public string? ScreenshotEndTime { get; set; }
+
+        [JsonPropertyName("screenshotMonday")]
+        public bool ScreenshotMonday { get; set; }
+
+        [JsonPropertyName("screenshotTuesday")]
+        public bool ScreenshotTuesday { get; set; }
+
+        [JsonPropertyName("screenshotWednesday")]
+        public bool ScreenshotWednesday { get; set; }
+
+        [JsonPropertyName("screenshotThursday")]
+        public bool ScreenshotThursday { get; set; }
+
+        [JsonPropertyName("screenshotFriday")]
+        public bool ScreenshotFriday { get; set; }
+
+        [JsonPropertyName("screenshotSaturday")]
+        public bool ScreenshotSaturday { get; set; }
+
+        [JsonPropertyName("screenshotSunday")]
+        public bool ScreenshotSunday { get; set; }
+
+        [JsonPropertyName("isIdleTrackingEnabled")]
+        public bool IsIdleTrackingEnabled { get; set; }
+
+        /// <summary>
+        /// After how many minutes of idle to start accumulating and reporting idle seconds.
+        /// Comes from the company settings page in the portal.
+        /// </summary>
+        [JsonPropertyName("idleThresholdMinutes")]
+        public int IdleThresholdMinutes { get; set; }
     }
 
     #endregion

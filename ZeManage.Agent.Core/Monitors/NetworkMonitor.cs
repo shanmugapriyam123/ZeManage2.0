@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using ZeManage.Agent.Core.Data;
 using ZeManage.Agent.Core.Models;
 using ZeManage.Agent.Core.Services;
+using ZeManage.Agent.Core.Sync;
 
 namespace ZeManage.Agent.Core.Monitors;
 
@@ -16,6 +17,7 @@ public sealed class NetworkMonitor : BackgroundService
     private readonly ILogger<NetworkMonitor> _log;
     private readonly AgentState _state;
     private readonly IHttpClientFactory _httpFactory;
+    private readonly AgentHubConnection _hub;
 
     private static readonly string[] PingTargets =
     {
@@ -28,7 +30,8 @@ public sealed class NetworkMonitor : BackgroundService
         IOptions<AgentOptions> opts,
         ILogger<NetworkMonitor> log,
         AgentState state,
-        IHttpClientFactory httpFactory)
+        IHttpClientFactory httpFactory,
+        AgentHubConnection hub)
     {
         _store = store;
         _identity = identity;
@@ -36,6 +39,7 @@ public sealed class NetworkMonitor : BackgroundService
         _log = log;
         _state = state;
         _httpFactory = httpFactory;
+        _hub = hub;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -46,10 +50,23 @@ public sealed class NetworkMonitor : BackgroundService
         {
             try
             {
-                var snap = await CollectAsync(id.MachineName, stoppingToken);
+                var snap = await CollectAsync(stoppingToken);
                 await _store.AddNetworkSnapshotAsync(snap, stoppingToken);
                 _state.LatestNetwork = snap;
                 _state.NotifyChanged();
+
+                await _hub.TrySendEventAsync("ReportNetworkSnapshot", new
+                {
+                    machineId         = id.MachineId,
+                    capturedAt        = snap.CapturedAt,
+                    downloadMbps      = snap.DownloadMbps,
+                    uploadMbps        = snap.UploadMbps,
+                    latencyMs         = snap.LatencyMs,
+                    packetLossPercent = snap.PacketLossPercent,
+                    vpnConnected      = snap.VpnConnected,
+                    activeAdapter     = snap.ActiveAdapter,
+                    healthScore       = snap.HealthScore
+                }, stoppingToken);
             }
             catch (Exception ex)
             {
@@ -60,21 +77,23 @@ public sealed class NetworkMonitor : BackgroundService
         }
     }
 
-    private async Task<NetworkSnapshot> CollectAsync(string machineName, CancellationToken ct)
+    private async Task<NetworkSnapshot> CollectAsync(CancellationToken ct)
     {
         var (latencyMs, lossPct) = await PingAsync(ct);
         var (downMbps, activeAdapter) = ReadAdapterStats();
         var vpn = DetectVpn();
+        var now = DateTime.UtcNow;
         var snap = new NetworkSnapshot
         {
-            MachineName = machineName,
-            CapturedAt = DateTime.UtcNow,
+            CapturedAt = now,
             DownloadMbps = Math.Round(downMbps, 2),
             UploadMbps = 0,
             LatencyMs = Math.Round(latencyMs, 1),
             PacketLossPercent = Math.Round(lossPct, 1),
             VpnConnected = vpn,
-            ActiveAdapter = activeAdapter
+            ActiveAdapter = activeAdapter,
+            CreatedAt = now,
+            UpdatedAt = now
         };
 
         if (_opts.EnableSpeedTest)

@@ -558,6 +558,11 @@ namespace BIManage.Revit.Idling
         private static readonly TimeSpan _idleSkipThreshold = TimeSpan.FromMinutes(2);
         private bool _idleSkipLogged;
 
+        // Tracks when continuous idle started for company-settings based idle reporting.
+        // Set to (UtcNow - currentIdleDuration) the first tick idle >= company threshold;
+        // reset to null the moment the user becomes active again.
+        private DateTime? _idleStartTime;
+
         // Tracks the last UTC time we observed Revit as the foreground window.
         // Updated on every OnIdling tick when Revit holds focus; consumed by the
         // heartbeat gate so that working in another application (browser, email)
@@ -723,6 +728,53 @@ namespace BIManage.Revit.Idling
                             {
                                 _logger?.LogError($"API heartbeat failed: {ex.Message}", ex);
                             }
+                        }
+                    }
+
+                    // Company-settings idle tracking via SignalR.
+                    // Fetches idleThresholdMinutes from GET /api/v1/agentdb/company-settings
+                    // (cached 1h). Once the user has been idle >= that threshold, calculates
+                    // accumulated idle seconds and sends them via SignalR so the portal can
+                    // record productivity loss in real time without polling.
+                    // Completely independent of the existing _idleSkipThreshold heartbeat gate above.
+                    if (_sessionSyncService != null)
+                    {
+                        try
+                        {
+                            var companySettings = await _sessionSyncService.GetCompanySettingsAsync();
+                            if (companySettings?.IsIdleTrackingEnabled == true && companySettings.IdleThresholdMinutes > 0)
+                            {
+                                var companyIdleThreshold = TimeSpan.FromMinutes(companySettings.IdleThresholdMinutes);
+                                var sysIdleDuration = BIManage.Revit.BackgroundSync.RevitInteropHelper.GetTimeSinceLastInput();
+                                if (sysIdleDuration >= companyIdleThreshold)
+                                {
+                                    if (_idleStartTime == null)
+                                    {
+                                        // Anchor to when idle actually started, but never before
+                                        // this Revit session began (_firstIdlingObservedAt).
+                                        // This prevents pre-session system idle (e.g. the user
+                                        // left the PC idle, then launched Revit) from inflating
+                                        // the durationSeconds on the very first tick.
+                                        var rawStart = DateTime.UtcNow - sysIdleDuration;
+                                        var sessionFloor = _firstIdlingObservedAt != DateTime.MinValue
+                                            ? _firstIdlingObservedAt
+                                            : DateTime.UtcNow;
+                                        _idleStartTime = rawStart < sessionFloor ? sessionFloor : rawStart;
+                                    }
+
+                                    var durationSeconds = (int)(DateTime.UtcNow - _idleStartTime.Value).TotalSeconds;
+                                    await _sessionSyncService.SendIdleTimeViaSignalRAsync(sessionId, durationSeconds);
+                                }
+                                else
+                                {
+                                    // User is active again — reset the accumulator.
+                                    _idleStartTime = null;
+                                }
+                            }
+                        }
+                        catch (Exception idleTrackEx)
+                        {
+                            _logger?.LogDebug($"Company idle tracking (non-critical): {idleTrackEx.Message}");
                         }
                     }
 

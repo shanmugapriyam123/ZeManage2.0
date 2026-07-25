@@ -52,6 +52,7 @@ public static class AgentBootstrap
         services.AddSingleton<AgentState>();
         services.AddSingleton<LocalStore>();
         services.AddSingleton<Sync.TokenProvider>();
+        services.AddSingleton<Services.AppClassificationService>();
 
         services.AddDbContextFactory<AgentDbContext>((sp, options) =>
         {
@@ -79,17 +80,32 @@ public static class AgentBootstrap
                     : null
             };
         });
+        // "backend-agent" — HTTP fallback channel used by AgentHubConnection
+        // when SignalR is Reconnecting/Disconnected. Same SSL policy as the
+        // other backend clients so a self-signed cert on the staging backend
+        // doesn't silently sink the fallback POST.
+        services.AddHttpClient("backend-agent").ConfigurePrimaryHttpMessageHandler(sp =>
+        {
+            var o = sp.GetRequiredService<Microsoft.Extensions.Options.IOptions<AgentOptions>>().Value;
+            return new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = o.AllowInsecureSsl
+                    ? HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+                    : null
+            };
+        });
         services.AddHttpClient("speedtest");
         services.AddHttpClient();
 
         services.AddSingleton<ScreenshotMonitor>();
-        services.AddHostedService<AttendanceMonitor>();
-        services.AddHostedService<ProcessMonitor>();
+        services.AddSingleton<ProcessMonitor>();
+        services.AddHostedService(sp => sp.GetRequiredService<ProcessMonitor>());
         services.AddHostedService<HardwareMonitor>();
         services.AddHostedService<NetworkMonitor>();
         services.AddHostedService<BrowserMonitor>();
         services.AddHostedService(sp => sp.GetRequiredService<ScreenshotMonitor>());
-        services.AddHostedService<AgentHubConnection>();
+        services.AddSingleton<AgentHubConnection>();
+        services.AddHostedService(sp => sp.GetRequiredService<AgentHubConnection>());
         services.AddHostedService<SyncService>();
 
         return services;

@@ -4,7 +4,6 @@ using System.Management;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using ZeManage.Agent.Core.Data;
 using ZeManage.Agent.Core.Models;
 using ZeManage.Agent.Core.Services;
 
@@ -12,8 +11,6 @@ namespace ZeManage.Agent.Core.Monitors;
 
 public sealed class HardwareMonitor : BackgroundService
 {
-    private readonly LocalStore _store;
-    private readonly IdentityService _identity;
     private readonly AgentOptions _opts;
     private readonly ILogger<HardwareMonitor> _log;
     private readonly AgentState _state;
@@ -22,16 +19,12 @@ public sealed class HardwareMonitor : BackgroundService
     private double _ramTotalGB;
 
     public HardwareMonitor(
-        LocalStore store,
-        IdentityService identity,
         IOptions<AgentOptions> opts,
         ILogger<HardwareMonitor> log,
         AgentState state)
     {
-        _store = store;
-        _identity = identity;
-        _opts = opts.Value;
-        _log = log;
+        _opts  = opts.Value;
+        _log   = log;
         _state = state;
     }
 
@@ -39,7 +32,6 @@ public sealed class HardwareMonitor : BackgroundService
     {
         Initialize();
         var interval = TimeSpan.FromSeconds(_opts.HardwareIntervalSeconds);
-        var id = _identity.Get();
 
         // first read of CPU counter is always 0 — prime it
         try { _cpu?.NextValue(); await Task.Delay(1000, stoppingToken); } catch { }
@@ -48,8 +40,7 @@ public sealed class HardwareMonitor : BackgroundService
         {
             try
             {
-                var snap = CollectSnapshot(id.MachineName);
-                await _store.AddHardwareSnapshotAsync(snap, stoppingToken);
+                var snap = CollectSnapshot();
                 _state.LatestHardware = snap;
                 _state.NotifyChanged();
             }
@@ -88,7 +79,7 @@ public sealed class HardwareMonitor : BackgroundService
         }
     }
 
-    private HardwareSnapshot CollectSnapshot(string machineName)
+    private HardwareSnapshot CollectSnapshot()
     {
         var cpuPct = SafeRead(_cpu);
         var (ramFreeGB, ramUsedGB, ramTotalGB) = ReadRam();
@@ -97,10 +88,10 @@ public sealed class HardwareMonitor : BackgroundService
         var gpuPct = ReadGpuPercent();
         var (batPct, batStatus) = ReadBattery();
 
+        var now = DateTime.UtcNow;
         return new HardwareSnapshot
         {
-            MachineName = machineName,
-            CapturedAt = DateTime.UtcNow,
+            CapturedAt = now,
             CpuUsagePercent = Math.Round(cpuPct, 1),
             RamUsedGB = ramUsedGB,
             RamTotalGB = ramTotalGB,
@@ -110,7 +101,9 @@ public sealed class HardwareMonitor : BackgroundService
             DiskTotalGB = Math.Round(diskTotal, 1),
             DiskUsagePercent = diskUsedPct,
             BatteryPercent = batPct,
-            BatteryStatus = batStatus
+            BatteryStatus = batStatus,
+            CreatedAt = now,
+            UpdatedAt = now
         };
     }
 

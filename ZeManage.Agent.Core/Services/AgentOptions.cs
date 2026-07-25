@@ -7,13 +7,17 @@ public sealed class AgentOptions
     public string BackendEmail { get; set; } = "agent@conservesolution.com";
     public string BackendPassword { get; set; } = "AgentSvc@12345";
     public bool AllowInsecureSsl { get; set; } = false;
-    public int IdleThresholdSeconds { get; set; } = 120;
-    public int ActivityTickSeconds { get; set; } = 5;
+    public int IdleThresholdSeconds    { get; set; } = 300;
+    public int ActiveThresholdSeconds  { get; set; } = 30;
+    public int ActivityTickSeconds     { get; set; } = 5;
     public int HardwareIntervalSeconds { get; set; } = 60;
     public int NetworkIntervalSeconds { get; set; } = 300;
     public int ProcessScanIntervalSeconds { get; set; } = 10;
     public int SyncIntervalSeconds { get; set; } = 60;
     public bool EnableSpeedTest { get; set; } = false;
+
+    // Company code set in backend admin panel — required for identity registration
+    public string? CompanyCode { get; set; }
 
     // V2: SignalR realtime
     public bool EnableSignalR { get; set; } = true;

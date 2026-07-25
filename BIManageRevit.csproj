@@ -616,6 +616,15 @@
         <Compile Remove="BIManage\Tools\Testing\**" />
         <Compile Remove="BIManage.Addons\**" />
         <Compile Remove="BIManageRevit.Shim\**" />
+        <!-- Exclude obj\ entirely: stale AssemblyInfo files from other build configurations
+             (e.g. obj\Release R22\BIManageRevit.AssemblyInfo.cs) accumulate and are picked up
+             by the WPFTMP compile glob, which only excludes its own config's obj\Config\ subtree.
+             This Remove entry is also copied into every generated *_wpftmp.csproj, preventing
+             cross-config contamination in future incremental builds. -->
+        <Compile Remove="obj\**" />
+        <!-- DbInit uses Microsoft.Data.Sqlite which is not referenced by BIManageRevit.
+             Without this, DbInit\Program.cs is included in BIManageRevit's compile glob. -->
+        <Compile Remove="DbInit\**" />
         <EmbeddedResource Remove="BIManageRevit.Tests\**" />
         <EmbeddedResource Remove="BIManage\Tools\Testing\**" />
         <EmbeddedResource Remove="BIManage.Addons\**" />

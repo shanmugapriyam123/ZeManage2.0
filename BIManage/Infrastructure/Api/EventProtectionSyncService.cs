@@ -58,6 +58,7 @@ namespace BIManage.Infrastructure.Api
             "Ze_CADImportProtection",
             "Ze_CADExplodeProtection",
             "Ze_RVTLinkPinPrompt",
+            "Ze_EquipmentMirrorProtection",
         };
 
         /// <summary>

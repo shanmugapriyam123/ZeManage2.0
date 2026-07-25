@@ -92,6 +92,10 @@ namespace BIManageRevit.BIManage.Revit.Applications
         }
         private static readonly Stopwatch _startupStopwatch = Stopwatch.StartNew();
         private static readonly System.Collections.Generic.List<string> _earlyDiagnostics = new System.Collections.Generic.List<string>();
+        private static readonly HashSet<string> _selfAddinKeywords = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            "BIManage", "ZeManage", "BIManageRevit", "ZeManageRevit"
+        };
         private ServiceRegistry? _services;
         private IFeatureToggleService? _featureToggleService;
         private ExternalEvent? _setupProtectionBindingsEvent;
@@ -1256,9 +1260,10 @@ namespace BIManageRevit.BIManage.Revit.Applications
                 int? pluginCount = null;
                 int? autodeskAddins = null;
                 int? externalAddins = null;
+                List<string> externalAddinNamesList = null;
                 try
                 {
-                    var (stockCount, externalCount, pyRevitExtensionCount) = CountLoadedAddins(uiApp);
+                    var (stockCount, externalCount, pyRevitExtensionCount, namesList) = CountLoadedAddins(uiApp);
 
                     // External count includes pyRevit extensions (counted individually)
                     int totalExternal = externalCount + pyRevitExtensionCount;
@@ -1266,6 +1271,7 @@ namespace BIManageRevit.BIManage.Revit.Applications
                     pluginCount = stockCount + totalExternal;
                     autodeskAddins = stockCount;
                     externalAddins = totalExternal;
+                    externalAddinNamesList = namesList;
 
                     Logger?.LogDebug($">>> Counted {pluginCount} loaded plugins (Stock Autodesk: {stockCount}, External: {externalCount}, pyRevit Extensions: {pyRevitExtensionCount})");
                 }
@@ -1273,6 +1279,10 @@ namespace BIManageRevit.BIManage.Revit.Applications
                 {
                     Logger?.LogWarning($"Could not count loaded plugins: {ex.Message}");
                 }
+
+                string externalAddinNamesJson = null;
+                if (externalAddinNamesList != null && externalAddinNamesList.Count > 0)
+                    externalAddinNamesJson = System.Text.Json.JsonSerializer.Serialize(externalAddinNamesList);
 
                 // Get journal file name
                 string journalFileName = null;
@@ -1295,7 +1305,8 @@ namespace BIManageRevit.BIManage.Revit.Applications
                     pluginCount,
                     journalFileName,
                     autodeskAddins,
-                    externalAddins);
+                    externalAddins,
+                    externalAddinNamesJson);
 
                 Logger?.LogDebug($">>> UpdateSessionReadyAsync returned: {updateResult}");
 
@@ -1359,12 +1370,13 @@ namespace BIManageRevit.BIManage.Revit.Applications
         /// Distinguishes stock Autodesk add-ins from external/user-installed ones
         /// </summary>
         /// <returns>Tuple of (stockAutodeskCount, externalCount, pyRevitExtensionCount)</returns>
-        private (int stockCount, int externalCount, int pyRevitExtensionCount) CountLoadedAddins(UIApplication uiApp)
+        private (int stockCount, int externalCount, int pyRevitExtensionCount, List<string> externalNames) CountLoadedAddins(UIApplication uiApp)
         {
             int stockCount = 0;
             int externalCount = 0;
             int pyRevitExtensionCount = 0;
             bool pyRevitLoaderFound = false;
+            var allExternalNames = new List<string>();
 
             try
             {
@@ -1408,34 +1420,37 @@ namespace BIManageRevit.BIManage.Revit.Applications
                 // Process stock add-in folder first
                 if (System.IO.Directory.Exists(stockAddinFolder))
                 {
-                    var (stock, external, pyRevit) = ProcessAddinFolder(
+                    var (stock, external, pyRevit, names) = ProcessAddinFolder(
                         stockAddinFolder, true, autodeskVendors, stockAddinNames, processedAddins);
                     stockCount += stock;
                     externalCount += external;
+                    allExternalNames.AddRange(names);
                     if (pyRevit) pyRevitLoaderFound = true;
                 }
 
                 // Process ProgramData add-in folder (company/machine-level installs)
                 if (System.IO.Directory.Exists(programDataAddinFolder))
                 {
-                    var (stock, external, pyRevit) = ProcessAddinFolder(
+                    var (stock, external, pyRevit, names) = ProcessAddinFolder(
                         programDataAddinFolder, false, autodeskVendors, stockAddinNames, processedAddins);
                     stockCount += stock;
                     externalCount += external;
+                    allExternalNames.AddRange(names);
                     if (pyRevit) pyRevitLoaderFound = true;
                 }
 
                 // Process user AppData add-in folder (user-level installs)
                 if (System.IO.Directory.Exists(userAddinFolder))
                 {
-                    var (stock, external, pyRevit) = ProcessAddinFolder(
+                    var (stock, external, pyRevit, names) = ProcessAddinFolder(
                         userAddinFolder, false, autodeskVendors, stockAddinNames, processedAddins);
                     stockCount += stock;
                     externalCount += external;
+                    allExternalNames.AddRange(names);
                     if (pyRevit) pyRevitLoaderFound = true;
                 }
 
-                Logger?.LogInfo($"Add-in manifest scan complete: Stock={stockCount}, External={externalCount}, pyRevitFound={pyRevitLoaderFound}");
+                Logger?.LogInfo($"Add-in manifest scan complete: Stock={stockCount}, External={externalCount}, pyRevitFound={pyRevitLoaderFound}, ExternalNames={allExternalNames.Count}");
 
                 // Count pyRevit extensions if pyRevit loader was found
                 if (pyRevitLoaderFound)
@@ -1448,13 +1463,13 @@ namespace BIManageRevit.BIManage.Revit.Applications
                 Logger?.LogWarning($"Error counting add-ins: {ex.Message}");
             }
 
-            return (stockCount, externalCount, pyRevitExtensionCount);
+            return (stockCount, externalCount, pyRevitExtensionCount, allExternalNames);
         }
 
         /// <summary>
         /// Process a single add-in folder and count add-ins from .addin manifest files
         /// </summary>
-        private (int stockCount, int externalCount, bool pyRevitFound) ProcessAddinFolder(
+        private (int stockCount, int externalCount, bool pyRevitFound, List<string> names) ProcessAddinFolder(
             string folderPath,
             bool isStockFolder,
             HashSet<string> autodeskVendors,
@@ -1464,6 +1479,7 @@ namespace BIManageRevit.BIManage.Revit.Applications
             int stockCount = 0;
             int externalCount = 0;
             bool pyRevitFound = false;
+            var names = new List<string>();
 
             try
             {
@@ -1478,9 +1494,16 @@ namespace BIManageRevit.BIManage.Revit.Applications
                         foreach (var (isStock, name) in addins)
                         {
                             if (isStock)
+                            {
                                 stockCount++;
+                            }
                             else
+                            {
                                 externalCount++;
+                                if (!string.IsNullOrWhiteSpace(name) &&
+                                    !_selfAddinKeywords.Any(k => name.IndexOf(k, StringComparison.OrdinalIgnoreCase) >= 0))
+                                    names.Add(name);
+                            }
                         }
 
                         if (hasPyRevit)
@@ -1497,7 +1520,7 @@ namespace BIManageRevit.BIManage.Revit.Applications
                 Logger?.LogDebug($"Error processing addin folder {folderPath}: {ex.Message}");
             }
 
-            return (stockCount, externalCount, pyRevitFound);
+            return (stockCount, externalCount, pyRevitFound, names);
         }
 
         /// <summary>

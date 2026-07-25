@@ -3,7 +3,6 @@ namespace ZeManage.Agent.Core.Models;
 public sealed class HardwareSnapshot
 {
     public long Id { get; set; }
-    public required string MachineName { get; set; }
     public DateTime CapturedAt { get; set; }
     public double CpuUsagePercent { get; set; }
     public double RamUsagePercent { get; set; }
@@ -16,4 +15,6 @@ public sealed class HardwareSnapshot
     public int? BatteryPercent { get; set; }
     public string? BatteryStatus { get; set; }
     public bool Synced { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
 }

@@ -313,138 +313,139 @@ Skipped Types:
 	[BIManageRevit]<>f__AnonymousType25`1::.ctor[1]( !0 ) skipped:  special name
 }
 
-[BIManageRevit]<>f__AnonymousType26`2 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]<>f__AnonymousType26`3 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]<>f__AnonymousType26`2::Equals[1]( [mscorlib]System.Object ) skipped:  external base class or interface
-	[BIManageRevit]<>f__AnonymousType26`2::GetHashCode[0]( ) skipped:  external base class or interface
-	[BIManageRevit]<>f__AnonymousType26`2::ToString[0]( ) skipped:  external base class or interface
-	[BIManageRevit]<>f__AnonymousType26`2::get_filename[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType26`2::get_file_size[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType26`2::.ctor[2]( !0, !1 ) skipped:  special name
+	[BIManageRevit]<>f__AnonymousType26`3::Equals[1]( [mscorlib]System.Object ) skipped:  external base class or interface
+	[BIManageRevit]<>f__AnonymousType26`3::GetHashCode[0]( ) skipped:  external base class or interface
+	[BIManageRevit]<>f__AnonymousType26`3::ToString[0]( ) skipped:  external base class or interface
+	[BIManageRevit]<>f__AnonymousType26`3::get_sessionId[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType26`3::get_durationSeconds[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType26`3::get_timestamp[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType26`3::.ctor[3]( !0, !1, !2 ) skipped:  special name
 }
 
-[BIManageRevit]<>f__AnonymousType27`1 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]<>f__AnonymousType27`2 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]<>f__AnonymousType27`1::Equals[1]( [mscorlib]System.Object ) skipped:  external base class or interface
-	[BIManageRevit]<>f__AnonymousType27`1::GetHashCode[0]( ) skipped:  external base class or interface
-	[BIManageRevit]<>f__AnonymousType27`1::ToString[0]( ) skipped:  external base class or interface
-	[BIManageRevit]<>f__AnonymousType27`1::get_job_id[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType27`1::.ctor[1]( !0 ) skipped:  special name
+	[BIManageRevit]<>f__AnonymousType27`2::Equals[1]( [mscorlib]System.Object ) skipped:  external base class or interface
+	[BIManageRevit]<>f__AnonymousType27`2::GetHashCode[0]( ) skipped:  external base class or interface
+	[BIManageRevit]<>f__AnonymousType27`2::ToString[0]( ) skipped:  external base class or interface
+	[BIManageRevit]<>f__AnonymousType27`2::get_filename[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType27`2::get_file_size[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType27`2::.ctor[2]( !0, !1 ) skipped:  special name
 }
 
-[BIManageRevit]<>f__AnonymousType28`3 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]<>f__AnonymousType28`1 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]<>f__AnonymousType28`3::Equals[1]( [mscorlib]System.Object ) skipped:  external base class or interface
-	[BIManageRevit]<>f__AnonymousType28`3::GetHashCode[0]( ) skipped:  external base class or interface
-	[BIManageRevit]<>f__AnonymousType28`3::ToString[0]( ) skipped:  external base class or interface
-	[BIManageRevit]<>f__AnonymousType28`3::get_type[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType28`3::get_target[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType28`3::get_arguments[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType28`3::.ctor[3]( !0, !1, !2 ) skipped:  special name
+	[BIManageRevit]<>f__AnonymousType28`1::Equals[1]( [mscorlib]System.Object ) skipped:  external base class or interface
+	[BIManageRevit]<>f__AnonymousType28`1::GetHashCode[0]( ) skipped:  external base class or interface
+	[BIManageRevit]<>f__AnonymousType28`1::ToString[0]( ) skipped:  external base class or interface
+	[BIManageRevit]<>f__AnonymousType28`1::get_job_id[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType28`1::.ctor[1]( !0 ) skipped:  special name
 }
 
-[BIManageRevit]<>f__AnonymousType29`7 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]<>f__AnonymousType29`3 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]<>f__AnonymousType29`7::Equals[1]( [mscorlib]System.Object ) skipped:  external base class or interface
-	[BIManageRevit]<>f__AnonymousType29`7::GetHashCode[0]( ) skipped:  external base class or interface
-	[BIManageRevit]<>f__AnonymousType29`7::ToString[0]( ) skipped:  external base class or interface
-	[BIManageRevit]<>f__AnonymousType29`7::get_ModelGuid[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType29`7::get_SessionId[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType29`7::get_Username[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType29`7::get_RevitUsername[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType29`7::get_ComputerName[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType29`7::get_QueueAction[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType29`7::get_ClaimedAtUtcTicks[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType29`7::.ctor[7]( !0, !1, !2, !3, !4, !5, !6 ) skipped:  special name
+	[BIManageRevit]<>f__AnonymousType29`3::Equals[1]( [mscorlib]System.Object ) skipped:  external base class or interface
+	[BIManageRevit]<>f__AnonymousType29`3::GetHashCode[0]( ) skipped:  external base class or interface
+	[BIManageRevit]<>f__AnonymousType29`3::ToString[0]( ) skipped:  external base class or interface
+	[BIManageRevit]<>f__AnonymousType29`3::get_type[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType29`3::get_target[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType29`3::get_arguments[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType29`3::.ctor[3]( !0, !1, !2 ) skipped:  special name
 }
 
-[BIManageRevit]<>f__AnonymousType30`6 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]<>f__AnonymousType30`7 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]<>f__AnonymousType30`6::Equals[1]( [mscorlib]System.Object ) skipped:  external base class or interface
-	[BIManageRevit]<>f__AnonymousType30`6::GetHashCode[0]( ) skipped:  external base class or interface
-	[BIManageRevit]<>f__AnonymousType30`6::ToString[0]( ) skipped:  external base class or interface
-	[BIManageRevit]<>f__AnonymousType30`6::get_ModelGuid[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType30`6::get_SessionId[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType30`6::get_Username[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType30`6::get_RevitUsername[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType30`6::get_ComputerName[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType30`6::get_OccurredAtUtcTicks[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType30`6::.ctor[6]( !0, !1, !2, !3, !4, !5 ) skipped:  special name
+	[BIManageRevit]<>f__AnonymousType30`7::Equals[1]( [mscorlib]System.Object ) skipped:  external base class or interface
+	[BIManageRevit]<>f__AnonymousType30`7::GetHashCode[0]( ) skipped:  external base class or interface
+	[BIManageRevit]<>f__AnonymousType30`7::ToString[0]( ) skipped:  external base class or interface
+	[BIManageRevit]<>f__AnonymousType30`7::get_ModelGuid[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType30`7::get_SessionId[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType30`7::get_Username[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType30`7::get_RevitUsername[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType30`7::get_ComputerName[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType30`7::get_QueueAction[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType30`7::get_ClaimedAtUtcTicks[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType30`7::.ctor[7]( !0, !1, !2, !3, !4, !5, !6 ) skipped:  special name
 }
 
-[BIManageRevit]<>f__AnonymousType31`7 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]<>f__AnonymousType31`6 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]<>f__AnonymousType31`7::Equals[1]( [mscorlib]System.Object ) skipped:  external base class or interface
-	[BIManageRevit]<>f__AnonymousType31`7::GetHashCode[0]( ) skipped:  external base class or interface
-	[BIManageRevit]<>f__AnonymousType31`7::ToString[0]( ) skipped:  external base class or interface
-	[BIManageRevit]<>f__AnonymousType31`7::get_ModelGuid[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType31`7::get_SessionId[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType31`7::get_Username[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType31`7::get_RevitUsername[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType31`7::get_ComputerName[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType31`7::get_QueueAction[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType31`7::get_OccurredAtUtcTicks[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType31`7::.ctor[7]( !0, !1, !2, !3, !4, !5, !6 ) skipped:  special name
+	[BIManageRevit]<>f__AnonymousType31`6::Equals[1]( [mscorlib]System.Object ) skipped:  external base class or interface
+	[BIManageRevit]<>f__AnonymousType31`6::GetHashCode[0]( ) skipped:  external base class or interface
+	[BIManageRevit]<>f__AnonymousType31`6::ToString[0]( ) skipped:  external base class or interface
+	[BIManageRevit]<>f__AnonymousType31`6::get_ModelGuid[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType31`6::get_SessionId[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType31`6::get_Username[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType31`6::get_RevitUsername[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType31`6::get_ComputerName[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType31`6::get_OccurredAtUtcTicks[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType31`6::.ctor[6]( !0, !1, !2, !3, !4, !5 ) skipped:  special name
 }
 
-[BIManageRevit]<>f__AnonymousType32`5 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]<>f__AnonymousType32`7 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]<>f__AnonymousType32`5::Equals[1]( [mscorlib]System.Object ) skipped:  external base class or interface
-	[BIManageRevit]<>f__AnonymousType32`5::GetHashCode[0]( ) skipped:  external base class or interface
-	[BIManageRevit]<>f__AnonymousType32`5::ToString[0]( ) skipped:  external base class or interface
-	[BIManageRevit]<>f__AnonymousType32`5::get_ModelGuid[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType32`5::get_SessionId[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType32`5::get_Username[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType32`5::get_RevitUsername[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType32`5::get_ComputerName[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType32`5::.ctor[5]( !0, !1, !2, !3, !4 ) skipped:  special name
+	[BIManageRevit]<>f__AnonymousType32`7::Equals[1]( [mscorlib]System.Object ) skipped:  external base class or interface
+	[BIManageRevit]<>f__AnonymousType32`7::GetHashCode[0]( ) skipped:  external base class or interface
+	[BIManageRevit]<>f__AnonymousType32`7::ToString[0]( ) skipped:  external base class or interface
+	[BIManageRevit]<>f__AnonymousType32`7::get_ModelGuid[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType32`7::get_SessionId[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType32`7::get_Username[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType32`7::get_RevitUsername[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType32`7::get_ComputerName[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType32`7::get_QueueAction[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType32`7::get_OccurredAtUtcTicks[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType32`7::.ctor[7]( !0, !1, !2, !3, !4, !5, !6 ) skipped:  special name
 }
 
-[BIManageRevit]<>f__AnonymousType33`4 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]<>f__AnonymousType33`5 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]<>f__AnonymousType33`4::Equals[1]( [mscorlib]System.Object ) skipped:  external base class or interface
-	[BIManageRevit]<>f__AnonymousType33`4::GetHashCode[0]( ) skipped:  external base class or interface
-	[BIManageRevit]<>f__AnonymousType33`4::ToString[0]( ) skipped:  external base class or interface
-	[BIManageRevit]<>f__AnonymousType33`4::get_ModelGuid[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType33`4::get_SessionId[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType33`4::get_Username[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType33`4::get_RevitUsername[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType33`4::.ctor[4]( !0, !1, !2, !3 ) skipped:  special name
+	[BIManageRevit]<>f__AnonymousType33`5::Equals[1]( [mscorlib]System.Object ) skipped:  external base class or interface
+	[BIManageRevit]<>f__AnonymousType33`5::GetHashCode[0]( ) skipped:  external base class or interface
+	[BIManageRevit]<>f__AnonymousType33`5::ToString[0]( ) skipped:  external base class or interface
+	[BIManageRevit]<>f__AnonymousType33`5::get_ModelGuid[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType33`5::get_SessionId[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType33`5::get_Username[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType33`5::get_RevitUsername[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType33`5::get_ComputerName[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType33`5::.ctor[5]( !0, !1, !2, !3, !4 ) skipped:  special name
 }
 
-[BIManageRevit]<>f__AnonymousType34`7 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]<>f__AnonymousType34`4 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]<>f__AnonymousType34`7::Equals[1]( [mscorlib]System.Object ) skipped:  external base class or interface
-	[BIManageRevit]<>f__AnonymousType34`7::GetHashCode[0]( ) skipped:  external base class or interface
-	[BIManageRevit]<>f__AnonymousType34`7::ToString[0]( ) skipped:  external base class or interface
-	[BIManageRevit]<>f__AnonymousType34`7::get_ModelGuid[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType34`7::get_SessionId[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType34`7::get_Username[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType34`7::get_RevitUsername[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType34`7::get_ComputerName[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType34`7::get_SelfCollision[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType34`7::get_OccurredAtUtcTicks[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType34`7::.ctor[7]( !0, !1, !2, !3, !4, !5, !6 ) skipped:  special name
+	[BIManageRevit]<>f__AnonymousType34`4::Equals[1]( [mscorlib]System.Object ) skipped:  external base class or interface
+	[BIManageRevit]<>f__AnonymousType34`4::GetHashCode[0]( ) skipped:  external base class or interface
+	[BIManageRevit]<>f__AnonymousType34`4::ToString[0]( ) skipped:  external base class or interface
+	[BIManageRevit]<>f__AnonymousType34`4::get_ModelGuid[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType34`4::get_SessionId[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType34`4::get_Username[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType34`4::get_RevitUsername[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType34`4::.ctor[4]( !0, !1, !2, !3 ) skipped:  special name
 }
 
-[BIManageRevit]<>f__AnonymousType35`2 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]<>f__AnonymousType35`7 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]<>f__AnonymousType35`2::Equals[1]( [mscorlib]System.Object ) skipped:  external base class or interface
-	[BIManageRevit]<>f__AnonymousType35`2::GetHashCode[0]( ) skipped:  external base class or interface
-	[BIManageRevit]<>f__AnonymousType35`2::ToString[0]( ) skipped:  external base class or interface
-	[BIManageRevit]<>f__AnonymousType35`2::get_ModelGuid[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType35`2::get_SessionId[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType35`2::.ctor[2]( !0, !1 ) skipped:  special name
+	[BIManageRevit]<>f__AnonymousType35`7::Equals[1]( [mscorlib]System.Object ) skipped:  external base class or interface
+	[BIManageRevit]<>f__AnonymousType35`7::GetHashCode[0]( ) skipped:  external base class or interface
+	[BIManageRevit]<>f__AnonymousType35`7::ToString[0]( ) skipped:  external base class or interface
+	[BIManageRevit]<>f__AnonymousType35`7::get_ModelGuid[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType35`7::get_SessionId[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType35`7::get_Username[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType35`7::get_RevitUsername[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType35`7::get_ComputerName[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType35`7::get_SelfCollision[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType35`7::get_OccurredAtUtcTicks[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType35`7::.ctor[7]( !0, !1, !2, !3, !4, !5, !6 ) skipped:  special name
 }
 
 [BIManageRevit]<>f__AnonymousType36`2 skipped:  HidePrivateApi option in configuration
@@ -453,19 +454,30 @@ Skipped Types:
 	[BIManageRevit]<>f__AnonymousType36`2::Equals[1]( [mscorlib]System.Object ) skipped:  external base class or interface
 	[BIManageRevit]<>f__AnonymousType36`2::GetHashCode[0]( ) skipped:  external base class or interface
 	[BIManageRevit]<>f__AnonymousType36`2::ToString[0]( ) skipped:  external base class or interface
-	[BIManageRevit]<>f__AnonymousType36`2::get_reason[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType36`2::get_profileId[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType36`2::get_ModelGuid[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType36`2::get_SessionId[0]( ) skipped:  skipping properties
 	[BIManageRevit]<>f__AnonymousType36`2::.ctor[2]( !0, !1 ) skipped:  special name
 }
 
-[BIManageRevit]<>f__AnonymousType37`1 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]<>f__AnonymousType37`2 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]<>f__AnonymousType37`1::Equals[1]( [mscorlib]System.Object ) skipped:  external base class or interface
-	[BIManageRevit]<>f__AnonymousType37`1::GetHashCode[0]( ) skipped:  external base class or interface
-	[BIManageRevit]<>f__AnonymousType37`1::ToString[0]( ) skipped:  external base class or interface
-	[BIManageRevit]<>f__AnonymousType37`1::get_reason[0]( ) skipped:  skipping properties
-	[BIManageRevit]<>f__AnonymousType37`1::.ctor[1]( !0 ) skipped:  special name
+	[BIManageRevit]<>f__AnonymousType37`2::Equals[1]( [mscorlib]System.Object ) skipped:  external base class or interface
+	[BIManageRevit]<>f__AnonymousType37`2::GetHashCode[0]( ) skipped:  external base class or interface
+	[BIManageRevit]<>f__AnonymousType37`2::ToString[0]( ) skipped:  external base class or interface
+	[BIManageRevit]<>f__AnonymousType37`2::get_reason[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType37`2::get_profileId[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType37`2::.ctor[2]( !0, !1 ) skipped:  special name
+}
+
+[BIManageRevit]<>f__AnonymousType38`1 skipped:  HidePrivateApi option in configuration
+{
+
+	[BIManageRevit]<>f__AnonymousType38`1::Equals[1]( [mscorlib]System.Object ) skipped:  external base class or interface
+	[BIManageRevit]<>f__AnonymousType38`1::GetHashCode[0]( ) skipped:  external base class or interface
+	[BIManageRevit]<>f__AnonymousType38`1::ToString[0]( ) skipped:  external base class or interface
+	[BIManageRevit]<>f__AnonymousType38`1::get_reason[0]( ) skipped:  skipping properties
+	[BIManageRevit]<>f__AnonymousType38`1::.ctor[1]( !0 ) skipped:  special name
 }
 
 [BIManage.Addons]<>f__AnonymousType0`2 skipped:  HidePrivateApi option in configuration
@@ -842,17 +854,6 @@ Skipped Types:
 	[BIManageRevit]CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs::.cctor[0]( ) skipped:  special name
 }
 
-[BIManageRevit]XamlGeneratedNamespace.GeneratedInternalTypeHelper skipped:  KeepPublicApi option in configuration
-{
-
-	[BIManageRevit]XamlGeneratedNamespace.GeneratedInternalTypeHelper::CreateInstance[2]( [mscorlib]System.Type, [mscorlib]System.Globalization.CultureInfo ) skipped:  external base class or interface
-	[BIManageRevit]XamlGeneratedNamespace.GeneratedInternalTypeHelper::GetPropertyValue[3]( [mscorlib]System.Reflection.PropertyInfo, [mscorlib]System.Object, [mscorlib]System.Globalization.CultureInfo ) skipped:  external base class or interface
-	[BIManageRevit]XamlGeneratedNamespace.GeneratedInternalTypeHelper::SetPropertyValue[4]( [mscorlib]System.Reflection.PropertyInfo, [mscorlib]System.Object, [mscorlib]System.Object, [mscorlib]System.Globalization.CultureInfo ) skipped:  external base class or interface
-	[BIManageRevit]XamlGeneratedNamespace.GeneratedInternalTypeHelper::CreateDelegate[3]( [mscorlib]System.Type, [mscorlib]System.Object, [mscorlib]System.String ) skipped:  external base class or interface
-	[BIManageRevit]XamlGeneratedNamespace.GeneratedInternalTypeHelper::AddEventHandler[3]( [mscorlib]System.Reflection.EventInfo, [mscorlib]System.Object, [mscorlib]System.Delegate ) skipped:  external base class or interface
-	[BIManageRevit]XamlGeneratedNamespace.GeneratedInternalTypeHelper::.ctor[0]( ) skipped:  special name
-}
-
 [BIManageRevit]BIManageRevit.BIManage.Views.ModelRegistrationDialog skipped:  KeepPublicApi option in configuration
 {
 
@@ -874,6 +875,8 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Views.ModelRegistrationDialog::ShowError[2]( [mscorlib]System.String, [mscorlib]System.String ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.ModelRegistrationDialog::Close_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.ModelRegistrationDialog::Window_KeyDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.KeyEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.ModelRegistrationDialog::TitleBar_MouseLeftButtonDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.MouseButtonEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.ModelRegistrationDialog::CloseButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.ModelRegistrationDialog::InitializeComponent[0]( ) skipped:  external base class or interface
 	[BIManageRevit]BIManageRevit.BIManage.Views.ModelRegistrationDialog::System.Windows.Markup.IComponentConnector.Connect[2]( [mscorlib]System.Int32, [mscorlib]System.Object ) skipped:  HidePrivateApi option in configuration
 }
@@ -892,6 +895,8 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Views.SyncTrafficControl.SyncConflictDialog::JoinQueueButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.SyncTrafficControl.SyncConflictDialog::CancelButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.SyncTrafficControl.SyncConflictDialog::Window_KeyDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.KeyEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.SyncTrafficControl.SyncConflictDialog::TitleBar_MouseLeftButtonDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.MouseButtonEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.SyncTrafficControl.SyncConflictDialog::CloseButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.SyncTrafficControl.SyncConflictDialog::System.Windows.Markup.IComponentConnector.Connect[2]( [mscorlib]System.Int32, [mscorlib]System.Object ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.SyncTrafficControl.SyncConflictDialog::<.ctor>b__11_0[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.SyncTrafficControl.SyncConflictDialog::<.ctor>b__11_1[2]( [mscorlib]System.Object, [mscorlib]System.EventArgs ) skipped:  HidePrivateApi option in configuration
@@ -915,6 +920,8 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Views.SyncTrafficControl.SyncReadyDialog::Window_KeyDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.KeyEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.SyncTrafficControl.SyncReadyDialog::OnClosing[1]( [System]System.ComponentModel.CancelEventArgs ) skipped:  external base class or interface
 	[BIManageRevit]BIManageRevit.BIManage.Views.SyncTrafficControl.SyncReadyDialog::OnClosed[1]( [mscorlib]System.EventArgs ) skipped:  external base class or interface
+	[BIManageRevit]BIManageRevit.BIManage.Views.SyncTrafficControl.SyncReadyDialog::TitleBar_MouseLeftButtonDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.MouseButtonEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.SyncTrafficControl.SyncReadyDialog::CloseButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.SyncTrafficControl.SyncReadyDialog::System.Windows.Markup.IComponentConnector.Connect[2]( [mscorlib]System.Int32, [mscorlib]System.Object ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.SyncTrafficControl.SyncReadyDialog::<.ctor>b__16_0[2]( [mscorlib]System.Object, [mscorlib]System.EventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.SyncTrafficControl.SyncReadyDialog::<.ctor>b__16_1[1]( [BIManageRevit]BIManage.Infrastructure.SignalR.Events.SyncStartingEvent ) skipped:  HidePrivateApi option in configuration
@@ -934,6 +941,8 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Views.SyncSettings.SyncSettingsDialog::PreventSyncViewsTextBox_PreviewTextInput[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.TextCompositionEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.SyncSettings.SyncSettingsDialog::PreventSyncViewsTextBox_TextChanged[2]( [mscorlib]System.Object, [PresentationFramework]System.Windows.Controls.TextChangedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.SyncSettings.SyncSettingsDialog::PreventSyncViewsTextBox_LostFocus[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.SyncSettings.SyncSettingsDialog::TitleBar_MouseLeftButtonDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.MouseButtonEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.SyncSettings.SyncSettingsDialog::CloseButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.SyncSettings.SyncSettingsDialog::Window_KeyDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.KeyEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.SyncSettings.SyncSettingsDialog::ShowSuccessPopup[2]( [mscorlib]System.String, [mscorlib]System.String ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.SyncSettings.SyncSettingsDialog::System.Windows.Markup.IComponentConnector.Connect[2]( [mscorlib]System.Int32, [mscorlib]System.Object ) skipped:  HidePrivateApi option in configuration
@@ -949,6 +958,8 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Views.SyncQueue.SyncQueueDialog::ClearHistory_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.SyncQueue.SyncQueueDialog::Close_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.SyncQueue.SyncQueueDialog::Window_KeyDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.KeyEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.SyncQueue.SyncQueueDialog::TitleBar_MouseLeftButtonDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.MouseButtonEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.SyncQueue.SyncQueueDialog::CloseButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.SyncQueue.SyncQueueDialog::System.Windows.Markup.IComponentConnector.Connect[2]( [mscorlib]System.Int32, [mscorlib]System.Object ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.SyncQueue.SyncQueueDialog::<.ctor>b__2_0[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.SyncQueue.SyncQueueDialog::<.ctor>b__2_2[2]( [mscorlib]System.Object, [mscorlib]System.EventArgs ) skipped:  HidePrivateApi option in configuration
@@ -964,6 +975,8 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Views.Support.ReportIssueDialog::FindLatestLogFile[0]( ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Support.ReportIssueDialog::Input_TextChanged[2]( [mscorlib]System.Object, [PresentationFramework]System.Windows.Controls.TextChangedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Support.ReportIssueDialog::Submit_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Support.ReportIssueDialog::TitleBar_MouseLeftButtonDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.MouseButtonEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Support.ReportIssueDialog::CloseButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Support.ReportIssueDialog::Cancel_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Support.ReportIssueDialog::Window_KeyDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.KeyEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Support.ReportIssueDialog::System.Windows.Markup.IComponentConnector.Connect[2]( [mscorlib]System.Int32, [mscorlib]System.Object ) skipped:  HidePrivateApi option in configuration
@@ -981,6 +994,8 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Views.Support.SupportDialog::Documentation_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Support.SupportDialog::ReportIssue_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Support.SupportDialog::Window_KeyDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.KeyEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Support.SupportDialog::TitleBar_MouseLeftButtonDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.MouseButtonEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Support.SupportDialog::CloseButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Support.SupportDialog::System.Windows.Markup.IComponentConnector.Connect[2]( [mscorlib]System.Int32, [mscorlib]System.Object ) skipped:  HidePrivateApi option in configuration
 }
 
@@ -994,6 +1009,8 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Views.SignalR.SignalRDiagnosticsDialog::TestConnection_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.SignalR.SignalRDiagnosticsDialog::ForceReconnect_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.SignalR.SignalRDiagnosticsDialog::CopyDiagnostics_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.SignalR.SignalRDiagnosticsDialog::TitleBar_MouseLeftButtonDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.MouseButtonEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.SignalR.SignalRDiagnosticsDialog::CloseButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.SignalR.SignalRDiagnosticsDialog::Window_KeyDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.KeyEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.SignalR.SignalRDiagnosticsDialog::Window_Closed[2]( [mscorlib]System.Object, [mscorlib]System.EventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.SignalR.SignalRDiagnosticsDialog::System.Windows.Markup.IComponentConnector.Connect[2]( [mscorlib]System.Int32, [mscorlib]System.Object ) skipped:  HidePrivateApi option in configuration
@@ -1021,6 +1038,8 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Views.Sessions.CrashRegisterDialog::GetSearchedPaths[1]( [mscorlib]System.String ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Sessions.CrashRegisterDialog::UploadAndAnalyzeAsync[4]( [mscorlib]System.String, [PresentationFramework]System.Windows.Controls.Button, [mscorlib]System.Boolean, [mscorlib]System.Threading.CancellationToken ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Sessions.CrashRegisterDialog::Window_KeyDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.KeyEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Sessions.CrashRegisterDialog::TitleBar_MouseLeftButtonDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.MouseButtonEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Sessions.CrashRegisterDialog::CloseButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Sessions.CrashRegisterDialog::TryRenderHtmlToPdfViaEdge[2]( [mscorlib]System.String, [mscorlib]System.String ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Sessions.CrashRegisterDialog::LocateMsEdge[0]( ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Sessions.CrashRegisterDialog::OverrideStatusToCrashed[1]( [mscorlib]System.String ) skipped:  HidePrivateApi option in configuration
@@ -1059,6 +1078,8 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Views.Sessions.SessionInformationDialog::TabOpenDocuments_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Sessions.SessionInformationDialog::SetActiveTab[1]( [mscorlib]System.Int32 ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Sessions.SessionInformationDialog::Refresh_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Sessions.SessionInformationDialog::TitleBar_MouseLeftButtonDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.MouseButtonEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Sessions.SessionInformationDialog::CloseButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Sessions.SessionInformationDialog::Window_KeyDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.KeyEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Sessions.SessionInformationDialog::System.Windows.Markup.IComponentConnector.Connect[2]( [mscorlib]System.Int32, [mscorlib]System.Object ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Sessions.SessionInformationDialog::.cctor[0]( ) skipped:  special name
@@ -1114,6 +1135,8 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Views.Rules.RulesManagementDialog::DataGrid_Drop[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.DragEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Rules.RulesManagementDialog::DataGrid_DragOver[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.DragEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Rules.RulesManagementDialog::FindVisualParent[1]( [WindowsBase]System.Windows.DependencyObject ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Rules.RulesManagementDialog::TitleBar_MouseLeftButtonDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.MouseButtonEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Rules.RulesManagementDialog::CloseButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Rules.RulesManagementDialog::Window_KeyDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.KeyEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Rules.RulesManagementDialog::OnDialogClosed[2]( [mscorlib]System.Object, [mscorlib]System.EventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Rules.RulesManagementDialog::System.Windows.Markup.IComponentConnector.Connect[2]( [mscorlib]System.Int32, [mscorlib]System.Object ) skipped:  HidePrivateApi option in configuration
@@ -1163,6 +1186,8 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Views.Protection.CommandProtectionDialog::EditCommandSearchBox_TextChanged[2]( [mscorlib]System.Object, [PresentationFramework]System.Windows.Controls.TextChangedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Protection.CommandProtectionDialog::EditCommandList_SelectionChanged[2]( [mscorlib]System.Object, [PresentationFramework]System.Windows.Controls.SelectionChangedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Protection.CommandProtectionDialog::DataGrid_SelectionChanged[2]( [mscorlib]System.Object, [PresentationFramework]System.Windows.Controls.SelectionChangedEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Protection.CommandProtectionDialog::TitleBar_MouseLeftButtonDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.MouseButtonEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Protection.CommandProtectionDialog::CloseButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Protection.CommandProtectionDialog::Window_KeyDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.KeyEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Protection.CommandProtectionDialog::RefreshCommandProtectionBindings[0]( ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Protection.CommandProtectionDialog::System.Windows.Markup.IComponentConnector.Connect[2]( [mscorlib]System.Int32, [mscorlib]System.Object ) skipped:  HidePrivateApi option in configuration
@@ -1200,6 +1225,8 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Views.Protection.EventProtectionDialog::EventTypeFilter_SelectionChanged[2]( [mscorlib]System.Object, [PresentationFramework]System.Windows.Controls.SelectionChangedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Protection.EventProtectionDialog::ApplyFilters[0]( ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Protection.EventProtectionDialog::UpdateStatusBar[0]( ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Protection.EventProtectionDialog::TitleBar_MouseLeftButtonDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.MouseButtonEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Protection.EventProtectionDialog::CloseButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Protection.EventProtectionDialog::Window_KeyDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.KeyEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Protection.EventProtectionDialog::System.Windows.Markup.IComponentConnector.Connect[2]( [mscorlib]System.Int32, [mscorlib]System.Object ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Protection.EventProtectionDialog::System.Windows.Markup.IStyleConnector.Connect[2]( [mscorlib]System.Int32, [mscorlib]System.Object ) skipped:  HidePrivateApi option in configuration
@@ -1222,6 +1249,8 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Views.Protection.EventRestrictionDialog::EnterOtp_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Protection.EventRestrictionDialog::AdminOverride_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Protection.EventRestrictionDialog::Cancel_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Protection.EventRestrictionDialog::TitleBar_MouseLeftButtonDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.MouseButtonEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Protection.EventRestrictionDialog::CloseButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Protection.EventRestrictionDialog::System.Windows.Markup.IComponentConnector.Connect[2]( [mscorlib]System.Int32, [mscorlib]System.Object ) skipped:  HidePrivateApi option in configuration
 }
 
@@ -1242,6 +1271,8 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Views.ModelActivities.ModelActivitiesDialog::SendMessage_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.ModelActivities.ModelActivitiesDialog::ChatInput_KeyDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.KeyEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.ModelActivities.ModelActivitiesDialog::Window_KeyDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.KeyEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.ModelActivities.ModelActivitiesDialog::TitleBar_MouseLeftButtonDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.MouseButtonEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.ModelActivities.ModelActivitiesDialog::CloseButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.ModelActivities.ModelActivitiesDialog::OpenChatPanel[2]( [mscorlib]System.String, [mscorlib]System.String ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.ModelActivities.ModelActivitiesDialog::CloseChatPanel[0]( ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.ModelActivities.ModelActivitiesDialog::SendChatMessage[0]( ) skipped:  HidePrivateApi option in configuration
@@ -1317,6 +1348,8 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::InitializeComponent[0]( ) skipped:  external base class or interface
 	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::.ctor[8]( [BIManageRevit]BIManage.Data.SQLite.ModelFileMetricsRepository, [BIManageRevit]BIManage.Infrastructure.Logging.ILogger, [mscorlib]System.String, [mscorlib]System.String, [BIManageRevit]BIManage.Infrastructure.Auth.AuthenticatedHttpClient, [BIManageRevit]BIManage.Infrastructure.Api.MetricsSyncService, [mscorlib]System.String, [mscorlib]System.Boolean ) skipped:  special name
 	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::Window_KeyDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.KeyEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::TitleBar_MouseLeftButtonDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.MouseButtonEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::CloseButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::SkipButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::RunAnalysisButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::LoadDataAsync[0]( ) skipped:  HidePrivateApi option in configuration
@@ -1335,23 +1368,23 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::EstBytes[1]( [mscorlib]System.String ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::System.Windows.Markup.IComponentConnector.Connect[2]( [mscorlib]System.Int32, [mscorlib]System.Object ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::<.ctor>b__14_0[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::<LoadDataAsync>b__18_0[1]( [BIManageRevit]BIManage.Data.SQLite.SyncSaveMetricsRecord ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::<LoadDataAsync>b__18_1[1]( [BIManageRevit]BIManage.Data.SQLite.PeriodicMetricsRecord ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::<LoadDataAsync>b__18_2[1]( [BIManageRevit]BIManage.Data.SQLite.ManualMetricsRecord ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::<FetchStaticModelInfoAsync>b__19_0[1]( [BIManageRevit]BIManage.Data.SQLite.SyncSaveMetricsRecord ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::<FetchStaticModelInfoAsync>b__19_1[1]( [BIManageRevit]BIManage.Data.SQLite.PeriodicMetricsRecord ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::<FetchStaticModelInfoAsync>b__19_2[1]( [BIManageRevit]BIManage.Data.SQLite.ManualMetricsRecord ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::<MergeGoals>g__Has|22_0[1]( [mscorlib]System.Nullable`1<[mscorlib]System.Int64> ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::<MergeGoals>g__HasI|22_1[1]( [mscorlib]System.Nullable`1<[mscorlib]System.Int32> ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::<MergeGoals>g__HasD|22_2[1]( [mscorlib]System.Nullable`1<[mscorlib]System.Double> ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::<GenerateHtml>g__N|29_0[1]( [mscorlib]System.Nullable`1<[mscorlib]System.Int32> ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::<GenerateHtml>g__NR|29_1[2]( [mscorlib]System.Int32, [mscorlib]System.Boolean ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::<GenerateHtml>g__PillCls|29_6[2]( [mscorlib]System.Int32, [mscorlib]System.Int32 ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::<GenerateHtml>g__DotCls|29_7[2]( [mscorlib]System.Int32, [mscorlib]System.Int32 ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::<GenerateHtml>g__BpColor|29_9[1]( [mscorlib]System.Int32 ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::<GenerateHtml>g__CleanupVcol|29_10[2]( [mscorlib]System.Int32, [mscorlib]System.Int32 ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::<GenerateHtml>g__BuildIssueBars|29_11[1]( [mscorlib]System.Int32 ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::<GenerateHtml>g__Tier|29_12[2]( [mscorlib]System.Int32, [mscorlib]System.Int32 ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::<LoadDataAsync>b__20_0[1]( [BIManageRevit]BIManage.Data.SQLite.SyncSaveMetricsRecord ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::<LoadDataAsync>b__20_1[1]( [BIManageRevit]BIManage.Data.SQLite.PeriodicMetricsRecord ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::<LoadDataAsync>b__20_2[1]( [BIManageRevit]BIManage.Data.SQLite.ManualMetricsRecord ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::<FetchStaticModelInfoAsync>b__21_0[1]( [BIManageRevit]BIManage.Data.SQLite.SyncSaveMetricsRecord ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::<FetchStaticModelInfoAsync>b__21_1[1]( [BIManageRevit]BIManage.Data.SQLite.PeriodicMetricsRecord ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::<FetchStaticModelInfoAsync>b__21_2[1]( [BIManageRevit]BIManage.Data.SQLite.ManualMetricsRecord ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::<MergeGoals>g__Has|24_0[1]( [mscorlib]System.Nullable`1<[mscorlib]System.Int64> ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::<MergeGoals>g__HasI|24_1[1]( [mscorlib]System.Nullable`1<[mscorlib]System.Int32> ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::<MergeGoals>g__HasD|24_2[1]( [mscorlib]System.Nullable`1<[mscorlib]System.Double> ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::<GenerateHtml>g__N|31_0[1]( [mscorlib]System.Nullable`1<[mscorlib]System.Int32> ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::<GenerateHtml>g__NR|31_1[2]( [mscorlib]System.Int32, [mscorlib]System.Boolean ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::<GenerateHtml>g__PillCls|31_6[2]( [mscorlib]System.Int32, [mscorlib]System.Int32 ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::<GenerateHtml>g__DotCls|31_7[2]( [mscorlib]System.Int32, [mscorlib]System.Int32 ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::<GenerateHtml>g__BpColor|31_9[1]( [mscorlib]System.Int32 ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::<GenerateHtml>g__CleanupVcol|31_10[2]( [mscorlib]System.Int32, [mscorlib]System.Int32 ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::<GenerateHtml>g__BuildIssueBars|31_11[1]( [mscorlib]System.Int32 ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard::<GenerateHtml>g__Tier|31_12[2]( [mscorlib]System.Int32, [mscorlib]System.Int32 ) skipped:  HidePrivateApi option in configuration
 }
 
 [BIManageRevit]BIManageRevit.BIManage.Views.Developer.RoleSwitchDialog skipped:  KeepPublicApi option in configuration
@@ -1370,6 +1403,8 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Views.Developer.RoleSwitchDialog::AdminButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Developer.RoleSwitchDialog::UserButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Developer.RoleSwitchDialog::Window_KeyDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.KeyEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Developer.RoleSwitchDialog::TitleBar_MouseLeftButtonDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.MouseButtonEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Developer.RoleSwitchDialog::CloseButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Developer.RoleSwitchDialog::System.Windows.Markup.IComponentConnector.Connect[2]( [mscorlib]System.Int32, [mscorlib]System.Object ) skipped:  HidePrivateApi option in configuration
 }
 
@@ -1387,6 +1422,8 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Views.Developer.SelectCommandDialog::OnOkClick[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Developer.SelectCommandDialog::OnCancelClick[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Developer.SelectCommandDialog::Window_KeyDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.KeyEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Developer.SelectCommandDialog::TitleBar_MouseLeftButtonDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.MouseButtonEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Developer.SelectCommandDialog::CloseButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Developer.SelectCommandDialog::System.Windows.Markup.IComponentConnector.Connect[2]( [mscorlib]System.Int32, [mscorlib]System.Object ) skipped:  HidePrivateApi option in configuration
 }
 
@@ -1395,6 +1432,7 @@ Skipped Types:
 
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.BlockedOperationDialog::InitializeComponent[0]( ) skipped:  external base class or interface
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.BlockedOperationDialog::.ctor[0]( ) skipped:  special name
+	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.BlockedOperationDialog::TitleBar_MouseLeftButtonDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.MouseButtonEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.BlockedOperationDialog::CloseButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.BlockedOperationDialog::Window_KeyDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.KeyEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.BlockedOperationDialog::System.Windows.Markup.IComponentConnector.Connect[2]( [mscorlib]System.Int32, [mscorlib]System.Object ) skipped:  HidePrivateApi option in configuration
@@ -1412,6 +1450,8 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.ErrorDialog::.ctor[4]( [mscorlib]System.String, [mscorlib]System.String, [mscorlib]System.String, [mscorlib]System.String ) skipped:  special name
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.ErrorDialog::OkButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.ErrorDialog::Window_KeyDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.KeyEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.ErrorDialog::TitleBar_MouseLeftButtonDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.MouseButtonEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.ErrorDialog::CloseButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.ErrorDialog::System.Windows.Markup.IComponentConnector.Connect[2]( [mscorlib]System.Int32, [mscorlib]System.Object ) skipped:  HidePrivateApi option in configuration
 }
 
@@ -1428,6 +1468,8 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.OtpGeneratedDialog::Cancel_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.OtpGeneratedDialog::CopyCode_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.OtpGeneratedDialog::Window_KeyDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.KeyEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.OtpGeneratedDialog::TitleBar_MouseLeftButtonDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.MouseButtonEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.OtpGeneratedDialog::CloseButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.OtpGeneratedDialog::System.Windows.Markup.IComponentConnector.Connect[2]( [mscorlib]System.Int32, [mscorlib]System.Object ) skipped:  HidePrivateApi option in configuration
 }
 
@@ -1444,6 +1486,7 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.OtpGenerateDialog::ExtractErrorMessage[2]( [mscorlib]System.String, [mscorlib]System.Int32 ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.OtpGenerateDialog::UpdateExpiryText[0]( ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.OtpGenerateDialog::CopyCode_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.OtpGenerateDialog::TitleBar_MouseLeftButtonDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.MouseButtonEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.OtpGenerateDialog::Close_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.OtpGenerateDialog::ShowError[1]( [mscorlib]System.String ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.OtpGenerateDialog::Window_KeyDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.KeyEventArgs ) skipped:  HidePrivateApi option in configuration
@@ -1479,6 +1522,8 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinnedElementAlertDialog::.ctor[0]( ) skipped:  special name
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinnedElementAlertDialog::OkButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinnedElementAlertDialog::Window_KeyDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.KeyEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinnedElementAlertDialog::TitleBar_MouseLeftButtonDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.MouseButtonEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinnedElementAlertDialog::CloseButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinnedElementAlertDialog::System.Windows.Markup.IComponentConnector.Connect[2]( [mscorlib]System.Int32, [mscorlib]System.Object ) skipped:  HidePrivateApi option in configuration
 }
 
@@ -1489,6 +1534,8 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionDialog::get_IsProtectedPin[0]( ) skipped:  skipping properties
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionDialog::set_IsProtectedPin[1]( [mscorlib]System.Boolean ) skipped:  skipping properties
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionDialog::.ctor[0]( ) skipped:  special name
+	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionDialog::TitleBar_MouseLeftButtonDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.MouseButtonEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionDialog::CloseButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionDialog::NormalPinButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionDialog::ProtectedPinButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionDialog::Window_KeyDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.KeyEventArgs ) skipped:  HidePrivateApi option in configuration
@@ -1501,6 +1548,8 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog::InitializeComponent[0]( ) skipped:  external base class or interface
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog::.ctor[1]( [mscorlib]System.Collections.Generic.List`1<[BIManageRevit]BIManageRevit.Commands.RibbonCommands.ProtectedElementDetails> ) skipped:  special name
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog::.ctor[2]( [mscorlib]System.Collections.Generic.List`1<[BIManageRevit]BIManageRevit.Commands.RibbonCommands.ProtectedElementDetails>, [mscorlib]System.Func`1<[mscorlib]System.Threading.Tasks.Task`1<[mscorlib]System.Collections.Generic.List`1<[BIManageRevit]BIManageRevit.Commands.RibbonCommands.ProtectedElementDetails>>> ) skipped:  special name
+	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog::TitleBar_MouseLeftButtonDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.MouseButtonEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog::CloseButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog::OnDialogActivated[2]( [mscorlib]System.Object, [mscorlib]System.EventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog::Refresh_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog::ReloadFromSourceAsync[0]( ) skipped:  HidePrivateApi option in configuration
@@ -1510,8 +1559,8 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog::Close_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog::Window_KeyDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.KeyEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog::System.Windows.Markup.IComponentConnector.Connect[2]( [mscorlib]System.Int32, [mscorlib]System.Object ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog::<LoadData>b__8_2[1]( [System.Core]System.Linq.IGrouping`2<[mscorlib]System.String,[BIManageRevit]BIManageRevit.Commands.RibbonCommands.ProtectedElementDetails> ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog::<LoadData>b__8_4[1]( [BIManageRevit]BIManageRevit.Commands.RibbonCommands.ProtectedElementDetails ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog::<LoadData>b__10_2[1]( [System.Core]System.Linq.IGrouping`2<[mscorlib]System.String,[BIManageRevit]BIManageRevit.Commands.RibbonCommands.ProtectedElementDetails> ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog::<LoadData>b__10_4[1]( [BIManageRevit]BIManageRevit.Commands.RibbonCommands.ProtectedElementDetails ) skipped:  HidePrivateApi option in configuration
 }
 
 [BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinSelectionDialog skipped:  KeepPublicApi option in configuration
@@ -1524,6 +1573,8 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinSelectionDialog::NormalPinButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinSelectionDialog::ProtectedPinButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinSelectionDialog::Window_KeyDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.KeyEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinSelectionDialog::TitleBar_MouseLeftButtonDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.MouseButtonEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinSelectionDialog::CloseButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinSelectionDialog::System.Windows.Markup.IComponentConnector.Connect[2]( [mscorlib]System.Int32, [mscorlib]System.Object ) skipped:  HidePrivateApi option in configuration
 }
 
@@ -1534,6 +1585,8 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.ProtectionAppliedDialog::.ctor[0]( ) skipped:  special name
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.ProtectionAppliedDialog::OkButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.ProtectionAppliedDialog::Window_KeyDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.KeyEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.ProtectionAppliedDialog::TitleBar_MouseLeftButtonDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.MouseButtonEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.ProtectionAppliedDialog::CloseButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.ProtectionAppliedDialog::System.Windows.Markup.IComponentConnector.Connect[2]( [mscorlib]System.Int32, [mscorlib]System.Object ) skipped:  HidePrivateApi option in configuration
 }
 
@@ -1545,6 +1598,8 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.ProtectionWarningDialog::YesButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.ProtectionWarningDialog::NoButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.ProtectionWarningDialog::Window_KeyDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.KeyEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.ProtectionWarningDialog::TitleBar_MouseLeftButtonDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.MouseButtonEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.ProtectionWarningDialog::CloseButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.ProtectionWarningDialog::System.Windows.Markup.IComponentConnector.Connect[2]( [mscorlib]System.Int32, [mscorlib]System.Object ) skipped:  HidePrivateApi option in configuration
 }
 
@@ -1565,6 +1620,8 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.UnpinAuthorizationDialog::EnterOtpButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.UnpinAuthorizationDialog::CancelButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.UnpinAuthorizationDialog::Window_KeyDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.KeyEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.UnpinAuthorizationDialog::TitleBar_MouseLeftButtonDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.MouseButtonEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.UnpinAuthorizationDialog::CloseButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.UnpinAuthorizationDialog::System.Windows.Markup.IComponentConnector.Connect[2]( [mscorlib]System.Int32, [mscorlib]System.Object ) skipped:  HidePrivateApi option in configuration
 }
 
@@ -1578,6 +1635,8 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.UnpinSuccessDialog::.ctor[4]( [mscorlib]System.Int32, [mscorlib]System.String, [mscorlib]System.String, [mscorlib]System.String ) skipped:  special name
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.UnpinSuccessDialog::OkButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.UnpinSuccessDialog::Window_KeyDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.KeyEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.UnpinSuccessDialog::TitleBar_MouseLeftButtonDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.MouseButtonEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.UnpinSuccessDialog::CloseButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.UnpinSuccessDialog::System.Windows.Markup.IComponentConnector.Connect[2]( [mscorlib]System.Int32, [mscorlib]System.Object ) skipped:  HidePrivateApi option in configuration
 }
 
@@ -1591,6 +1650,8 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.UnpinWarningDialog::OkButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.UnpinWarningDialog::CancelButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.UnpinWarningDialog::Window_KeyDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.KeyEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.UnpinWarningDialog::TitleBar_MouseLeftButtonDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.MouseButtonEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.UnpinWarningDialog::CloseButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.UnpinWarningDialog::System.Windows.Markup.IComponentConnector.Connect[2]( [mscorlib]System.Int32, [mscorlib]System.Object ) skipped:  HidePrivateApi option in configuration
 }
 
@@ -1609,6 +1670,8 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Views.Auth.DeviceStatusDialog::ReenterLicense_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Auth.DeviceStatusDialog::Close_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Auth.DeviceStatusDialog::Window_KeyDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.KeyEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Auth.DeviceStatusDialog::TitleBar_MouseLeftButtonDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.MouseButtonEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Auth.DeviceStatusDialog::CloseButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Auth.DeviceStatusDialog::GetLogger[0]( ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Auth.DeviceStatusDialog::System.Windows.Markup.IComponentConnector.Connect[2]( [mscorlib]System.Int32, [mscorlib]System.Object ) skipped:  HidePrivateApi option in configuration
 }
@@ -1639,6 +1702,8 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Views.Auth.LicenseKeyDialog::Activate_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Auth.LicenseKeyDialog::Cancel_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Auth.LicenseKeyDialog::Window_KeyDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.KeyEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Auth.LicenseKeyDialog::TitleBar_MouseLeftButtonDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.MouseButtonEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Auth.LicenseKeyDialog::CloseButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Views.Auth.LicenseKeyDialog::System.Windows.Markup.IComponentConnector.Connect[2]( [mscorlib]System.Int32, [mscorlib]System.Object ) skipped:  HidePrivateApi option in configuration
 }
 
@@ -1754,7 +1819,10 @@ Skipped Types:
 	[BIManageRevit]BIManage.Views.Protection.GuideDialog::OnCancelClick[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManage.Views.Protection.GuideDialog::CommentTextBox_KeyDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.KeyEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManage.Views.Protection.GuideDialog::Window_KeyDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.KeyEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManage.Views.Protection.GuideDialog::TitleBar_MouseLeftButtonDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.MouseButtonEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManage.Views.Protection.GuideDialog::CloseButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManage.Views.Protection.GuideDialog::SetProtectMode[2]( [BIManageRevit]BIManage.ViewModels.Protection.ProtectionType, [mscorlib]System.String ) skipped:  KeepPublicApi option in configuration
+	[BIManageRevit]BIManage.Views.Protection.GuideDialog::SetNotifyMode[2]( [BIManageRevit]BIManage.ViewModels.Protection.ProtectionType, [mscorlib]System.String ) skipped:  KeepPublicApi option in configuration
 	[BIManageRevit]BIManage.Views.Protection.GuideDialog::SetAssistMode[2]( [BIManageRevit]BIManage.ViewModels.Protection.ProtectionType, [mscorlib]System.String ) skipped:  KeepPublicApi option in configuration
 	[BIManageRevit]BIManage.Views.Protection.GuideDialog::OnEnterOtpClick[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManage.Views.Protection.GuideDialog::System.Windows.Markup.IComponentConnector.Connect[2]( [mscorlib]System.Int32, [mscorlib]System.Object ) skipped:  HidePrivateApi option in configuration
@@ -1772,6 +1840,8 @@ Skipped Types:
 	[BIManageRevit]BIManage.Views.Protection.PasswordConfigDialog::OnSaveClick[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManage.Views.Protection.PasswordConfigDialog::OnCancelClick[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManage.Views.Protection.PasswordConfigDialog::Window_KeyDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.KeyEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManage.Views.Protection.PasswordConfigDialog::TitleBar_MouseLeftButtonDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.MouseButtonEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManage.Views.Protection.PasswordConfigDialog::CloseButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManage.Views.Protection.PasswordConfigDialog::System.Windows.Markup.IComponentConnector.Connect[2]( [mscorlib]System.Int32, [mscorlib]System.Object ) skipped:  HidePrivateApi option in configuration
 }
 
@@ -1788,6 +1858,8 @@ Skipped Types:
 	[BIManageRevit]BIManage.Views.Protection.PreventDialog::OnEnterOtpClick[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManage.Views.Protection.PreventDialog::OnCancelClick[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManage.Views.Protection.PreventDialog::Window_KeyDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.KeyEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManage.Views.Protection.PreventDialog::TitleBar_MouseLeftButtonDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.MouseButtonEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManage.Views.Protection.PreventDialog::CloseButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManage.Views.Protection.PreventDialog::System.Windows.Markup.IComponentConnector.Connect[2]( [mscorlib]System.Int32, [mscorlib]System.Object ) skipped:  HidePrivateApi option in configuration
 }
 
@@ -1797,6 +1869,8 @@ Skipped Types:
 	[BIManageRevit]BIManage.Views.Protection.ProtectionDialogBase::InitializeComponent[0]( ) skipped:  external base class or interface
 	[BIManageRevit]BIManage.Views.Protection.ProtectionDialogBase::.ctor[0]( ) skipped:  special name
 	[BIManageRevit]BIManage.Views.Protection.ProtectionDialogBase::SetViewModel[1]( [BIManageRevit]BIManage.ViewModels.Protection.ProtectionDialogBaseViewModel ) skipped:  KeepPublicApi option in configuration
+	[BIManageRevit]BIManage.Views.Protection.ProtectionDialogBase::TitleBar_MouseLeftButtonDown[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.Input.MouseButtonEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManage.Views.Protection.ProtectionDialogBase::CloseButton_Click[2]( [mscorlib]System.Object, [PresentationCore]System.Windows.RoutedEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManage.Views.Protection.ProtectionDialogBase::System.Windows.Markup.IComponentConnector.Connect[2]( [mscorlib]System.Int32, [mscorlib]System.Object ) skipped:  HidePrivateApi option in configuration
 }
 
@@ -3465,19 +3539,19 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application::CreatePushButton[9]( [RevitAPIUI]Autodesk.Revit.UI.RibbonPanel, [mscorlib]System.String, [mscorlib]System.String, [mscorlib]System.Type, [mscorlib]System.String, [mscorlib]System.String, [mscorlib]System.String, [mscorlib]System.String, [mscorlib]System.Nullable`1<[BIManageRevit]BIManage.Core.Identity.UserRole> ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application::CreatePushButton[10]( [RevitAPIUI]Autodesk.Revit.UI.RibbonPanel, [mscorlib]System.String, [mscorlib]System.String, [mscorlib]System.String, [mscorlib]System.String, [mscorlib]System.String, [mscorlib]System.String, [mscorlib]System.String, [mscorlib]System.String, [mscorlib]System.Nullable`1<[BIManageRevit]BIManage.Core.Identity.UserRole> ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application::.ctor[0]( ) skipped:  special name
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application::<OnStartup>b__43_0[0]( ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application::<OnStartup>b__43_1[0]( ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application::<OnStartup>b__43_2[0]( ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application::<OnStartup>b__43_3[0]( ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application::<OnApplicationInitialized>b__53_4[0]( ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application::<OnApplicationInitialized>b__53_5[0]( ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application::<OnApplicationInitialized>b__53_6[0]( ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application::<OnApplicationInitialized>b__53_0[0]( ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application::<OnApplicationInitialized>b__53_1[0]( ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application::<OnApplicationInitialized>b__53_7[0]( ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application::<OnApplicationInitialized>b__53_2[0]( ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application::<OnApplicationInitialized>b__53_3[0]( ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application::<StartPeriodicMetricsService>b__85_0[0]( ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application::<OnStartup>b__44_0[0]( ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application::<OnStartup>b__44_1[0]( ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application::<OnStartup>b__44_2[0]( ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application::<OnStartup>b__44_3[0]( ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application::<OnApplicationInitialized>b__54_4[0]( ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application::<OnApplicationInitialized>b__54_5[0]( ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application::<OnApplicationInitialized>b__54_6[0]( ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application::<OnApplicationInitialized>b__54_0[0]( ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application::<OnApplicationInitialized>b__54_1[0]( ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application::<OnApplicationInitialized>b__54_7[0]( ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application::<OnApplicationInitialized>b__54_2[0]( ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application::<OnApplicationInitialized>b__54_3[0]( ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application::<StartPeriodicMetricsService>b__86_0[0]( ) skipped:  HidePrivateApi option in configuration
 }
 
 [BIManageRevit]BIManageRevit.Commands.StartupCommand skipped:  KeepPublicApi option in configuration
@@ -4109,6 +4183,7 @@ Skipped Types:
 	[BIManageRevit]BIManage.ViewModels.Protection.GuideDialogViewModel::Initialize[2]( [BIManageRevit]BIManage.Core.Rules.Models.RuleEvaluationResult, [mscorlib]System.Collections.Generic.ICollection`1<[RevitAPI]Autodesk.Revit.DB.ElementId> ) skipped:  KeepPublicApi option in configuration
 	[BIManageRevit]BIManage.ViewModels.Protection.GuideDialogViewModel::get_DialogMode[0]( ) skipped:  skipping properties
 	[BIManageRevit]BIManage.ViewModels.Protection.GuideDialogViewModel::set_DialogMode[1]( [BIManageRevit]BIManage.ViewModels.Protection.ProtectionDialogMode ) skipped:  skipping properties
+	[BIManageRevit]BIManage.ViewModels.Protection.GuideDialogViewModel::get_MascotImageSource[0]( ) skipped:  skipping properties
 	[BIManageRevit]BIManage.ViewModels.Protection.GuideDialogViewModel::get_ProtectionTypeValue[0]( ) skipped:  skipping properties
 	[BIManageRevit]BIManage.ViewModels.Protection.GuideDialogViewModel::set_ProtectionTypeValue[1]( [BIManageRevit]BIManage.ViewModels.Protection.ProtectionType ) skipped:  skipping properties
 	[BIManageRevit]BIManage.ViewModels.Protection.GuideDialogViewModel::get_ContentTitle[0]( ) skipped:  skipping properties
@@ -5028,7 +5103,7 @@ Skipped Types:
 	[BIManageRevit]BIManage.Infrastructure.Auth.AuthApiService::.ctor[3]( [mscorlib]System.String, [BIManageRevit]BIManage.Infrastructure.Logging.ILogger, [BIManageRevit]BIManage.Infrastructure.Network.SslValidationPolicy ) skipped:  special name
 	[BIManageRevit]BIManage.Infrastructure.Auth.AuthApiService::LoginAsync[2]( [mscorlib]System.String, [mscorlib]System.String ) skipped:  KeepPublicApi option in configuration
 	[BIManageRevit]BIManage.Infrastructure.Auth.AuthApiService::SelectCompanyAsync[2]( [mscorlib]System.String, [mscorlib]System.String ) skipped:  KeepPublicApi option in configuration
-	[BIManageRevit]BIManage.Infrastructure.Auth.AuthApiService::RegisterDeviceAsync[4]( [mscorlib]System.String, [mscorlib]System.String, [mscorlib]System.String, [mscorlib]System.String ) skipped:  KeepPublicApi option in configuration
+	[BIManageRevit]BIManage.Infrastructure.Auth.AuthApiService::RegisterDeviceAsync[2]( [mscorlib]System.String, [mscorlib]System.String ) skipped:  KeepPublicApi option in configuration
 	[BIManageRevit]BIManage.Infrastructure.Auth.AuthApiService::ValidateDeviceAsync[1]( [mscorlib]System.String ) skipped:  KeepPublicApi option in configuration
 	[BIManageRevit]BIManage.Infrastructure.Auth.AuthApiService::RefreshTokenAsync[1]( [mscorlib]System.String ) skipped:  KeepPublicApi option in configuration
 	[BIManageRevit]BIManage.Infrastructure.Auth.AuthApiService::AdminRefreshTokenAsync[1]( [mscorlib]System.String ) skipped:  KeepPublicApi option in configuration
@@ -5197,7 +5272,7 @@ Skipped Types:
 	[BIManageRevit]BIManage.Data.SQLite.SessionRepository::DetectInactiveSessionsAsync[1]( [mscorlib]System.Int32 ) skipped:  KeepPublicApi option in configuration
 	[BIManageRevit]BIManage.Data.SQLite.SessionRepository::StartSessionAsync[7]( [mscorlib]System.String, [mscorlib]System.String, [mscorlib]System.String, [mscorlib]System.String, [mscorlib]System.String, [mscorlib]System.String, [mscorlib]System.String ) skipped:  KeepPublicApi option in configuration
 	[BIManageRevit]BIManage.Data.SQLite.SessionRepository::EndSessionAsync[2]( [mscorlib]System.String, [mscorlib]System.Boolean ) skipped:  KeepPublicApi option in configuration
-	[BIManageRevit]BIManage.Data.SQLite.SessionRepository::UpdateSessionReadyAsync[6]( [mscorlib]System.String, [mscorlib]System.String, [mscorlib]System.Nullable`1<[mscorlib]System.Int32>, [mscorlib]System.String, [mscorlib]System.Nullable`1<[mscorlib]System.Int32>, [mscorlib]System.Nullable`1<[mscorlib]System.Int32> ) skipped:  KeepPublicApi option in configuration
+	[BIManageRevit]BIManage.Data.SQLite.SessionRepository::UpdateSessionReadyAsync[7]( [mscorlib]System.String, [mscorlib]System.String, [mscorlib]System.Nullable`1<[mscorlib]System.Int32>, [mscorlib]System.String, [mscorlib]System.Nullable`1<[mscorlib]System.Int32>, [mscorlib]System.Nullable`1<[mscorlib]System.Int32>, [mscorlib]System.String ) skipped:  KeepPublicApi option in configuration
 	[BIManageRevit]BIManage.Data.SQLite.SessionRepository::GetSessionStartTimeAsync[2]( [System.Data.SQLite]System.Data.SQLite.SQLiteConnection, [mscorlib]System.String ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManage.Data.SQLite.SessionRepository::UpdateSessionVersionsAsync[3]( [mscorlib]System.String, [mscorlib]System.String, [mscorlib]System.String ) skipped:  KeepPublicApi option in configuration
 	[BIManageRevit]BIManage.Data.SQLite.SessionRepository::RecordHeartbeatAsync[6]( [mscorlib]System.String, [mscorlib]System.String, [mscorlib]System.Nullable`1<[mscorlib]System.Double>, [mscorlib]System.Nullable`1<[mscorlib]System.Double>, [mscorlib]System.Nullable`1<[mscorlib]System.Double>, [mscorlib]System.Nullable`1<[mscorlib]System.Double> ) skipped:  KeepPublicApi option in configuration
@@ -5231,6 +5306,16 @@ Skipped Types:
 	[BIManageRevit]BIManage.Data.SQLite.SessionRepository::GetCurrentSessionJournalInfo[0]( ) skipped:  KeepPublicApi option in configuration
 	[BIManageRevit]BIManage.Data.SQLite.SessionRepository::ShutdownAsync[1]( [mscorlib]System.Boolean ) skipped:  KeepPublicApi option in configuration
 	[BIManageRevit]BIManage.Data.SQLite.SessionRepository::.cctor[0]( ) skipped:  special name
+}
+
+[BIManageRevit]BIManage.Data.SQLite.ZeIdentityRepository skipped:  KeepPublicApi option in configuration
+{
+
+	[BIManageRevit]BIManage.Data.SQLite.ZeIdentityRepository::Dispose[0]( ) skipped:  external base class or interface
+	[BIManageRevit]BIManage.Data.SQLite.ZeIdentityRepository::.ctor[2]( [mscorlib]System.String, [BIManageRevit]BIManage.Infrastructure.Logging.ILogger ) skipped:  special name
+	[BIManageRevit]BIManage.Data.SQLite.ZeIdentityRepository::Load[0]( ) skipped:  KeepPublicApi option in configuration
+	[BIManageRevit]BIManage.Data.SQLite.ZeIdentityRepository::SaveIdentity[4]( [mscorlib]System.String, [mscorlib]System.String, [mscorlib]System.String, [mscorlib]System.String ) skipped:  KeepPublicApi option in configuration
+	[BIManageRevit]BIManage.Data.SQLite.ZeIdentityRepository::SaveZeUserId[1]( [mscorlib]System.String ) skipped:  KeepPublicApi option in configuration
 }
 
 [BIManageRevit]BIManage.Data.Caching.CacheCleanupPolicy skipped:  KeepPublicApi option in configuration
@@ -7580,9 +7665,14 @@ Skipped Types:
 	[BIManageRevit]BIManage.Infrastructure.Diagnostics.CrashGuard::OnUnobservedTaskException[2]( [mscorlib]System.Object, [mscorlib]System.Threading.Tasks.UnobservedTaskExceptionEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManage.Infrastructure.Diagnostics.CrashGuard::OnDispatcherUnhandledException[2]( [mscorlib]System.Object, [WindowsBase]System.Windows.Threading.DispatcherUnhandledExceptionEventArgs ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManage.Infrastructure.Diagnostics.CrashGuard::Capture[4]( [mscorlib]System.String, [mscorlib]System.Exception, [mscorlib]System.Boolean, [mscorlib]System.Boolean ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManage.Infrastructure.Diagnostics.CrashGuard::ShowRecoveryDialogSafe[2]( [mscorlib]System.Exception, [mscorlib]System.String ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManage.Infrastructure.Diagnostics.CrashGuard::OpenReportIssueDialog[3]( [mscorlib]System.Exception, [mscorlib]System.String, [mscorlib]System.IntPtr ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManage.Infrastructure.Diagnostics.CrashGuard::BuildIssueDescription[2]( [mscorlib]System.Exception, [mscorlib]System.String ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManage.Infrastructure.Diagnostics.CrashGuard::NormalizeFault[1]( [mscorlib]System.Exception ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManage.Infrastructure.Diagnostics.CrashGuard::LooksLikeZeManageFault[1]( [mscorlib]System.Collections.Generic.IReadOnlyList`1<[mscorlib]System.Exception> ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManage.Infrastructure.Diagnostics.CrashGuard::HasMarker[1]( [mscorlib]System.String ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManage.Infrastructure.Diagnostics.CrashGuard::DescribeOriginFrame[2]( [mscorlib]System.Exception, [mscorlib]System.Collections.Generic.IReadOnlyList`1<[mscorlib]System.Exception> ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManage.Infrastructure.Diagnostics.CrashGuard::BuildFlattenedLog[1]( [mscorlib]System.Collections.Generic.IReadOnlyList`1<[mscorlib]System.Exception> ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManage.Infrastructure.Diagnostics.CrashGuard::ShowRecoveryDialogSafe[5]( [mscorlib]System.Exception, [mscorlib]System.String, [mscorlib]System.Collections.Generic.IReadOnlyList`1<[mscorlib]System.Exception>, [mscorlib]System.Boolean, [mscorlib]System.Boolean ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManage.Infrastructure.Diagnostics.CrashGuard::OpenReportIssueDialog[4]( [mscorlib]System.Exception, [mscorlib]System.String, [mscorlib]System.IntPtr, [mscorlib]System.Collections.Generic.IReadOnlyList`1<[mscorlib]System.Exception> ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManage.Infrastructure.Diagnostics.CrashGuard::BuildIssueDescription[3]( [mscorlib]System.Exception, [mscorlib]System.String, [mscorlib]System.Collections.Generic.IReadOnlyList`1<[mscorlib]System.Exception> ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManage.Infrastructure.Diagnostics.CrashGuard::.cctor[0]( ) skipped:  special name
 }
 
@@ -7619,6 +7709,8 @@ Skipped Types:
 	[BIManageRevit]BIManage.Infrastructure.Crash.JournalAnalyzerClient::UploadAndAnalyzeWithJobIdAsync[3]( [mscorlib]System.String, [mscorlib]System.IProgress`1<[mscorlib]System.Int64>, [mscorlib]System.Threading.CancellationToken ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManage.Infrastructure.Crash.JournalAnalyzerClient::DownloadPdfForAnalysisAsync[3]( [mscorlib]System.String, [mscorlib]System.String, [mscorlib]System.Threading.CancellationToken ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManage.Infrastructure.Crash.JournalAnalyzerClient::WaitForAnalysisAsync[2]( [mscorlib]System.String, [mscorlib]System.Threading.CancellationToken ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManage.Infrastructure.Crash.JournalAnalyzerClient::UploadDirectAnalysisAsync[4]( [mscorlib]System.String, [mscorlib]System.String, [mscorlib]System.IProgress`1<[mscorlib]System.Int64>, [mscorlib]System.Threading.CancellationToken ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManage.Infrastructure.Crash.JournalAnalyzerClient::Truncate[2]( [mscorlib]System.String, [mscorlib]System.Int32 ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManage.Infrastructure.Crash.JournalAnalyzerClient::UploadToSasAsync[4]( [mscorlib]System.String, [mscorlib]System.String, [mscorlib]System.IProgress`1<[mscorlib]System.Int64>, [mscorlib]System.Threading.CancellationToken ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManage.Infrastructure.Crash.JournalAnalyzerClient::PrepareJournalForUpload[1]( [mscorlib]System.String ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManage.Infrastructure.Crash.JournalAnalyzerClient::PostJsonAsync[3]( [mscorlib]System.String, [mscorlib]System.Object, [mscorlib]System.Threading.CancellationToken ) skipped:  HidePrivateApi option in configuration
@@ -7731,10 +7823,12 @@ Skipped Types:
 	[BIManageRevit]BIManage.Infrastructure.Auth.Models.RegisterDeviceRequest::set_LicenseKey[1]( [mscorlib]System.String ) skipped:  skipping properties
 	[BIManageRevit]BIManage.Infrastructure.Auth.Models.RegisterDeviceRequest::get_MachineId[0]( ) skipped:  skipping properties
 	[BIManageRevit]BIManage.Infrastructure.Auth.Models.RegisterDeviceRequest::set_MachineId[1]( [mscorlib]System.String ) skipped:  skipping properties
-	[BIManageRevit]BIManage.Infrastructure.Auth.Models.RegisterDeviceRequest::get_ComputerName[0]( ) skipped:  skipping properties
-	[BIManageRevit]BIManage.Infrastructure.Auth.Models.RegisterDeviceRequest::set_ComputerName[1]( [mscorlib]System.String ) skipped:  skipping properties
-	[BIManageRevit]BIManage.Infrastructure.Auth.Models.RegisterDeviceRequest::get_ComputerUserName[0]( ) skipped:  skipping properties
-	[BIManageRevit]BIManage.Infrastructure.Auth.Models.RegisterDeviceRequest::set_ComputerUserName[1]( [mscorlib]System.String ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Infrastructure.Auth.Models.RegisterDeviceRequest::get_MachineName[0]( ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Infrastructure.Auth.Models.RegisterDeviceRequest::set_MachineName[1]( [mscorlib]System.String ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Infrastructure.Auth.Models.RegisterDeviceRequest::get_Sid[0]( ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Infrastructure.Auth.Models.RegisterDeviceRequest::set_Sid[1]( [mscorlib]System.String ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Infrastructure.Auth.Models.RegisterDeviceRequest::get_OsVersion[0]( ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Infrastructure.Auth.Models.RegisterDeviceRequest::set_OsVersion[1]( [mscorlib]System.String ) skipped:  skipping properties
 	[BIManageRevit]BIManage.Infrastructure.Auth.Models.RegisterDeviceRequest::.ctor[0]( ) skipped:  special name
 }
 
@@ -9489,6 +9583,8 @@ Skipped Types:
 	[BIManageRevit]BIManage.Infrastructure.Api.SessionSyncService::ReportUnmonitoredUsersAsync[1]( [mscorlib]System.Collections.Generic.List`1<[BIManageRevit]BIManage.Infrastructure.Api.UnmonitoredUserReport> ) skipped:  KeepPublicApi option in configuration
 	[BIManageRevit]BIManage.Infrastructure.Api.SessionSyncService::TryQueueUnmonitoredUserAsync[3]( [mscorlib]System.String, [BIManageRevit]BIManage.Infrastructure.Api.UnmonitoredUserReport, [mscorlib]System.String ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManage.Infrastructure.Api.SessionSyncService::BuildExceptionSummary[1]( [mscorlib]System.Exception ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManage.Infrastructure.Api.SessionSyncService::GetCompanySettingsAsync[0]( ) skipped:  KeepPublicApi option in configuration
+	[BIManageRevit]BIManage.Infrastructure.Api.SessionSyncService::SendIdleTimeViaSignalRAsync[2]( [mscorlib]System.String, [mscorlib]System.Int32 ) skipped:  KeepPublicApi option in configuration
 }
 
 [BIManageRevit]BIManage.Infrastructure.Api.SessionApiRequest skipped:  KeepPublicApi option in configuration
@@ -9498,6 +9594,8 @@ Skipped Types:
 	[BIManageRevit]BIManage.Infrastructure.Api.SessionApiRequest::set_SessionId[1]( [mscorlib]System.String ) skipped:  skipping properties
 	[BIManageRevit]BIManage.Infrastructure.Api.SessionApiRequest::get_MachineId[0]( ) skipped:  skipping properties
 	[BIManageRevit]BIManage.Infrastructure.Api.SessionApiRequest::set_MachineId[1]( [mscorlib]System.String ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Infrastructure.Api.SessionApiRequest::get_Sid[0]( ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Infrastructure.Api.SessionApiRequest::set_Sid[1]( [mscorlib]System.String ) skipped:  skipping properties
 	[BIManageRevit]BIManage.Infrastructure.Api.SessionApiRequest::get_ProcessId[0]( ) skipped:  skipping properties
 	[BIManageRevit]BIManage.Infrastructure.Api.SessionApiRequest::set_ProcessId[1]( [mscorlib]System.Nullable`1<[mscorlib]System.Int32> ) skipped:  skipping properties
 	[BIManageRevit]BIManage.Infrastructure.Api.SessionApiRequest::get_StartedAt[0]( ) skipped:  skipping properties
@@ -9524,6 +9622,8 @@ Skipped Types:
 	[BIManageRevit]BIManage.Infrastructure.Api.SessionApiRequest::set_AutodeskAddins[1]( [mscorlib]System.Nullable`1<[mscorlib]System.Int32> ) skipped:  skipping properties
 	[BIManageRevit]BIManage.Infrastructure.Api.SessionApiRequest::get_ExternalAddins[0]( ) skipped:  skipping properties
 	[BIManageRevit]BIManage.Infrastructure.Api.SessionApiRequest::set_ExternalAddins[1]( [mscorlib]System.Nullable`1<[mscorlib]System.Int32> ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Infrastructure.Api.SessionApiRequest::get_ExternalAddinNames[0]( ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Infrastructure.Api.SessionApiRequest::set_ExternalAddinNames[1]( [mscorlib]System.String ) skipped:  skipping properties
 	[BIManageRevit]BIManage.Infrastructure.Api.SessionApiRequest::get_LoadedPluginCount[0]( ) skipped:  skipping properties
 	[BIManageRevit]BIManage.Infrastructure.Api.SessionApiRequest::set_LoadedPluginCount[1]( [mscorlib]System.Nullable`1<[mscorlib]System.Int32> ) skipped:  skipping properties
 	[BIManageRevit]BIManage.Infrastructure.Api.SessionApiRequest::get_JournalFileName[0]( ) skipped:  skipping properties
@@ -9604,6 +9704,38 @@ Skipped Types:
 	[BIManageRevit]BIManage.Infrastructure.Api.UnmonitoredUserReport::get_ModifiedBy[0]( ) skipped:  skipping properties
 	[BIManageRevit]BIManage.Infrastructure.Api.UnmonitoredUserReport::set_ModifiedBy[1]( [mscorlib]System.String ) skipped:  skipping properties
 	[BIManageRevit]BIManage.Infrastructure.Api.UnmonitoredUserReport::.ctor[0]( ) skipped:  special name
+}
+
+[BIManageRevit]BIManage.Infrastructure.Api.CompanySettingsData skipped:  KeepPublicApi option in configuration
+{
+
+	[BIManageRevit]BIManage.Infrastructure.Api.CompanySettingsData::get_IsScreenshotEnabled[0]( ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Infrastructure.Api.CompanySettingsData::set_IsScreenshotEnabled[1]( [mscorlib]System.Boolean ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Infrastructure.Api.CompanySettingsData::get_ScreenshotIntervalMinutes[0]( ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Infrastructure.Api.CompanySettingsData::set_ScreenshotIntervalMinutes[1]( [mscorlib]System.Int32 ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Infrastructure.Api.CompanySettingsData::get_ScreenshotStartTime[0]( ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Infrastructure.Api.CompanySettingsData::set_ScreenshotStartTime[1]( [mscorlib]System.String ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Infrastructure.Api.CompanySettingsData::get_ScreenshotEndTime[0]( ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Infrastructure.Api.CompanySettingsData::set_ScreenshotEndTime[1]( [mscorlib]System.String ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Infrastructure.Api.CompanySettingsData::get_ScreenshotMonday[0]( ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Infrastructure.Api.CompanySettingsData::set_ScreenshotMonday[1]( [mscorlib]System.Boolean ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Infrastructure.Api.CompanySettingsData::get_ScreenshotTuesday[0]( ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Infrastructure.Api.CompanySettingsData::set_ScreenshotTuesday[1]( [mscorlib]System.Boolean ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Infrastructure.Api.CompanySettingsData::get_ScreenshotWednesday[0]( ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Infrastructure.Api.CompanySettingsData::set_ScreenshotWednesday[1]( [mscorlib]System.Boolean ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Infrastructure.Api.CompanySettingsData::get_ScreenshotThursday[0]( ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Infrastructure.Api.CompanySettingsData::set_ScreenshotThursday[1]( [mscorlib]System.Boolean ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Infrastructure.Api.CompanySettingsData::get_ScreenshotFriday[0]( ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Infrastructure.Api.CompanySettingsData::set_ScreenshotFriday[1]( [mscorlib]System.Boolean ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Infrastructure.Api.CompanySettingsData::get_ScreenshotSaturday[0]( ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Infrastructure.Api.CompanySettingsData::set_ScreenshotSaturday[1]( [mscorlib]System.Boolean ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Infrastructure.Api.CompanySettingsData::get_ScreenshotSunday[0]( ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Infrastructure.Api.CompanySettingsData::set_ScreenshotSunday[1]( [mscorlib]System.Boolean ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Infrastructure.Api.CompanySettingsData::get_IsIdleTrackingEnabled[0]( ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Infrastructure.Api.CompanySettingsData::set_IsIdleTrackingEnabled[1]( [mscorlib]System.Boolean ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Infrastructure.Api.CompanySettingsData::get_IdleThresholdMinutes[0]( ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Infrastructure.Api.CompanySettingsData::set_IdleThresholdMinutes[1]( [mscorlib]System.Int32 ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Infrastructure.Api.CompanySettingsData::.ctor[0]( ) skipped:  special name
 }
 
 [BIManageRevit]BIManage.Data.SQLite.AuditRepository skipped:  KeepPublicApi option in configuration
@@ -10258,6 +10390,7 @@ Skipped Types:
 	[BIManageRevit]BIManage.Data.SQLite.SchemaMigration::IsKeywordAt[3]( [mscorlib]System.String, [mscorlib]System.Int32, [mscorlib]System.String ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManage.Data.SQLite.SchemaMigration::IsWordChar[1]( [mscorlib]System.Char ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManage.Data.SQLite.SchemaMigration::SeedEventProtections[0]( ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManage.Data.SQLite.SchemaMigration::MigrateToV4[0]( ) skipped:  HidePrivateApi option in configuration
 	[BIManageRevit]BIManage.Data.SQLite.SchemaMigration::.cctor[0]( ) skipped:  special name
 }
 
@@ -10306,6 +10439,8 @@ Skipped Types:
 	[BIManageRevit]BIManage.Data.SQLite.RevitSession::set_AutodeskAddins[1]( [mscorlib]System.Nullable`1<[mscorlib]System.Int32> ) skipped:  skipping properties
 	[BIManageRevit]BIManage.Data.SQLite.RevitSession::get_ExternalAddins[0]( ) skipped:  skipping properties
 	[BIManageRevit]BIManage.Data.SQLite.RevitSession::set_ExternalAddins[1]( [mscorlib]System.Nullable`1<[mscorlib]System.Int32> ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Data.SQLite.RevitSession::get_ExternalAddinNames[0]( ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Data.SQLite.RevitSession::set_ExternalAddinNames[1]( [mscorlib]System.String ) skipped:  skipping properties
 	[BIManageRevit]BIManage.Data.SQLite.RevitSession::get_StatusCode[0]( ) skipped:  skipping properties
 	[BIManageRevit]BIManage.Data.SQLite.RevitSession::set_StatusCode[1]( [mscorlib]System.Nullable`1<[mscorlib]System.Int32> ) skipped:  skipping properties
 	[BIManageRevit]BIManage.Data.SQLite.RevitSession::get_IsActive[0]( ) skipped:  skipping properties
@@ -10549,6 +10684,26 @@ Skipped Types:
 	[BIManageRevit]BIManage.Data.SQLite.BackgroundSyncSettings::get_ModifiedAt[0]( ) skipped:  skipping properties
 	[BIManageRevit]BIManage.Data.SQLite.BackgroundSyncSettings::set_ModifiedAt[1]( [mscorlib]System.DateTime ) skipped:  skipping properties
 	[BIManageRevit]BIManage.Data.SQLite.BackgroundSyncSettings::.ctor[0]( ) skipped:  special name
+}
+
+[BIManageRevit]BIManage.Data.SQLite.ZeIdentityRecord skipped:  KeepPublicApi option in configuration
+{
+
+	[BIManageRevit]BIManage.Data.SQLite.ZeIdentityRecord::get_MachineId[0]( ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Data.SQLite.ZeIdentityRecord::set_MachineId[1]( [mscorlib]System.String ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Data.SQLite.ZeIdentityRecord::get_Sid[0]( ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Data.SQLite.ZeIdentityRecord::set_Sid[1]( [mscorlib]System.String ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Data.SQLite.ZeIdentityRecord::get_Username[0]( ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Data.SQLite.ZeIdentityRecord::set_Username[1]( [mscorlib]System.String ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Data.SQLite.ZeIdentityRecord::get_Hostname[0]( ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Data.SQLite.ZeIdentityRecord::set_Hostname[1]( [mscorlib]System.String ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Data.SQLite.ZeIdentityRecord::get_ZeUserId[0]( ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Data.SQLite.ZeIdentityRecord::set_ZeUserId[1]( [mscorlib]System.String ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Data.SQLite.ZeIdentityRecord::get_CapturedAt[0]( ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Data.SQLite.ZeIdentityRecord::set_CapturedAt[1]( [mscorlib]System.String ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Data.SQLite.ZeIdentityRecord::get_RegisteredAt[0]( ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Data.SQLite.ZeIdentityRecord::set_RegisteredAt[1]( [mscorlib]System.String ) skipped:  skipping properties
+	[BIManageRevit]BIManage.Data.SQLite.ZeIdentityRecord::.ctor[0]( ) skipped:  special name
 }
 
 [BIManageRevit]BIManage.Data.Caching.CleanupConfiguration skipped:  KeepPublicApi option in configuration
@@ -13044,11 +13199,11 @@ Skipped Types:
 	[BIManageRevit]BIManage.AI.Knowledge.JsonKnowledgeProvider::.cctor[0]( ) skipped:  special name
 }
 
-[BIManageRevit]BIManageRevit.BIManage.Views.SyncSettings.SyncSettingsDialog/<>c__DisplayClass12_0 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]BIManageRevit.BIManage.Views.SyncSettings.SyncSettingsDialog/<>c__DisplayClass14_0 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]BIManageRevit.BIManage.Views.SyncSettings.SyncSettingsDialog/<>c__DisplayClass12_0::.ctor[0]( ) skipped:  special name
-	[BIManageRevit]BIManageRevit.BIManage.Views.SyncSettings.SyncSettingsDialog/<>c__DisplayClass12_0::<ShowSuccessPopup>b__0[2]( [mscorlib]System.Object, [mscorlib]System.EventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.SyncSettings.SyncSettingsDialog/<>c__DisplayClass14_0::.ctor[0]( ) skipped:  special name
+	[BIManageRevit]BIManageRevit.BIManage.Views.SyncSettings.SyncSettingsDialog/<>c__DisplayClass14_0::<ShowSuccessPopup>b__0[2]( [mscorlib]System.Object, [mscorlib]System.EventArgs ) skipped:  HidePrivateApi option in configuration
 }
 
 [BIManageRevit]BIManageRevit.BIManage.Views.SyncSettings.SyncSettingsDialog/<Export_Click>d__6 skipped:  HidePrivateApi option in configuration
@@ -13387,11 +13542,11 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Views.ModelActivities.ModelActivitiesDialog/<OnLoaded>d__9::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
 }
 
-[BIManageRevit]BIManageRevit.BIManage.Views.ModelActivities.ModelActivitiesDialog/<SendChatMessage>d__23 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]BIManageRevit.BIManage.Views.ModelActivities.ModelActivitiesDialog/<SendChatMessage>d__25 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]BIManageRevit.BIManage.Views.ModelActivities.ModelActivitiesDialog/<SendChatMessage>d__23::MoveNext[0]( ) skipped:  external base class or interface
-	[BIManageRevit]BIManageRevit.BIManage.Views.ModelActivities.ModelActivitiesDialog/<SendChatMessage>d__23::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
+	[BIManageRevit]BIManageRevit.BIManage.Views.ModelActivities.ModelActivitiesDialog/<SendChatMessage>d__25::MoveNext[0]( ) skipped:  external base class or interface
+	[BIManageRevit]BIManageRevit.BIManage.Views.ModelActivities.ModelActivitiesDialog/<SendChatMessage>d__25::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
 }
 
 [BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<<-ctor>b__14_0>d skipped:  HidePrivateApi option in configuration
@@ -13401,32 +13556,32 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<<-ctor>b__14_0>d::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
 }
 
-[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<FetchGoalsFromEndpoint>d__23 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<FetchGoalsFromEndpoint>d__25 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<FetchGoalsFromEndpoint>d__23::MoveNext[0]( ) skipped:  external base class or interface
-	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<FetchGoalsFromEndpoint>d__23::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
+	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<FetchGoalsFromEndpoint>d__25::MoveNext[0]( ) skipped:  external base class or interface
+	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<FetchGoalsFromEndpoint>d__25::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
 }
 
-[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<FetchHealthGoalsAsync>d__21 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<FetchHealthGoalsAsync>d__23 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<FetchHealthGoalsAsync>d__21::MoveNext[0]( ) skipped:  external base class or interface
-	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<FetchHealthGoalsAsync>d__21::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
+	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<FetchHealthGoalsAsync>d__23::MoveNext[0]( ) skipped:  external base class or interface
+	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<FetchHealthGoalsAsync>d__23::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
 }
 
-[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<FetchStaticModelInfoAsync>d__19 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<FetchStaticModelInfoAsync>d__21 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<FetchStaticModelInfoAsync>d__19::MoveNext[0]( ) skipped:  external base class or interface
-	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<FetchStaticModelInfoAsync>d__19::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
+	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<FetchStaticModelInfoAsync>d__21::MoveNext[0]( ) skipped:  external base class or interface
+	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<FetchStaticModelInfoAsync>d__21::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
 }
 
-[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<LoadDataAsync>d__18 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<LoadDataAsync>d__20 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<LoadDataAsync>d__18::MoveNext[0]( ) skipped:  external base class or interface
-	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<LoadDataAsync>d__18::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
+	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<LoadDataAsync>d__20::MoveNext[0]( ) skipped:  external base class or interface
+	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<LoadDataAsync>d__20::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
 }
 
 [BIManageRevit]BIManageRevit.BIManage.Views.Bindings.OtpGenerateDialog/<ActionButton_Click>d__12 skipped:  HidePrivateApi option in configuration
@@ -13436,25 +13591,25 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.OtpGenerateDialog/<ActionButton_Click>d__12::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
 }
 
-[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog/<OnDialogActivated>d__5 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog/<OnDialogActivated>d__7 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog/<OnDialogActivated>d__5::MoveNext[0]( ) skipped:  external base class or interface
-	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog/<OnDialogActivated>d__5::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
+	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog/<OnDialogActivated>d__7::MoveNext[0]( ) skipped:  external base class or interface
+	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog/<OnDialogActivated>d__7::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
 }
 
-[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog/<Refresh_Click>d__6 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog/<Refresh_Click>d__8 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog/<Refresh_Click>d__6::MoveNext[0]( ) skipped:  external base class or interface
-	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog/<Refresh_Click>d__6::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
+	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog/<Refresh_Click>d__8::MoveNext[0]( ) skipped:  external base class or interface
+	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog/<Refresh_Click>d__8::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
 }
 
-[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog/<ReloadFromSourceAsync>d__7 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog/<ReloadFromSourceAsync>d__9 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog/<ReloadFromSourceAsync>d__7::MoveNext[0]( ) skipped:  external base class or interface
-	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog/<ReloadFromSourceAsync>d__7::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
+	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog/<ReloadFromSourceAsync>d__9::MoveNext[0]( ) skipped:  external base class or interface
+	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog/<ReloadFromSourceAsync>d__9::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
 }
 
 [BIManageRevit]BIManageRevit.BIManage.Views.Auth.DeviceStatusDialog/<Window_Loaded>d__12 skipped:  HidePrivateApi option in configuration
@@ -13772,74 +13927,74 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.ViewModels.ModelActivities.ModelActivitiesViewModel/<SendChatMessageAsync>d__77::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
 }
 
-[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<CheckAndRegisterModel>d__72 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<CheckAndRegisterModel>d__73 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<CheckAndRegisterModel>d__72::MoveNext[0]( ) skipped:  external base class or interface
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<CheckAndRegisterModel>d__72::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<CheckAndRegisterModel>d__73::MoveNext[0]( ) skipped:  external base class or interface
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<CheckAndRegisterModel>d__73::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
 }
 
-[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<FetchCommandProtectionsForModel>d__67 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<FetchCommandProtectionsForModel>d__68 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<FetchCommandProtectionsForModel>d__67::MoveNext[0]( ) skipped:  external base class or interface
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<FetchCommandProtectionsForModel>d__67::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<FetchCommandProtectionsForModel>d__68::MoveNext[0]( ) skipped:  external base class or interface
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<FetchCommandProtectionsForModel>d__68::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
 }
 
-[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<FetchEventProtectionsForModel>d__68 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<FetchEventProtectionsForModel>d__69 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<FetchEventProtectionsForModel>d__68::MoveNext[0]( ) skipped:  external base class or interface
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<FetchEventProtectionsForModel>d__68::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<FetchEventProtectionsForModel>d__69::MoveNext[0]( ) skipped:  external base class or interface
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<FetchEventProtectionsForModel>d__69::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
 }
 
-[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<FetchHealthMonitorProtectionForModel>d__71 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<FetchHealthMonitorProtectionForModel>d__72 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<FetchHealthMonitorProtectionForModel>d__71::MoveNext[0]( ) skipped:  external base class or interface
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<FetchHealthMonitorProtectionForModel>d__71::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<FetchHealthMonitorProtectionForModel>d__72::MoveNext[0]( ) skipped:  external base class or interface
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<FetchHealthMonitorProtectionForModel>d__72::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
 }
 
-[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<FetchPinProtectionsForModel>d__70 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<FetchPinProtectionsForModel>d__71 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<FetchPinProtectionsForModel>d__70::MoveNext[0]( ) skipped:  external base class or interface
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<FetchPinProtectionsForModel>d__70::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<FetchPinProtectionsForModel>d__71::MoveNext[0]( ) skipped:  external base class or interface
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<FetchPinProtectionsForModel>d__71::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
 }
 
-[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<FetchRuleProtectionsForModel>d__69 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<FetchRuleProtectionsForModel>d__70 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<FetchRuleProtectionsForModel>d__69::MoveNext[0]( ) skipped:  external base class or interface
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<FetchRuleProtectionsForModel>d__69::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<FetchRuleProtectionsForModel>d__70::MoveNext[0]( ) skipped:  external base class or interface
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<FetchRuleProtectionsForModel>d__70::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
 }
 
-[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<OnDocumentClosing>d__65 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<OnDocumentClosing>d__66 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<OnDocumentClosing>d__65::MoveNext[0]( ) skipped:  external base class or interface
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<OnDocumentClosing>d__65::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<OnDocumentClosing>d__66::MoveNext[0]( ) skipped:  external base class or interface
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<OnDocumentClosing>d__66::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
 }
 
-[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<OnDocumentSynchronizedRetryRegistration>d__64 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<OnDocumentSynchronizedRetryRegistration>d__65 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<OnDocumentSynchronizedRetryRegistration>d__64::MoveNext[0]( ) skipped:  external base class or interface
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<OnDocumentSynchronizedRetryRegistration>d__64::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<OnDocumentSynchronizedRetryRegistration>d__65::MoveNext[0]( ) skipped:  external base class or interface
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<OnDocumentSynchronizedRetryRegistration>d__65::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
 }
 
-[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<SyncModelToApiAsync>d__80 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<SyncModelToApiAsync>d__81 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<SyncModelToApiAsync>d__80::MoveNext[0]( ) skipped:  external base class or interface
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<SyncModelToApiAsync>d__80::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<SyncModelToApiAsync>d__81::MoveNext[0]( ) skipped:  external base class or interface
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<SyncModelToApiAsync>d__81::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
 }
 
-[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<UpdateSessionOnRevitReady>d__54 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<UpdateSessionOnRevitReady>d__55 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<UpdateSessionOnRevitReady>d__54::MoveNext[0]( ) skipped:  external base class or interface
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<UpdateSessionOnRevitReady>d__54::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<UpdateSessionOnRevitReady>d__55::MoveNext[0]( ) skipped:  external base class or interface
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<UpdateSessionOnRevitReady>d__55::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
 }
 
 [BIManageRevit]BIManage.ViewModels.SyncSettings.SyncSettingsViewModel/<ExportToFileAsync>d__97 skipped:  HidePrivateApi option in configuration
@@ -14136,11 +14291,11 @@ Skipped Types:
 	[BIManageRevit]BIManage.Infrastructure.Crash.JournalAnalyzerClient/<DownloadPdfForAnalysisAsync>d__9::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
 }
 
-[BIManageRevit]BIManage.Infrastructure.Crash.JournalAnalyzerClient/<PostJsonAsync>d__13`1 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]BIManage.Infrastructure.Crash.JournalAnalyzerClient/<PostJsonAsync>d__16`1 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]BIManage.Infrastructure.Crash.JournalAnalyzerClient/<PostJsonAsync>d__13`1::MoveNext[0]( ) skipped:  external base class or interface
-	[BIManageRevit]BIManage.Infrastructure.Crash.JournalAnalyzerClient/<PostJsonAsync>d__13`1::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
+	[BIManageRevit]BIManage.Infrastructure.Crash.JournalAnalyzerClient/<PostJsonAsync>d__16`1::MoveNext[0]( ) skipped:  external base class or interface
+	[BIManageRevit]BIManage.Infrastructure.Crash.JournalAnalyzerClient/<PostJsonAsync>d__16`1::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
 }
 
 [BIManageRevit]BIManage.Infrastructure.Crash.JournalAnalyzerClient/<UploadAndAnalyzeAsync>d__7 skipped:  HidePrivateApi option in configuration
@@ -14157,11 +14312,18 @@ Skipped Types:
 	[BIManageRevit]BIManage.Infrastructure.Crash.JournalAnalyzerClient/<UploadAndAnalyzeWithJobIdAsync>d__8::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
 }
 
-[BIManageRevit]BIManage.Infrastructure.Crash.JournalAnalyzerClient/<UploadToSasAsync>d__11 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]BIManage.Infrastructure.Crash.JournalAnalyzerClient/<UploadDirectAnalysisAsync>d__11 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]BIManage.Infrastructure.Crash.JournalAnalyzerClient/<UploadToSasAsync>d__11::MoveNext[0]( ) skipped:  external base class or interface
-	[BIManageRevit]BIManage.Infrastructure.Crash.JournalAnalyzerClient/<UploadToSasAsync>d__11::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
+	[BIManageRevit]BIManage.Infrastructure.Crash.JournalAnalyzerClient/<UploadDirectAnalysisAsync>d__11::MoveNext[0]( ) skipped:  external base class or interface
+	[BIManageRevit]BIManage.Infrastructure.Crash.JournalAnalyzerClient/<UploadDirectAnalysisAsync>d__11::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
+}
+
+[BIManageRevit]BIManage.Infrastructure.Crash.JournalAnalyzerClient/<UploadToSasAsync>d__14 skipped:  HidePrivateApi option in configuration
+{
+
+	[BIManageRevit]BIManage.Infrastructure.Crash.JournalAnalyzerClient/<UploadToSasAsync>d__14::MoveNext[0]( ) skipped:  external base class or interface
+	[BIManageRevit]BIManage.Infrastructure.Crash.JournalAnalyzerClient/<UploadToSasAsync>d__14::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
 }
 
 [BIManageRevit]BIManage.Infrastructure.Crash.JournalAnalyzerClient/<WaitForAnalysisAsync>d__10 skipped:  HidePrivateApi option in configuration
@@ -15200,6 +15362,13 @@ Skipped Types:
 	[BIManageRevit]BIManage.Infrastructure.Api.SessionSyncService/<FetchSessionsFromApiAsync>d__29::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
 }
 
+[BIManageRevit]BIManage.Infrastructure.Api.SessionSyncService/<GetCompanySettingsAsync>d__42 skipped:  HidePrivateApi option in configuration
+{
+
+	[BIManageRevit]BIManage.Infrastructure.Api.SessionSyncService/<GetCompanySettingsAsync>d__42::MoveNext[0]( ) skipped:  external base class or interface
+	[BIManageRevit]BIManage.Infrastructure.Api.SessionSyncService/<GetCompanySettingsAsync>d__42::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
+}
+
 [BIManageRevit]BIManage.Infrastructure.Api.SessionSyncService/<NotifyViaSignalRAsync>d__22 skipped:  HidePrivateApi option in configuration
 {
 
@@ -15240,6 +15409,13 @@ Skipped Types:
 
 	[BIManageRevit]BIManage.Infrastructure.Api.SessionSyncService/<SendHeartbeatViaHttpAsync>d__28::MoveNext[0]( ) skipped:  external base class or interface
 	[BIManageRevit]BIManage.Infrastructure.Api.SessionSyncService/<SendHeartbeatViaHttpAsync>d__28::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
+}
+
+[BIManageRevit]BIManage.Infrastructure.Api.SessionSyncService/<SendIdleTimeViaSignalRAsync>d__43 skipped:  HidePrivateApi option in configuration
+{
+
+	[BIManageRevit]BIManage.Infrastructure.Api.SessionSyncService/<SendIdleTimeViaSignalRAsync>d__43::MoveNext[0]( ) skipped:  external base class or interface
+	[BIManageRevit]BIManage.Infrastructure.Api.SessionSyncService/<SendIdleTimeViaSignalRAsync>d__43::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
 }
 
 [BIManageRevit]BIManage.Infrastructure.Api.SessionSyncService/<SyncSessionAsync>d__21 skipped:  HidePrivateApi option in configuration
@@ -17041,11 +17217,11 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.OtpGenerateDialog/<>c__DisplayClass12_0/<<ActionButton_Click>b__0>d::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
 }
 
-[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass54_0/<<UpdateSessionOnRevitReady>b__0>d skipped:  HidePrivateApi option in configuration
+[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass55_0/<<UpdateSessionOnRevitReady>b__0>d skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass54_0/<<UpdateSessionOnRevitReady>b__0>d::MoveNext[0]( ) skipped:  external base class or interface
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass54_0/<<UpdateSessionOnRevitReady>b__0>d::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass55_0/<<UpdateSessionOnRevitReady>b__0>d::MoveNext[0]( ) skipped:  external base class or interface
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass55_0/<<UpdateSessionOnRevitReady>b__0>d::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
 }
 
 [BIManageRevit]BIManageRevit.Commands.RibbonCommands.AnalyzeModelMetricsCommand/<>c__DisplayClass2_0/<<SyncToApi>b__0>d skipped:  HidePrivateApi option in configuration
@@ -17510,6 +17686,13 @@ Skipped Types:
 	[BIManageRevit]BIManage.Infrastructure.SignalR.Core.SignalRService/<SendHubMessageAsync>d__74::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
 }
 
+[BIManageRevit]BIManage.Infrastructure.Crash.JournalAnalyzerClient/ProgressStreamContent/<SerializeToStreamAsync>d__4 skipped:  HidePrivateApi option in configuration
+{
+
+	[BIManageRevit]BIManage.Infrastructure.Crash.JournalAnalyzerClient/ProgressStreamContent/<SerializeToStreamAsync>d__4::MoveNext[0]( ) skipped:  external base class or interface
+	[BIManageRevit]BIManage.Infrastructure.Crash.JournalAnalyzerClient/ProgressStreamContent/<SerializeToStreamAsync>d__4::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
+}
+
 [BIManageRevit]BIManage.Infrastructure.Api.EventProtectionSyncService/<>c__DisplayClass13_1/<<FetchByModelGuidFromApiAsync>b__1>d skipped:  HidePrivateApi option in configuration
 {
 
@@ -17734,11 +17917,11 @@ Skipped Types:
 	[BIManageRevit]BIManage.Revit.Idling.IdlingService/<>c__DisplayClass48_0/<<ExecuteUnmonitoredUserDetection>b__0>d::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
 }
 
-[BIManageRevit]BIManage.Revit.Idling.IdlingService/<>c__DisplayClass56_0/<<ExecutePeriodicHeartbeat>b__0>d skipped:  HidePrivateApi option in configuration
+[BIManageRevit]BIManage.Revit.Idling.IdlingService/<>c__DisplayClass57_0/<<ExecutePeriodicHeartbeat>b__0>d skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]BIManage.Revit.Idling.IdlingService/<>c__DisplayClass56_0/<<ExecutePeriodicHeartbeat>b__0>d::MoveNext[0]( ) skipped:  external base class or interface
-	[BIManageRevit]BIManage.Revit.Idling.IdlingService/<>c__DisplayClass56_0/<<ExecutePeriodicHeartbeat>b__0>d::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
+	[BIManageRevit]BIManage.Revit.Idling.IdlingService/<>c__DisplayClass57_0/<<ExecutePeriodicHeartbeat>b__0>d::MoveNext[0]( ) skipped:  external base class or interface
+	[BIManageRevit]BIManage.Revit.Idling.IdlingService/<>c__DisplayClass57_0/<<ExecutePeriodicHeartbeat>b__0>d::SetStateMachine[1]( [mscorlib]System.Runtime.CompilerServices.IAsyncStateMachine ) skipped:  external base class or interface
 }
 
 [BIManageRevit]BIManage.Revit.EventRegistry.EventRegistryService/<>c__DisplayClass72_0/<<SyncModelSessionToApiAsync>b__0>d skipped:  HidePrivateApi option in configuration
@@ -18209,11 +18392,11 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.Views.ModelActivities.ModelActivitiesDialog/<>c__DisplayClass10_0::<LoadProjectAdminsAsync>b__3[0]( ) skipped:  HidePrivateApi option in configuration
 }
 
-[BIManageRevit]BIManageRevit.BIManage.Views.ModelActivities.ModelActivitiesDialog/<>c__DisplayClass25_0 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]BIManageRevit.BIManage.Views.ModelActivities.ModelActivitiesDialog/<>c__DisplayClass27_0 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]BIManageRevit.BIManage.Views.ModelActivities.ModelActivitiesDialog/<>c__DisplayClass25_0::.ctor[0]( ) skipped:  special name
-	[BIManageRevit]BIManageRevit.BIManage.Views.ModelActivities.ModelActivitiesDialog/<>c__DisplayClass25_0::<ShowSuccessPopup>b__0[2]( [mscorlib]System.Object, [mscorlib]System.EventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.ModelActivities.ModelActivitiesDialog/<>c__DisplayClass27_0::.ctor[0]( ) skipped:  special name
+	[BIManageRevit]BIManageRevit.BIManage.Views.ModelActivities.ModelActivitiesDialog/<>c__DisplayClass27_0::<ShowSuccessPopup>b__0[2]( [mscorlib]System.Object, [mscorlib]System.EventArgs ) skipped:  HidePrivateApi option in configuration
 }
 
 [BIManageRevit]BIManageRevit.BIManage.Views.Metrics.AnalyzeModelDialog/<>c skipped:  HidePrivateApi option in configuration
@@ -18289,24 +18472,24 @@ Skipped Types:
 
 	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<>c::.cctor[0]( ) skipped:  special name
 	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<>c::.ctor[0]( ) skipped:  special name
-	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<>c::<GenerateHtml>b__29_2[1]( [BIManageRevit]BIManageRevit.BIManage.Views.Metrics.MetricResult ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<>c::<GenerateHtml>b__31_2[1]( [BIManageRevit]BIManageRevit.BIManage.Views.Metrics.MetricResult ) skipped:  HidePrivateApi option in configuration
 }
 
-[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<>c__DisplayClass29_0 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<>c__DisplayClass31_0 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<>c__DisplayClass29_0::.ctor[0]( ) skipped:  special name
-	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<>c__DisplayClass29_0::<GenerateHtml>g__F|3[1]( [mscorlib]System.Double ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<>c__DisplayClass29_0::<GenerateHtml>g__F1|4[1]( [mscorlib]System.Double ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<>c__DisplayClass29_0::<GenerateHtml>g__F0|5[1]( [mscorlib]System.Double ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<>c__DisplayClass29_0::<GenerateHtml>g__BpArc|8[1]( [mscorlib]System.Int32 ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<>c__DisplayClass31_0::.ctor[0]( ) skipped:  special name
+	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<>c__DisplayClass31_0::<GenerateHtml>g__F|3[1]( [mscorlib]System.Double ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<>c__DisplayClass31_0::<GenerateHtml>g__F1|4[1]( [mscorlib]System.Double ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<>c__DisplayClass31_0::<GenerateHtml>g__F0|5[1]( [mscorlib]System.Double ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<>c__DisplayClass31_0::<GenerateHtml>g__BpArc|8[1]( [mscorlib]System.Int32 ) skipped:  HidePrivateApi option in configuration
 }
 
-[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<>c__DisplayClass29_1 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<>c__DisplayClass31_1 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<>c__DisplayClass29_1::.ctor[0]( ) skipped:  special name
-	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<>c__DisplayClass29_1::<GenerateHtml>b__13[0]( ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<>c__DisplayClass31_1::.ctor[0]( ) skipped:  special name
+	[BIManageRevit]BIManageRevit.BIManage.Views.Metrics.ModelHealthDashboard/<>c__DisplayClass31_1::<GenerateHtml>b__13[0]( ) skipped:  HidePrivateApi option in configuration
 }
 
 [BIManageRevit]BIManageRevit.BIManage.Views.Developer.SelectCommandDialog/CommandItem skipped:  HidePrivateApi option in configuration
@@ -18371,9 +18554,9 @@ Skipped Types:
 
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog/<>c::.cctor[0]( ) skipped:  special name
 	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog/<>c::.ctor[0]( ) skipped:  special name
-	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog/<>c::<LoadData>b__8_0[1]( [BIManageRevit]BIManageRevit.Commands.RibbonCommands.ProtectedElementDetails ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog/<>c::<LoadData>b__8_1[1]( [System.Core]System.Linq.IGrouping`2<[mscorlib]System.String,[BIManageRevit]BIManageRevit.Commands.RibbonCommands.ProtectedElementDetails> ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog/<>c::<LoadData>b__8_3[1]( [BIManageRevit]BIManageRevit.Commands.RibbonCommands.ProtectedElementDetails ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog/<>c::<LoadData>b__10_0[1]( [BIManageRevit]BIManageRevit.Commands.RibbonCommands.ProtectedElementDetails ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog/<>c::<LoadData>b__10_1[1]( [System.Core]System.Linq.IGrouping`2<[mscorlib]System.String,[BIManageRevit]BIManageRevit.Commands.RibbonCommands.ProtectedElementDetails> ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Views.Bindings.PinProtectionStatusDialog/<>c::<LoadData>b__10_3[1]( [BIManageRevit]BIManageRevit.Commands.RibbonCommands.ProtectedElementDetails ) skipped:  HidePrivateApi option in configuration
 }
 
 [BIManageRevit]BIManageRevit.BIManage.Views.Auth.DeviceStatusDialog/<>c skipped:  HidePrivateApi option in configuration
@@ -18797,48 +18980,55 @@ Skipped Types:
 	[BIManageRevit]BIManageRevit.BIManage.ViewModels.Bindings.UnpinWarningViewModel::.ctor[3]( [mscorlib]System.Int32, [mscorlib]System.String, [mscorlib]System.Action`1<[mscorlib]System.Boolean> ) skipped:  special name
 }
 
-[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass46_0 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass47_0 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass46_0::.ctor[0]( ) skipped:  special name
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass46_0::<RegisterManagedAssemblyResolvers>b__0[2]( [mscorlib]System.Object, [mscorlib]System.ResolveEventArgs ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass46_0::<RegisterManagedAssemblyResolvers>b__1[0]( ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass47_0::.ctor[0]( ) skipped:  special name
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass47_0::<RegisterManagedAssemblyResolvers>b__0[2]( [mscorlib]System.Object, [mscorlib]System.ResolveEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass47_0::<RegisterManagedAssemblyResolvers>b__1[0]( ) skipped:  HidePrivateApi option in configuration
 }
 
-[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass51_0 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass52_0 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass51_0::.ctor[0]( ) skipped:  special name
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass51_0::<WireSyncTrafficControlEvents>b__0[2]( [mscorlib]System.String, [mscorlib]System.String ) skipped:  HidePrivateApi option in configuration
-}
-
-[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass53_0 skipped:  HidePrivateApi option in configuration
-{
-
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass53_0::.ctor[0]( ) skipped:  special name
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass53_0::<OnApplicationInitialized>b__8[2]( [mscorlib]System.Object, [RevitAPIUI]Autodesk.Revit.UI.Events.IdlingEventArgs ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass52_0::.ctor[0]( ) skipped:  special name
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass52_0::<WireSyncTrafficControlEvents>b__0[2]( [mscorlib]System.String, [mscorlib]System.String ) skipped:  HidePrivateApi option in configuration
 }
 
 [BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass54_0 skipped:  HidePrivateApi option in configuration
 {
 
 	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass54_0::.ctor[0]( ) skipped:  special name
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass54_0::<UpdateSessionOnRevitReady>b__0[0]( ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass54_0::<OnApplicationInitialized>b__8[2]( [mscorlib]System.Object, [RevitAPIUI]Autodesk.Revit.UI.Events.IdlingEventArgs ) skipped:  HidePrivateApi option in configuration
+}
+
+[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass55_0 skipped:  HidePrivateApi option in configuration
+{
+
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass55_0::.ctor[0]( ) skipped:  special name
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass55_0::<UpdateSessionOnRevitReady>b__0[0]( ) skipped:  HidePrivateApi option in configuration
 }
 
 [BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass57_0 skipped:  HidePrivateApi option in configuration
 {
 
 	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass57_0::.ctor[0]( ) skipped:  special name
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass57_0::<ParseAddinManifest>b__0[1]( [mscorlib]System.String ) skipped:  HidePrivateApi option in configuration
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass57_0::<ParseAddinManifest>b__1[1]( [mscorlib]System.String ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass57_0::<ProcessAddinFolder>b__0[1]( [mscorlib]System.String ) skipped:  HidePrivateApi option in configuration
 }
 
-[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass84_0 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass58_0 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass84_0::.ctor[0]( ) skipped:  special name
-	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass84_0::<StartBackgroundSyncEngine>b__0[0]( ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass58_0::.ctor[0]( ) skipped:  special name
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass58_0::<ParseAddinManifest>b__0[1]( [mscorlib]System.String ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass58_0::<ParseAddinManifest>b__1[1]( [mscorlib]System.String ) skipped:  HidePrivateApi option in configuration
+}
+
+[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass85_0 skipped:  HidePrivateApi option in configuration
+{
+
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass85_0::.ctor[0]( ) skipped:  special name
+	[BIManageRevit]BIManageRevit.BIManage.Revit.Applications.Application/<>c__DisplayClass85_0::<StartBackgroundSyncEngine>b__0[0]( ) skipped:  HidePrivateApi option in configuration
 }
 
 [BIManageRevit]BIManageRevit.Commands.RibbonCommands.AdversarialSafetyTestCommand/AdversarialCase skipped:  HidePrivateApi option in configuration
@@ -20181,6 +20371,7 @@ Skipped Types:
 
 	[BIManageRevit]BIManage.Revit.Applications.RevitBootstrapper/<>c__DisplayClass4_0::.ctor[0]( ) skipped:  special name
 	[BIManageRevit]BIManage.Revit.Applications.RevitBootstrapper/<>c__DisplayClass4_0::<RegisterPersistence>b__0[0]( ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManage.Revit.Applications.RevitBootstrapper/<>c__DisplayClass4_0::<RegisterPersistence>b__1[0]( ) skipped:  HidePrivateApi option in configuration
 }
 
 [BIManageRevit]BIManage.Revit.Applications.RevitBootstrapper/<>c__DisplayClass5_0 skipped:  HidePrivateApi option in configuration
@@ -20484,13 +20675,23 @@ Skipped Types:
 	[BIManageRevit]BIManage.Infrastructure.Diagnostics.CrashGuard/<>c::.cctor[0]( ) skipped:  special name
 	[BIManageRevit]BIManage.Infrastructure.Diagnostics.CrashGuard/<>c::.ctor[0]( ) skipped:  special name
 	[BIManageRevit]BIManage.Infrastructure.Diagnostics.CrashGuard/<>c::<Initialize>b__14_0[0]( ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManage.Infrastructure.Diagnostics.CrashGuard/<>c::<NormalizeFault>b__22_0[1]( [mscorlib]System.Exception ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManage.Infrastructure.Diagnostics.CrashGuard/<>c::<NormalizeFault>b__22_1[1]( [mscorlib]System.Exception ) skipped:  HidePrivateApi option in configuration
 }
 
-[BIManageRevit]BIManage.Infrastructure.Diagnostics.CrashGuard/<>c__DisplayClass21_0 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]BIManage.Infrastructure.Diagnostics.CrashGuard/<>c__DisplayClass27_0 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]BIManage.Infrastructure.Diagnostics.CrashGuard/<>c__DisplayClass21_0::.ctor[0]( ) skipped:  special name
-	[BIManageRevit]BIManage.Infrastructure.Diagnostics.CrashGuard/<>c__DisplayClass21_0::<ShowRecoveryDialogSafe>b__0[0]( ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManage.Infrastructure.Diagnostics.CrashGuard/<>c__DisplayClass27_0::.ctor[0]( ) skipped:  special name
+	[BIManageRevit]BIManage.Infrastructure.Diagnostics.CrashGuard/<>c__DisplayClass27_0::<ShowRecoveryDialogSafe>b__0[0]( ) skipped:  HidePrivateApi option in configuration
+}
+
+[BIManageRevit]BIManage.Infrastructure.Crash.JournalAnalyzerClient/ProgressStreamContent skipped:  HidePrivateApi option in configuration
+{
+
+	[BIManageRevit]BIManage.Infrastructure.Crash.JournalAnalyzerClient/ProgressStreamContent::.ctor[3]( [mscorlib]System.IO.Stream, [mscorlib]System.IProgress`1<[mscorlib]System.Int64>, [mscorlib]System.Threading.CancellationToken ) skipped:  special name
+	[BIManageRevit]BIManage.Infrastructure.Crash.JournalAnalyzerClient/ProgressStreamContent::SerializeToStreamAsync[2]( [mscorlib]System.IO.Stream, [System]System.Net.TransportContext ) skipped:  external base class or interface
+	[BIManageRevit]BIManage.Infrastructure.Crash.JournalAnalyzerClient/ProgressStreamContent::TryComputeLength[1]( [mscorlib]System.Int64& ) skipped:  external base class or interface
 }
 
 [BIManageRevit]BIManage.Infrastructure.Crash.JournalAnalyzerClient/SasResponse skipped:  HidePrivateApi option in configuration
@@ -20510,7 +20711,7 @@ Skipped Types:
 
 	[BIManageRevit]BIManage.Infrastructure.Crash.JournalAnalyzerClient/<>c::.cctor[0]( ) skipped:  special name
 	[BIManageRevit]BIManage.Infrastructure.Crash.JournalAnalyzerClient/<>c::.ctor[0]( ) skipped:  special name
-	[BIManageRevit]BIManage.Infrastructure.Crash.JournalAnalyzerClient/<>c::<UploadToSasAsync>b__11_0[1]( [mscorlib]System.String ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManage.Infrastructure.Crash.JournalAnalyzerClient/<>c::<UploadToSasAsync>b__14_0[1]( [mscorlib]System.String ) skipped:  HidePrivateApi option in configuration
 }
 
 [BIManageRevit]BIManage.Infrastructure.Auth.AuthApiService/<>c skipped:  HidePrivateApi option in configuration
@@ -21565,18 +21766,18 @@ Skipped Types:
 	[BIManageRevit]BIManage.Revit.Idling.IdlingService/<>c__DisplayClass48_0::<ExecuteUnmonitoredUserDetection>b__0[0]( ) skipped:  HidePrivateApi option in configuration
 }
 
-[BIManageRevit]BIManage.Revit.Idling.IdlingService/<>c__DisplayClass56_0 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]BIManage.Revit.Idling.IdlingService/<>c__DisplayClass57_0 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]BIManage.Revit.Idling.IdlingService/<>c__DisplayClass56_0::.ctor[0]( ) skipped:  special name
-	[BIManageRevit]BIManage.Revit.Idling.IdlingService/<>c__DisplayClass56_0::<ExecutePeriodicHeartbeat>b__0[0]( ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManage.Revit.Idling.IdlingService/<>c__DisplayClass57_0::.ctor[0]( ) skipped:  special name
+	[BIManageRevit]BIManage.Revit.Idling.IdlingService/<>c__DisplayClass57_0::<ExecutePeriodicHeartbeat>b__0[0]( ) skipped:  HidePrivateApi option in configuration
 }
 
-[BIManageRevit]BIManage.Revit.Idling.IdlingService/<>c__DisplayClass56_1 skipped:  HidePrivateApi option in configuration
+[BIManageRevit]BIManage.Revit.Idling.IdlingService/<>c__DisplayClass57_1 skipped:  HidePrivateApi option in configuration
 {
 
-	[BIManageRevit]BIManage.Revit.Idling.IdlingService/<>c__DisplayClass56_1::.ctor[0]( ) skipped:  special name
-	[BIManageRevit]BIManage.Revit.Idling.IdlingService/<>c__DisplayClass56_1::<ExecutePeriodicHeartbeat>b__1[0]( ) skipped:  HidePrivateApi option in configuration
+	[BIManageRevit]BIManage.Revit.Idling.IdlingService/<>c__DisplayClass57_1::.ctor[0]( ) skipped:  special name
+	[BIManageRevit]BIManage.Revit.Idling.IdlingService/<>c__DisplayClass57_1::<ExecutePeriodicHeartbeat>b__1[0]( ) skipped:  HidePrivateApi option in configuration
 }
 
 [BIManageRevit]BIManage.Revit.EventRegistry.EventRegistryService/DocumentOpeningTracker skipped:  HidePrivateApi option in configuration

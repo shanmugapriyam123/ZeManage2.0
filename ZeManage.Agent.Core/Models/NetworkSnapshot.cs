@@ -2,8 +2,7 @@ namespace ZeManage.Agent.Core.Models;
 
 public sealed class NetworkSnapshot
 {
-    public long Id { get; set; }
-    public required string MachineName { get; set; }
+    public string Id { get; set; } = Guid.NewGuid().ToString();
     public DateTime CapturedAt { get; set; }
     public double DownloadMbps { get; set; }
     public double UploadMbps { get; set; }
@@ -13,4 +12,6 @@ public sealed class NetworkSnapshot
     public string? ActiveAdapter { get; set; }
     public int HealthScore { get; set; }
     public bool Synced { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
 }

@@ -4,6 +4,7 @@ using ZeManage.Agent.Core.Data;
 using ZeManage.Agent.Core.Interop;
 using ZeManage.Agent.Core.Models;
 using ZeManage.Agent.Core.Services;
+using ZeManage.Agent.Core.Sync;
 
 namespace ZeManage.Agent.Core.Monitors;
 
@@ -13,9 +14,13 @@ public sealed class BrowserMonitor : BackgroundService
     private readonly IdentityService _identity;
     private readonly AgentState _state;
     private readonly ILogger<BrowserMonitor> _log;
+    private readonly AgentHubConnection _hub;
+    private readonly TokenProvider _tokens;
 
     private string? _currentBrowser;
     private string? _currentTitle;
+    private string? _currentUrl;
+    private string? _currentApplicationId;
     private DateTime _titleSince;
     private DateTime _lastFlush;
 
@@ -23,13 +28,20 @@ public sealed class BrowserMonitor : BackgroundService
     private static readonly TimeSpan FlushInterval = TimeSpan.FromMinutes(2);
     private const int MinDurationSeconds = 5;
 
-    public BrowserMonitor(LocalStore store, IdentityService identity, AgentState state, ILogger<BrowserMonitor> log)
+    public BrowserMonitor(LocalStore store, IdentityService identity, AgentState state,
+        ILogger<BrowserMonitor> log, AgentHubConnection hub, TokenProvider tokens)
     {
         _store    = store;
         _identity = identity;
         _state    = state;
         _log      = log;
+        _hub      = hub;
+        _tokens   = tokens;
     }
+
+    private static string MakeApplicationId(string processName) =>
+        new Guid(System.Security.Cryptography.MD5.HashData(
+            System.Text.Encoding.UTF8.GetBytes(processName.ToLowerInvariant()))).ToString();
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -71,6 +83,9 @@ public sealed class BrowserMonitor : BackgroundService
         var (browser, pageTitle) = ParseTitle(proc, title);
         if (string.IsNullOrWhiteSpace(pageTitle)) return;
 
+        _currentUrl           = Win32Window.TryGetBrowserUrl();
+        _currentApplicationId = MakeApplicationId(proc);
+
         if (browser != _currentBrowser || pageTitle != _currentTitle)
         {
             if (_currentTitle is not null)
@@ -101,20 +116,37 @@ public sealed class BrowserMonitor : BackgroundService
         var duration = (long)(endTime - _titleSince).TotalSeconds;
         if (duration < MinDurationSeconds) return;
 
-        await _store.AddBrowserActivityAsync(new BrowserActivity
+        var now = DateTime.UtcNow;
+        var activity = new BrowserActivity
         {
-            UserName        = id.UserName,
-            MachineName     = id.MachineName,
-            WindowsSid      = id.WindowsSid,
             Browser         = _currentBrowser,
             PageTitle       = _currentTitle,
+            ApplicationId   = _currentApplicationId,
+            Url             = _currentUrl,
             StartTime       = _titleSince,
             EndTime         = endTime,
-            DurationSeconds = duration
-        }, ct);
+            DurationSeconds = duration,
+            CreatedAt       = now,
+            UpdatedAt       = now
+        };
+        await _store.AddBrowserActivityAsync(activity, ct);
 
-        _log.LogDebug("Browser activity saved: {Browser} | {Title} | {Duration}s",
-            _currentBrowser, _currentTitle, duration);
+        _log.LogDebug("Browser activity saved: {Browser} | {Title} | {Url} | {Duration}s",
+            _currentBrowser, _currentTitle, _currentUrl, duration);
+
+        await _hub.TrySendEventAsync("ReportBrowserActivity", new
+        {
+            zeUserId        = _tokens.ZeUserId ?? "",
+            companyId       = _tokens.CompanyId ?? "",
+            browserName     = activity.Browser,
+            processName     = activity.Browser == "Google Chrome" ? "chrome" : "msedge",
+            pageTitle       = activity.PageTitle,
+            url             = activity.Url ?? "",
+            applicationId   = activity.ApplicationId,
+            startTime       = activity.StartTime,
+            endTime         = activity.EndTime,
+            durationSeconds = activity.DurationSeconds
+        }, ct);
     }
 
     private static (string browser, string pageTitle) ParseTitle(string processName, string windowTitle)
