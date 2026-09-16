@@ -14,6 +14,16 @@ namespace BIManage.Core.Features
         bool IsGlobalPaused { get; set; }
 
         /// <summary>
+        ///     Admin-controlled per-employee active/inactive kill-switch — distinct from
+        ///     IsGlobalPaused (which is a generic app-wide pause unrelated to this specific
+        ///     feature). True means this employee has been deactivated by an admin and capture
+        ///     should stop; IsFeatureEnabled treats it the same as IsGlobalPaused. Default false
+        ///     (capture enabled) until AuthApiService's device-validate/refresh response or the
+        ///     EmployeeActivationListener SignalR push says otherwise.
+        /// </summary>
+        bool IsEmployeeCaptureDisabled { get; set; }
+
+        /// <summary>
         ///     Check if a specific feature is enabled.
         /// </summary>
         /// <param name="featureName">The feature name to check</param>

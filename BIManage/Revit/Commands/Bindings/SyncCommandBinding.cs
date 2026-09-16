@@ -34,6 +34,7 @@ namespace BIManage.Revit.Commands.Bindings
         private readonly Func<IRevitContext?> _revitContextGetter;
         private readonly Func<CommandProtectionBinding?> _commandProtectionGetter;
         private readonly IRuleCommandInterceptor? _ruleInterceptor;
+        private readonly BIManage.Core.Features.IFeatureToggleService? _featureToggleService;
 
         public SyncCommandBinding(
             UIApplication uiApp,
@@ -42,7 +43,8 @@ namespace BIManage.Revit.Commands.Bindings
             Func<ISignalREventBus?>? signalREventBusGetter = null,
             Func<IRevitContext?>? revitContextGetter = null,
             Func<CommandProtectionBinding?>? commandProtectionGetter = null,
-            IRuleCommandInterceptor? ruleInterceptor = null)
+            IRuleCommandInterceptor? ruleInterceptor = null,
+            BIManage.Core.Features.IFeatureToggleService? featureToggleService = null)
             : base(uiApp, logger)
         {
             _syncTrafficControlGetter = syncTrafficControlGetter ?? (() => null);
@@ -50,6 +52,7 @@ namespace BIManage.Revit.Commands.Bindings
             _revitContextGetter = revitContextGetter ?? (() => null);
             _commandProtectionGetter = commandProtectionGetter ?? (() => null);
             _ruleInterceptor = ruleInterceptor;
+            _featureToggleService = featureToggleService;
         }
 
         public override void Register()
@@ -199,6 +202,9 @@ namespace BIManage.Revit.Commands.Bindings
 
             try
             {
+                if (_featureToggleService?.IsGlobalPaused == true || _featureToggleService?.IsEmployeeCaptureDisabled == true)
+                    return;
+
                 Logger?.LogInfo($"[SyncBinding] OnBeforeExecuted fired for CommandId={e.CommandId?.Name ?? "null"}");
 
                 // Skip Command Protection / Rule evaluation when this sync is internal

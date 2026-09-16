@@ -1,10 +1,10 @@
 ﻿{
-    "scanDate":  "2026-07-24T11:50:09Z",
+    "scanDate":  "2026-08-21T11:47:43Z",
     "buildUser":  "GF_S_037",
     "project":  "BIManageRevit",
     "configuration":  "Release R27",
     "tool":  ".NET Roslyn Security Analyzers",
-    "toolVersion":  "10.0.102",
+    "toolVersion":  "10.0.400",
     "analyzers":  [
                       "Microsoft.CodeAnalysis.NetAnalyzers (built-in)",
                       "SecurityCodeScan.VS2019 (NuGet)"

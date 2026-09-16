@@ -24,18 +24,21 @@ namespace BIManage.Revit.Commands.Bindings
         private readonly IRuleCommandInterceptor _ruleInterceptor;
         private readonly Func<CommandProtectionBinding?> _commandProtectionGetter;
         private readonly Func<PositionRestorationService?> _positionRestorationGetter;
+        private readonly BIManage.Core.Features.IFeatureToggleService? _featureToggleService;
 
         public MoveCommandBinding(
             UIApplication uiApp,
             ILogger logger,
             IRuleCommandInterceptor ruleInterceptor,
             Func<CommandProtectionBinding?>? commandProtectionGetter = null,
-            Func<PositionRestorationService?>? positionRestorationGetter = null)
+            Func<PositionRestorationService?>? positionRestorationGetter = null,
+            BIManage.Core.Features.IFeatureToggleService? featureToggleService = null)
             : base(uiApp, logger)
         {
             _ruleInterceptor = ruleInterceptor;
             _commandProtectionGetter = commandProtectionGetter ?? (() => null);
             _positionRestorationGetter = positionRestorationGetter ?? (() => null);
+            _featureToggleService = featureToggleService;
 
             // Look up by PostableCommand enum
             CommandId = RevitCommandId.LookupPostableCommandId(PostableCommand.Move);
@@ -68,6 +71,9 @@ namespace BIManage.Revit.Commands.Bindings
         {
             try
             {
+                if (_featureToggleService?.IsGlobalPaused == true || _featureToggleService?.IsEmployeeCaptureDisabled == true)
+                    return;
+
                 Logger?.LogDebug($"Move command intercepted: {e.CommandId.Name}");
 
                 // PRIORITY 0: Check CommandProtectionBinding for Notify/Assist/Protect settings

@@ -299,7 +299,7 @@ namespace BIManage.Revit.EventRegistry
         {
             try
             {
-                if (_featureToggleService.IsGlobalPaused) return;
+                if (_featureToggleService.IsGlobalPaused || _featureToggleService.IsEmployeeCaptureDisabled) return;
 
                 var doc = e.Document;
                 if (doc == null || !doc.IsValidObject)
@@ -486,7 +486,7 @@ namespace BIManage.Revit.EventRegistry
         {
             try
             {
-                if (_featureToggleService.IsGlobalPaused) return;
+                if (_featureToggleService.IsGlobalPaused || _featureToggleService.IsEmployeeCaptureDisabled) return;
 
                 // Only track opening time if we have a valid path
                 // (new/unsaved documents don't have paths and can't be reliably tracked)
@@ -550,7 +550,7 @@ namespace BIManage.Revit.EventRegistry
         {
             try
             {
-                if (_featureToggleService.IsGlobalPaused) return;
+                if (_featureToggleService.IsGlobalPaused || _featureToggleService.IsEmployeeCaptureDisabled) return;
                 _logger?.LogInfo($"Document created: {e.Document?.Title}");
             }
             catch (Exception ex)
@@ -563,7 +563,7 @@ namespace BIManage.Revit.EventRegistry
         {
             try
             {
-                if (_featureToggleService.IsGlobalPaused) return;
+                if (_featureToggleService.IsGlobalPaused || _featureToggleService.IsEmployeeCaptureDisabled) return;
                 _logger?.LogDebug("Document creating");
             }
             catch (Exception ex)
@@ -576,7 +576,7 @@ namespace BIManage.Revit.EventRegistry
         {
             try
             {
-                if (_featureToggleService.IsGlobalPaused) return;
+                if (_featureToggleService.IsGlobalPaused || _featureToggleService.IsEmployeeCaptureDisabled) return;
                 _logger?.LogInfo("Document closed");
 
                 // Clear the deletion guard's pinned-element cache for the closed document
@@ -592,7 +592,7 @@ namespace BIManage.Revit.EventRegistry
         {
             try
             {
-                if (_featureToggleService.IsGlobalPaused) return;
+                if (_featureToggleService.IsGlobalPaused || _featureToggleService.IsEmployeeCaptureDisabled) return;
 
                 _logger?.LogDebug($"Document closing: {e.Document?.Title}");
 
@@ -645,7 +645,7 @@ namespace BIManage.Revit.EventRegistry
         {
             try
             {
-                if (_featureToggleService.IsGlobalPaused) return;
+                if (_featureToggleService.IsGlobalPaused || _featureToggleService.IsEmployeeCaptureDisabled) return;
 
                 var doc = e.Document;
                 _logger?.LogDebug($"Document saving: {doc?.Title}");
@@ -735,7 +735,7 @@ namespace BIManage.Revit.EventRegistry
         {
             try
             {
-                if (_featureToggleService.IsGlobalPaused) return;
+                if (_featureToggleService.IsGlobalPaused || _featureToggleService.IsEmployeeCaptureDisabled) return;
 
                 // Plugin-internal SaveAs (e.g. Deep Analysis writing temp .rfa files to
                 // measure family size) sets this scope so the user-facing dialog is skipped.
@@ -835,7 +835,7 @@ namespace BIManage.Revit.EventRegistry
 
             try
             {
-                if (_featureToggleService.IsGlobalPaused) return;
+                if (_featureToggleService.IsGlobalPaused || _featureToggleService.IsEmployeeCaptureDisabled) return;
 
                 var doc = e.Document;
                 _logger?.LogInfo($"Document saved: {doc?.Title}");
@@ -871,7 +871,7 @@ namespace BIManage.Revit.EventRegistry
         {
             try
             {
-                if (_featureToggleService.IsGlobalPaused) return;
+                if (_featureToggleService.IsGlobalPaused || _featureToggleService.IsEmployeeCaptureDisabled) return;
 
                 if (_featureToggleService.IsFeatureEnabled("EventProtection") && e.Document != null)
                 {
@@ -912,7 +912,7 @@ namespace BIManage.Revit.EventRegistry
         {
             try
             {
-                if (_featureToggleService.IsGlobalPaused) return;
+                if (_featureToggleService.IsGlobalPaused || _featureToggleService.IsEmployeeCaptureDisabled) return;
                 if (!_featureToggleService.IsFeatureEnabled("EventProtection")) return;
 
                 var familyPath = e.FamilyPath;
@@ -960,7 +960,7 @@ namespace BIManage.Revit.EventRegistry
         {
             try
             {
-                if (_featureToggleService.IsGlobalPaused) return;
+                if (_featureToggleService.IsGlobalPaused || _featureToggleService.IsEmployeeCaptureDisabled) return;
 
                 var doc = e.Document;
 
@@ -1513,7 +1513,7 @@ namespace BIManage.Revit.EventRegistry
         {
             try
             {
-                if (_featureToggleService.IsGlobalPaused) return;
+                if (_featureToggleService.IsGlobalPaused || _featureToggleService.IsEmployeeCaptureDisabled) return;
 
                 var doc = e.Document;
 
@@ -1732,7 +1732,7 @@ namespace BIManage.Revit.EventRegistry
         {
             try
             {
-                if (_featureToggleService.IsGlobalPaused) return;
+                if (_featureToggleService.IsGlobalPaused || _featureToggleService.IsEmployeeCaptureDisabled) return;
 
                 // Record user activity for productivity tracking (DocumentChanged fires on every user action)
                 _productivityTracker.RecordActivity();
@@ -1980,7 +1980,7 @@ namespace BIManage.Revit.EventRegistry
         {
             try
             {
-                if (_featureToggleService.IsGlobalPaused) return;
+                if (_featureToggleService.IsGlobalPaused || _featureToggleService.IsEmployeeCaptureDisabled) return;
 
                 var doc = e.Document;
                 if (doc == null || !doc.IsValidObject) return;

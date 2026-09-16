@@ -20,6 +20,10 @@ public sealed record AgentIdentity
     // Storage (system drive)
     public double  StorageTotalGB       { get; init; }
     public double  StorageUsedGB        { get; init; }
+    public string? StorageType          { get; init; }
+
+    // RAM type
+    public string? RamType               { get; init; }
 
     // Network
     public string? MacAddress           { get; init; }
@@ -37,4 +41,7 @@ public sealed record AgentIdentity
     public string? WindowsEdition       { get; init; }
     public string? WindowsVersion       { get; init; }
     public string? OsBuild              { get; init; }
+
+    // Timezone
+    public string? TimeZoneId           { get; init; }
 }

@@ -623,7 +623,8 @@ namespace BIManage.Infrastructure.Api
         }
 
         /// <summary>
-        /// Updates a model session status via PATCH /api/v1/Revit/models/model-sessions/{sessionId}.
+        /// Updates a model session status via PATCH /api/v1/Revit/models/model-sessions
+        /// (bare route — server identifies the row from sessionId+modelGuid in the body).
         /// Used for session close ("Closed") and crash detection ("Crashed").
         /// </summary>
         public async Task<bool> UpdateModelSessionStatusAsync(string sessionId, string modelGuid, string status, DateTime? closedAt = null, int totalModifications = 0, string modifiedBy = null)
@@ -670,7 +671,13 @@ namespace BIManage.Infrastructure.Api
         {
             try
             {
-                var endpoint = $"{Endpoint}/{sessionId}";
+                // Server route is a bare PATCH "model-sessions" ([HttpPatch("model-sessions")],
+                // RevitModelSessionController.PatchModelSession) that identifies the row from
+                // SessionId + ModelGuid in the body — there is no {sessionId} route segment.
+                // Appending it here produced a URL matching no server route, so this call 404'd
+                // on every single invocation and, since 4xx is treated as a permanent failure
+                // below, silently dropped every close-status update forever.
+                var endpoint = Endpoint;
 
                 var payloadJson = JsonSerializer.Serialize(updateRequest, new JsonSerializerOptions
                 {
@@ -794,11 +801,8 @@ namespace BIManage.Infrastructure.Api
     #region Model Session API Request DTOs
 
     /// <summary>
-    /// Request body for PATCH /api/v1/Revit/models/model-sessions/{sessionId}
-    /// Used for status updates (Close, Crash).
-    /// </summary>
-    /// <summary>
-    /// Request body for PATCH /api/v1/Revit/models/model-sessions/{sessionId}.
+    /// Request body for PATCH /api/v1/Revit/models/model-sessions (bare route — row is
+    /// identified from the body, not a URL segment). Used for status updates (Close, Crash).
     /// Matches API spec: PatchRevitModelSessionRequest.
     /// Required fields: sessionId, modelGuid.
     /// </summary>

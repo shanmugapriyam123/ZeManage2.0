@@ -31,6 +31,7 @@ namespace BIManage.Revit.Commands.Bindings
 
         private readonly IRuleCommandInterceptor? _ruleInterceptor;
         private readonly Func<CommandProtectionBinding?> _commandProtectionGetter;
+        private readonly BIManage.Core.Features.IFeatureToggleService? _featureToggleService;
 
         private RevitCommandId? _groupCommandId;
         private RevitCommandId? _ungroupCommandId;
@@ -46,11 +47,13 @@ namespace BIManage.Revit.Commands.Bindings
             UIApplication uiApp,
             ILogger logger,
             IRuleCommandInterceptor? ruleInterceptor,
-            Func<CommandProtectionBinding?>? commandProtectionGetter = null)
+            Func<CommandProtectionBinding?>? commandProtectionGetter = null,
+            BIManage.Core.Features.IFeatureToggleService? featureToggleService = null)
             : base(uiApp, logger)
         {
             _ruleInterceptor = ruleInterceptor;
             _commandProtectionGetter = commandProtectionGetter ?? (() => null);
+            _featureToggleService = featureToggleService;
             CommandId = LookupCommandById(PostableCommands.Group);
         }
 
@@ -94,6 +97,9 @@ namespace BIManage.Revit.Commands.Bindings
         {
             try
             {
+                if (_featureToggleService?.IsGlobalPaused == true || _featureToggleService?.IsEmployeeCaptureDisabled == true)
+                    return;
+
                 var commandProtection = _commandProtectionGetter?.Invoke();
                 if (commandProtection != null)
                 {
@@ -150,6 +156,7 @@ namespace BIManage.Revit.Commands.Bindings
         private void OnDocumentChanged(object sender, DocumentChangedEventArgs e)
         {
             if (e.Operation != UndoOperation.TransactionCommitted) return;
+            if (_featureToggleService?.IsGlobalPaused == true || _featureToggleService?.IsEmployeeCaptureDisabled == true) return;
 
             try
             {

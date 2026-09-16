@@ -1,14 +1,24 @@
 using Microsoft.Data.Sqlite;
 
-var target = Path.Combine(
+var dbPath = Path.Combine(
     Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
     "BIManageRevit", "Logs", "agent.db");
 
-var dbPath = target + ".new";
-if (File.Exists(dbPath)) File.Delete(dbPath);
+if (!File.Exists(dbPath)) { Console.WriteLine($"DB not found: {dbPath}"); return; }
 
+Console.WriteLine($"Clearing all data from: {dbPath}");
 using var conn = new SqliteConnection($"Data Source={dbPath}");
 conn.Open();
+
+foreach (var t in new[] { "ApplicationUsages","BrowserActivities","NetworkSnapshots","Screenshots","ActivityTimeline","machine_info" })
+{
+    using var cmd = conn.CreateCommand();
+    cmd.CommandText = $"DELETE FROM \"{t}\"";
+    try { var n = cmd.ExecuteNonQuery(); Console.WriteLine($"  {t}: {n} rows deleted"); }
+    catch (Exception ex) { Console.WriteLine($"  {t}: skip ({ex.Message})"); }
+}
+Console.WriteLine("Done — all local data cleared.");
+return;
 
 var statements = new[]
 {
@@ -138,4 +148,4 @@ foreach (var tbl in tables)
 }
 Console.WriteLine();
 Console.WriteLine($"Stop ZeManage.Agent then run:");
-Console.WriteLine($"  Copy-Item \"{dbPath}\" \"{target}\" -Force");
+Console.WriteLine($"  Copy-Item \"{dbPath}\" -Force");

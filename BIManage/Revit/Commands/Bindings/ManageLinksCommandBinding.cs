@@ -28,6 +28,7 @@ namespace BIManage.Revit.Commands.Bindings
         private readonly Func<ModelSessionSyncService?> _modelSessionSyncGetter;
         private DateTime? _dialogOpenedAt;
         private string? _activeModelGuidAtOpen;
+        private readonly BIManage.Core.Features.IFeatureToggleService? _featureToggleService;
 
         // Probed in order; first hit wins. ID_LINK_MANAGEMENT is the canonical Manage Links
         // dialog on every Revit version we ship. The remaining entries are defensive fallbacks
@@ -44,12 +45,14 @@ namespace BIManage.Revit.Commands.Bindings
             ILogger logger,
             SessionRepository? sessionRepository,
             Func<IRevitContext?>? revitContextGetter = null,
-            Func<ModelSessionSyncService?>? modelSessionSyncGetter = null)
+            Func<ModelSessionSyncService?>? modelSessionSyncGetter = null,
+            BIManage.Core.Features.IFeatureToggleService? featureToggleService = null)
             : base(uiApp, logger)
         {
             _sessionRepository = sessionRepository;
             _revitContextGetter = revitContextGetter ?? (() => null);
             _modelSessionSyncGetter = modelSessionSyncGetter ?? (() => null);
+            _featureToggleService = featureToggleService;
         }
 
         public override void RegisterWithBeforeExecute() => Register();
@@ -99,6 +102,9 @@ namespace BIManage.Revit.Commands.Bindings
         {
             try
             {
+                if (_featureToggleService?.IsGlobalPaused == true || _featureToggleService?.IsEmployeeCaptureDisabled == true)
+                    return;
+
                 _dialogOpenedAt = DateTime.UtcNow;
                 var doc = (sender as UIApplication)?.ActiveUIDocument?.Document
                           ?? UIApp.ActiveUIDocument?.Document;

@@ -52,6 +52,7 @@ namespace BIManage.Revit.Commands.Bindings
         private readonly Func<EventInterventionHandler?>? _interventionHandlerFactory;
         private readonly Func<BIManage.Data.SQLite.AuditRepository?>? _auditRepoGetter;
         private readonly Func<BIManage.Data.SQLite.RegisteredModelsRepository?>? _registeredModelsRepoGetter;
+        private readonly BIManage.Core.Features.IFeatureToggleService? _featureToggleService;
 
         public MirrorCommandBinding(
             UIApplication uiApp,
@@ -62,7 +63,8 @@ namespace BIManage.Revit.Commands.Bindings
             Func<IEventProtectionService?>? eventProtectionGetter = null,
             Func<EventInterventionHandler?>? interventionHandlerFactory = null,
             Func<BIManage.Data.SQLite.AuditRepository?>? auditRepoGetter = null,
-            Func<BIManage.Data.SQLite.RegisteredModelsRepository?>? registeredModelsRepoGetter = null)
+            Func<BIManage.Data.SQLite.RegisteredModelsRepository?>? registeredModelsRepoGetter = null,
+            BIManage.Core.Features.IFeatureToggleService? featureToggleService = null)
             : base(uiApp, logger)
         {
             _ruleInterceptor = ruleInterceptor;
@@ -72,6 +74,7 @@ namespace BIManage.Revit.Commands.Bindings
             _interventionHandlerFactory = interventionHandlerFactory;
             _auditRepoGetter = auditRepoGetter;
             _registeredModelsRepoGetter = registeredModelsRepoGetter;
+            _featureToggleService = featureToggleService;
             CommandId = RevitCommandId.LookupPostableCommandId(mirrorCommand);
         }
 
@@ -102,6 +105,9 @@ namespace BIManage.Revit.Commands.Bindings
         {
             try
             {
+                if (_featureToggleService?.IsGlobalPaused == true || _featureToggleService?.IsEmployeeCaptureDisabled == true)
+                    return;
+
                 // Log when Mirror command is activated (user requirement)
                 Logger?.LogInfo($"Mirror command activated: {e.CommandId.Name} ({_mirrorCommand})");
 

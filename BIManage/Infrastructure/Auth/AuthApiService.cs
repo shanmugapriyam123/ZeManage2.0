@@ -115,14 +115,14 @@ namespace BIManage.Infrastructure.Auth
         }
 
         /// <summary>
-        /// POST /api/v1/tenant/device/auth/register-device
-        /// Registers a device with license key and machine ID
+        /// POST /api/v1/tenant/device/auth/register-or-validate-device
+        /// Registers a device with license key and machine ID (register-device + validate-device merged)
         /// </summary>
         public async Task<DeviceAuthResponse?> RegisterDeviceAsync(string licenseKey, string machineId)
         {
             try
             {
-                var url = $"{_baseUrl}/api/v1/tenant/device/auth/register-device";
+                var url = $"{_baseUrl}/api/v1/tenant/device/auth/register-or-validate-device";
                 _logger?.LogInfo($"Registering device: {machineId}");
 
                 string? sid = null;
@@ -157,17 +157,22 @@ namespace BIManage.Infrastructure.Auth
         }
 
         /// <summary>
-        /// POST /api/v1/tenant/device/auth/validate-device
-        /// Validates an already-registered device by machine ID
+        /// POST /api/v1/tenant/device/auth/register-or-validate-device
+        /// Validates an already-registered device by machine ID (no license key on hand at this
+        /// call site — relies on the endpoint treating licenseKey as optional for a known device,
+        /// same as the old validate-device behavior).
         /// </summary>
         public async Task<DeviceAuthResponse?> ValidateDeviceAsync(string machineId)
         {
             try
             {
-                var url = $"{_baseUrl}/api/v1/tenant/device/auth/validate-device";
+                var url = $"{_baseUrl}/api/v1/tenant/device/auth/register-or-validate-device";
                 _logger?.LogInfo($"Validating device: {machineId}");
 
-                var request = new ValidateDeviceRequest { MachineId = machineId };
+                string? sid = null;
+                try { sid = System.Security.Principal.WindowsIdentity.GetCurrent().User?.Value; } catch { }
+
+                var request = new ValidateDeviceRequest { MachineId = machineId, Sid = sid };
                 var response = await PostAsync<ValidateDeviceRequest, DeviceAuthResponse>(url, request);
 
                 if (response?.AccessToken != null)

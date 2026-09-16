@@ -7,6 +7,7 @@ using Microsoft.Extensions.Options;
 using Polly;
 using Polly.Retry;
 using ZeManage.Agent.Core.Data;
+using ZeManage.Agent.Core.Models;
 using ZeManage.Agent.Core.Monitors;
 using ZeManage.Agent.Core.Services;
 
@@ -22,6 +23,7 @@ public sealed class SyncService : BackgroundService
     private readonly IHttpClientFactory _httpFactory;
     private readonly TokenProvider _tokens;
     private readonly ProcessMonitor _processMonitor;
+    private readonly ScreenshotMonitor _screenshotMonitor;
     private readonly ResiliencePipeline _retry;
     private bool _identityPosted;
 
@@ -33,16 +35,18 @@ public sealed class SyncService : BackgroundService
         AgentState state,
         IHttpClientFactory httpFactory,
         TokenProvider tokens,
-        ProcessMonitor processMonitor)
+        ProcessMonitor processMonitor,
+        ScreenshotMonitor screenshotMonitor)
     {
-        _store          = store;
-        _identity       = identity;
-        _opts           = opts.Value;
-        _log            = log;
-        _state          = state;
-        _httpFactory    = httpFactory;
-        _tokens         = tokens;
-        _processMonitor = processMonitor;
+        _store             = store;
+        _identity          = identity;
+        _opts              = opts.Value;
+        _log               = log;
+        _state             = state;
+        _httpFactory       = httpFactory;
+        _tokens            = tokens;
+        _processMonitor    = processMonitor;
+        _screenshotMonitor = screenshotMonitor;
 
         _retry = new ResiliencePipelineBuilder()
             .AddRetry(new RetryStrategyOptions
@@ -69,7 +73,7 @@ public sealed class SyncService : BackgroundService
                 _log.LogWarning(ex, "Sync cycle failed");
                 _state.NotifyChanged();
             }
-            try { await Task.Delay(interval, stoppingToken); }
+            try { await Task.WhenAny(Task.Delay(interval, stoppingToken), _state.SyncTrigger.WaitAsync(stoppingToken)); }
             catch (OperationCanceledException) { break; }
         }
     }
@@ -105,13 +109,15 @@ public sealed class SyncService : BackgroundService
         // Fetch company settings to get server-configured idle threshold
         await TryFetchCompanySettingsAsync(client, ct);
 
-        // Register device identity once per session
-        if (!_identityPosted)
+        // Register device identity once per session.
+        // Skip if CompanyId not yet loaded from token — retry next cycle rather than send "" and get 400.
+        if (!_identityPosted && Guid.TryParse(_tokens.CompanyId, out var companyGuid))
         {
+            var now = DateTime.UtcNow;
             var identityPayload = new
             {
                 machineId                 = id.MachineId,           // string GUID — backend requires string
-                companyId                 = _tokens.CompanyId ?? "",
+                companyId                 = companyGuid,
                 companyName               = _tokens.CompanyName ?? "",
                 zeUserId                  = _tokens.ZeUserId ?? "",
                 timeZone                  = TimeZoneInfo.Local.Id,
@@ -120,7 +126,12 @@ public sealed class SyncService : BackgroundService
                 sid                       = id.WindowsSid ?? "",
                 windowsUserName           = id.UserName,
                 hostName                  = id.MachineName,
-                capturedAt                = DateTime.UtcNow,
+                machineName               = id.MachineName,
+                osName                    = id.WindowsEdition,
+                agentVersion              = System.Reflection.Assembly.GetEntryAssembly()?.GetName().Version?.ToString() ?? "1.0.0",
+                installedDate             = now,
+                licenseKey                = Guid.TryParse(_opts.LicenseKey, out var lkGuid) ? (Guid?)lkGuid : null,
+                capturedAt                = now,
                 cpuModel                  = id.CpuModel,
                 ramGb                     = id.TotalRamGB,
                 ramUsableGb               = id.UsableRamGB,
@@ -137,7 +148,13 @@ public sealed class SyncService : BackgroundService
                 windowsVersion            = id.WindowsVersion,
                 osBuild                   = id.OsBuild,
                 biosVersion               = id.BiosVersion,
-                motherboardModel          = id.MotherboardModel
+                motherboardModel          = id.MotherboardModel,
+                timezoneId                = id.TimeZoneId,
+                startDate                 = now,
+                endDate                   = now,
+                isActive                  = true,
+                createdAt                 = now,
+                updatedAt                 = now
             };
             if (await TryPostSingleAsync(client, "/api/v1/agentdb/identity", identityPayload, ct))
             {
@@ -161,7 +178,7 @@ public sealed class SyncService : BackgroundService
                 type            = a.ApplicationType,
                 displayName     = a.ApplicationName,
                 version         = a.Version,
-                iconUrl         = a.IconBase64,
+                iconUrl         = (string?)null,   // real icon goes via POST /applications/{applicationId}/icon (binary)
                 status          = "Running",
                 createdAt       = a.CreatedAt,
                 updatedAt       = a.UpdatedAt,
@@ -172,20 +189,26 @@ public sealed class SyncService : BackgroundService
                 crashCount      = 0
             }).ToArray();
 
-            // Returns sessionIds indexed same as payloads
-            var sessionIds = await TryBatchPostAppOpenAsync(client, "/api/v1/agentdb/applications", payloads, ct);
+            // Matched by array position, not by executableName — a batch can contain multiple
+            // launches of the same executable (e.g. several Compil32/setup.exe instances), and
+            // the server returns results in the same order it received them. A name-keyed lookup
+            // would incorrectly collapse all same-named launches onto a single shared session.
+            var results = await TryBatchPostAppOpenAsync(client, "/api/v1/agentdb/applications", payloads, ct);
 
-            for (int i = 0; i < runningNoSession.Count && i < sessionIds.Count; i++)
+            for (int i = 0; i < runningNoSession.Count && i < results.Count; i++)
             {
-                if (sessionIds[i] is not null)
+                var app = runningNoSession[i];
+                var (sessionId, serverApplicationId) = results[i];
+                if (sessionId is not null)
                 {
-                    var localId   = runningNoSession[i].LocalId;
-                    var sessionId = sessionIds[i]!;
-                    await _store.UpdateSessionIdAsync(localId, sessionId, ct);
-                    _processMonitor.UpdateInMemorySessionId(localId, sessionId);
-                    _log.LogInformation("sessionId set: {App} → {SessionId}", runningNoSession[i].ApplicationName, sessionId);
+                    await _store.UpdateSessionIdAsync(app.LocalId, sessionId, ct);
+                    _processMonitor.UpdateInMemorySessionId(app.LocalId, sessionId);
+                    _log.LogInformation("sessionId set: {App} → {SessionId}", app.ApplicationName, sessionId);
                     anyOk = true;
                 }
+
+                if (serverApplicationId is not null && app.IconBase64 is not null)
+                    await UploadIconAsync(client, serverApplicationId, app.IconBase64!, app.ApplicationName, ct);
             }
 
         }
@@ -206,7 +229,7 @@ public sealed class SyncService : BackgroundService
                 type            = a.ApplicationType,
                 displayName     = a.ApplicationName,
                 version         = a.Version,
-                iconUrl         = a.IconBase64,
+                iconUrl         = (string?)null,   // real icon goes via POST /applications/{applicationId}/icon (binary)
                 createdAt       = a.CreatedAt,
                 updatedAt       = a.UpdatedAt,
                 activeSeconds   = a.ActiveSeconds,
@@ -230,19 +253,63 @@ public sealed class SyncService : BackgroundService
             _log.LogWarning("Skipped POST for {Count} closed apps with no session_id", closedNoSession.Count);
         }
 
+        // Batch POST focus-interval rows for the Activities Timeline — REST-only, no SignalR
+        // involvement. Two kinds go in the same batch every cycle:
+        //   1. Closed, unsynced segments — final, marked Synced after a successful POST.
+        //   2. The CURRENTLY OPEN segment (if any) — re-sent every cycle regardless of Synced,
+        //      upserted server-side by localId, so the timeline can always show a "Running" row
+        //      for whatever's happening right now instead of only learning about a segment once
+        //      it closes (which, for someone who stays on one app/state all day, could otherwise
+        //      mean nothing ever appears).
+        // A ~60s delay here is fine either way; this feeds a look-back timeline, not a live
+        // indicator — the live "Task" column is still ReportLiveActivity over SignalR, untouched.
+        var closedIntervals = await _store.GetUnsyncedClosedActivityIntervalsAsync(200, ct);
+        var openIntervals   = await _store.GetOpenActivityIntervalsAsync(ct);
+
+        if (closedIntervals.Count > 0 || openIntervals.Count > 0)
+        {
+            static object ToDto(ActivityInterval iv, string machineId) => new
+            {
+                localId         = iv.LocalId,
+                activity        = iv.Activity,
+                applicationId   = string.IsNullOrEmpty(iv.ApplicationId)   ? null : iv.ApplicationId,
+                applicationName = string.IsNullOrEmpty(iv.ApplicationName) ? null : iv.ApplicationName,
+                processName     = string.IsNullOrEmpty(iv.ProcessName)    ? null : iv.ProcessName,
+                machineId       = machineId,
+                intervalStart   = iv.StartTime,
+                intervalEnd     = iv.EndTime,
+                activeSeconds   = iv.ActiveSeconds,
+                focusSeconds    = iv.FocusSeconds,
+                idleSeconds     = iv.IdleSeconds
+            };
+
+            var intervalDtos = closedIntervals.Select(iv => ToDto(iv, machineId))
+                .Concat(openIntervals.Select(iv => ToDto(iv, machineId)))
+                .ToList();
+
+            if (await TryPostAsync(client, "/api/v1/agentdb/activity-intervals", intervalDtos, ct))
+            {
+                if (closedIntervals.Count > 0)
+                    await _store.MarkSyncedAsync(closedIntervals, ct);
+                anyOk = true;
+            }
+        }
+
         var net = await _store.GetUnsyncedNetworkAsync(100, ct);
         if (net.Count > 0)
         {
+            // Send only the latest snapshot — server stores one-per-capture
             var latest = net.OrderByDescending(n => n.CapturedAt).First();
             var dto = new
             {
-                companyId         = _tokens.CompanyId,
-                zeUserId          = _tokens.ZeUserId,
                 capturedAt        = latest.CapturedAt,
-                downloadMbps      = (float)latest.DownloadMbps,
-                uploadMbps        = (float)latest.UploadMbps,
-                latencyMs         = (float)latest.LatencyMs,
-                packetLossPercent = (float)latest.PacketLossPercent,
+                ipAddress         = id.IpAddress,
+                macAddress        = id.MacAddress,
+                connectionType    = latest.ConnectionType ?? "Ethernet",
+                downloadMbps      = latest.DownloadMbps,
+                uploadMbps        = latest.UploadMbps,
+                latencyMs         = latest.LatencyMs,
+                packetLossPercent = latest.PacketLossPercent,
                 vpnConnected      = latest.VpnConnected,
                 adapterName       = latest.ActiveAdapter,
                 healthScore       = latest.HealthScore
@@ -265,44 +332,60 @@ public sealed class SyncService : BackgroundService
             if (withoutUrl.Count > 0)
                 await _store.MarkSyncedAsync(withoutUrl, ct);
 
+            // Server requires non-empty companyId/zeUserId (GUID format) — skip this cycle
+            // rather than send invalid empty strings if tokens haven't loaded yet.
             if (withUrl.Count > 0)
             {
-                var dtos = withUrl.Select(b => new
+                if (string.IsNullOrEmpty(_tokens.CompanyId) || string.IsNullOrEmpty(_tokens.ZeUserId))
                 {
-                    zeUserId        = _tokens.ZeUserId ?? "",
-                    companyId       = _tokens.CompanyId ?? "",
-                    browserName     = b.Browser,
-                    processName     = b.Browser == "Google Chrome" ? "chrome" : "msedge",
-                    pageTitle       = b.PageTitle,
-                    url             = b.Url,
-                    applicationId   = b.ApplicationId,
-                    startTime       = b.StartTime,
-                    endTime         = b.EndTime,
-                    durationSeconds = b.DurationSeconds
-                }).ToList();
-                if (await TryPostAsync(client, "/api/v1/agentdb/browser-activities", dtos, ct))
+                    _log.LogWarning("Browser sync skipped — CompanyId={CompanyId} ZeUserId={ZeUserId} not yet loaded from token",
+                        _tokens.CompanyId ?? "(null)", _tokens.ZeUserId ?? "(null)");
+                }
+                else
                 {
-                    await _store.MarkSyncedAsync(withUrl, ct);
-                    anyOk = true;
+                    // Server column is genuinely varchar(100) (confirmed via a live 22001 "value too
+                    // long for type character varying(100)" error, not varchar(500) — clamping to
+                    // 500 here let oversized values through, and since this posts a whole batch in
+                    // one request, a single over-limit item failed EVERY browser activity in that
+                    // sync cycle, not just itself.
+                    static string? Clamp(string? s, int max) => s is { } str && str.Length > max ? str[..max] : s;
+
+                    var dtos = withUrl.Select(b => new
+                    {
+                        companyId       = _tokens.CompanyId,
+                        zeUserId        = _tokens.ZeUserId,
+                        browserName     = b.Browser,
+                        processName     = b.Browser.Contains("Chrome", StringComparison.OrdinalIgnoreCase) ? "chrome" : "msedge",
+                        url             = Clamp(b.Url, 100),
+                        pageTitle       = Clamp(b.PageTitle, 100),
+                        startTime       = b.StartTime,
+                        endTime         = b.EndTime,
+                        durationSeconds = b.DurationSeconds
+                    }).ToList();
+                    if (await TryPostAsync(client, "/api/v1/agentdb/browser-activities", dtos, ct))
+                    {
+                        await _store.MarkSyncedAsync(withUrl, ct);
+                        anyOk = true;
+                    }
                 }
             }
         }
 
+        // There is no "resubmit metadata" endpoint for a screenshot that failed its
+        // immediate upload — /api/v1/agentdb/screenshots expects a screenshotId +
+        // blobUrl that only exist AFTER a successful upload. So retrying means
+        // re-doing the actual multipart upload via ScreenshotMonitor, not a
+        // separate lightweight POST.
         var shots = await _store.GetUnsyncedScreenshotsAsync(20, ct);
-        if (shots.Count > 0)
+        foreach (var s in shots)
         {
-            var dtos = shots.Select(s => new
+            if (!File.Exists(s.FilePath))
             {
-                capturedAt    = s.CapturedAt,
-                triggerEvent  = s.TriggerEvent,
-                filePath      = s.FilePath,
-                fileSizeBytes = s.FileSizeBytes
-            }).ToList();
-            if (await TryPostAsync(client, "/api/v1/agentdb/screenshots", dtos, ct))
-            {
-                await _store.MarkSyncedAsync(shots, ct);
-                anyOk = true;
+                _log.LogWarning("Screenshot file missing, giving up on retry: {Path}", s.FilePath);
+                await _store.MarkSyncedAsync(new[] { s }, ct);
+                continue;
             }
+            await _screenshotMonitor.UploadAndNotifyAsync(s, s.FilePath, s.ApplicationId, null, ct);
         }
 
         totalUnsynced = await GetUnsyncedTotalAsync(ct);
@@ -314,12 +397,13 @@ public sealed class SyncService : BackgroundService
         _state.NotifyChanged();
     }
 
-    // POSTs all apps in one batch. Returns sessionIds indexed same as input array.
-    // Null entry = server didn't return a sessionId for that position.
-    private async Task<List<string?>> TryBatchPostAppOpenAsync<T>(
+    // POSTs all apps in one batch. Returns (sessionId, serverApplicationId) keyed by executableName.
+    // Matching by executableName is reliable because the server always echoes it back and it
+    // equals the agent's ProcessName — no dependency on response order or nullable AppId.
+    private async Task<List<(string? sessionId, string? applicationId)>> TryBatchPostAppOpenAsync<T>(
         HttpClient client, string path, T[] payload, CancellationToken ct)
     {
-        var results = new List<string?>(payload.Length);
+        var results = new List<(string?, string?)>();
         try
         {
             using var resp = await client.PostAsJsonAsync(path, payload, ct);
@@ -327,7 +411,6 @@ public sealed class SyncService : BackgroundService
             {
                 var err = await resp.Content.ReadAsStringAsync(ct);
                 _log.LogWarning("Batch app open POST {Status}: {Body}", (int)resp.StatusCode, err);
-                for (int i = 0; i < payload.Length; i++) results.Add(null);
                 return results;
             }
 
@@ -350,21 +433,51 @@ public sealed class SyncService : BackgroundService
             else if (root.ValueKind == System.Text.Json.JsonValueKind.Object)
                 items.Add(root);
 
-            for (int i = 0; i < payload.Length; i++)
+            // Order matters here — the caller zips this list against the request array by
+            // position, since multiple queued launches can share the same executableName and a
+            // name-keyed lookup would incorrectly collapse them onto one shared session.
+            foreach (var item in items)
             {
-                string? sid = i < items.Count ? ExtractSessionId(items[i]) : null;
+                var sid = ExtractSessionId(item);
+                var aid = item.TryGetProperty("applicationId", out var aidEl) && aidEl.ValueKind == System.Text.Json.JsonValueKind.String
+                    ? aidEl.GetString() : null;
+
                 if (sid is null)
-                    _log.LogWarning("No sessionId in response at index {I} — raw: {Raw}",
-                        i, i < items.Count ? items[i].GetRawText() : "(missing)");
-                results.Add(sid);
+                    _log.LogWarning("No sessionId in batch open response item — raw: {Raw}", item.GetRawText());
+
+                results.Add((sid, aid));
             }
         }
         catch (Exception ex)
         {
             _log.LogWarning(ex, "Batch app open POST failed");
-            while (results.Count < payload.Length) results.Add(null);
         }
         return results;
+    }
+
+    // Uploads the app's icon as binary via the dedicated endpoint — mirrors
+    // ProcessMonitor.UploadIconAsync for apps whose open-POST only succeeds
+    // on this retry path (e.g. the primary attempt hit a transient network error).
+    private async Task UploadIconAsync(HttpClient client, string serverApplicationId, string iconBase64, string appName, CancellationToken ct)
+    {
+        try
+        {
+            var bytes = Convert.FromBase64String(iconBase64);
+            using var content = new MultipartFormDataContent();
+            var byteContent = new ByteArrayContent(bytes);
+            byteContent.Headers.ContentType = new MediaTypeHeaderValue("image/png");
+            content.Add(byteContent, "Icon", "icon.png");
+
+            using var resp = await client.PostAsync($"/api/v1/agentdb/applications/{serverApplicationId}/icon", content, ct);
+            if (resp.IsSuccessStatusCode)
+                _log.LogInformation("Icon uploaded: {App} → {AppId}", appName, serverApplicationId);
+            else
+                _log.LogWarning("Icon upload failed: {App} → {Status}", appName, (int)resp.StatusCode);
+        }
+        catch (Exception ex)
+        {
+            _log.LogDebug(ex, "Icon upload failed for {App}", appName);
+        }
     }
 
     // Case-insensitive scan for any known session-ID field in a JSON response item.
@@ -437,20 +550,101 @@ public sealed class SyncService : BackgroundService
 
     private Task<int> GetUnsyncedTotalAsync(CancellationToken ct) => _store.CountUnsyncedAsync(ct);
 
+    // Called once at startup, before Host.StartAsync, so a device that has previously synced
+    // real group settings keeps enforcing them (break window, screenshot schedule/interval,
+    // idle threshold) from the very first tick instead of running blank until the first live
+    // /my-group fetch succeeds — mirrors how IsCaptureEnabled is loaded from cache early in
+    // App.xaml.cs. A no-op if nothing has ever been persisted (fresh install).
+    public async Task ApplyPersistedGroupSettingsAsync(CancellationToken ct = default)
+    {
+        try
+        {
+            var json = await _store.GetGroupSettingsRawAsync(ct);
+            if (string.IsNullOrEmpty(json)) return;
+
+            using var doc = JsonDocument.Parse(json);
+            ApplyGroupSettings(doc.RootElement.Clone());
+            _log.LogInformation("Group settings restored from local cache");
+        }
+        catch (Exception ex)
+        {
+            _log.LogWarning(ex, "Could not apply cached group settings");
+        }
+    }
+
     private async Task TryFetchCompanySettingsAsync(HttpClient client, CancellationToken ct)
     {
         try
         {
-            using var resp = await client.GetAsync("/api/v1/agentdb/company-settings", ct);
-            if (!resp.IsSuccessStatusCode) return;
+            // Group-scoped settings only — "my-group" resolves the caller's own group from its
+            // own JWT/identity, same self-service convention as the other agentdb endpoints.
+            // Field-parsing below stays defensive (TryGetProperty per field) either way — an
+            // unrecognized/missing field just leaves that one setting at its last-known value
+            // instead of failing the whole sync.
+            var data = await FetchGroupSettingsDataAsync(client, "/api/v1/agentdb/group-worktime-setup/my-group", ct);
+
+            if (data is { } settings)
+            {
+                ApplyGroupSettings(settings);
+                // Persist on every successful fetch so a later empty/failed response (backend
+                // hiccup, transient group-assignment gap) or a process restart doesn't wipe
+                // these fields back to blank — see ApplyPersistedGroupSettingsAsync.
+                try { await _store.SetGroupSettingsRawAsync(settings.GetRawText(), ct); }
+                catch (Exception ex) { _log.LogDebug(ex, "Could not persist group settings"); }
+            }
+        }
+        catch (Exception ex)
+        {
+            _log.LogDebug(ex, "Could not fetch company settings");
+        }
+    }
+
+    // Fetches one group-worktime-setup route and returns its unwrapped settings object, or null
+    // if the route failed, returned no body, or returned an empty/absent data array.
+    private async Task<JsonElement?> FetchGroupSettingsDataAsync(HttpClient client, string path, CancellationToken ct)
+    {
+        try
+        {
+            using var resp = await client.GetAsync(path, ct);
+            if (!resp.IsSuccessStatusCode)
+            {
+                // Was a silent `return null` — a sustained failure here (auth glitch, server
+                // error) looked identical in the logs to a routine "no group assigned" empty
+                // response, with nothing above Debug to tell them apart. Surfacing the actual
+                // status is what would have caught the settings-fetch stall that persisted for
+                // ~26 hours before a restart happened to clear it.
+                var errBody = await resp.Content.ReadAsStringAsync(ct);
+                _log.LogWarning("Group settings fetch failed for {Path}: {Status} — {Body}", path, resp.StatusCode, errBody);
+                return null;
+            }
 
             var json = await resp.Content.ReadAsStringAsync(ct);
             using var doc = JsonDocument.Parse(json);
             var root = doc.RootElement;
 
             JsonElement data = root;
-            if (root.TryGetProperty("data", out var d)) data = d;
+            if (root.ValueKind == JsonValueKind.Object && root.TryGetProperty("data", out var d))
+                data = d;
 
+            // Both routes wrap their settings object in an array ({"data":[...]}) — at most one
+            // entry for "my-group" (the caller's own group), possibly more for "default" (only the
+            // first/active one matters here).
+            if (data.ValueKind == JsonValueKind.Array)
+                data = data.EnumerateArray().FirstOrDefault();
+
+            return data.ValueKind == JsonValueKind.Object ? data.Clone() : null;
+        }
+        catch (Exception ex)
+        {
+            _log.LogDebug(ex, "Group settings fetch failed for {Path}", path);
+            return null;
+        }
+    }
+
+    private void ApplyGroupSettings(JsonElement data)
+    {
+        try
+        {
             if (data.TryGetProperty("isIdleTrackingEnabled", out var idleEnabled))
                 _state.IsIdleTrackingEnabled = idleEnabled.GetBoolean();
 
@@ -469,13 +663,51 @@ public sealed class SyncService : BackgroundService
                 scInt.ValueKind == JsonValueKind.Number && scInt.TryGetInt32(out var scM) && scM > 0)
                 _state.ScreenshotIntervalMinutes = scM;
 
-            if (data.TryGetProperty("screenshotStartTime", out var scSt) &&
-                TimeSpan.TryParse(scSt.GetString(), out var stTs))
-                _state.ScreenshotStartTime = stTs;
+            // activeWindowStartTime/EndTime come back as full ISO datetimes (e.g.
+            // "0001-01-02T03:30:00+00:00"), the same DateTime?-not-TimeOnly? shape as
+            // breakStartTime/breakEndTime below — TimeSpan.TryParse silently fails on this
+            // format (it expects plain "HH:mm:ss"), which was leaving ScreenshotStartTime/
+            // EndTime stuck at their 9am-8pm client defaults instead of the server's actual
+            // configured window. Same RoundtripKind + ToLocalTime() fix as breakStartTime.
+            if (data.TryGetProperty("activeWindowStartTime", out var scSt) &&
+                DateTime.TryParse(scSt.GetString(), null,
+                    System.Globalization.DateTimeStyles.RoundtripKind, out var scStDt))
+                _state.ScreenshotStartTime = scStDt.ToLocalTime().TimeOfDay;
 
-            if (data.TryGetProperty("screenshotEndTime", out var scEt) &&
-                TimeSpan.TryParse(scEt.GetString(), out var etTs))
-                _state.ScreenshotEndTime = etTs;
+            if (data.TryGetProperty("activeWindowEndTime", out var scEt) &&
+                DateTime.TryParse(scEt.GetString(), null,
+                    System.Globalization.DateTimeStyles.RoundtripKind, out var scEtDt))
+                _state.ScreenshotEndTime = scEtDt.ToLocalTime().TimeOfDay;
+
+            if (data.TryGetProperty("isActiveWindowEnabled", out var actWinEn))
+                _state.IsActiveWindowEnabled = actWinEn.ValueKind == JsonValueKind.True;
+
+            // Break Time Setup — breakStartTime/breakEndTime come back as full ISO datetimes
+            // (e.g. "2026-08-10T10:24:59.185Z"), not plain "HH:mm"/"HH:mm:ss" like
+            // activeWindowStartTime/EndTime above — the server-side field turned out to be
+            // DateTime?, not TimeOnly?/TimeSpan (confirmed by the frontend team hitting the same
+            // thing). RoundtripKind preserves the 'Z' as UTC so ToLocalTime() correctly converts
+            // to this machine's wall-clock time before taking just the time-of-day, matching how
+            // the value was originally encoded (a chosen LOCAL time, shifted to UTC on save).
+            if (data.TryGetProperty("isBreakTimeEnabled", out var brkEnabled))
+                _state.IsBreakTimeEnabled = brkEnabled.ValueKind == JsonValueKind.True;
+
+            if (data.TryGetProperty("flexibleBreak", out var flexBreak))
+                _state.IsFlexibleBreak = flexBreak.ValueKind == JsonValueKind.True;
+
+            // Fixed IST offset (AgentState.ToIstTimeOfDay), not .ToLocalTime() — the server encodes
+            // these as genuine UTC instants of the admin's IST wall-clock input, so recovering the
+            // intended break window must not depend on this agent machine's own OS timezone
+            // setting (see AgentState.IsInActiveBreakWindow for the full explanation).
+            if (data.TryGetProperty("breakStartTime", out var brkSt) &&
+                DateTime.TryParse(brkSt.GetString(), null,
+                    System.Globalization.DateTimeStyles.RoundtripKind, out var brkStDt))
+                _state.BreakStartTime = AgentState.ToIstTimeOfDay(brkStDt.ToUniversalTime());
+
+            if (data.TryGetProperty("breakEndTime", out var brkEt) &&
+                DateTime.TryParse(brkEt.GetString(), null,
+                    System.Globalization.DateTimeStyles.RoundtripKind, out var brkEtDt))
+                _state.BreakEndTime = AgentState.ToIstTimeOfDay(brkEtDt.ToUniversalTime());
 
             if (data.TryGetProperty("screenshotMonday",    out var d1)) _state.ScreenshotMonday    = d1.GetBoolean();
             if (data.TryGetProperty("screenshotTuesday",   out var d2)) _state.ScreenshotTuesday   = d2.GetBoolean();
@@ -487,7 +719,7 @@ public sealed class SyncService : BackgroundService
         }
         catch (Exception ex)
         {
-            _log.LogDebug(ex, "Could not fetch company settings");
+            _log.LogDebug(ex, "Could not apply group settings");
         }
     }
 }

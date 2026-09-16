@@ -32,6 +32,22 @@ public sealed class ScreenshotMonitor : BackgroundService
     private const int SM_XVIRTUALSCREEN  = 76;
     private const int SM_YVIRTUALSCREEN  = 77;
 
+    // Deterministic ID for a software — same processName always gives same applicationId
+    private static string MakeApplicationId(string processName) =>
+        new Guid(System.Security.Cryptography.MD5.HashData(
+            System.Text.Encoding.UTF8.GetBytes(processName.ToLowerInvariant()))).ToString();
+
+    // CaptureAsync is called from four independent, unsynchronized loops (SessionStart above,
+    // the Timer loop, WatchIdleReturnAsync, WatchOnDemandCaptureAsync) — with nothing guarding
+    // it, two of them coinciding (e.g. the Timer interval elapsing right as the idle-return
+    // watcher detects an idle→active transition, or an admin's "Capture Now" landing at the
+    // same moment) produces two screenshots at effectively the same CapturedAt timestamp, same
+    // foreground app. _captureLock keeps the actual capture+upload from ever running twice at
+    // once; _minGapBetweenCaptures then makes the second of two near-simultaneous triggers a
+    // deliberate no-op instead of a genuine duplicate screenshot.
+    private readonly SemaphoreSlim _captureLock = new(1, 1);
+    private static readonly TimeSpan _minGapBetweenCaptures = TimeSpan.FromSeconds(5);
+
     public ScreenshotMonitor(
         LocalStore store,
         IdentityService identity,
@@ -62,25 +78,48 @@ public sealed class ScreenshotMonitor : BackgroundService
 
         var id = _identity.Get();
 
-        if (_opts.ScreenshotOnAttendanceStart && _state.IsScreenshotEnabled && IsWithinSchedule())
+        var startIdleThreshold = TimeSpan.FromMinutes(_state.IdleThresholdMinutes > 0 ? _state.IdleThresholdMinutes : 5);
+        if (_state.IsCaptureEnabled && _opts.ScreenshotOnAttendanceStart && _state.IsScreenshotEnabled && IsWithinSchedule()
+            && Win32Idle.GetIdleDuration() < startIdleThreshold)
         {
             try { await CaptureAsync(id, "SessionStart", stoppingToken); } catch { }
         }
 
         // Run idle-return watcher alongside the timer loop
         _ = WatchIdleReturnAsync(id, stoppingToken);
+        _ = WatchOnDemandCaptureAsync(id, stoppingToken);
+
+        // Polls every 15s and re-reads ScreenshotIntervalMinutes on every tick, rather than
+        // sleeping for one long Task.Delay(interval) — a single long delay locks in whatever
+        // the interval was AT THE MOMENT it started, so an admin lowering the interval mid-wait
+        // (or a fresh process start racing SyncService's first settings fetch) wouldn't take
+        // effect until the current, possibly-stale wait finished. Checking a rolling checkpoint
+        // against the live interval value every 15s means a config change (or the first real
+        // fetch after startup) applies within one poll tick instead of up to a full stale cycle.
+        var lastCheckpoint = DateTime.UtcNow;
+        var pollInterval = TimeSpan.FromSeconds(15);
 
         while (!stoppingToken.IsCancellationRequested)
         {
+            try { await Task.Delay(pollInterval, stoppingToken); }
+            catch (OperationCanceledException) { break; }
+
             var interval = TimeSpan.FromMinutes(
                 _state.ScreenshotIntervalMinutes > 0
                     ? _state.ScreenshotIntervalMinutes
                     : _opts.ScreenshotIntervalMinutes);
 
-            try { await Task.Delay(interval, stoppingToken); }
-            catch (OperationCanceledException) { break; }
+            if (DateTime.UtcNow - lastCheckpoint < interval) continue;
+            lastCheckpoint = DateTime.UtcNow;
 
-            if (!_state.IsScreenshotEnabled || !IsWithinSchedule()) continue;
+            if (!_state.IsCaptureEnabled || !_state.IsScreenshotEnabled || !IsWithinSchedule()) continue;
+
+            var idleThreshold = TimeSpan.FromMinutes(_state.IdleThresholdMinutes > 0 ? _state.IdleThresholdMinutes : 5);
+            if (Win32Idle.GetIdleDuration() >= idleThreshold)
+            {
+                _log.LogDebug("Screenshot skipped — machine idle/locked");
+                continue;
+            }
 
             try { await CaptureAsync(id, "Timer", stoppingToken); }
             catch (Exception ex) { _log.LogDebug(ex, "Screenshot capture failed"); }
@@ -96,7 +135,7 @@ public sealed class ScreenshotMonitor : BackgroundService
             try { await Task.Delay(TimeSpan.FromSeconds(10), ct); }
             catch (OperationCanceledException) { break; }
 
-            if (!_state.IsIdleTrackingEnabled || !_state.IsScreenshotEnabled)
+            if (!_state.IsCaptureEnabled || !_state.IsIdleTrackingEnabled || !_state.IsScreenshotEnabled)
             {
                 wasIdle = false;
                 continue;
@@ -117,7 +156,57 @@ public sealed class ScreenshotMonitor : BackgroundService
         }
     }
 
+    // Polls AgentState.CaptureScreenshotNowRequested — set by AgentHubConnection's
+    // "CaptureScreenshotNow" hub handler — instead of being invoked directly from there, since
+    // ScreenshotMonitor already depends on AgentHubConnection (see UploadAndNotifyAsync's
+    // ReportScreenshot notify) and the reverse dependency would be a circular constructor
+    // reference. 2s poll so an on-demand request feels instant without a dedicated event/signal.
+    private async Task WatchOnDemandCaptureAsync(AgentIdentity id, CancellationToken ct)
+    {
+        while (!ct.IsCancellationRequested)
+        {
+            try { await Task.Delay(TimeSpan.FromSeconds(2), ct); }
+            catch (OperationCanceledException) { break; }
+
+            if (!_state.CaptureScreenshotNowRequested) continue;
+            _state.CaptureScreenshotNowRequested = false;
+
+            if (!_opts.EnableScreenshots || !_state.IsCaptureEnabled) continue;
+
+            try { await CaptureAsync(id, "OnDemand", ct); }
+            catch (Exception ex) { _log.LogDebug(ex, "On-demand screenshot capture failed"); }
+        }
+    }
+
     public async Task CaptureAsync(AgentIdentity id, string trigger, CancellationToken ct)
+    {
+        await _captureLock.WaitAsync(ct);
+        try
+        {
+            // Re-check right after acquiring the lock, not before — the whole point is to
+            // catch the case where another trigger was already mid-capture when this one
+            // queued up behind it and only just finished.
+            var lastCapture = _state.LatestScreenshotAt;
+            if (lastCapture is not null)
+            {
+                var sinceLast = DateTime.Now - lastCapture.Value;
+                if (sinceLast < _minGapBetweenCaptures)
+                {
+                    _log.LogDebug("Screenshot skipped — {Trigger} arrived {Gap:F1}s after the last capture (< {Window}s window)",
+                        trigger, sinceLast.TotalSeconds, _minGapBetweenCaptures.TotalSeconds);
+                    return;
+                }
+            }
+
+            await CaptureCoreAsync(id, trigger, ct);
+        }
+        finally
+        {
+            _captureLock.Release();
+        }
+    }
+
+    private async Task CaptureCoreAsync(AgentIdentity id, string trigger, CancellationToken ct)
     {
         var now     = DateTime.Now;
         var dateDir = Path.Combine(_screenshotDir, now.ToString("yyyy-MM-dd"));
@@ -142,6 +231,10 @@ public sealed class ScreenshotMonitor : BackgroundService
 
         var fileSize = new FileInfo(filePath).Length;
         var utcNow   = now.ToUniversalTime();
+
+        var foregroundProcess = Win32Window.GetForegroundProcessName();
+        var applicationId     = foregroundProcess is not null ? MakeApplicationId(foregroundProcess) : null;
+
         var screenshot = new Screenshot
         {
             CapturedAt    = utcNow,
@@ -149,7 +242,8 @@ public sealed class ScreenshotMonitor : BackgroundService
             FilePath      = filePath,
             FileSizeBytes = fileSize,
             CreatedAt     = utcNow,
-            UpdatedAt     = utcNow
+            UpdatedAt     = utcNow,
+            ApplicationId = applicationId
         };
         await _store.AddScreenshotAsync(screenshot, ct);
 
@@ -158,10 +252,14 @@ public sealed class ScreenshotMonitor : BackgroundService
         _state.NotifyChanged();
         _log.LogDebug("Screenshot: {Trigger} → {Path} ({Bytes}b)", trigger, filePath, fileSize);
 
-        await UploadAndNotifyAsync(screenshot, filePath, ct);
+        await UploadAndNotifyAsync(screenshot, filePath, applicationId, foregroundProcess, ct);
     }
 
-    private async Task UploadAndNotifyAsync(Screenshot screenshot, string filePath, CancellationToken ct)
+    // Public so SyncService can retry a screenshot whose immediate upload attempt
+    // didn't complete (e.g. transient network error) — there is no separate
+    // "resubmit metadata" endpoint on the server, so retrying means re-doing
+    // the actual multipart upload.
+    public async Task UploadAndNotifyAsync(Screenshot screenshot, string filePath, string? applicationId, string? processName, CancellationToken ct)
     {
         try
         {
@@ -180,6 +278,7 @@ public sealed class ScreenshotMonitor : BackgroundService
             content.Add(fileContent, "image", Path.GetFileName(filePath));
             content.Add(new StringContent(screenshot.CapturedAt.ToString("o")), "capturedAt");
             content.Add(new StringContent(screenshot.TriggerEvent ?? ""), "triggerEvent");
+            content.Add(new StringContent(processName ?? ""), "processName");
 
             using var resp = await client.PostAsync("/api/v1/agentdb/screenshots/upload", content, ct);
             if (!resp.IsSuccessStatusCode)
@@ -208,13 +307,27 @@ public sealed class ScreenshotMonitor : BackgroundService
             await _store.MarkSyncedAsync(new[] { screenshot }, ct);
             _log.LogInformation("Screenshot uploaded: {ScreenshotId}", screenshotId ?? "(no id)");
 
-            await _hub.TrySendEventAsync("ReportScreenshot", new
+            // The server's ReportScreenshot hub method binds screenshotId to a non-nullable
+            // Guid — sending JSON null there fails during SignalR's own argument deserialization
+            // (before the hub method's try/catch even runs), which kills the WebSocket outright
+            // ("Websocket closed with error: InternalServerError") instead of just failing this
+            // one call. The upload itself already succeeded and is marked Synced above; this
+            // notify is a best-effort real-time ping only, so skipping it when there's no id is
+            // strictly safer than risking the whole connection over a cosmetic notification.
+            if (screenshotId is not null)
             {
-                screenshotId = screenshotId,
-                blobUrl      = blobUrl,
-                capturedAt   = screenshot.CapturedAt,
-                triggerEvent = screenshot.TriggerEvent
-            }, ct);
+                await _hub.TrySendEventAsync("ReportScreenshot", new
+                {
+                    screenshotId = screenshotId,
+                    blobUrl      = blobUrl,
+                    capturedAt   = screenshot.CapturedAt,
+                    triggerEvent = screenshot.TriggerEvent
+                }, ct);
+            }
+            else
+            {
+                _log.LogWarning("Skipped ReportScreenshot notify — server response had no screenshotId (would crash the hub's non-nullable Guid binding)");
+            }
         }
         catch (Exception ex)
         {
@@ -238,6 +351,12 @@ public sealed class ScreenshotMonitor : BackgroundService
             DayOfWeek.Sunday    => _state.ScreenshotSunday,
             _                   => false
         };
+
+        // "Active time window" toggle governs the start/end TIME restriction specifically —
+        // active days (above) stay in effect regardless of it, matching the web portal's
+        // "Active time window" section being just the Start/End time fields, separate from
+        // the "Active days" section.
+        if (!_state.IsActiveWindowEnabled) return dayEnabled;
 
         return dayEnabled
             && time >= _state.ScreenshotStartTime

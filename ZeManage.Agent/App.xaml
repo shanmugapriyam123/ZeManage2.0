@@ -4,13 +4,14 @@
              xmlns:local="clr-namespace:ZeManage.Agent"
              ShutdownMode="OnExplicitShutdown">
     <Application.Resources>
-        <SolidColorBrush x:Key="BgBrush" Color="#0F172A"/>
-        <SolidColorBrush x:Key="PanelBrush" Color="#1E293B"/>
-        <SolidColorBrush x:Key="AccentBrush" Color="#38BDF8"/>
-        <SolidColorBrush x:Key="TextBrush" Color="#E2E8F0"/>
-        <SolidColorBrush x:Key="MutedBrush" Color="#94A3B8"/>
-        <SolidColorBrush x:Key="OkBrush" Color="#34D399"/>
-        <SolidColorBrush x:Key="WarnBrush" Color="#FBBF24"/>
-        <SolidColorBrush x:Key="ErrBrush" Color="#F87171"/>
+        <SolidColorBrush x:Key="BgBrush"      Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="PanelBrush"  Color="#F8F8F8"/>
+        <SolidColorBrush x:Key="BorderBrush" Color="#E0E0E0"/>
+        <SolidColorBrush x:Key="AccentBrush" Color="#FF7A00"/>
+        <SolidColorBrush x:Key="TextBrush"   Color="#111111"/>
+        <SolidColorBrush x:Key="MutedBrush"  Color="#666666"/>
+        <SolidColorBrush x:Key="OkBrush"     Color="#16A34A"/>
+        <SolidColorBrush x:Key="WarnBrush"   Color="#D97706"/>
+        <SolidColorBrush x:Key="ErrBrush"    Color="#DC2626"/>
     </Application.Resources>
 </Application>

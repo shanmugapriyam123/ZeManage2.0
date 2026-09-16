@@ -9,6 +9,7 @@ public sealed class AgentDbContext : DbContext
     public DbSet<NetworkSnapshot>    NetworkSnapshots  => Set<NetworkSnapshot>();
     public DbSet<BrowserActivity>    BrowserActivities => Set<BrowserActivity>();
     public DbSet<Screenshot>         Screenshots       => Set<Screenshot>();
+    public DbSet<ActivityInterval>   ActivityIntervals => Set<ActivityInterval>();
 
     public AgentDbContext(DbContextOptions<AgentDbContext> options) : base(options) { }
 
@@ -34,5 +35,18 @@ public sealed class AgentDbContext : DbContext
             .Property(x => x.Id).HasColumnName("screenshot_id").ValueGeneratedNever();
         b.Entity<Screenshot>().HasIndex(x => x.Synced);
         b.Entity<Screenshot>().HasIndex(x => x.CapturedAt);
+
+        // Backing table is "ActivityTimeline", not the default-convention "ActivityIntervals" —
+        // a deliberately separate table from ApplicationUsages (see LocalStore.EnsureCreatedAsync),
+        // so the mapping must be explicit here rather than relying on the DbSet-name convention.
+        b.Entity<ActivityInterval>().ToTable("ActivityTimeline");
+        b.Entity<ActivityInterval>()
+            .HasKey(x => x.LocalId);
+        b.Entity<ActivityInterval>()
+            .Property(x => x.LocalId).HasColumnName("local_id").ValueGeneratedNever();
+        b.Entity<ActivityInterval>()
+            .Property(x => x.ApplicationUsageLocalId).HasColumnName("application_local_id");
+        b.Entity<ActivityInterval>().HasIndex(x => x.Synced);
+        b.Entity<ActivityInterval>().HasIndex(x => x.EndTime);
     }
 }

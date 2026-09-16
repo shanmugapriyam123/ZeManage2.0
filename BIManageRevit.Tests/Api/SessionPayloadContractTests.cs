@@ -17,7 +17,8 @@ namespace BIManageRevit.Tests.Api
     /// that would cause 400 Bad Request or silent data loss at the API.
     ///
     /// Covers:
-    ///   - POST /api/v1/Revit/session/Open             → CreateRevitSessionRequest
+    ///   - POST /api/v1/Revit/
+    ///   → CreateRevitSessionRequest
     ///   - PATCH /api/v1/Revit/session/{sessionId}      → UpdateRevitSessionRequest
     ///   - PATCH /api/v1/Revit/session/{id}/heartbeat   → HeartbeatRequest
     ///   - POST /api/v1/Revit/models/model-sessions     → CreateRevitModelSessionRequest

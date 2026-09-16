@@ -16,16 +16,19 @@ namespace BIManage.Revit.Commands.Bindings
         private AddInCommandBinding _binding;
         private readonly IRuleCommandInterceptor? _ruleInterceptor;
         private readonly Func<CommandProtectionBinding?> _commandProtectionGetter;
+        private readonly BIManage.Core.Features.IFeatureToggleService? _featureToggleService;
 
         public CutCommandBinding(
             UIApplication uiApp,
             ILogger logger,
             IRuleCommandInterceptor? ruleInterceptor = null,
-            Func<CommandProtectionBinding?>? commandProtectionGetter = null)
+            Func<CommandProtectionBinding?>? commandProtectionGetter = null,
+            BIManage.Core.Features.IFeatureToggleService? featureToggleService = null)
             : base(uiApp, logger)
         {
             _ruleInterceptor = ruleInterceptor;
             _commandProtectionGetter = commandProtectionGetter ?? (() => null);
+            _featureToggleService = featureToggleService;
 
             // Excel-verified: CutToClipboard | ID_EDIT_CUT; fallback to PostableCommand enum
             CommandId = RevitCommandId.LookupCommandId("ID_EDIT_CUT")
@@ -54,6 +57,9 @@ namespace BIManage.Revit.Commands.Bindings
         {
             try
             {
+                if (_featureToggleService?.IsGlobalPaused == true || _featureToggleService?.IsEmployeeCaptureDisabled == true)
+                    return;
+
                 Logger?.LogInfo($"Cut command intercepted: {e.CommandId.Name}");
 
                 // PRIORITY 0: Command Protection (Notify/Assist/Protect)

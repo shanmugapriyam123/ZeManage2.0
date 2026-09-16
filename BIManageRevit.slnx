@@ -21,74 +21,70 @@
 
   <!-- ZeManage.Agent.Core (net10.0-windows) — R27 only, EF Core 9 requires .NET 8+ -->
   <Project Path="ZeManage.Agent.Core\ZeManage.Agent.Core.csproj">
-    <Build Solution="Debug R21|Any CPU"   Project="false" />
-    <Build Solution="Debug R22|Any CPU"   Project="false" />
-    <Build Solution="Debug R23|Any CPU"   Project="false" />
-    <Build Solution="Debug R24|Any CPU"   Project="false" />
-    <Build Solution="Debug R25|Any CPU"   Project="false" />
-    <Build Solution="Debug R26|Any CPU"   Project="false" />
-    <Build Solution="Release R21|Any CPU" Project="false" />
-    <Build Solution="Release R22|Any CPU" Project="false" />
-    <Build Solution="Release R23|Any CPU" Project="false" />
-    <Build Solution="Release R24|Any CPU" Project="false" />
-    <Build Solution="Release R25|Any CPU" Project="false" />
-    <Build Solution="Release R26|Any CPU" Project="false" />
-    <BuildType Solution="Debug R27|Any CPU"   Project="Debug" />
-    <BuildType Solution="Release R27|Any CPU" Project="Release" />
+    <BuildType Solution="Debug R27|*" Project="Debug" />
+    <BuildType Solution="Release R27|*" Project="Release" />
+    <Build Solution="Debug R21|*" Project="false" />
+    <Build Solution="Debug R22|*" Project="false" />
+    <Build Solution="Debug R23|*" Project="false" />
+    <Build Solution="Debug R25|*" Project="false" />
+    <Build Solution="Debug R26|*" Project="false" />
+    <Build Solution="Release R21|*" Project="false" />
+    <Build Solution="Release R22|*" Project="false" />
+    <Build Solution="Release R23|*" Project="false" />
+    <Build Solution="Release R24|*" Project="false" />
+    <Build Solution="Release R25|*" Project="false" />
+    <Build Solution="Release R26|*" Project="false" />
   </Project>
 
   <!-- ZeManage.Agent standalone WPF exe (net10.0-windows) — R27 only -->
   <Project Path="ZeManage.Agent\ZeManage.Agent.csproj">
-    <Build Solution="Debug R21|Any CPU"   Project="false" />
-    <Build Solution="Debug R22|Any CPU"   Project="false" />
-    <Build Solution="Debug R23|Any CPU"   Project="false" />
-    <Build Solution="Debug R24|Any CPU"   Project="false" />
-    <Build Solution="Debug R25|Any CPU"   Project="false" />
-    <Build Solution="Debug R26|Any CPU"   Project="false" />
-    <Build Solution="Release R21|Any CPU" Project="false" />
-    <Build Solution="Release R22|Any CPU" Project="false" />
-    <Build Solution="Release R23|Any CPU" Project="false" />
-    <Build Solution="Release R24|Any CPU" Project="false" />
-    <Build Solution="Release R25|Any CPU" Project="false" />
-    <Build Solution="Release R26|Any CPU" Project="false" />
-    <BuildType Solution="Debug R27|Any CPU"   Project="Debug" />
-    <BuildType Solution="Release R27|Any CPU" Project="Release" />
+    <BuildType Solution="Debug R27|*" Project="Debug" />
+    <BuildType Solution="Release R27|*" Project="Release" />
+    <Build Solution="Debug R21|*" Project="false" />
+    <Build Solution="Debug R22|*" Project="false" />
+    <Build Solution="Debug R23|*" Project="false" />
+    <Build Solution="Debug R25|*" Project="false" />
+    <Build Solution="Debug R26|*" Project="false" />
+    <Build Solution="Release R21|*" Project="false" />
+    <Build Solution="Release R22|*" Project="false" />
+    <Build Solution="Release R23|*" Project="false" />
+    <Build Solution="Release R24|*" Project="false" />
+    <Build Solution="Release R25|*" Project="false" />
+    <Build Solution="Release R26|*" Project="false" />
   </Project>
 
   <!-- ZeManage.Agent.Check console tool (net10.0-windows) — R27 only -->
   <Project Path="ZeManage.Agent.Check\ZeManage.Agent.Check.csproj">
-    <Build Solution="Debug R21|Any CPU"   Project="false" />
-    <Build Solution="Debug R22|Any CPU"   Project="false" />
-    <Build Solution="Debug R23|Any CPU"   Project="false" />
-    <Build Solution="Debug R24|Any CPU"   Project="false" />
-    <Build Solution="Debug R25|Any CPU"   Project="false" />
-    <Build Solution="Debug R26|Any CPU"   Project="false" />
-    <Build Solution="Release R21|Any CPU" Project="false" />
-    <Build Solution="Release R22|Any CPU" Project="false" />
-    <Build Solution="Release R23|Any CPU" Project="false" />
-    <Build Solution="Release R24|Any CPU" Project="false" />
-    <Build Solution="Release R25|Any CPU" Project="false" />
-    <Build Solution="Release R26|Any CPU" Project="false" />
-    <BuildType Solution="Debug R27|Any CPU"   Project="Debug" />
-    <BuildType Solution="Release R27|Any CPU" Project="Release" />
+    <BuildType Solution="Debug R27|*" Project="Debug" />
+    <BuildType Solution="Release R27|*" Project="Release" />
+    <Build Solution="Debug R21|*" Project="false" />
+    <Build Solution="Debug R22|*" Project="false" />
+    <Build Solution="Debug R23|*" Project="false" />
+    <Build Solution="Debug R25|*" Project="false" />
+    <Build Solution="Debug R26|*" Project="false" />
+    <Build Solution="Release R21|*" Project="false" />
+    <Build Solution="Release R22|*" Project="false" />
+    <Build Solution="Release R23|*" Project="false" />
+    <Build Solution="Release R24|*" Project="false" />
+    <Build Solution="Release R25|*" Project="false" />
+    <Build Solution="Release R26|*" Project="false" />
   </Project>
 
   <!-- BIManageRevit.Tests (net8.0-windows) — Debug R25 only -->
   <Project Path="BIManageRevit.Tests\BIManageRevit.Tests.csproj">
-    <Build Solution="Debug R21|Any CPU"   Project="false" />
-    <Build Solution="Debug R22|Any CPU"   Project="false" />
-    <Build Solution="Debug R23|Any CPU"   Project="false" />
-    <Build Solution="Debug R24|Any CPU"   Project="false" />
-    <Build Solution="Debug R26|Any CPU"   Project="false" />
-    <Build Solution="Debug R27|Any CPU"   Project="false" />
-    <Build Solution="Release R21|Any CPU" Project="false" />
-    <Build Solution="Release R22|Any CPU" Project="false" />
-    <Build Solution="Release R23|Any CPU" Project="false" />
-    <Build Solution="Release R24|Any CPU" Project="false" />
-    <Build Solution="Release R25|Any CPU" Project="false" />
-    <Build Solution="Release R26|Any CPU" Project="false" />
-    <Build Solution="Release R27|Any CPU" Project="false" />
-    <BuildType Solution="Debug R25|Any CPU" Project="Debug" />
+    <BuildType Solution="Debug R25|*" Project="Debug" />
+    <Build Solution="Debug R21|*" Project="false" />
+    <Build Solution="Debug R22|*" Project="false" />
+    <Build Solution="Debug R23|*" Project="false" />
+    <Build Solution="Debug R26|*" Project="false" />
+    <Build Solution="Debug R27|*" Project="false" />
+    <Build Solution="Release R21|*" Project="false" />
+    <Build Solution="Release R22|*" Project="false" />
+    <Build Solution="Release R23|*" Project="false" />
+    <Build Solution="Release R24|*" Project="false" />
+    <Build Solution="Release R25|*" Project="false" />
+    <Build Solution="Release R26|*" Project="false" />
+    <Build Solution="Release R27|*" Project="false" />
   </Project>
 
 </Solution>

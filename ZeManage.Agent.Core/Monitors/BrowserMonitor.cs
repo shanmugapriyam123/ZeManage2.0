@@ -50,8 +50,11 @@ public sealed class BrowserMonitor : BackgroundService
 
         while (!stoppingToken.IsCancellationRequested)
         {
-            try { await TickAsync(id, stoppingToken); }
-            catch (Exception ex) { _log.LogDebug(ex, "Browser monitor tick error"); }
+            if (_state.IsCaptureEnabled)
+            {
+                try { await TickAsync(id, stoppingToken); }
+                catch (Exception ex) { _log.LogDebug(ex, "Browser monitor tick error"); }
+            }
 
             try { await Task.Delay(PollInterval, stoppingToken); }
             catch (OperationCanceledException) { break; }
@@ -85,6 +88,15 @@ public sealed class BrowserMonitor : BackgroundService
 
         _currentUrl           = Win32Window.TryGetBrowserUrl();
         _currentApplicationId = MakeApplicationId(proc);
+
+        // Same tab/title left open across local midnight — split it into a new day's
+        // session rather than letting one row's duration span two calendar days.
+        if (_currentTitle is not null && _titleSince.ToLocalTime().Date < now.ToLocalTime().Date)
+        {
+            await FlushAsync(id, now, ct);
+            _titleSince = now;
+            _lastFlush  = now;
+        }
 
         if (browser != _currentBrowser || pageTitle != _currentTitle)
         {
@@ -134,19 +146,38 @@ public sealed class BrowserMonitor : BackgroundService
         _log.LogDebug("Browser activity saved: {Browser} | {Title} | {Url} | {Duration}s",
             _currentBrowser, _currentTitle, _currentUrl, duration);
 
-        await _hub.TrySendEventAsync("ReportBrowserActivity", new
+        // Server column is varchar(100) for url/pageTitle — long SharePoint/Teams
+        // links can run past 400 chars and blow up the insert server-side.
+        static string Clamp(string s) => s.Length > 100 ? s[..100] : s;
+
+        // ReportBrowserActivity binds zeUserId/companyId to non-nullable Guid parameters
+        // server-side — sending "" (which is what _tokens.ZeUserId/CompanyId ?? "" produces
+        // before the token has loaded) fails SignalR's own argument deserialization, which
+        // kills the WebSocket outright ("Websocket closed with error: InternalServerError")
+        // instead of just failing this one call. The row is already saved locally above, so
+        // SyncService's periodic REST sync (which already guards on this same condition) picks
+        // it up once the tokens are loaded — skipping the immediate hub ping here costs nothing
+        // but a few seconds of latency, versus risking the whole connection.
+        if (!string.IsNullOrEmpty(_tokens.ZeUserId) && !string.IsNullOrEmpty(_tokens.CompanyId))
         {
-            zeUserId        = _tokens.ZeUserId ?? "",
-            companyId       = _tokens.CompanyId ?? "",
-            browserName     = activity.Browser,
-            processName     = activity.Browser == "Google Chrome" ? "chrome" : "msedge",
-            pageTitle       = activity.PageTitle,
-            url             = activity.Url ?? "",
-            applicationId   = activity.ApplicationId,
-            startTime       = activity.StartTime,
-            endTime         = activity.EndTime,
-            durationSeconds = activity.DurationSeconds
-        }, ct);
+            await _hub.TrySendEventAsync("ReportBrowserActivity", new
+            {
+                zeUserId        = _tokens.ZeUserId,
+                companyId       = _tokens.CompanyId,
+                browserName     = activity.Browser,
+                processName     = activity.Browser == "Google Chrome" ? "chrome" : "msedge",
+                pageTitle       = Clamp(activity.PageTitle ?? ""),
+                url             = Clamp(activity.Url ?? ""),
+                applicationId   = activity.ApplicationId,
+                startTime       = activity.StartTime,
+                endTime         = activity.EndTime,
+                durationSeconds = activity.DurationSeconds
+            }, ct);
+        }
+        else
+        {
+            _log.LogDebug("Skipped ReportBrowserActivity notify — zeUserId/companyId not yet loaded from token");
+        }
     }
 
     private static (string browser, string pageTitle) ParseTitle(string processName, string windowTitle)

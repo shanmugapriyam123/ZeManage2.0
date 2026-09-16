@@ -27,6 +27,7 @@ namespace BIManage.Revit.Commands.Bindings
         private AddInCommandBinding _binding;
         private readonly IRuleCommandInterceptor _ruleInterceptor;
         private readonly Func<CommandProtectionBinding?> _commandProtectionGetter;
+        private readonly BIManage.Core.Features.IFeatureToggleService? _featureToggleService;
 
         // True while the Offset command is in its interactive pick session (set in BeforeExecuted,
         // cleared only on the next BeforeExecuted so multiple picks in the same session are covered).
@@ -43,11 +44,13 @@ namespace BIManage.Revit.Commands.Bindings
             UIApplication uiApp,
             ILogger logger,
             IRuleCommandInterceptor ruleInterceptor,
-            Func<CommandProtectionBinding?>? commandProtectionGetter = null)
+            Func<CommandProtectionBinding?>? commandProtectionGetter = null,
+            BIManage.Core.Features.IFeatureToggleService? featureToggleService = null)
             : base(uiApp, logger)
         {
             _ruleInterceptor = ruleInterceptor;
             _commandProtectionGetter = commandProtectionGetter ?? (() => null);
+            _featureToggleService = featureToggleService;
             CommandId = RevitCommandId.LookupPostableCommandId(PostableCommand.Offset);
         }
 
@@ -84,6 +87,9 @@ namespace BIManage.Revit.Commands.Bindings
                 _showDialogPending = false;
                 _lastUndoPostedAt = DateTime.MinValue;
                 UIApp.Idling -= OnIdlingShowDialog;
+
+                if (_featureToggleService?.IsGlobalPaused == true || _featureToggleService?.IsEmployeeCaptureDisabled == true)
+                    return;
 
                 // PRIORITY 0: Command protection
                 var commandProtection = _commandProtectionGetter?.Invoke();

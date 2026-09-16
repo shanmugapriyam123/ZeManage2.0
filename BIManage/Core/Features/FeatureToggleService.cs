@@ -12,6 +12,7 @@ namespace BIManage.Core.Features
         private readonly ILogger? _logger;
         private readonly Dictionary<string, bool> _featureStates;
         private bool _globalPause;
+        private bool _employeeCaptureDisabled;
 
         public FeatureToggleService(ILogger? logger)
         {
@@ -40,11 +41,28 @@ namespace BIManage.Core.Features
         }
 
         /// <summary>
+        ///     Admin-controlled per-employee active/inactive kill-switch — see interface doc
+        ///     comment for why this is a separate flag from IsGlobalPaused.
+        /// </summary>
+        public bool IsEmployeeCaptureDisabled
+        {
+            get => _employeeCaptureDisabled;
+            set
+            {
+                if (_employeeCaptureDisabled != value)
+                {
+                    _employeeCaptureDisabled = value;
+                    _logger?.LogInfo($"Employee capture-disabled state changed: {value}");
+                }
+            }
+        }
+
+        /// <summary>
         ///     Check if a specific feature is enabled
         /// </summary>
         public bool IsFeatureEnabled(string featureName)
         {
-            if (_globalPause)
+            if (_globalPause || _employeeCaptureDisabled)
             {
                 return false;
             }

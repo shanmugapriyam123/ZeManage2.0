@@ -262,7 +262,7 @@ namespace BIManage.Revit.Idling
                 // IsGlobalPaused=true (Breached), we still need recovery to fix it
                 ExecuteBootstrapRecovery();
 
-                if (_featureToggleService.IsGlobalPaused) return;
+                if (_featureToggleService.IsGlobalPaused || _featureToggleService.IsEmployeeCaptureDisabled) return;
 
                 // Process position restoration queue BEFORE throttle gate — must run immediately
                 // regardless of work queue state to reverse pin protection bypass moves

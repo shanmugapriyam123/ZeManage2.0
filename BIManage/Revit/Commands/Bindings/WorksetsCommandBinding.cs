@@ -28,18 +28,21 @@ namespace BIManage.Revit.Commands.Bindings
         private readonly Func<ModelSessionSyncService?> _modelSessionSyncGetter;
         private DateTime? _dialogOpenedAt;
         private string? _activeModelGuidAtOpen;
+        private readonly BIManage.Core.Features.IFeatureToggleService? _featureToggleService;
 
         public WorksetsCommandBinding(
             UIApplication uiApp,
             ILogger logger,
             SessionRepository? sessionRepository,
             Func<IRevitContext?>? revitContextGetter = null,
-            Func<ModelSessionSyncService?>? modelSessionSyncGetter = null)
+            Func<ModelSessionSyncService?>? modelSessionSyncGetter = null,
+            BIManage.Core.Features.IFeatureToggleService? featureToggleService = null)
             : base(uiApp, logger)
         {
             _sessionRepository = sessionRepository;
             _revitContextGetter = revitContextGetter ?? (() => null);
             _modelSessionSyncGetter = modelSessionSyncGetter ?? (() => null);
+            _featureToggleService = featureToggleService;
 
             CommandId = RevitCommandId.LookupPostableCommandId(PostableCommand.Worksets);
         }
@@ -83,6 +86,9 @@ namespace BIManage.Revit.Commands.Bindings
         {
             try
             {
+                if (_featureToggleService?.IsGlobalPaused == true || _featureToggleService?.IsEmployeeCaptureDisabled == true)
+                    return;
+
                 _dialogOpenedAt = DateTime.UtcNow;
 
                 // Capture the model GUID at open-time. Revit may activate a different doc

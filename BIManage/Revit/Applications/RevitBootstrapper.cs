@@ -894,6 +894,18 @@ namespace BIManage.Revit.Applications
                     logger?.LogWarning("ForceLogout/ForceTokenRefresh listeners not registered — AuthTokenManager or IUserService not available");
                 }
 
+                // Admin active/inactive toggle — fast path alongside AuthTokenManager's HTTP
+                // polling fallback (see ApplyCaptureState, wired into the same device-auth/
+                // refresh responses this listener's push is racing against).
+                var featureToggleForListener = services.GetService<BIManage.Core.Features.IFeatureToggleService>();
+                if (featureToggleForListener != null)
+                {
+                    var employeeActivationListener = new BIManage.Infrastructure.SignalR.Listeners.EmployeeActivationListener(
+                        featureToggleForListener, logger);
+                    connectionManager.RegisterListener(employeeActivationListener);
+                    logger?.LogInfo("EmployeeActivationListener registered for admin active/inactive toggle");
+                }
+
                 // SyncTrafficControlService — coordinates sync queue blocking via SignalR
                 var revitContext = services.GetService<IRevitContext>();
                 var syncRepo = services.GetService<SyncRepository>();
@@ -952,7 +964,8 @@ namespace BIManage.Revit.Applications
                 var sslPolicy = services.GetService<BIManage.Infrastructure.Network.SslValidationPolicy>();
                 var secureStorage = new SecureTokenStorage(logger);
                 var authApi = new AuthApiService(baseUrl, logger, sslPolicy);
-                var tokenManager = new AuthTokenManager(secureStorage, authApi, logger);
+                var featureToggleForAuth = services.GetService<BIManage.Core.Features.IFeatureToggleService>();
+                var tokenManager = new AuthTokenManager(secureStorage, authApi, logger, featureToggleForAuth);
                 var authenticatedClient = new AuthenticatedHttpClient(tokenManager, baseUrl, logger, sslPolicy);
 
                 // Restore admin session flag IMMEDIATELY so the correct refresh endpoint is used
@@ -1258,8 +1271,10 @@ namespace BIManage.Revit.Applications
                     var metricsSvc = services.GetService<MetricsSyncService>();
                     metricsSvc?.SetSessionSyncService(sessionSync);
 
-                    var offlineProcessor = services.GetService<OfflineSyncProcessor>();
-                    offlineProcessor?.SetSessionSyncService(sessionSync);
+                    // NOTE: OfflineSyncProcessor isn't constructed until later in this method
+                    // (see the "Offline sync processor" block below) — GetService here would
+                    // always return null. The two-way wiring happens there instead, once both
+                    // services actually exist.
                 }
 
                 // Model sync service - SignalR primary, HTTP fallback, offline queue
@@ -1505,6 +1520,17 @@ namespace BIManage.Revit.Applications
                         featureToggleService: featureToggleSvc);
                     services.RegisterSingleton<OfflineSyncProcessor>(offlineSyncProcessor);
                     logger.LogInfo("OfflineSyncProcessor started (30-second sync interval, token refresh + device validation enabled)");
+
+                    // Two-way wiring with SessionSyncService (constructed earlier in this method,
+                    // so it's already registered by this point): lets a freshly-queued session_open
+                    // trigger an immediate sync attempt instead of waiting up to 30s for this
+                    // processor's own timer.
+                    var sessionSyncForOffline = services.GetService<SessionSyncService>();
+                    if (sessionSyncForOffline != null)
+                    {
+                        offlineSyncProcessor.SetSessionSyncService(sessionSyncForOffline);
+                        sessionSyncForOffline.SetOfflineSyncProcessor(offlineSyncProcessor);
+                    }
                 }
 
                 // Pre-load background sync settings (seed defaults if not exists) and apply to feature toggles

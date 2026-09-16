@@ -112,6 +112,7 @@ public sealed class LocalStore
                 "PacketLossPercent"   REAL NOT NULL DEFAULT 0,
                 "VpnConnected"        INTEGER NOT NULL DEFAULT 0,
                 "ActiveAdapter"       TEXT,
+                "ConnectionType"      TEXT,
                 "HealthScore"         INTEGER NOT NULL DEFAULT 0,
                 "Synced"              INTEGER NOT NULL DEFAULT 0,
                 "CreatedAt"           TEXT NOT NULL DEFAULT '',
@@ -130,7 +131,34 @@ public sealed class LocalStore
                 "Synced"        INTEGER NOT NULL DEFAULT 0,
                 "CreatedAt"     TEXT NOT NULL DEFAULT '',
                 "UpdatedAt"     TEXT NOT NULL DEFAULT '',
+                "ApplicationId" TEXT NULL,
                 PRIMARY KEY ("screenshot_id")
+            )
+            """, ct);
+
+        // One row per continuous timeline segment — a span during which the two-state Activity
+        // (Active/Idle) AND the foreground application both stayed constant (see
+        // Models/ActivityInterval.cs). A genuinely separate table from ApplicationUsages (process
+        // open→close) — not an ALTER of any existing table, since the segment model (breaks on
+        // Active<->Idle transitions too, not just app switches) is a different shape entirely.
+        // Brand-new table, so it never had an INTEGER PK — created with its final TEXT-PK shape
+        // from day one, no rename/migration loop needed.
+        await db.Database.ExecuteSqlRawAsync("""
+            CREATE TABLE IF NOT EXISTS "ActivityTimeline" (
+                "local_id"               TEXT NOT NULL PRIMARY KEY,
+                "application_local_id"   TEXT NULL,
+                "ApplicationId"          TEXT NOT NULL DEFAULT '',
+                "Activity"               TEXT NOT NULL DEFAULT 'Active',
+                "ApplicationName"        TEXT NOT NULL DEFAULT '',
+                "ProcessName"            TEXT NOT NULL DEFAULT '',
+                "StartTime"              TEXT NOT NULL,
+                "EndTime"                TEXT,
+                "ActiveSeconds"          INTEGER NOT NULL DEFAULT 0,
+                "FocusSeconds"           INTEGER NOT NULL DEFAULT 0,
+                "IdleSeconds"            INTEGER NOT NULL DEFAULT 0,
+                "Synced"                 INTEGER NOT NULL DEFAULT 0,
+                "CreatedAt"              TEXT NOT NULL DEFAULT '',
+                "UpdatedAt"              TEXT NOT NULL DEFAULT ''
             )
             """, ct);
 
@@ -142,6 +170,8 @@ public sealed class LocalStore
             """CREATE INDEX IF NOT EXISTS "IX_NetworkSnapshots_Synced"   ON "NetworkSnapshots"   ("Synced")""",
             """CREATE INDEX IF NOT EXISTS "IX_Screenshots_Synced"        ON "Screenshots"        ("Synced")""",
             """CREATE INDEX IF NOT EXISTS "IX_Screenshots_CapturedAt"    ON "Screenshots"        ("CapturedAt")""",
+            """CREATE INDEX IF NOT EXISTS "IX_ActivityTimeline_Synced"  ON "ActivityTimeline"  ("Synced")""",
+            """CREATE INDEX IF NOT EXISTS "IX_ActivityTimeline_EndTime" ON "ActivityTimeline"  ("EndTime")""",
         })
         try { await db.Database.ExecuteSqlRawAsync(idx, ct); } catch { }
 
@@ -163,6 +193,8 @@ public sealed class LocalStore
                 "gpu_model"        TEXT NULL,
                 "storage_total_gb" REAL NULL,
                 "storage_used_gb"  REAL NULL,
+                "storage_type"     TEXT NULL,
+                "ram_type"         TEXT NULL,
                 "mac_address"      TEXT NULL,
                 "ip_address"       TEXT NULL,
                 "serial_number"    TEXT NULL,
@@ -171,7 +203,8 @@ public sealed class LocalStore
                 "os_version"       TEXT NULL,
                 "windows_edition"  TEXT NULL,
                 "windows_version"  TEXT NULL,
-                "os_build"         TEXT NULL
+                "os_build"         TEXT NULL,
+                "timezone_id"      TEXT NULL
             );
             """, ct);
 
@@ -191,6 +224,7 @@ public sealed class LocalStore
             """ALTER TABLE "BrowserActivities" ADD COLUMN "UpdatedAt"        TEXT NOT NULL DEFAULT '';""",
             """ALTER TABLE "Screenshots"       ADD COLUMN "CreatedAt"        TEXT NOT NULL DEFAULT '';""",
             """ALTER TABLE "Screenshots"       ADD COLUMN "UpdatedAt"        TEXT NOT NULL DEFAULT '';""",
+            """ALTER TABLE "Screenshots"       ADD COLUMN "ApplicationId"    TEXT NULL;""",
             // V5: application type
             """ALTER TABLE "ApplicationUsages" ADD COLUMN "ApplicationType"  TEXT NOT NULL DEFAULT 'Software';""",
             // V9: applicationId (stable per software) + status + icon
@@ -214,11 +248,31 @@ public sealed class LocalStore
             // V11: browser activity — applicationId + url
             """ALTER TABLE "BrowserActivities" ADD COLUMN "ApplicationId" TEXT NULL;""",
             """ALTER TABLE "BrowserActivities" ADD COLUMN "Url"           TEXT NULL;""",
+            // V12: network connection type
+            """ALTER TABLE "NetworkSnapshots"  ADD COLUMN "ConnectionType" TEXT NULL;""",
             // V7: BIOS + motherboard
             """ALTER TABLE "machine_info" ADD COLUMN "bios_version"      TEXT NULL;""",
             """ALTER TABLE "machine_info" ADD COLUMN "motherboard_model" TEXT NULL;""",
             // V8: local integer ID (maps to SQLite rowid)
             """ALTER TABLE "machine_info" ADD COLUMN "local_id"          INTEGER NULL;""",
+            // V9: IANA timezone
+            """ALTER TABLE "machine_info" ADD COLUMN "timezone_id"       TEXT NULL;""",
+            // V13: fail-closed cache for the admin active/inactive capture kill-switch — see
+            // AgentState.IsCaptureEnabled. Defaults to enabled (1) so a fresh install with no
+            // confirmed state yet doesn't start out gated; capture_state_confirmed_at is null
+            // until the first successful register/validate/refresh/heartbeat response or
+            // SignalR push actually confirms a real state from the server.
+            """ALTER TABLE "machine_info" ADD COLUMN "is_capture_enabled" INTEGER NOT NULL DEFAULT 1;""",
+            """ALTER TABLE "machine_info" ADD COLUMN "capture_state_confirmed_at" TEXT NULL;""",
+            // V14: storage media type (SSD/HDD) + RAM type (DDR3/DDR4/DDR5)
+            """ALTER TABLE "machine_info" ADD COLUMN "storage_type"     TEXT NULL;""",
+            """ALTER TABLE "machine_info" ADD COLUMN "ram_type"         TEXT NULL;""",
+            // V15: last-known-good group-worktime-setup response, so a transient empty/failed
+            // /my-group fetch (or simply a process restart racing the first fetch) doesn't wipe
+            // BreakStartTime/EndTime/ScreenshotIntervalMinutes/etc. back to blank — those fields
+            // have no other persistence, unlike is_capture_enabled above. Raw JSON, re-parsed
+            // through the same ApplyGroupSettings path used for a live fetch.
+            """ALTER TABLE "machine_info" ADD COLUMN "group_settings_json" TEXT NULL;""",
         })
         {
             try { await db.Database.ExecuteSqlRawAsync(sql, ct); } catch { /* column already exists */ }
@@ -241,17 +295,17 @@ public sealed class LocalStore
             INSERT INTO machine_info
                 (machine_id, sid, username, hostname, captured_at,
                  cpu_model, ram_gb, ram_usable_gb, gpu_model,
-                 storage_total_gb, storage_used_gb,
+                 storage_total_gb, storage_used_gb, storage_type, ram_type,
                  mac_address, ip_address, os_version, serial_number,
                  device_id, system_type, bios_version, motherboard_model,
-                 windows_edition, windows_version, os_build)
+                 windows_edition, windows_version, os_build, timezone_id)
             VALUES
                 (@machineId, @sid, @username, @hostname, @capturedAt,
                  @cpuModel, @ramGb, @ramUsableGb, @gpuModel,
-                 @storageTotalGb, @storageUsedGb,
+                 @storageTotalGb, @storageUsedGb, @storageType, @ramType,
                  @macAddress, @ipAddress, @osVersion, @serialNumber,
                  @deviceId, @systemType, @biosVersion, @motherboardModel,
-                 @windowsEdition, @windowsVersion, @osBuild)
+                 @windowsEdition, @windowsVersion, @osBuild, @timezoneId)
             ON CONFLICT(machine_id) DO UPDATE SET
                 sid              = excluded.sid,
                 username         = excluded.username,
@@ -263,6 +317,8 @@ public sealed class LocalStore
                 gpu_model        = excluded.gpu_model,
                 storage_total_gb = excluded.storage_total_gb,
                 storage_used_gb  = excluded.storage_used_gb,
+                storage_type     = excluded.storage_type,
+                ram_type         = excluded.ram_type,
                 mac_address      = excluded.mac_address,
                 ip_address       = excluded.ip_address,
                 os_version       = excluded.os_version,
@@ -273,7 +329,8 @@ public sealed class LocalStore
                 motherboard_model = excluded.motherboard_model,
                 windows_edition  = excluded.windows_edition,
                 windows_version  = excluded.windows_version,
-                os_build         = excluded.os_build;
+                os_build         = excluded.os_build,
+                timezone_id      = excluded.timezone_id;
             """;
 
         void AddParam(string name, object? value)
@@ -295,6 +352,8 @@ public sealed class LocalStore
         AddParam("@gpuModel",       identity.GpuModel);
         AddParam("@storageTotalGb", identity.StorageTotalGB);
         AddParam("@storageUsedGb",  identity.StorageUsedGB);
+        AddParam("@storageType",    identity.StorageType);
+        AddParam("@ramType",        identity.RamType);
         AddParam("@macAddress",     identity.MacAddress);
         AddParam("@ipAddress",      identity.IpAddress);
         AddParam("@osVersion",      identity.OsVersion);
@@ -306,6 +365,7 @@ public sealed class LocalStore
         AddParam("@windowsEdition",  identity.WindowsEdition);
         AddParam("@windowsVersion", identity.WindowsVersion);
         AddParam("@osBuild",        identity.OsBuild);
+        AddParam("@timezoneId",     identity.TimeZoneId);
 
         await cmd.ExecuteNonQueryAsync(ct);
 
@@ -485,6 +545,72 @@ public sealed class LocalStore
     }
 
     // Fetch just the session_id for a single row (used by CloseSessionAsync and SignalR tick)
+    // Fail-closed cache for the admin active/inactive capture kill-switch — see
+    // AgentState.IsCaptureEnabled. machine_info is a singleton row (PK on machine_id, one row
+    // per install), so these update every row unconditionally rather than filtering by id.
+
+    public async Task SetCaptureEnabledAsync(bool isEnabled, CancellationToken ct = default)
+    {
+        await using var db = await _factory.CreateDbContextAsync(ct);
+        var conn = db.Database.GetDbConnection();
+        if (conn.State != System.Data.ConnectionState.Open)
+            await conn.OpenAsync(ct);
+
+        using var cmd = conn.CreateCommand();
+        cmd.CommandText = """UPDATE "machine_info" SET "is_capture_enabled" = @v, "capture_state_confirmed_at" = @now""";
+        var pv = cmd.CreateParameter(); pv.ParameterName = "@v"; pv.Value = isEnabled ? 1 : 0;
+        cmd.Parameters.Add(pv);
+        var pn = cmd.CreateParameter(); pn.ParameterName = "@now"; pn.Value = DateTime.UtcNow.ToString("o");
+        cmd.Parameters.Add(pn);
+        await cmd.ExecuteNonQueryAsync(ct);
+    }
+
+    /// <summary>Returns the last confirmed capture-enabled state, or true if no state has ever
+    /// been confirmed yet (fresh install — fail-open until the first real confirmation).</summary>
+    public async Task<bool> GetCaptureEnabledAsync(CancellationToken ct = default)
+    {
+        await using var db = await _factory.CreateDbContextAsync(ct);
+        var conn = db.Database.GetDbConnection();
+        if (conn.State != System.Data.ConnectionState.Open)
+            await conn.OpenAsync(ct);
+
+        using var cmd = conn.CreateCommand();
+        cmd.CommandText = """SELECT "is_capture_enabled" FROM "machine_info" WHERE "capture_state_confirmed_at" IS NOT NULL LIMIT 1""";
+        var result = await cmd.ExecuteScalarAsync(ct);
+        return result is DBNull || result is null || Convert.ToInt64(result) != 0;
+    }
+
+    // Last-known-good /my-group response — see V15 migration comment above. Persisted so a
+    // transient empty fetch (backend hiccup, group-assignment gap, or a process restart racing
+    // the first sync cycle) doesn't reset BreakStartTime/EndTime/interval/etc. to blank; the
+    // caller re-applies this through the same field-parsing path as a live fetch.
+    public async Task SetGroupSettingsRawAsync(string json, CancellationToken ct = default)
+    {
+        await using var db = await _factory.CreateDbContextAsync(ct);
+        var conn = db.Database.GetDbConnection();
+        if (conn.State != System.Data.ConnectionState.Open)
+            await conn.OpenAsync(ct);
+
+        using var cmd = conn.CreateCommand();
+        cmd.CommandText = """UPDATE "machine_info" SET "group_settings_json" = @v""";
+        var p = cmd.CreateParameter(); p.ParameterName = "@v"; p.Value = json;
+        cmd.Parameters.Add(p);
+        await cmd.ExecuteNonQueryAsync(ct);
+    }
+
+    public async Task<string?> GetGroupSettingsRawAsync(CancellationToken ct = default)
+    {
+        await using var db = await _factory.CreateDbContextAsync(ct);
+        var conn = db.Database.GetDbConnection();
+        if (conn.State != System.Data.ConnectionState.Open)
+            await conn.OpenAsync(ct);
+
+        using var cmd = conn.CreateCommand();
+        cmd.CommandText = """SELECT "group_settings_json" FROM "machine_info" WHERE "group_settings_json" IS NOT NULL LIMIT 1""";
+        var result = await cmd.ExecuteScalarAsync(ct);
+        return result is DBNull || result is null ? null : (string)result;
+    }
+
     public async Task<string?> GetSessionIdAsync(string localId, CancellationToken ct = default)
     {
         await using var db = await _factory.CreateDbContextAsync(ct);
@@ -533,6 +659,128 @@ public sealed class LocalStore
         return await db.ApplicationUsages.CountAsync(x => !x.Synced, ct)
              + await db.NetworkSnapshots.CountAsync(x => !x.Synced, ct)
              + await db.BrowserActivities.CountAsync(x => !x.Synced, ct)
-             + await db.Screenshots.CountAsync(x => !x.Synced, ct);
+             + await db.Screenshots.CountAsync(x => !x.Synced, ct)
+             + await db.ActivityIntervals.CountAsync(x => !x.Synced, ct);
+    }
+
+    public async Task AddActivityIntervalAsync(ActivityInterval interval, CancellationToken ct = default)
+    {
+        await using var db = await _factory.CreateDbContextAsync(ct);
+        db.ActivityIntervals.Add(interval);
+        await db.SaveChangesAsync(ct);
+    }
+
+    // Closes an interval — foreground lost, day rollover, or startup crash-recovery cleanup.
+    public async Task CloseActivityIntervalAsync(
+        string localId, DateTime endTime, long activeSeconds, long focusSeconds, long idleSeconds,
+        DateTime updatedAt, CancellationToken ct = default)
+    {
+        await using var db = await _factory.CreateDbContextAsync(ct);
+        var conn = db.Database.GetDbConnection();
+        if (conn.State != System.Data.ConnectionState.Open)
+            await conn.OpenAsync(ct);
+
+        using var cmd = conn.CreateCommand();
+        cmd.CommandText = """
+            UPDATE "ActivityTimeline" SET
+                "EndTime"       = @endTime,
+                "ActiveSeconds" = @activeSeconds,
+                "FocusSeconds"  = @focusSeconds,
+                "IdleSeconds"   = @idleSeconds,
+                "UpdatedAt"     = @updatedAt,
+                "Synced"        = 0
+            WHERE "local_id" = @id
+            """;
+        void P(string n, object? v) {
+            var p = cmd.CreateParameter(); p.ParameterName = n; p.Value = v ?? DBNull.Value;
+            cmd.Parameters.Add(p);
+        }
+        P("@id",            localId);
+        P("@endTime",       endTime.ToString("o"));
+        P("@activeSeconds", activeSeconds);
+        P("@focusSeconds",  focusSeconds);
+        P("@idleSeconds",   idleSeconds);
+        P("@updatedAt",     updatedAt.ToString("o"));
+        await cmd.ExecuteNonQueryAsync(ct);
+    }
+
+    // Periodic durability flush while still open — mirrors UpdateRunningStatsAsync.
+    public async Task UpdateOpenActivityIntervalStatsAsync(
+        string localId, long activeSeconds, long focusSeconds, long idleSeconds,
+        DateTime updatedAt, CancellationToken ct = default)
+    {
+        await using var db = await _factory.CreateDbContextAsync(ct);
+        var conn = db.Database.GetDbConnection();
+        if (conn.State != System.Data.ConnectionState.Open)
+            await conn.OpenAsync(ct);
+
+        using var cmd = conn.CreateCommand();
+        cmd.CommandText = """
+            UPDATE "ActivityTimeline" SET
+                "ActiveSeconds" = @active,
+                "FocusSeconds"  = @focus,
+                "IdleSeconds"   = @idle,
+                "UpdatedAt"     = @updatedAt
+            WHERE "local_id" = @id AND "EndTime" IS NULL
+            """;
+        void P(string n, object? v) {
+            var p = cmd.CreateParameter(); p.ParameterName = n; p.Value = v ?? DBNull.Value;
+            cmd.Parameters.Add(p);
+        }
+        P("@id",        localId);
+        P("@active",    activeSeconds);
+        P("@focus",     focusSeconds);
+        P("@idle",      idleSeconds);
+        P("@updatedAt", updatedAt.ToString("o"));
+        await cmd.ExecuteNonQueryAsync(ct);
+    }
+
+    // Startup crash-recovery: intervals left open by an ungraceful previous shutdown.
+    public async Task<List<ActivityInterval>> GetOpenActivityIntervalsAsync(CancellationToken ct = default)
+    {
+        await using var db = await _factory.CreateDbContextAsync(ct);
+        return await db.ActivityIntervals.Where(x => x.EndTime == null).ToListAsync(ct);
+    }
+
+    public async Task<List<ActivityInterval>> GetUnsyncedClosedActivityIntervalsAsync(int take = 200, CancellationToken ct = default)
+    {
+        await using var db = await _factory.CreateDbContextAsync(ct);
+        return await db.ActivityIntervals.Where(x => !x.Synced && x.EndTime != null).Take(take).ToListAsync(ct);
+    }
+
+    // Attendance summary for the "Today's Session" UI card — Active/Break/Idle totals from this
+    // machine's own local timeline rows only (each install has exactly one machine_info row, so
+    // there is no other employee's data in this DB to mix in), plus the earliest segment start
+    // today as "login" time. Bounded to a 2-day cutoff so the query never scans the full historical
+    // timeline table, then filtered to the exact local calendar day in memory (matches the
+    // ToLocalTime().Date day-rollover check already used elsewhere in ProcessMonitor).
+    public async Task<(long ActiveSeconds, long BreakSeconds, long IdleSeconds, DateTime? LoginUtc)> GetTodayActivitySummaryAsync(CancellationToken ct = default)
+    {
+        await using var db = await _factory.CreateDbContextAsync(ct);
+        var cutoffUtc = DateTime.UtcNow.AddDays(-2);
+        var rows = await db.ActivityIntervals
+            .Where(x => x.EndTime == null || x.StartTime >= cutoffUtc)
+            .ToListAsync(ct);
+
+        var todayLocal = DateTime.Now.Date;
+        long active = 0, brk = 0, idle = 0;
+        DateTime? loginUtc = null;
+
+        foreach (var r in rows)
+        {
+            if (r.StartTime.ToLocalTime().Date != todayLocal) continue;
+
+            var segSeconds = r.ActiveSeconds + r.FocusSeconds + r.IdleSeconds;
+            switch (r.Activity)
+            {
+                case "Active": active += segSeconds; break;
+                case "Break":  brk    += segSeconds; break;
+                default:       idle   += segSeconds; break; // "Idle"
+            }
+
+            if (loginUtc is null || r.StartTime < loginUtc) loginUtc = r.StartTime;
+        }
+
+        return (active, brk, idle, loginUtc);
     }
 }

@@ -19,6 +19,9 @@ public sealed class AgentOptions
     // Company code set in backend admin panel — required for identity registration
     public string? CompanyCode { get; set; }
 
+    // License key entered during installation
+    public string? LicenseKey { get; set; }
+
     // V2: SignalR realtime
     public bool EnableSignalR { get; set; } = true;
     public int HeartbeatIntervalSeconds { get; set; } = 30;

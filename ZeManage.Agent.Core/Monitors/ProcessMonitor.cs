@@ -3,6 +3,7 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Win32;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using ZeManage.Agent.Core.Data;
@@ -26,10 +27,27 @@ public sealed class ProcessMonitor : BackgroundService
 
     // Key = processName only — one session per executable, not one per PID
     private readonly Dictionary<string, Tracking> _running = new(StringComparer.OrdinalIgnoreCase);
+    private readonly HashSet<string> _registeredBrowserAppIds = new(StringComparer.OrdinalIgnoreCase);
     private readonly object _lock = new();
     private string? _lastLiveActivityApp; // dedup — skip if same app still in foreground
-    private DateTime _lastLiveSentUtc = DateTime.MinValue; // last successful live send — drives the 30-s periodic freshness ping for an unchanged foreground app
-    private static readonly TimeSpan LiveRefreshInterval = TimeSpan.FromSeconds(30);
+    private DateTime _lastLiveSentUtc = DateTime.MinValue; // last successful live send — drives the 3-s periodic freshness ping for an unchanged foreground app
+    // Last successfully-reported known app's identifiers — kept so the periodic freshness ping
+    // (which doubles as the server's ONLY heartbeat signal, see ReportLiveActivityAsync) can keep
+    // firing every ~3s even while `foreground` is momentarily null (desktop/lock screen, no
+    // window focused) or unrecognized (an untracked process). Without this, a genuinely-online,
+    // genuinely-idle user whose foreground happens to be null/unknown at read time stops sending
+    // ANY live ping — and since that ping is the only thing refreshing LastHeartbeatTime, the
+    // stale-timeout sweep eventually (wrongly) marks them Offline even though nothing about their
+    // machine actually changed.
+    private string? _lastKnownAppId;
+    private string? _lastKnownProcessName;
+    // Was 30s — dropped to 3s so LastHeartbeatTime (this ping is its only source, see
+    // ReportLiveActivityAsync) stays fresh enough for the Agent screen's Idle/Inactive status to
+    // feel as instant as the app-switch live update, even when SignalR briefly drops: this same
+    // ping already falls back to HTTP (AgentHubConnection.TrySendEventAsync →
+    // POST /agentdb/live-activity) whenever the hub isn't Connected, so the heartbeat keeps
+    // flowing through the outage instead of only resuming once the hub reconnects.
+    private static readonly TimeSpan LiveRefreshInterval = TimeSpan.FromSeconds(3);
     // Instant foreground-change detection (Insightful-style): the OS-level
     // SetWinEventHook fires this semaphore the moment focus changes, waking
     // RunActivityTickAsync immediately instead of letting it sleep out the
@@ -38,6 +56,13 @@ public sealed class ProcessMonitor : BackgroundService
     private readonly SemaphoreSlim _fgChangedSignal = new(0, 1);
     private ForegroundWatcher? _fgWatcher;
     private string _lastHubState = ""; // tracks the previous hub state so we can force a re-send whenever the hub transitions from any non-Connected state (Reconnecting/Disconnected) back to Connected — otherwise LiveStatusChanged events fired during the disconnect window are lost and the portal's Task column stays stuck on the pre-drop app until the user manually switches to a different app.
+
+    // The single currently-accumulating focus interval (only one window can be OS-foreground at
+    // a time) — guarded by _lock, same as _running. Independent of _running/Tracking: this tracks
+    // WHEN an app was actually focused (for the Activities Timeline), not when its process was
+    // open. See RunActivityTickAsync for how the two are kept in lockstep without either reading
+    // or modifying the other's fields.
+    private OpenInterval? _openInterval;
 
     private sealed class Tracking
     {
@@ -51,6 +76,21 @@ public sealed class ProcessMonitor : BackgroundService
         public DateTime StartedUtc;
         public long ActiveSeconds;
         public long FocusSeconds;
+        public long IdleSeconds;
+    }
+
+    private sealed class OpenInterval
+    {
+        public required string  LocalId;                  // local PK — never changes
+        public required string  Activity;                 // "Active" or "Idle" — drives segment boundaries
+        public string?          ProcessName;               // null for Idle segments — no app is meaningfully "current" while idle
+        public string?          DisplayName;
+        public string?          ApplicationId;             // stable per software (hash of processName); null for Idle
+        public string?          ApplicationUsageLocalId;    // parent ApplicationUsage.LocalId, if any (null for browsers/Idle)
+        public DateTime StartedUtc;
+        public long ActiveSeconds;
+        public long FocusSeconds;
+        public long IdleSeconds;
     }
 
     // Case-insensitive scan for any known session-ID field in a JSON response item.
@@ -79,19 +119,27 @@ public sealed class ProcessMonitor : BackgroundService
             System.Text.Encoding.UTF8.GetBytes(processName.ToLowerInvariant()))).ToString();
 
     // Extracts the exe icon and returns it as a Base64 PNG string
-    private static string? CaptureIconBase64(string? exePath)
+    private static string? CaptureIconBase64(string? exePath, string processName, ILogger log)
     {
         if (exePath is null) return null;
         try
         {
             using var icon = System.Drawing.Icon.ExtractAssociatedIcon(exePath);
-            if (icon is null) return null;
+            if (icon is null)
+            {
+                log.LogDebug("Icon: ExtractAssociatedIcon returned null for {App} ({Path})", processName, exePath);
+                return null;
+            }
             using var bmp  = icon.ToBitmap();
             using var ms   = new MemoryStream();
             bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
             return Convert.ToBase64String(ms.ToArray());
         }
-        catch { return null; }
+        catch (Exception ex)
+        {
+            log.LogDebug("Icon: extraction failed for {App} ({Path}) — {Reason}", processName, exePath, ex.Message);
+            return null;
+        }
     }
 
     private static string ResolveApplicationType(string category) => category switch
@@ -135,6 +183,42 @@ public sealed class ProcessMonitor : BackgroundService
         _lastLiveActivityApp = null;
     }
 
+    // Workstation locked (or an unlock/other switch we don't care about) — only Lock reports.
+    private void OnSessionSwitch(object? sender, Microsoft.Win32.SessionSwitchEventArgs e)
+    {
+        if (e.Reason == SessionSwitchReason.SessionLock)
+            _ = ReportGoingOfflineAsync("Locked");
+    }
+
+    // System entering sleep/hibernate. Best-effort — Windows gives very little time to react
+    // before actually suspending, so the heartbeat-timeout sweep remains the guaranteed fallback.
+    private void OnPowerModeChanged(object? sender, PowerModeChangedEventArgs e)
+    {
+        if (e.Mode == PowerModes.Suspend)
+            _ = ReportGoingOfflineAsync("Sleep");
+    }
+
+    // Logoff or shutdown/restart — fires before the session actually ends, so there's a real
+    // (if short) window to get this out. Never cancels the session (e.Cancel left false).
+    private void OnSessionEnding(object? sender, SessionEndingEventArgs e)
+    {
+        var reason = e.Reason == SessionEndReasons.SystemShutdown ? "Shutdown" : "Logoff";
+        _ = ReportGoingOfflineAsync(reason);
+    }
+
+    private async Task ReportGoingOfflineAsync(string reason)
+    {
+        try
+        {
+            var sent = await _hub.TrySendEventAsync("ReportAgentOffline", new { reason }, CancellationToken.None);
+            _log.LogInformation("[Offline] Reported going-offline signal ({Reason}) — sent={Sent}", reason, sent);
+        }
+        catch (Exception ex)
+        {
+            _log.LogWarning(ex, "[Offline] Failed to report going-offline signal ({Reason})", reason);
+        }
+    }
+
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         var scanInterval     = TimeSpan.FromSeconds(_opts.ProcessScanIntervalSeconds);
@@ -162,7 +246,8 @@ public sealed class ProcessMonitor : BackgroundService
                             SessionId       = app.SessionId,
                             StartedUtc      = app.StartTime,
                             ActiveSeconds   = app.ActiveSeconds,
-                            FocusSeconds    = app.FocusSeconds
+                            FocusSeconds    = app.FocusSeconds,
+                            IdleSeconds     = app.IdleSeconds
                         };
                     }
                 }
@@ -170,6 +255,26 @@ public sealed class ProcessMonitor : BackgroundService
             _log.LogInformation("Restored {Count} running app sessions from DB", existing.Count);
         }
         catch (Exception ex) { _log.LogWarning(ex, "Could not restore running sessions from DB"); }
+
+        // Any focus interval left with EndTime=null belongs to a previous run that didn't shut
+        // down gracefully (a graceful stop closes it explicitly — see this method's tail). We
+        // can't know what was actually focused during the downtime, so close it using its own
+        // last-known flush time (UpdatedAt) — NOT "now" — so a machine that sat off for hours
+        // doesn't get a fake multi-hour interval on the timeline.
+        try
+        {
+            var dangling = await _store.GetOpenActivityIntervalsAsync(stoppingToken);
+            foreach (var iv in dangling)
+            {
+                var bestKnownEnd = iv.UpdatedAt > iv.StartTime ? iv.UpdatedAt : iv.StartTime;
+                await _store.CloseActivityIntervalAsync(
+                    iv.LocalId, bestKnownEnd, iv.ActiveSeconds, iv.FocusSeconds, iv.IdleSeconds,
+                    DateTime.UtcNow, stoppingToken);
+            }
+            if (dangling.Count > 0)
+                _log.LogInformation("Closed {Count} dangling activity interval(s) from a previous run", dangling.Count);
+        }
+        catch (Exception ex) { _log.LogWarning(ex, "Could not close dangling activity intervals"); }
 
         // OS-level instant foreground-change hook — wakes the activity tick the
         // moment focus changes so the live send fires in ~100 ms instead of up
@@ -180,18 +285,32 @@ public sealed class ProcessMonitor : BackgroundService
             catch (SemaphoreFullException) { /* burst coalescing — a wake is already pending */ }
         });
 
+        // Proactive "going offline" signal — reports a lock/sleep/shutdown/logoff the instant
+        // Windows raises it, instead of leaving the portal to notice only via
+        // StaleUserHeartbeatDeactivationService's periodic heartbeat-timeout sweep (still the
+        // fallback for ungraceful terminations — crash, power loss — which raise none of these).
+        SystemEvents.SessionSwitch += OnSessionSwitch;
+        SystemEvents.PowerModeChanged += OnPowerModeChanged;
+        SystemEvents.SessionEnding += OnSessionEnding;
+
         var signalRInterval  = TimeSpan.FromSeconds(_opts.HeartbeatIntervalSeconds);
         var activityTask     = RunActivityTickAsync(activityInterval, stoppingToken);
         var signalRTickTask  = RunSignalRTickAsync(signalRInterval, stoppingToken);
 
         while (!stoppingToken.IsCancellationRequested)
         {
-            try { ScanAndUpdate(id); }
-            catch (Exception ex) { _log.LogWarning(ex, "Process scan failed"); }
+            if (_state.IsCaptureEnabled)
+            {
+                try { ScanAndUpdate(id); }
+                catch (Exception ex) { _log.LogWarning(ex, "Process scan failed"); }
+            }
             try { await Task.Delay(scanInterval, stoppingToken); }
             catch (OperationCanceledException) { break; }
         }
 
+        SystemEvents.SessionSwitch -= OnSessionSwitch;
+        SystemEvents.PowerModeChanged -= OnPowerModeChanged;
+        SystemEvents.SessionEnding -= OnSessionEnding;
         _fgWatcher?.Dispose();
         await Task.WhenAll(activityTask, signalRTickTask);
 
@@ -201,6 +320,9 @@ public sealed class ProcessMonitor : BackgroundService
 
         foreach (var t in toClose)
             await CloseSessionAsync(t, id, CancellationToken.None);
+
+        if (_openInterval is not null)
+            await CloseOpenIntervalAsync(_openInterval, DateTime.UtcNow);
     }
 
     private async Task RunActivityTickAsync(TimeSpan interval, CancellationToken ct)
@@ -210,6 +332,14 @@ public sealed class ProcessMonitor : BackgroundService
 
         while (!ct.IsCancellationRequested)
         {
+            if (!_state.IsCaptureEnabled)
+            {
+                lastTick = DateTime.UtcNow; // avoid a huge elapsed-seconds jump once capture resumes
+                try { await Task.Delay(interval, ct); }
+                catch (OperationCanceledException) { break; }
+                continue;
+            }
+
             try
             {
                 // Re-read each tick so server-updated value takes effect immediately
@@ -220,21 +350,139 @@ public sealed class ProcessMonitor : BackgroundService
                 var elapsed        = (long)(now - lastTick).TotalSeconds;
                 lastTick           = now;
 
-                // Only track when app is in foreground and user hasn't walked away
-                if (foreground is not null && elapsed > 0 && idle < idleThreshold)
+                // Three mutually-exclusive buckets, matching Active/Focused/Idle exactly:
+                //   Active — idle < activeThreshold        (currently interacting)
+                //   Focus  — activeThreshold <= idle < idleThreshold (in front, no recent input yet)
+                //   Idle   — idle >= idleThreshold          (no interaction for the full threshold)
+                if (foreground is not null && elapsed > 0)
                 {
                     lock (_lock)
                     {
                         if (_running.TryGetValue(foreground, out var tracked))
                         {
-                            // Focus: app is the active foreground window
-                            tracked.FocusSeconds += elapsed;
-                            // Active: subset of focus where mouse/keyboard was recently used
                             if (idle < activeThreshold)
                                 tracked.ActiveSeconds += elapsed;
+                            else if (idle < idleThreshold)
+                                tracked.FocusSeconds += elapsed;
+                            else
+                                tracked.IdleSeconds += elapsed;
                         }
                     }
                 }
+
+                // ---- Activity Timeline segment tracking (Activities Timeline feature) ----
+                // Independent bookkeeping for WHEN foreground focus AND two-state
+                // (Active-vs-Idle) engagement actually changed — a byproduct of the SAME
+                // idle/active-threshold decision above, not an independent recomputation (both
+                // this and `tracked` above are fed by the same elapsed/idle values, computed once
+                // per tick, so the two can never drift apart). Additive only: never reads or
+                // writes `tracked`/`_running`, and never touches the hub. A new segment starts on
+                // EITHER an app switch (while engaged) OR an Active<->Idle transition (Active here
+                // covers both the Active and Focus buckets — the timeline only renders two
+                // colors), matching a real employee-monitoring timeline: Chrome 09:00-09:15
+                // Active, 09:15-09:20 Idle, Chrome-again 09:20-09:45 Active are three rows, not one.
+                OpenInterval? intervalToClose = null;
+                OpenInterval? intervalJustOpened = null;
+
+                if (elapsed > 0)
+                {
+                    bool engaged = idle < idleThreshold; // combines the Active + Focus buckets
+                    // Idle time inside a configured Fixed-window break (Break Time Setup) is
+                    // reported as "Break" instead of "Idle" so it isn't counted against the
+                    // employee — computed once per tick and reused below so the segment-open
+                    // branch can't observe a different answer than the state-change check that
+                    // decided to open it.
+                    bool inBreakWindow = !engaged && _state.IsInActiveBreakWindow(now);
+                    string twoState = engaged ? "Active" : (inBreakWindow ? "Break" : "Idle");
+
+                    lock (_lock)
+                    {
+                        // Deliberately NOT reusing _lastLiveActivityApp — it is nulled out on hub
+                        // reconnect purely to force a resend, not a trustworthy "did focus really
+                        // change" signal for this purpose.
+                        bool stateChanged = _openInterval is null || _openInterval.Activity != twoState;
+                        bool appChangedWhileEngaged = engaged && foreground is not null && _openInterval is not null &&
+                            !foreground.Equals(_openInterval.ProcessName, StringComparison.OrdinalIgnoreCase);
+                        bool dayRolled = _openInterval is not null &&
+                            _openInterval.StartedUtc.ToLocalTime().Date < now.ToLocalTime().Date;
+
+                        if (stateChanged || appChangedWhileEngaged || dayRolled)
+                        {
+                            intervalToClose = _openInterval;
+                            _openInterval = null;
+
+                            if (engaged)
+                            {
+                                // Only track Active segments for apps we recognise — same
+                                // "isKnown" bar ReportLiveActivity already applies further down,
+                                // so the timeline never picks up noise from unrecognised
+                                // background processes. Idle segments have no meaningful app.
+                                if (foreground is not null)
+                                {
+                                    _running.TryGetValue(foreground, out var trackedForInterval);
+                                    var knownDef = TrackedApplications.Map.GetValueOrDefault(foreground);
+                                    bool isKnown = trackedForInterval is not null || knownDef is not null;
+
+                                    if (isKnown)
+                                    {
+                                        _openInterval = new OpenInterval
+                                        {
+                                            LocalId                 = Guid.NewGuid().ToString(),
+                                            Activity                = "Active",
+                                            ProcessName             = foreground,
+                                            ApplicationId           = trackedForInterval?.ApplicationId ?? MakeApplicationId(foreground),
+                                            DisplayName             = trackedForInterval?.DisplayName   ?? knownDef?.DisplayName ?? foreground,
+                                            ApplicationUsageLocalId = trackedForInterval?.LocalId,
+                                            StartedUtc              = now
+                                        };
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                _openInterval = new OpenInterval
+                                {
+                                    LocalId     = Guid.NewGuid().ToString(),
+                                    Activity    = inBreakWindow ? "Break" : "Idle",
+                                    ProcessName = null,
+                                    DisplayName = null,
+                                    ApplicationId = null,
+                                    StartedUtc  = now
+                                };
+                            }
+
+                            if (_openInterval is not null)
+                                intervalJustOpened = _openInterval;
+                        }
+
+                        if (_openInterval is not null)
+                        {
+                            if (idle < activeThreshold)      _openInterval.ActiveSeconds += elapsed;
+                            else if (idle < idleThreshold)   _openInterval.FocusSeconds  += elapsed;
+                            else                              _openInterval.IdleSeconds   += elapsed;
+                        }
+                    }
+                }
+
+                // DB writes happen OUTSIDE _lock, fire-and-forget — a slow/locked SQLite write can
+                // never delay this tick's ReportLiveActivity send further below.
+                if (intervalToClose is not null)
+                    _ = CloseOpenIntervalAsync(intervalToClose, now);
+                if (intervalJustOpened is not null)
+                    _ = _store.AddActivityIntervalAsync(new ActivityInterval
+                    {
+                        LocalId = intervalJustOpened.LocalId,
+                        ApplicationUsageLocalId = intervalJustOpened.ApplicationUsageLocalId,
+                        Activity        = intervalJustOpened.Activity,
+                        ApplicationId   = intervalJustOpened.ApplicationId ?? "",
+                        ApplicationName = intervalJustOpened.DisplayName ?? "",
+                        ProcessName     = intervalJustOpened.ProcessName ?? "",
+                        StartTime = intervalJustOpened.StartedUtc,
+                        EndTime   = null,
+                        CreatedAt = now,
+                        UpdatedAt = now,
+                        Synced    = false
+                    }, CancellationToken.None);
 
                 // When the hub reconnects after a drop, clear the dedup marker so
                 // the very next scan re-sends the CURRENT foreground app. Without
@@ -252,11 +500,11 @@ public sealed class ProcessMonitor : BackgroundService
                 _lastHubState = currentHubState;
 
                 // ReportLiveActivity — fire when the foreground app CHANGES, and
-                // ALSO as a periodic freshness ping every 30 s for the SAME app.
+                // ALSO as a periodic freshness ping every 3 s for the SAME app.
                 // The change-only dedup meant that while the user stayed in one
                 // app the server's Redis live cache aged and any freshly loaded
                 // dashboard sat on a stale Postgres-derived value until the next
-                // switch (potentially minutes). The 30-s refresh keeps the cache
+                // switch (potentially minutes). The 3-s refresh keeps the cache
                 // and every open dashboard continuously current, so a page
                 // refresh can never show old data for more than one ping cycle.
                 bool appChanged  = foreground is not null &&
@@ -303,8 +551,10 @@ public sealed class ProcessMonitor : BackgroundService
 
                         if (sent)
                         {
-                            _lastLiveActivityApp = foreground;
-                            _lastLiveSentUtc     = DateTime.UtcNow;
+                            _lastLiveActivityApp  = foreground;
+                            _lastLiveSentUtc      = DateTime.UtcNow;
+                            _lastKnownAppId       = liveAppId;
+                            _lastKnownProcessName = liveProcess;
                             if (appChanged)
                                 _log.LogInformation("[Live] ReportLiveActivity sent ✓ {App}", liveDisplay);
                         }
@@ -314,6 +564,33 @@ public sealed class ProcessMonitor : BackgroundService
                                 _state.HubConnectionState, liveDisplay);
                         }
                     }
+                }
+                else if (_lastKnownAppId is not null &&
+                         DateTime.UtcNow - _lastLiveSentUtc >= LiveRefreshInterval)
+                {
+                    // Foreground is currently null (desktop/lock screen, no window focused) or
+                    // unrecognized — the branch above never fires in that case, so nothing would
+                    // otherwise keep the ~30s ping (the server's only heartbeat signal) flowing.
+                    // Re-send using the last KNOWN app's identifiers purely to keep the heartbeat
+                    // alive; the Idle/Active/Focus status is still computed fresh from the current
+                    // idle timer, so a genuinely idle-but-online machine correctly keeps reporting
+                    // "Idle" (not "stuck" on whatever it was doing before) without needing a real
+                    // foreground app to hang the ping off of.
+                    var liveStatus = idle < activeThreshold ? "Active"
+                                   : idle < idleThreshold   ? "Focus"
+                                   : "Idle";
+
+                    _log.LogDebug("[Live] Keepalive refresh (no current foreground) → status={Status}", liveStatus);
+
+                    var sent = await _hub.TrySendEventAsync("ReportLiveActivity", new
+                    {
+                        appId       = _lastKnownAppId,
+                        processName = _lastKnownProcessName,
+                        status      = liveStatus
+                    }, ct);
+
+                    if (sent)
+                        _lastLiveSentUtc = DateTime.UtcNow;
                 }
 
             }
@@ -356,6 +633,8 @@ public sealed class ProcessMonitor : BackgroundService
             try { await Task.Delay(interval, ct); }
             catch (OperationCanceledException) { break; }
 
+            if (!_state.IsCaptureEnabled) continue;
+
             try
             {
                 // Refresh in-memory sessionId for any apps that SyncService populated since last tick
@@ -372,25 +651,28 @@ public sealed class ProcessMonitor : BackgroundService
 
                 var now = DateTime.UtcNow;
 
-                List<(string sessionId, string localId, string displayName,
+                List<(string? sessionId, string localId, string displayName,
                       string processName, string applicationId, DateTime startedUtc,
-                      long active, long focus, long idle)> snapshots;
+                      long active, long focus, long idle)> allRunning;
 
                 lock (_lock)
                 {
-                    snapshots = _running.Values
-                        .Where(t => t.SessionId is not null)
-                        .Select(t =>
-                        {
-                            var idle = Math.Max(0L, t.FocusSeconds - t.ActiveSeconds);
-                            return (t.SessionId!, t.LocalId, t.DisplayName,
-                                    t.ProcessName, t.ApplicationId, t.StartedUtc,
-                                    t.ActiveSeconds, t.FocusSeconds, idle);
-                        })
+                    allRunning = _running.Values
+                        .Select(t => (t.SessionId, t.LocalId, t.DisplayName,
+                                      t.ProcessName, t.ApplicationId, t.StartedUtc,
+                                      t.ActiveSeconds, t.FocusSeconds, t.IdleSeconds))
                         .ToList();
                 }
 
+                var today     = DateTime.Now.Date;
+                var snapshots = allRunning
+                    .Where(t => t.sessionId is not null)
+                    .Where(t => t.startedUtc.ToLocalTime().Date >= today)
+                    .ToList();
                 var machineId = _identity.Get().MachineId;
+
+                _log.LogDebug("[Heartbeat] Tick: running={Running} withSession={WithSession} hub={Hub}",
+                    allRunning.Count, snapshots.Count, _state.HubConnectionState);
 
                 if (snapshots.Count > 0)
                 {
@@ -407,7 +689,7 @@ public sealed class ProcessMonitor : BackgroundService
                         activeSeconds        = s.active,
                         focusSeconds         = s.focus,
                         idleSeconds          = s.idle,
-                        durationSeconds      = s.active + s.focus,
+                        durationSeconds      = s.active + s.focus + s.idle,
                         status               = "Running",
                         isApplicationClosed  = false
                     }).ToArray();
@@ -422,11 +704,32 @@ public sealed class ProcessMonitor : BackgroundService
                     // keeps any future config regression from ever killing the
                     // connection again.
                     foreach (var chunk in payload.Chunk(50))
-                        await _hub.TrySendEventAsync("ReportAgentActivity", chunk, ct);
+                    {
+                        var sent = await _hub.TrySendEventAsync("ReportAgentActivity", chunk, ct);
+                        if (sent)
+                            _log.LogInformation("[Heartbeat] ReportAgentActivity sent ✓ ({Count} apps)", chunk.Length);
+                        else
+                            _log.LogWarning("[Heartbeat] ReportAgentActivity NOT sent — hub={Hub} ({Count} apps)",
+                                _state.HubConnectionState, chunk.Length);
+                    }
                 }
 
-                foreach (var (sessionId, localId, displayName, processName, applicationId, startedUtc, active, focus, idle) in snapshots)
+                // Flush seconds for ALL running apps — not just those with sessionId.
+                // Without this, apps never show accumulated time in DB when Redis is down
+                // (no sessionId ever assigned), which makes every row look stuck at 0.
+                foreach (var (_, localId, _, _, _, _, active, focus, idle) in allRunning)
                     await _store.UpdateRunningStatsAsync(localId, active, focus, idle, now, ct);
+
+                // Durability flush for the currently-open activity interval, same crash-safety
+                // guarantee UpdateRunningStatsAsync already gives ApplicationUsage — bounds
+                // crash data-loss for the open interval to this same ~30s cadence. Runs after the
+                // SignalR sends above so it can never add latency to them.
+                OpenInterval? openSnapshot;
+                lock (_lock) { openSnapshot = _openInterval; }
+                if (openSnapshot is not null)
+                    await _store.UpdateOpenActivityIntervalStatsAsync(
+                        openSnapshot.LocalId, openSnapshot.ActiveSeconds,
+                        openSnapshot.FocusSeconds, openSnapshot.IdleSeconds, now, ct);
 
             }
             catch (Exception ex)
@@ -441,6 +744,11 @@ public sealed class ProcessMonitor : BackgroundService
         var current  = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         // Collect (usage, tracking) pairs — DB insert + POST done together in order
         var newBatch = new List<(ApplicationUsage usage, Tracking t)>();
+        // Browsers are excluded from _running/time-tracking (BrowserMonitor owns that
+        // per-tab), but screenshots still reference a browser's appId hash — without a
+        // matching server Application record + icon, the server has nothing to resolve
+        // that AppId to and the icon never shows. Register once per browser, per session.
+        var browserBatch = new List<(string appId, string displayName, string processName, string? iconB64)>();
 
         foreach (var p in Process.GetProcesses())
         {
@@ -460,22 +768,55 @@ public sealed class ProcessMonitor : BackgroundService
 
                 current.Add(key);
 
-                if (def.Category == "Browser") continue;
+                if (def.Category == "Browser")
+                {
+                    var browserAppId = MakeApplicationId(p.ProcessName);
+                    bool alreadyRegistered;
+                    lock (_lock) { alreadyRegistered = _registeredBrowserAppIds.Contains(browserAppId); }
+                    if (!alreadyRegistered)
+                    {
+                        string? exePath = null;
+                        try { exePath = p.MainModule?.FileName; } catch { }
+                        var iconB64 = CaptureIconBase64(exePath, p.ProcessName, _log);
+                        lock (_lock) { _registeredBrowserAppIds.Add(browserAppId); }
+                        browserBatch.Add((browserAppId, def.DisplayName, p.ProcessName, iconB64));
+                    }
+                    continue;
+                }
 
-                bool isNew;
-                lock (_lock) { isNew = !_running.ContainsKey(key); }
+                Tracking? existing;
+                lock (_lock) { _running.TryGetValue(key, out existing); }
+
+                // A session that's still running when local midnight passes gets split:
+                // close it out as of the day it started, then start a fresh session for
+                // today — same treatment as a real close+reopen, just triggered by the
+                // calendar day changing instead of the process actually exiting.
+                bool rolledOver = existing is not null &&
+                    existing.StartedUtc.ToLocalTime().Date < DateTime.Now.Date;
+
+                if (rolledOver)
+                {
+                    _log.LogInformation("Day rollover: {App} session from {Date} closed, starting new session for today",
+                        def.DisplayName, existing!.StartedUtc.ToLocalTime().Date.ToShortDateString());
+                    _ = CloseSessionAsync(existing!, id, CancellationToken.None);
+                }
+
+                bool isNew = existing is null || rolledOver;
 
                 if (isNew)
                 {
                     string? version = null;
                     string? exePath = null;
                     try { version = p.MainModule?.FileVersionInfo.FileVersion; } catch { }
-                    try { exePath = p.MainModule?.FileName; } catch { }
+                    try { exePath = p.MainModule?.FileName; }
+                    catch (Exception ex) { _log.LogDebug("Icon: exePath unavailable for {App} — {Reason}", p.ProcessName, ex.Message); }
 
                     var now     = DateTime.UtcNow;
                     var localId = Guid.NewGuid().ToString();
                     var appId   = MakeApplicationId(p.ProcessName);
-                    var iconB64 = CaptureIconBase64(exePath);
+                    var iconB64 = CaptureIconBase64(exePath, p.ProcessName, _log);
+                    if (iconB64 is null)
+                        _log.LogDebug("Icon: no icon captured for {App} (exePath={ExePath})", p.ProcessName, exePath ?? "(null)");
 
                     var usage = new ApplicationUsage
                     {
@@ -520,6 +861,9 @@ public sealed class ProcessMonitor : BackgroundService
         // INSERT to local DB first, THEN batch POST — guarantees rows exist before UPDATE
         if (newBatch.Count > 0)
             _ = InsertThenPostBatchAsync(newBatch, CancellationToken.None);
+
+        if (browserBatch.Count > 0)
+            _ = RegisterBrowserIconsAsync(browserBatch, CancellationToken.None);
 
         List<Tracking>? ended = null;
         lock (_lock)
@@ -579,7 +923,7 @@ public sealed class ProcessMonitor : BackgroundService
                 type            = x.t.ApplicationType,
                 displayName     = x.t.DisplayName,
                 version         = x.t.Version,
-                iconUrl         = x.usage.IconBase64,
+                iconUrl         = (string?)null,   // real icon goes via POST /applications/{applicationId}/icon (binary), not this field
                 status          = "Running",
                 createdAt       = x.t.StartedUtc,
                 updatedAt       = x.t.StartedUtc,
@@ -617,27 +961,74 @@ public sealed class ProcessMonitor : BackgroundService
             else if (root.ValueKind == JsonValueKind.Object)
                 items.Add(root);
 
-            // Build lookup maps: localId → sessionId, appId → sessionId (case-insensitive field scan)
-            var byLocalId = new Dictionary<string, string?>(StringComparer.OrdinalIgnoreCase);
-            var byAppId   = new Dictionary<string, string?>(StringComparer.OrdinalIgnoreCase);
+            // Build lookup maps: localId / executableName / appId → sessionId + serverApplicationId
+            var byLocalId      = new Dictionary<string, string?>(StringComparer.OrdinalIgnoreCase);
+            var byExeName      = new Dictionary<string, string?>(StringComparer.OrdinalIgnoreCase);
+            var byAppId        = new Dictionary<string, string?>(StringComparer.OrdinalIgnoreCase);
+            var appIdByLocal   = new Dictionary<string, string?>(StringComparer.OrdinalIgnoreCase);
+            var appIdByExeName = new Dictionary<string, string?>(StringComparer.OrdinalIgnoreCase);
+            var appIdByAppId   = new Dictionary<string, string?>(StringComparer.OrdinalIgnoreCase);
             foreach (var item in items)
             {
-                var sid = ExtractSessionId(item);
-                if (item.TryGetProperty("localId", out var li) && li.GetString() is { } lid) byLocalId[lid] = sid;
-                if (item.TryGetProperty("appId",   out var ai) && ai.GetString() is { } aid) byAppId[aid]   = sid;
+                var sid    = ExtractSessionId(item);
+                var srvAid = item.TryGetProperty("applicationId", out var aidEl) && aidEl.ValueKind == JsonValueKind.String
+                    ? aidEl.GetString() : null;
+
+                if (item.TryGetProperty("localId", out var li) && li.GetString() is { } lid)
+                {
+                    byLocalId[lid]    = sid;
+                    appIdByLocal[lid] = srvAid;
+                }
+                if (item.TryGetProperty("executableName", out var en) && en.GetString() is { } ename)
+                {
+                    byExeName[ename]      = sid;
+                    appIdByExeName[ename] = srvAid;
+                }
+                if (item.TryGetProperty("appId", out var ai) && ai.GetString() is { } aid)
+                {
+                    byAppId[aid]      = sid;
+                    appIdByAppId[aid] = srvAid;
+                }
             }
 
             for (int i = 0; i < toPost.Count; i++)
             {
                 var entry = toPost[i];
-                string? sessionId = null;
+                string? sessionId          = null;
+                string? serverApplicationId = null;
 
-                // 1. Match by localId (server echoed correlation ID — most reliable)
-                if (byLocalId.TryGetValue(entry.t.LocalId, out var s1)) sessionId = s1;
-                // 2. Match by appId
-                else if (byAppId.TryGetValue(entry.t.ApplicationId, out var s2)) sessionId = s2;
-                // 3. Fall back to index
-                else if (i < items.Count) sessionId = ExtractSessionId(items[i]);
+                // 1. Match by array position — the server always returns exactly one result per
+                //    request item, in the same order (see ApplicationService.CreateApplicationsAsync,
+                //    which builds its response with one ordered Add() per input item). This must be
+                //    the primary match: a batch can contain several launches of the same executable
+                //    (e.g. multiple Compil32/setup.exe instances), and the name/appId lookups below
+                //    are Dictionaries keyed by those fields — they can only hold one entry per key,
+                //    so they'd incorrectly collapse every same-named launch onto a single shared
+                //    session if given priority over position.
+                if (i < items.Count)
+                {
+                    sessionId = ExtractSessionId(items[i]);
+                    if (items[i].TryGetProperty("applicationId", out var aidEl2) && aidEl2.ValueKind == JsonValueKind.String)
+                        serverApplicationId = aidEl2.GetString();
+                }
+                // 2. Fallback matches — only reached if the response array is a different length
+                //    than the request (shouldn't normally happen), so at least attempt a best-effort
+                //    match instead of silently dropping the item.
+                else if (byLocalId.TryGetValue(entry.t.LocalId, out var s1))
+                {
+                    sessionId = s1;
+                    appIdByLocal.TryGetValue(entry.t.LocalId, out serverApplicationId);
+                }
+                else if (byExeName.TryGetValue(entry.t.ProcessName, out var s3))
+                {
+                    sessionId = s3;
+                    appIdByExeName.TryGetValue(entry.t.ProcessName, out serverApplicationId);
+                }
+                else if (byAppId.TryGetValue(entry.t.ApplicationId, out var s2))
+                {
+                    sessionId = s2;
+                    appIdByAppId.TryGetValue(entry.t.ApplicationId, out serverApplicationId);
+                }
 
                 if (sessionId is not null)
                 {
@@ -650,6 +1041,9 @@ public sealed class ProcessMonitor : BackgroundService
                     var rawItem = i < items.Count ? items[i].GetRawText() : "(no item at this index)";
                     _log.LogWarning("No sessionId for {App} — server returned: {Item}", entry.t.DisplayName, rawItem);
                 }
+
+                if (serverApplicationId is not null && entry.usage.IconBase64 is not null)
+                    await UploadIconAsync(client, serverApplicationId, entry.usage.IconBase64, entry.t.DisplayName, ct);
             }
         }
         catch (Exception ex)
@@ -658,11 +1052,134 @@ public sealed class ProcessMonitor : BackgroundService
         }
     }
 
+    // Uploads the app's icon as binary via the dedicated endpoint — the main /applications
+    // POST's iconUrl field is a plain string (no image handling), so the real icon bytes
+    // must go here, keyed by the server's own applicationId (not our client-side appId hash).
+    private async Task UploadIconAsync(HttpClient client, string serverApplicationId, string iconBase64, string appName, CancellationToken ct)
+    {
+        try
+        {
+            var bytes = Convert.FromBase64String(iconBase64);
+            using var content = new MultipartFormDataContent();
+            var byteContent = new ByteArrayContent(bytes);
+            byteContent.Headers.ContentType = new MediaTypeHeaderValue("image/png");
+            content.Add(byteContent, "Icon", "icon.png");
+
+            using var resp = await client.PostAsync($"/api/v1/agentdb/applications/{serverApplicationId}/icon", content, ct);
+            if (resp.IsSuccessStatusCode)
+                _log.LogInformation("Icon uploaded: {App} → {AppId}", appName, serverApplicationId);
+            else
+                _log.LogWarning("Icon upload failed: {App} → {Status}", appName, (int)resp.StatusCode);
+        }
+        catch (Exception ex)
+        {
+            _log.LogDebug(ex, "Icon upload failed for {App}", appName);
+        }
+    }
+
+    // Registers a browser (chrome/msedge) as a minimal Application record purely so its
+    // appId hash resolves to something on the server and its icon can be uploaded — no
+    // ApplicationUsage row, no _running/time-tracking entry. BrowserMonitor already owns
+    // per-tab time tracking; this exists only so screenshots referencing this appId (taken
+    // while a browser was in the foreground) show the right icon.
+    private async Task RegisterBrowserIconsAsync(
+        List<(string appId, string displayName, string processName, string? iconB64)> browsers, CancellationToken ct)
+    {
+        try
+        {
+            var token = await _tokens.GetAsync(ct);
+            if (token is null) return;
+
+            var client = _httpFactory.CreateClient("backend");
+            client.BaseAddress = new Uri(_opts.BackendBaseUrl);
+            client.Timeout     = TimeSpan.FromSeconds(30);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var now = DateTime.UtcNow;
+            var payload = browsers.Select(b => new
+            {
+                appId           = b.appId,
+                applicationName = b.displayName,
+                executableName  = b.processName,
+                type            = "Browser",
+                displayName     = b.displayName,
+                version         = (string?)null,
+                iconUrl         = (string?)null,
+                status          = "Running",
+                createdAt       = now,
+                updatedAt       = now,
+                activeSeconds   = 0,
+                focusSeconds    = 0,
+                idleSeconds     = 0,
+                crashCount      = 0
+            }).ToArray();
+
+            using var resp = await client.PostAsJsonAsync("/api/v1/agentdb/applications", payload, ct);
+            if (!resp.IsSuccessStatusCode)
+            {
+                var errBody = await resp.Content.ReadAsStringAsync(ct);
+                _log.LogWarning("Browser icon registration POST {Status}: {Body}", (int)resp.StatusCode, errBody);
+                return;
+            }
+
+            var json = await resp.Content.ReadAsStringAsync(ct);
+            using var doc = JsonDocument.Parse(json);
+            var root = doc.RootElement;
+
+            var items = new List<JsonElement>();
+            if (root.TryGetProperty("data", out var d))
+            {
+                if (d.ValueKind == JsonValueKind.Array)
+                    foreach (var el in d.EnumerateArray()) items.Add(el);
+                else if (d.ValueKind == JsonValueKind.Object)
+                    items.Add(d);
+            }
+            else if (root.ValueKind == JsonValueKind.Array)
+                foreach (var el in root.EnumerateArray()) items.Add(el);
+
+            var appIdByEchoedAppId = new Dictionary<string, string?>(StringComparer.OrdinalIgnoreCase);
+            foreach (var item in items)
+            {
+                var srvAid = item.TryGetProperty("applicationId", out var aidEl) && aidEl.ValueKind == JsonValueKind.String
+                    ? aidEl.GetString() : null;
+                if (item.TryGetProperty("appId", out var ai) && ai.GetString() is { } aid)
+                    appIdByEchoedAppId[aid] = srvAid;
+            }
+
+            foreach (var b in browsers)
+            {
+                if (b.iconB64 is null) continue;
+                if (appIdByEchoedAppId.TryGetValue(b.appId, out var serverApplicationId) && serverApplicationId is not null)
+                    await UploadIconAsync(client, serverApplicationId, b.iconB64, b.displayName, ct);
+                else
+                    _log.LogWarning("No server applicationId for browser {App} — icon not uploaded", b.displayName);
+            }
+        }
+        catch (Exception ex)
+        {
+            _log.LogWarning(ex, "RegisterBrowserIconsAsync failed");
+        }
+    }
+
+    // Closes an open activity interval — foreground lost, day rollover, or graceful shutdown.
+    // Wrapped in try/catch (unlike CloseSessionAsync's unwrapped fire-and-forget call sites) since
+    // this is invoked via `_ = CloseOpenIntervalAsync(...)` and an unobserved exception from a
+    // brand-new code path is a risk not worth introducing.
+    private async Task CloseOpenIntervalAsync(OpenInterval iv, DateTime end)
+    {
+        try
+        {
+            await _store.CloseActivityIntervalAsync(
+                iv.LocalId, end, iv.ActiveSeconds, iv.FocusSeconds, iv.IdleSeconds, end, CancellationToken.None);
+        }
+        catch (Exception ex) { _log.LogDebug(ex, "Failed to close activity interval for {App}", iv.DisplayName ?? iv.Activity); }
+    }
+
     private async Task CloseSessionAsync(Tracking t, AgentIdentity id, CancellationToken ct)
     {
         var end    = DateTime.UtcNow;
         var dur    = (long)(end - t.StartedUtc).TotalSeconds;
-        var idle   = Math.Max(0L, t.FocusSeconds - t.ActiveSeconds);
+        var idle   = t.IdleSeconds;
 
         // SyncService may have populated sessionId in DB after the app opened — pick it up now
         if (t.SessionId is null)
@@ -707,7 +1224,7 @@ public sealed class ProcessMonitor : BackgroundService
                     activeSeconds        = t.ActiveSeconds,
                     focusSeconds         = t.FocusSeconds,
                     idleSeconds          = idle,
-                    durationSeconds      = t.ActiveSeconds + t.FocusSeconds,
+                    durationSeconds      = t.ActiveSeconds + t.FocusSeconds + idle,
                     status               = "Closed",
                     isApplicationClosed  = true
                 }

@@ -288,7 +288,7 @@ namespace BIManage.Revit.Commands
         {
             try
             {
-                if (_featureToggleService.IsGlobalPaused)
+                if (_featureToggleService.IsGlobalPaused || _featureToggleService.IsEmployeeCaptureDisabled)
                     return;
 
                 // Record activity for productivity tracking
@@ -567,11 +567,11 @@ namespace BIManage.Revit.Commands
         {
             // BeforeExecuted bindings (pre-execution cancellation)
             // Move command - with command protection integration
-            _moveBinding = new MoveCommandBinding(uiApplication, _logger, _ruleInterceptor, _commandProtectionGetter, _positionRestorationGetter);
+            _moveBinding = new MoveCommandBinding(uiApplication, _logger, _ruleInterceptor, _commandProtectionGetter, _positionRestorationGetter, _featureToggleService);
             _moveBinding.RegisterWithBeforeExecute();
 
             // Rotate command - with command protection integration
-            _rotateBinding = new RotateCommandBinding(uiApplication, _logger, _ruleInterceptor, _commandProtectionGetter);
+            _rotateBinding = new RotateCommandBinding(uiApplication, _logger, _ruleInterceptor, _commandProtectionGetter, _featureToggleService);
             _rotateBinding.RegisterWithBeforeExecute();
 
             // Mirror Pick Axis - with command protection integration
@@ -584,7 +584,8 @@ namespace BIManage.Revit.Commands
                 _eventProtectionServiceGetter,
                 () => new BIManage.Revit.Protection.EventInterventionHandler(_logger, _auditRepository, _otpRepository, _isAdminCheck),
                 () => _auditRepository,
-                _registeredModelsRepoGetter
+                _registeredModelsRepoGetter,
+                _featureToggleService
             );
             _mirrorPickAxisBinding.RegisterWithBeforeExecute();
 
@@ -598,7 +599,8 @@ namespace BIManage.Revit.Commands
                 _eventProtectionServiceGetter,
                 () => new BIManage.Revit.Protection.EventInterventionHandler(_logger, _auditRepository, _otpRepository, _isAdminCheck),
                 () => _auditRepository,
-                _registeredModelsRepoGetter
+                _registeredModelsRepoGetter,
+                _featureToggleService
             );
             _mirrorDrawAxisBinding.RegisterWithBeforeExecute();
 
@@ -616,7 +618,8 @@ namespace BIManage.Revit.Commands
                 _auditRepository,
                 _screenshotServiceGetter,
                 _evidenceRepositoryGetter,
-                _ruleInterceptor);  // Model registration check + session_id + API sync + audit + evidence + rule management
+                _ruleInterceptor,
+                _featureToggleService);  // Model registration check + session_id + API sync + audit + evidence + rule management
             _pinBinding.Register();
 
             // Unpin command - evaluates protection modes, OTP authorization
@@ -632,7 +635,8 @@ namespace BIManage.Revit.Commands
                 _unpinnedElementTracker,
                 _commandProtectionGetter,
                 _pinProtectionSyncGetter,
-                _ruleInterceptor);  // Command protection + API sync + rule evaluation
+                _ruleInterceptor,
+                _featureToggleService);  // Command protection + API sync + rule evaluation
             _unpinBinding.Register();
 
             // Delete command - Explicit deletion operation (BeforeExecuted for rules, Executed for actual deletion)
@@ -641,7 +645,8 @@ namespace BIManage.Revit.Commands
                 uiApplication,
                 _logger,
                 _ruleInterceptor,
-                _commandProtectionGetter);
+                _commandProtectionGetter,
+                _featureToggleService);
             _deleteBinding.Register();
 
             // Cut to Clipboard — dedicated binding ensures rule interceptor fires for Cut
@@ -649,7 +654,8 @@ namespace BIManage.Revit.Commands
                 uiApplication,
                 _logger,
                 _ruleInterceptor,
-                _commandProtectionGetter);
+                _commandProtectionGetter,
+                _featureToggleService);
             _cutBinding.RegisterWithBeforeExecute();
 
             // Copy — pin protection alert on pinned/protected elements
@@ -657,7 +663,8 @@ namespace BIManage.Revit.Commands
                 uiApplication,
                 _logger,
                 _ruleInterceptor,
-                _commandProtectionGetter);
+                _commandProtectionGetter,
+                _featureToggleService);
             _copyBinding.RegisterWithBeforeExecute();
 
             // Offset — pin protection alert on pinned/protected elements
@@ -665,7 +672,8 @@ namespace BIManage.Revit.Commands
                 uiApplication,
                 _logger,
                 _ruleInterceptor,
-                _commandProtectionGetter);
+                _commandProtectionGetter,
+                _featureToggleService);
             _offsetBinding.RegisterWithBeforeExecute();
 
             // Group commands — hard block when pinned elements are involved
@@ -673,7 +681,8 @@ namespace BIManage.Revit.Commands
                 uiApplication,
                 _logger,
                 _ruleInterceptor,
-                _commandProtectionGetter);
+                _commandProtectionGetter,
+                _featureToggleService);
             _groupCommandBinding.RegisterWithBeforeExecute();
 
             // Assembly commands — hard block when pinned elements are involved
@@ -681,7 +690,8 @@ namespace BIManage.Revit.Commands
                 uiApplication,
                 _logger,
                 _ruleInterceptor,
-                _commandProtectionGetter);
+                _commandProtectionGetter,
+                _featureToggleService);
             _assemblyCommandBinding.RegisterWithBeforeExecute();
 
             // Sync traffic control — gates sync upstream (never cancel mid-sync)
@@ -692,7 +702,8 @@ namespace BIManage.Revit.Commands
                 _signalREventBusGetter,
                 _revitContextGetter,
                 _commandProtectionGetter,
-                _ruleInterceptor);
+                _ruleInterceptor,
+                _featureToggleService);
             _syncBinding.RegisterWithBeforeExecute();
 
             // Post-open idle accumulators: time spent on Worksets / Manage Links dialogs.

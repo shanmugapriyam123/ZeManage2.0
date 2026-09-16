@@ -115,7 +115,7 @@ namespace BIManage.Revit.UITracking
         {
             try
             {
-                if (_featureToggleService.IsGlobalPaused) return;
+                if (_featureToggleService.IsGlobalPaused || _featureToggleService.IsEmployeeCaptureDisabled) return;
                 if (_uiApplication?.ActiveUIDocument?.Selection == null) return;
 
                 // Get current selection

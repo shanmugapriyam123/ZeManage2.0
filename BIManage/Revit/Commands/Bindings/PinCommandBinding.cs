@@ -37,6 +37,7 @@ namespace BIManage.Revit.Commands.Bindings
         private readonly Func<IScreenshotService?>? _screenshotServiceGetter;
         private readonly Func<EvidenceRepository?>? _evidenceRepositoryGetter;
         private readonly IRuleCommandInterceptor? _ruleInterceptor;
+        private readonly BIManage.Core.Features.IFeatureToggleService? _featureToggleService;
         private AddInCommandBinding? _binding;
 
         public PinCommandBinding(
@@ -51,7 +52,8 @@ namespace BIManage.Revit.Commands.Bindings
             AuditRepository? auditRepository = null,
             Func<IScreenshotService?>? screenshotServiceGetter = null,
             Func<EvidenceRepository?>? evidenceRepositoryGetter = null,
-            IRuleCommandInterceptor? ruleInterceptor = null)
+            IRuleCommandInterceptor? ruleInterceptor = null,
+            BIManage.Core.Features.IFeatureToggleService? featureToggleService = null)
             : base(uiApp, logger)
         {
             _isAdminCheck = isAdminCheck ?? throw new ArgumentNullException(nameof(isAdminCheck));
@@ -64,6 +66,7 @@ namespace BIManage.Revit.Commands.Bindings
             _screenshotServiceGetter = screenshotServiceGetter;
             _evidenceRepositoryGetter = evidenceRepositoryGetter;
             _ruleInterceptor = ruleInterceptor;
+            _featureToggleService = featureToggleService;
 
             // Pin command ID: 32997
             CommandId = RevitCommandId.LookupPostableCommandId(PostableCommand.Pin);
@@ -140,6 +143,9 @@ namespace BIManage.Revit.Commands.Bindings
         {
             try
             {
+                if (_featureToggleService?.IsGlobalPaused == true || _featureToggleService?.IsEmployeeCaptureDisabled == true)
+                    return;
+
                 // PRIORITY 0: Check CommandProtectionBinding for Notify/Assist/Protect settings
                 var commandProtection = _commandProtectionGetter?.Invoke();
                 if (commandProtection != null)
@@ -175,6 +181,9 @@ namespace BIManage.Revit.Commands.Bindings
         {
             try
             {
+                if (_featureToggleService?.IsGlobalPaused == true || _featureToggleService?.IsEmployeeCaptureDisabled == true)
+                    return;
+
                 UIDocument uidoc = (sender as UIApplication)?.ActiveUIDocument;
                 if (uidoc == null)
                 {

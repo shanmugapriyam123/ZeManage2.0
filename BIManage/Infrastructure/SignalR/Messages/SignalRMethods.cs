@@ -67,6 +67,11 @@ namespace BIManage.Infrastructure.SignalR.Messages
         public const string ForceLogout = "ForceLogout";
         public const string ForceTokenRefresh = "ForceTokenRefresh";
 
+        /// <summary>Admin active/inactive toggle — see
+        /// SignalRNotificationService.NotifyEmployeeActiveStatusChangedAsync (backend) and
+        /// EmployeeActivationListener (this side).</summary>
+        public const string EmployeeActiveStatusChanged = "EmployeeActiveStatusChanged";
+
         // =============================================
         // Session & Metrics
         // =============================================

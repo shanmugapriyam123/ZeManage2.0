@@ -52,6 +52,7 @@ public static class AgentBootstrap
         services.AddSingleton<AgentState>();
         services.AddSingleton<LocalStore>();
         services.AddSingleton<Sync.TokenProvider>();
+        services.AddSingleton<Sync.AttendanceApiService>();
         services.AddSingleton<Services.AppClassificationService>();
 
         services.AddDbContextFactory<AgentDbContext>((sp, options) =>
@@ -60,40 +61,37 @@ public static class AgentBootstrap
             options.UseSqlite($"Data Source={opts.DatabasePath}");
         });
 
+        // SocketsHttpHandler (not HttpClientHandler) specifically so PooledConnectionLifetime is
+        // available. Confirmed live: requests were failing with SocketException(995, "operation
+        // aborted") on plain HTTP calls (reproduced even with SignalR disabled entirely, via the
+        // "backend-agent" fallback client) — the classic symptom of a proxy/gateway/load-balancer
+        // between this machine and the backend silently closing idle keep-alive connections that
+        // this process's connection pool doesn't know are dead yet, so the next request reused on
+        // that pooled connection gets aborted mid-flight instead of cleanly reconnecting. Forcing
+        // every pooled connection to retire after 30s (well under any typical proxy idle timeout,
+        // which is usually 60-120s) makes the client always establish a fresh connection instead
+        // of gambling on a possibly-already-dead pooled one.
+        static SocketsHttpHandler MakeHandler(AgentOptions o) => new()
+        {
+            PooledConnectionLifetime = TimeSpan.FromSeconds(30),
+            SslOptions = o.AllowInsecureSsl
+                ? new System.Net.Security.SslClientAuthenticationOptions
+                {
+                    RemoteCertificateValidationCallback = (_, _, _, _) => true
+                }
+                : new System.Net.Security.SslClientAuthenticationOptions()
+        };
+
         services.AddHttpClient("backend").ConfigurePrimaryHttpMessageHandler(sp =>
-        {
-            var o = sp.GetRequiredService<Microsoft.Extensions.Options.IOptions<AgentOptions>>().Value;
-            return new HttpClientHandler
-            {
-                ServerCertificateCustomValidationCallback = o.AllowInsecureSsl
-                    ? HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-                    : null
-            };
-        });
+            MakeHandler(sp.GetRequiredService<Microsoft.Extensions.Options.IOptions<AgentOptions>>().Value));
         services.AddHttpClient("backend-auth").ConfigurePrimaryHttpMessageHandler(sp =>
-        {
-            var o = sp.GetRequiredService<Microsoft.Extensions.Options.IOptions<AgentOptions>>().Value;
-            return new HttpClientHandler
-            {
-                ServerCertificateCustomValidationCallback = o.AllowInsecureSsl
-                    ? HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-                    : null
-            };
-        });
+            MakeHandler(sp.GetRequiredService<Microsoft.Extensions.Options.IOptions<AgentOptions>>().Value));
         // "backend-agent" — HTTP fallback channel used by AgentHubConnection
         // when SignalR is Reconnecting/Disconnected. Same SSL policy as the
         // other backend clients so a self-signed cert on the staging backend
         // doesn't silently sink the fallback POST.
         services.AddHttpClient("backend-agent").ConfigurePrimaryHttpMessageHandler(sp =>
-        {
-            var o = sp.GetRequiredService<Microsoft.Extensions.Options.IOptions<AgentOptions>>().Value;
-            return new HttpClientHandler
-            {
-                ServerCertificateCustomValidationCallback = o.AllowInsecureSsl
-                    ? HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-                    : null
-            };
-        });
+            MakeHandler(sp.GetRequiredService<Microsoft.Extensions.Options.IOptions<AgentOptions>>().Value));
         services.AddHttpClient("speedtest");
         services.AddHttpClient();
 
@@ -106,7 +104,8 @@ public static class AgentBootstrap
         services.AddHostedService(sp => sp.GetRequiredService<ScreenshotMonitor>());
         services.AddSingleton<AgentHubConnection>();
         services.AddHostedService(sp => sp.GetRequiredService<AgentHubConnection>());
-        services.AddHostedService<SyncService>();
+        services.AddSingleton<SyncService>();
+        services.AddHostedService(sp => sp.GetRequiredService<SyncService>());
 
         return services;
     }

@@ -66,7 +66,7 @@
              assembly System.Runtime.dll" because the .NET 8 ref expects this attribute via
              the System.Runtime contract while net48 has it only in mscorlib / the
              System.Resources.ResourceManager facade. -->
-        <DefaultItemExcludes>$(DefaultItemExcludes);BIManage.Addons\**;BIManageRevit.Tests\**;BIManageRevit.Shim\**;Bundle\**;ZeManage.Agent.Core\**;ZeManage.Agent\**;ZeManage.Agent.Check\**</DefaultItemExcludes>
+        <DefaultItemExcludes>$(DefaultItemExcludes);BIManage.Addons\**;BIManageRevit.Tests\**;BIManageRevit.Shim\**;Bundle\**;ZeManage.Agent.Core\**;ZeManage.Agent\**;ZeManage.Agent.Check\**;ZeManage.Agent.Watchdog\**;ZeManage.AgentService\**;deploy\**</DefaultItemExcludes>
         <!-- Limit satellite resource assemblies to English only. The transitive Roslyn /
              Microsoft.CodeAnalysis.* packages ship localized error-message resources for
              13 cultures (cs/de/es/fr/it/ja/ko/pl/pt-BR/ru/tr/zh-Hans/zh-Hant), producing
@@ -408,8 +408,12 @@
         <!-- SQLite Database - Core only (raw ADO.NET, no Entity Framework) -->
         <PackageReference Include="System.Data.SQLite.Core" Version="1.0.118" />
 
-        <!-- System.Management for hardware-based machine identification -->
-        <PackageReference Include="System.Management" Version="9.0.0" />
+        <!-- System.Management for hardware-based machine identification.
+             R27 (net10.0-windows) project-references ZeManage.Agent.Core, which itself pulls in
+             System.Management >= 10.0.0 — pinning 9.0.0 there is a downgrade NuGet treats as an
+             error (NU1605). Match ZeManage.Agent.Core's version there; keep 9.0.0 elsewhere. -->
+        <PackageReference Include="System.Management" Version="9.0.0" Condition="'$(TargetFramework)' != 'net10.0-windows'" />
+        <PackageReference Include="System.Management" Version="10.0.0" Condition="'$(TargetFramework)' == 'net10.0-windows'" />
 
         <!--
             Roslyn — powers AI Terminal's send_code_to_revit tool (Phase 3d).
@@ -625,16 +629,26 @@
         <!-- DbInit uses Microsoft.Data.Sqlite which is not referenced by BIManageRevit.
              Without this, DbInit\Program.cs is included in BIManageRevit's compile glob. -->
         <Compile Remove="DbInit\**" />
+        <!-- deploy\ is a self contained agent publish output (untracked, produced by a
+             self-contained dotnet publish) dumped at the repo root. Without this exclusion
+             its hundreds of runtime DLLs, including a literal System.Private.CoreLib.dll,
+             get swept into the default item glob and end up as candidates during net48 assembly
+             resolution, which breaks WPF markup compilation with a bogus MC1000
+             "Could not find assembly System.Private.CoreLib" error. -->
+        <Compile Remove="deploy\**" />
         <EmbeddedResource Remove="BIManageRevit.Tests\**" />
         <EmbeddedResource Remove="BIManage\Tools\Testing\**" />
         <EmbeddedResource Remove="BIManage.Addons\**" />
         <EmbeddedResource Remove="BIManageRevit.Shim\**" />
+        <EmbeddedResource Remove="deploy\**" />
         <None Remove="BIManageRevit.Tests\**" />
         <None Remove="BIManage\Tools\Testing\**" />
         <None Remove="BIManage.Addons\**" />
         <None Remove="BIManageRevit.Shim\**" />
+        <None Remove="deploy\**" />
         <Page Remove="BIManage.Addons\**" />
         <Page Remove="BIManageRevit.Shim\**" />
+        <Page Remove="deploy\**" />
     </ItemGroup>
 
     <!-- IsExternalInit polyfill for .NET Framework to support init-only properties -->

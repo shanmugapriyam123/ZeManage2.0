@@ -11,14 +11,16 @@ rem  so 04_SignTool can code-sign ZeManage.Agent.exe and
 rem  06_Installer can ship it in the same ZeManageSetup.exe as the
 rem  Revit add-in.
 rem
-rem  The DesktopAgent repo defaults to D:\ZeManage 2.0\DesktopAgent.
+rem  The DesktopAgent repo defaults to C:\Users\Admin\Documents\GitHub\ZeManage2.0
+rem  (the actively-developed/deployed copy — D:\ZeManage 2.0\DesktopAgent is a
+rem  stale older snapshot, confirmed 2026-08-07).
 rem  Override by setting AGENT_REPO before calling this script.
 rem ============================================================
 
 set "SCRIPT_DIR=%~dp0"
 set "STAGE_DIR=%SCRIPT_DIR%BIManageRevit.bundle\Contents\Agent"
 
-if not defined AGENT_REPO set "AGENT_REPO=D:\ZeManage 2.0\DesktopAgent"
+if not defined AGENT_REPO set "AGENT_REPO=C:\Users\Admin\Documents\GitHub\ZeManage2.0"
 
 if not exist "%AGENT_REPO%\deploy\publish.cmd" (
     echo Agent repo not found at "%AGENT_REPO%".

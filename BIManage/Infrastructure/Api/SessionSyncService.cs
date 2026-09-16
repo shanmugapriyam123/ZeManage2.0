@@ -27,6 +27,7 @@ namespace BIManage.Infrastructure.Api
         private readonly AuthenticatedHttpClient? _httpClient;
         private readonly OfflineQueueRepository? _offlineQueue;
         private readonly ILogger? _logger;
+        private OfflineSyncProcessor? _offlineSyncProcessor;
         private const string Endpoint = "/api/v1/Revit/session/Open";
         private const string UpdateEndpoint = "/api/v1/Revit/session";
         private const string HeartbeatEndpoint = "/api/v1/Revit/session/{0}/heartbeat";
@@ -58,6 +59,16 @@ namespace BIManage.Infrastructure.Api
         /// audit_log_sync and metrics operations unblock on the next queue pass.
         /// </summary>
         public void ConfirmSessionOnServer(string sessionId) => _confirmedSessions.Add(sessionId);
+
+        /// <summary>
+        /// Wires the offline processor so a freshly-queued session_open can trigger an
+        /// immediate sync attempt instead of waiting up to 30s for the next background
+        /// timer tick. admin-login depends on the session row existing server-side, so
+        /// making the user wait out an arbitrary timer window before Sign In can succeed
+        /// is user-visible ("Session not found or has no UserId") even though the queue
+        /// would have drained it eventually.
+        /// </summary>
+        public void SetOfflineSyncProcessor(OfflineSyncProcessor? processor) => _offlineSyncProcessor = processor;
 
         /// <summary>
         /// Creates a SessionSyncService with SignalR and optional HTTP fallback.
@@ -741,6 +752,14 @@ namespace BIManage.Infrastructure.Api
 
                 await _offlineQueue!.EnqueueAsync(operation);
                 _logger?.LogInfo($"Queued offline operation: {operationType} for session {sessionId}");
+
+                // Fire-and-forget an immediate retry for session_open specifically — admin-login
+                // can fail with "Session not found" the instant a user signs in before the next
+                // 30s timer tick would have flushed this. Not done for other operation types
+                // (session updates/heartbeats) since nothing else is latency-sensitive enough
+                // to justify the extra request.
+                if (operationType == OfflineApiWrapper.OperationTypes.SessionOpen)
+                    _ = _offlineSyncProcessor?.SyncNowAsync();
             }
             catch (Exception ex)
             {

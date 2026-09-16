@@ -23,17 +23,20 @@ namespace BIManage.Revit.Commands.Bindings
         private AddInCommandBinding _binding;
         private readonly IRuleCommandInterceptor _ruleInterceptor;
         private readonly Func<CommandProtectionBinding?> _commandProtectionGetter;
+        private readonly BIManage.Core.Features.IFeatureToggleService? _featureToggleService;
         private bool _commandWasCancelled = false;
 
         public DeleteCommandBinding(
             UIApplication uiApp,
             ILogger logger,
             IRuleCommandInterceptor ruleInterceptor,
-            Func<CommandProtectionBinding?>? commandProtectionGetter = null)
+            Func<CommandProtectionBinding?>? commandProtectionGetter = null,
+            BIManage.Core.Features.IFeatureToggleService? featureToggleService = null)
             : base(uiApp, logger)
         {
             _ruleInterceptor = ruleInterceptor;
             _commandProtectionGetter = commandProtectionGetter ?? (() => null);
+            _featureToggleService = featureToggleService;
 
             // Look up by PostableCommand enum
             CommandId = RevitCommandId.LookupPostableCommandId(PostableCommand.Delete);
@@ -71,10 +74,15 @@ namespace BIManage.Revit.Commands.Bindings
         {
             try
             {
-                Logger?.LogDebug($"Delete command intercepted (BeforeExecuted): {e.CommandId.Name}");
-
-                // Reset cancellation flag
+                // Reset cancellation flag first so a skipped check here doesn't leave OnExecuted
+                // thinking a PRIOR command was cancelled — deactivated means "skip protection
+                // checks, let native delete proceed," not "leave delete in a stuck state."
                 _commandWasCancelled = false;
+
+                if (_featureToggleService?.IsGlobalPaused == true || _featureToggleService?.IsEmployeeCaptureDisabled == true)
+                    return;
+
+                Logger?.LogDebug($"Delete command intercepted (BeforeExecuted): {e.CommandId.Name}");
 
                 // PRIORITY 1: Check CommandProtectionBinding for command-specific settings (Notify/Assist/Protect)
                 var commandProtection = _commandProtectionGetter?.Invoke();

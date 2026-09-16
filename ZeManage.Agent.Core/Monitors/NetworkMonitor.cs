@@ -48,6 +48,13 @@ public sealed class NetworkMonitor : BackgroundService
         var id = _identity.Get();
         while (!stoppingToken.IsCancellationRequested)
         {
+            if (!_state.IsCaptureEnabled)
+            {
+                try { await Task.Delay(interval, stoppingToken); }
+                catch (OperationCanceledException) { break; }
+                continue;
+            }
+
             try
             {
                 var snap = await CollectAsync(stoppingToken);
@@ -79,32 +86,29 @@ public sealed class NetworkMonitor : BackgroundService
 
     private async Task<NetworkSnapshot> CollectAsync(CancellationToken ct)
     {
-        var (latencyMs, lossPct) = await PingAsync(ct);
-        var (downMbps, activeAdapter) = ReadAdapterStats();
+        // Run ping and throughput measurement concurrently (throughput needs 1s sample window)
+        var pingTask       = PingAsync(ct);
+        var throughputTask = MeasureThroughputAsync(ct);
+
+        await Task.WhenAll(pingTask, throughputTask);
+
+        var (latencyMs, lossPct)                           = pingTask.Result;
+        var (downMbps, upMbps, adapterName, connType) = throughputTask.Result;
         var vpn = DetectVpn();
         var now = DateTime.UtcNow;
         var snap = new NetworkSnapshot
         {
-            CapturedAt = now,
-            DownloadMbps = Math.Round(downMbps, 2),
-            UploadMbps = 0,
-            LatencyMs = Math.Round(latencyMs, 1),
+            CapturedAt        = now,
+            DownloadMbps      = Math.Round(downMbps, 2),
+            UploadMbps        = Math.Round(upMbps, 2),
+            LatencyMs         = Math.Round(latencyMs, 1),
             PacketLossPercent = Math.Round(lossPct, 1),
-            VpnConnected = vpn,
-            ActiveAdapter = activeAdapter,
-            CreatedAt = now,
-            UpdatedAt = now
+            VpnConnected      = vpn,
+            ActiveAdapter     = adapterName,
+            ConnectionType    = connType,
+            CreatedAt         = now,
+            UpdatedAt         = now
         };
-
-        if (_opts.EnableSpeedTest)
-        {
-            try
-            {
-                var mbps = await SimpleDownloadProbeAsync(ct);
-                if (mbps > 0) snap.DownloadMbps = Math.Round(mbps, 2);
-            }
-            catch (Exception ex) { _log.LogDebug(ex, "Speed probe failed"); }
-        }
 
         snap.HealthScore = ComputeHealthScore(snap);
         return snap;
@@ -135,7 +139,7 @@ public sealed class NetworkMonitor : BackgroundService
         return (avg, loss);
     }
 
-    private static (double mbps, string? name) ReadAdapterStats()
+    private static async Task<(double downloadMbps, double uploadMbps, string? adapterName, string connectionType)> MeasureThroughputAsync(CancellationToken ct)
     {
         try
         {
@@ -143,11 +147,24 @@ public sealed class NetworkMonitor : BackgroundService
                 .FirstOrDefault(n => n.OperationalStatus == OperationalStatus.Up
                     && n.NetworkInterfaceType != NetworkInterfaceType.Loopback
                     && n.NetworkInterfaceType != NetworkInterfaceType.Tunnel);
-            if (ni is null) return (0, null);
-            var speed = ni.Speed / 1_000_000.0;
-            return (speed, ni.Name);
+
+            if (ni is null) return (0, 0, null, "Unknown");
+
+            var s1 = ni.GetIPv4Statistics();
+            await Task.Delay(1000, ct);
+            var s2 = ni.GetIPv4Statistics();
+
+            var rxBytes = Math.Max(0, s2.BytesReceived - s1.BytesReceived);
+            var txBytes = Math.Max(0, s2.BytesSent - s1.BytesSent);
+
+            var downloadMbps = rxBytes * 8.0 / 1_000_000.0;
+            var uploadMbps   = txBytes * 8.0 / 1_000_000.0;
+
+            var connType = ni.NetworkInterfaceType == NetworkInterfaceType.Wireless80211 ? "Wi-Fi" : "Ethernet";
+
+            return (downloadMbps, uploadMbps, ni.Description, connType);
         }
-        catch { return (0, null); }
+        catch { return (0, 0, null, "Unknown"); }
     }
 
     private static bool DetectVpn()
@@ -170,19 +187,7 @@ public sealed class NetworkMonitor : BackgroundService
         return false;
     }
 
-    private async Task<double> SimpleDownloadProbeAsync(CancellationToken ct)
-    {
-        const string url = "https://speed.cloudflare.com/__down?bytes=1000000";
-        var client = _httpFactory.CreateClient("speedtest");
-        client.Timeout = TimeSpan.FromSeconds(10);
-        var sw = System.Diagnostics.Stopwatch.StartNew();
-        var bytes = await client.GetByteArrayAsync(url, ct);
-        sw.Stop();
-        var mbps = bytes.Length * 8.0 / sw.Elapsed.TotalSeconds / 1_000_000.0;
-        return mbps;
-    }
-
-    private static int ComputeHealthScore(NetworkSnapshot s)
+private static int ComputeHealthScore(NetworkSnapshot s)
     {
         var score = 100;
         if (s.LatencyMs > 50) score -= 10;

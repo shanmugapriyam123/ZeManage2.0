@@ -57,7 +57,7 @@ namespace BIManage.Revit.Protection
         {
             try
             {
-                if (_featureToggle.IsGlobalPaused) return;
+                if (_featureToggle.IsGlobalPaused || _featureToggle.IsEmployeeCaptureDisabled) return;
                 if (e.Operation != UndoOperation.TransactionCommitted) return;
 
                 var document = e.GetDocument();

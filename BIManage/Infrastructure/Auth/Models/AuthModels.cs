@@ -40,12 +40,19 @@ namespace BIManage.Infrastructure.Auth.Models
     }
 
     /// <summary>
-    /// POST /api/v1/tenant/device/auth/validate-device
+    /// POST /api/v1/tenant/device/auth/register-or-validate-device
     /// </summary>
     public class ValidateDeviceRequest
     {
         [JsonPropertyName("machineId")]
         public string MachineId { get; set; } = string.Empty;
+
+        // Re-sent on every validate call (not just first-ever registration) so the server
+        // can self-heal MachineInfo.ComputerUserName if it was ever empty/stale — without
+        // this, a device whose Sid was never captured has no way to recover it, since the
+        // server only derives Sid from the request body or the DB's last-known value.
+        [JsonPropertyName("sid")]
+        public string? Sid { get; set; }
     }
 
     /// <summary>
@@ -223,7 +230,7 @@ namespace BIManage.Infrastructure.Auth.Models
     }
 
     /// <summary>
-    /// Response from /api/v1/tenant/device/auth/register-device and /api/v1/tenant/device/auth/validate-device
+    /// Response from /api/v1/tenant/device/auth/register-or-validate-device
     /// </summary>
     public class DeviceAuthResponse
     {
@@ -239,15 +246,21 @@ namespace BIManage.Infrastructure.Auth.Models
         [JsonPropertyName("companyId")]
         public string? CompanyId { get; set; }
 
-        // The device-registration and validate-device endpoints include the tenant's
-        // company name in the response. Captured so device-only users (who never go
-        // through admin-login) still see the company in Device Status — see
+        // The register-or-validate-device endpoint includes the tenant's company name
+        // in the response. Captured so device-only users (who never go through
+        // admin-login) still see the company in Device Status — see
         // AuthTokenManager.SetTokensFromDevice.
         [JsonPropertyName("companyName")]
         public string? CompanyName { get; set; }
 
         [JsonPropertyName("tokenExpiry")]
         public DateTime? TokenExpiry { get; set; }
+
+        // Admin-controlled active/inactive kill-switch — the HTTP polling fallback for
+        // EmployeeActivationListener's SignalR fast path. Defaults true so a device that hasn't
+        // resolved a UserInfo row yet isn't gated before it's ever been explicitly deactivated.
+        [JsonPropertyName("isActive")]
+        public bool IsActive { get; set; } = true;
     }
 
     /// <summary>
@@ -269,6 +282,11 @@ namespace BIManage.Infrastructure.Auth.Models
         // admin-login round-trip.
         [JsonPropertyName("companyName")]
         public string? CompanyName { get; set; }
+
+        // See DeviceAuthResponse.IsActive doc comment — refresh is the highest-frequency poll,
+        // so it's the primary fail-closed fallback channel here.
+        [JsonPropertyName("isActive")]
+        public bool IsActive { get; set; } = true;
     }
 
     /// <summary>

@@ -100,7 +100,7 @@ namespace BIManage.Revit.UITracking
         {
             try
             {
-                if (_featureToggleService.IsGlobalPaused) return;
+                if (_featureToggleService.IsGlobalPaused || _featureToggleService.IsEmployeeCaptureDisabled) return;
 
                 // Validate that the view and document are still valid
                 if (e.CurrentActiveView == null || !e.CurrentActiveView.IsValidObject)

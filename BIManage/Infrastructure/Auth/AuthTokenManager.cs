@@ -18,6 +18,7 @@ namespace BIManage.Infrastructure.Auth
     {
         private readonly SecureTokenStorage _secureStorage;
         private readonly AuthApiService _authApi;
+        private readonly Core.Features.IFeatureToggleService? _featureToggle;
         private readonly ILogger? _logger;
         private readonly SemaphoreSlim _refreshLock = new SemaphoreSlim(1, 1);
 
@@ -32,10 +33,11 @@ namespace BIManage.Infrastructure.Auth
         // Tracks whether the active session is admin (drives refresh-endpoint routing)
         private bool _isAdminSession;
 
-        public AuthTokenManager(SecureTokenStorage secureStorage, AuthApiService authApi, ILogger? logger = null)
+        public AuthTokenManager(SecureTokenStorage secureStorage, AuthApiService authApi, ILogger? logger = null, Core.Features.IFeatureToggleService? featureToggle = null)
         {
             _secureStorage = secureStorage ?? throw new ArgumentNullException(nameof(secureStorage));
             _authApi = authApi ?? throw new ArgumentNullException(nameof(authApi));
+            _featureToggle = featureToggle;
             _logger = logger;
         }
 
@@ -182,6 +184,20 @@ namespace BIManage.Infrastructure.Auth
         /// successful sign-in so a subsequent unrelated auth-exhausted condition can surface
         /// the dialog again. Idempotent.
         /// </summary>
+        /// <summary>Applies the admin active/inactive toggle read from a device-auth/refresh
+        /// response to FeatureToggleService — the HTTP-polling fallback for
+        /// EmployeeActivationListener's SignalR fast path. Every successful device token
+        /// acquisition (validate-device, refresh, both happen frequently) re-confirms this.</summary>
+        private void ApplyCaptureState(bool isActive)
+        {
+            if (_featureToggle == null) return;
+            if (_featureToggle.IsEmployeeCaptureDisabled == isActive)
+            {
+                _featureToggle.IsEmployeeCaptureDisabled = !isActive;
+                _logger?.LogInfo($"Capture state confirmed via auth response: {(isActive ? "enabled" : "disabled (admin deactivated)")}");
+            }
+        }
+
         private void ClearAuthExhaustedAnnouncement()
         {
             bool wasAnnounced;
@@ -271,6 +287,7 @@ namespace BIManage.Infrastructure.Auth
             _deviceAccessToken = response.AccessToken;
             _deviceExpiresAt = expiry;
             ClearAuthExhaustedAnnouncement();
+            ApplyCaptureState(response.IsActive);
             _logger?.LogInfo($"Device token stored (expires {expiry:yyyy-MM-dd HH:mm:ss} UTC). Admin token preserved={(HasValidAdminToken)}.");
 
             // Persist company name from the device-auth response so device-only users
@@ -465,6 +482,7 @@ namespace BIManage.Infrastructure.Auth
                     {
                         _deviceAccessToken = response.AccessToken;
                         _deviceExpiresAt = expiry;
+                        ApplyCaptureState(response.IsActive);
                     }
                     _secureStorage.SaveRefreshToken(response.RefreshToken);
 

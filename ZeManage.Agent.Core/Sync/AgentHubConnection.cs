@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using ZeManage.Agent.Core.Data;
 using ZeManage.Agent.Core.Services;
 
 namespace ZeManage.Agent.Core.Sync;
@@ -14,9 +15,29 @@ public sealed class AgentHubConnection : BackgroundService
     private readonly AgentState _state;
     private readonly AgentOptions _opts;
     private readonly TokenProvider _tokens;
+    private readonly LocalStore _store;
     private readonly IHttpClientFactory _httpFactory;
     private readonly ILogger<AgentHubConnection> _log;
     private HubConnection? _hub;
+    private int _forcingReconnect; // 0/1 guard via Interlocked — only one forced teardown in flight at a time
+
+    // HubConnection is documented as not safe for concurrent Send/Invoke calls from multiple
+    // threads. ProcessMonitor runs two independent timer loops that both call into this same
+    // connection — a ~3s ReportLiveActivity tick and a 30s ReportAgentActivity heartbeat — so
+    // every 30 seconds those two loops' sends can land on the connection at the same instant.
+    // Confirmed live: the agent's WebSocket was repeatedly closed by the server with
+    // "InternalServerError" at almost exactly the 30-second mark on every single run, regardless
+    // of network conditions, which matches concurrent writes corrupting the connection's framing
+    // far better than any payload-content theory (the shared server-side handler for both
+    // transports was independently audited and is fully exception-safe). Serializing every send
+    // through this lock is the standard, documented fix for this exact SignalR client gotcha.
+    private readonly SemaphoreSlim _sendLock = new(1, 1);
+
+    private sealed class EmployeeActiveStatusChangedPayload
+    {
+        public bool IsActive { get; set; } = true;
+        public DateTime Timestamp { get; set; }
+    }
 
     /// <summary>Raised as soon as the hub finishes an initial or automatic
     /// reconnect and is Connected again. Consumers (ProcessMonitor) subscribe
@@ -47,20 +68,44 @@ public sealed class AgentHubConnection : BackgroundService
 
             try
             {
-                // ReportAgentActivity returns a per-item result list nobody
-                // reads on the client — using SendAsync (fire-and-forget)
-                // avoids blocking the tick loop on that return round-trip.
-                // ReportLiveActivity is a lightweight ping we DO want to
-                // observe for logging, so still InvokeAsync.
-                if (method == "ReportAgentActivity")
-                    await hub.SendAsync(method, arg, invokeCts.Token).ConfigureAwait(false);
-                else
-                    await hub.InvokeAsync(method, arg, invokeCts.Token).ConfigureAwait(false);
-                return true;
+                // Serialize access to the shared HubConnection — ProcessMonitor runs both a
+                // ~3s ReportLiveActivity loop and a 30s ReportAgentActivity heartbeat loop, and
+                // HubConnection is not safe for concurrent Send/Invoke from multiple callers.
+                // The 20s invokeCts above still bounds how long a caller can be stuck waiting
+                // here behind another in-flight send.
+                await _sendLock.WaitAsync(invokeCts.Token).ConfigureAwait(false);
+                try
+                {
+                    // ReportAgentActivity returns a per-item result list nobody
+                    // reads on the client — using SendAsync (fire-and-forget)
+                    // avoids blocking the tick loop on that return round-trip.
+                    // ReportLiveActivity is a lightweight ping we DO want to
+                    // observe for logging, so still InvokeAsync.
+                    if (method == "ReportAgentActivity")
+                        await hub.SendAsync(method, arg, invokeCts.Token).ConfigureAwait(false);
+                    else
+                        await hub.InvokeAsync(method, arg, invokeCts.Token).ConfigureAwait(false);
+                    return true;
+                }
+                finally
+                {
+                    _sendLock.Release();
+                }
             }
             catch (OperationCanceledException) when (invokeCts.IsCancellationRequested && !ct.IsCancellationRequested)
             {
                 _log.LogWarning("[Hub] Send {Method} timed out after 20 s — falling back to HTTP", method);
+
+                // A send timeout while hub.State == Connected proves the connection is
+                // stuck at the application level (SDK still thinks it's fine — inbound
+                // keepalives can keep trickling through even when outbound invokes never
+                // complete, e.g. an asymmetric NAT/VPN path drop). Without this, every
+                // future send just repeats the same 20s timeout against the same broken
+                // connection forever, since the outer reconnect loop only rebuilds once
+                // hub.State reaches Disconnected — which never happens on its own here.
+                // Force it: stop/dispose so Closed fires, clears _hub, and flips state to
+                // Disconnected, letting ExecuteAsync's loop notice and rebuild fresh.
+                _ = ForceReconnectAsync(hub, method);
             }
             catch (InvalidOperationException)
             {
@@ -85,6 +130,35 @@ public sealed class AgentHubConnection : BackgroundService
         // to, so LiveStatusChanged still fires and the portal Task column keeps
         // updating even during a hub dead window.
         return await TryHttpFallbackAsync(method, arg, ct);
+    }
+
+    /// <summary>Tears down a hub connection proven stuck by a send timeout, so
+    /// ExecuteAsync's loop rebuilds a fresh one instead of retrying the same dead
+    /// connection on every subsequent tick. Guarded so overlapping sends that time out
+    /// around the same moment only trigger one teardown, not one per caller.</summary>
+    private async Task ForceReconnectAsync(HubConnection hub, string triggeringMethod)
+    {
+        if (Interlocked.CompareExchange(ref _forcingReconnect, 1, 0) != 0)
+            return; // another send already forcing teardown of this same stuck hub
+
+        try
+        {
+            _log.LogWarning("[Hub] Forcing reconnect — connection proven stuck by {Method} timeout", triggeringMethod);
+            using var stopCts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+            try { await hub.StopAsync(stopCts.Token).ConfigureAwait(false); }
+            catch (Exception ex) { _log.LogDebug(ex, "[Hub] StopAsync during forced reconnect threw (continuing)"); }
+            // hub.Closed (registered in ExecuteAsync) already clears _hub/IsHubConnected on
+            // a clean Closed transition, but StopAsync's own Closed firing isn't guaranteed
+            // to race ahead of this method returning, so clear it explicitly too — safe to
+            // do twice, ExecuteAsync's loop only cares that _hub is null and state reflects
+            // Disconnected by the time it wakes up.
+            if (ReferenceEquals(_hub, hub))
+                _hub = null;
+        }
+        finally
+        {
+            Interlocked.Exchange(ref _forcingReconnect, 0);
+        }
     }
 
     private async Task<bool> TryHttpFallbackAsync(string method, object? arg, CancellationToken ct)
@@ -141,6 +215,7 @@ public sealed class AgentHubConnection : BackgroundService
         // to the admin group.
         "ReportLiveActivity"  => "/api/v1/agentdb/live-activity",
         "ReportAgentActivity" => "/api/v1/agentdb/agent-activities",
+        "ReportAgentOffline"  => "/api/v1/agentdb/agent-offline",
         _                     => null,
     };
 
@@ -149,6 +224,7 @@ public sealed class AgentHubConnection : BackgroundService
         AgentState state,
         IOptions<AgentOptions> opts,
         TokenProvider tokens,
+        LocalStore store,
         IHttpClientFactory httpFactory,
         ILogger<AgentHubConnection> log)
     {
@@ -156,6 +232,7 @@ public sealed class AgentHubConnection : BackgroundService
         _state       = state;
         _opts        = opts.Value;
         _tokens      = tokens;
+        _store       = store;
         _httpFactory = httpFactory;
         _log         = log;
     }
@@ -283,6 +360,42 @@ public sealed class AgentHubConnection : BackgroundService
                 hub.On<string>("RefreshConfig", _ =>
                 {
                     _state.PushEvent("[Server] Config refresh requested");
+                });
+
+                // Admin active/inactive toggle fast path — see
+                // SignalRNotificationService.NotifyEmployeeActiveStatusChangedAsync server-side.
+                // Applied immediately to AgentState and persisted for fail-closed behavior across
+                // restarts/offline windows; the HTTP polling in TokenProvider (register/validate/
+                // refresh responses) is the reliable fallback for whenever this push doesn't land.
+                hub.On<EmployeeActiveStatusChangedPayload>("EmployeeActiveStatusChanged", async payload =>
+                {
+                    _log.LogWarning("[Hub] Employee active status changed: {IsActive}", payload.IsActive);
+                    // Persist BEFORE flipping AgentState/NotifyChanged — App.xaml.cs's
+                    // state.Changed handler shuts the process down synchronously on deactivate,
+                    // so a fire-and-forget write here could lose the race and leave the cache
+                    // stale (defeating fail-closed on the very next relaunch).
+                    try { await _store.SetCaptureEnabledAsync(payload.IsActive, CancellationToken.None); }
+                    catch (Exception ex) { _log.LogDebug(ex, "Failed to persist capture state from SignalR push"); }
+                    _state.IsCaptureEnabled = payload.IsActive;
+                    _state.PushEvent(payload.IsActive
+                        ? "[Server] Employee reactivated — capture resumed"
+                        : "[Server] Employee deactivated — capture paused");
+                    _state.NotifyChanged();
+                });
+
+                // Sent to this connection's own "machine:{machineId}" SignalR group only (see
+                // ISignalRNotificationService.NotifyCaptureScreenshotNowAsync backend-side) — no
+                // argument to check, group membership already does the targeting. Routed through
+                // AgentState rather than calling into ScreenshotMonitor directly here: ScreenshotMonitor
+                // already depends on AgentHubConnection (for its post-upload ReportScreenshot notify),
+                // so the reverse dependency would be circular — ScreenshotMonitor's
+                // WatchOnDemandCaptureAsync loop polls this flag instead.
+                hub.On("CaptureScreenshotNow", () =>
+                {
+                    _log.LogInformation("[Hub] On-demand screenshot capture requested");
+                    _state.CaptureScreenshotNowRequested = true;
+                    _state.PushEvent("[Server] Screenshot capture requested");
+                    _state.NotifyChanged();
                 });
 
                 hub.Reconnecting += ex =>

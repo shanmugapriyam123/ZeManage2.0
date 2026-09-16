@@ -10,6 +10,7 @@ public sealed class NetworkSnapshot
     public double PacketLossPercent { get; set; }
     public bool VpnConnected { get; set; }
     public string? ActiveAdapter { get; set; }
+    public string? ConnectionType { get; set; }
     public int HealthScore { get; set; }
     public bool Synced { get; set; }
     public DateTime CreatedAt { get; set; }

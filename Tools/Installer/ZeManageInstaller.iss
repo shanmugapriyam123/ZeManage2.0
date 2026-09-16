@@ -119,13 +119,25 @@ Source: "{#VP}\BIManageRevit\BIManage.Addons.dll"; \
 
 ; ==========================================================================
 ; ZeManage Agent EXE — installed to {app}\Agent\
+; Gated by AgentInstallEnabled (register-or-validate-device's "remoteControl" flag) — when
+; False, this is a Revit-only install: no Agent files, no autostart, no local capture.
 ; ==========================================================================
 Source: "{#AgentSource}\*"; \
   DestDir: "{app}\Agent"; \
   Flags: ignoreversion recursesubdirs createallsubdirs; \
-  Excludes: "*.pdb"
+  Excludes: "*.pdb"; \
+  Check: AgentShouldInstall
 
 ; appsettings.json with localhost backend URL (written by [Code] below, not a static file)
+
+
+[Icons]
+; Start Menu shortcut — appears in Windows search when user types "ZeManage"
+Name: "{autoprograms}\ZeManage"; \
+  Filename: "{app}\Agent\ZeManage.Agent.exe"; \
+  IconFilename: "{app}\BIManage.ico"; \
+  Comment: "ZeManage Agent - click to start if not running"; \
+  Check: AgentShouldInstall
 
 
 [Registry]
@@ -133,11 +145,25 @@ Source: "{#AgentSource}\*"; \
 Root: HKCU; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\Run"; \
   ValueType: string; ValueName: "ZeManageAgent"; \
   ValueData: """{app}\Agent\ZeManage.Agent.exe"" --minimized"; \
-  Flags: uninsdeletevalue
+  Flags: uninsdeletevalue; \
+  Check: AgentShouldInstall
+; Watchdog: relaunches the Agent if it's ever terminated. The Agent also self-launches it on its
+; own startup (belt-and-suspenders — see App.xaml.cs LaunchWatchdogIfNotRunning), so this entry
+; mainly covers the case where the watchdog alone was killed while the Agent kept running.
+Root: HKCU; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\Run"; \
+  ValueType: string; ValueName: "ZeManageAgentWatchdog"; \
+  ValueData: """{app}\Agent\ZeManage.Agent.Watchdog.exe"""; \
+  Flags: uninsdeletevalue; \
+  Check: AgentShouldInstall
 
 
 [UninstallRun]
-; Stop Agent process before uninstall so files can be deleted
+; Stop Agent + Watchdog before uninstall so files can be deleted. Watchdog first — otherwise it
+; would just relaunch the Agent a few seconds after this taskkill.
+Filename: "taskkill.exe"; \
+  Parameters: "/F /IM ZeManage.Agent.Watchdog.exe"; \
+  Flags: runhidden waituntilterminated; \
+  RunOnceId: "StopAgentWatchdog"
 Filename: "taskkill.exe"; \
   Parameters: "/F /IM ZeManage.Agent.exe"; \
   Flags: runhidden waituntilterminated; \
@@ -148,6 +174,34 @@ Filename: "taskkill.exe"; \
 
 procedure ExitProcess(ExitCode: Cardinal);
   external 'ExitProcess@kernel32.dll stdcall';
+
+function OpenEventW(dwDesiredAccess: LongWord; bInheritHandle: BOOL; lpName: String): LongWord;
+  external 'OpenEventW@kernel32.dll stdcall';
+function SetEvent(hEvent: LongWord): BOOL;
+  external 'SetEvent@kernel32.dll stdcall';
+function CloseHandle(hObject: LongWord): BOOL;
+  external 'CloseHandle@kernel32.dll stdcall';
+
+const
+  EVENT_MODIFY_STATE = $0002;
+
+// Asks a running ZeManage.Agent/.Watchdog process to exit itself (App.xaml.cs / Program.cs both
+// listen for this named event) — works even when this installer itself isn't elevated, since a
+// process exiting on its own needs no PROCESS_TERMINATE handle rights. The taskkill fallback in
+// [UninstallRun]/CurStepChanged only actually succeeds when this installer IS elevated, per
+// ProcessProtection's DACL on the target process — this is the primary path, that's the fallback.
+procedure SignalGracefulExit(const EventName: String);
+var
+  hEvent: LongWord;
+begin
+  hEvent := OpenEventW(EVENT_MODIFY_STATE, False, EventName);
+  if hEvent <> 0 then
+  begin
+    SetEvent(hEvent);
+    CloseHandle(hEvent);
+    Log('[ZeManage] Sent graceful-exit signal: ' + EventName);
+  end;
+end;
 
 var
   LicensePage: TWizardPage;
@@ -168,6 +222,12 @@ var
   ValidationCancelled: Boolean;
   UninstallCompleted: Boolean;
   LastValidationMessage: String;
+
+  // From register-or-validate-device's "remoteControl" flag — gates whether the Agent
+  // (tray app + watchdog + local capture) gets installed at all. False means Revit-only:
+  // no Agent files, no autostart registration, no local data capture on this machine.
+  // Defaults True (install Agent) so a missing/unparseable flag preserves prior behavior.
+  AgentInstallEnabled: Boolean;
 
   // Comma-wrapped list of Revit years with a running Revit.exe, e.g. ",2024,2025,"
   RunningRevitVersions: String;
@@ -662,6 +722,64 @@ begin
 end;
 
 
+/// Extracts a string field's value from a flat JSON response body, e.g.
+/// ExtractJsonValue('{"success":false,"message":"Device not found"}', 'message')
+/// returns 'Device not found'. Returns '' if the key is missing or the value
+/// isn't a plain string — callers must supply their own fallback text.
+function ExtractJsonValue(const JsonText, Key: String): String;
+var
+  SearchKey: String;
+  ValStart, ValEnd: Integer;
+begin
+  Result := '';
+  SearchKey := '"' + Key + '"';
+  ValStart := Pos(SearchKey, JsonText);
+  if ValStart = 0 then Exit;
+
+  ValStart := ValStart + Length(SearchKey);
+  // Skip the colon and any whitespace between the key and the value.
+  while (ValStart <= Length(JsonText)) and
+        ((JsonText[ValStart] = ':') or (JsonText[ValStart] = ' ')) do
+    ValStart := ValStart + 1;
+
+  if (ValStart > Length(JsonText)) or (JsonText[ValStart] <> '"') then
+    Exit; // not a string value (or malformed) — leave Result empty
+
+  ValStart := ValStart + 1; // move past the opening quote
+  ValEnd := ValStart;
+  while (ValEnd <= Length(JsonText)) and (JsonText[ValEnd] <> '"') do
+    ValEnd := ValEnd + 1;
+
+  Result := Copy(JsonText, ValStart, ValEnd - ValStart);
+end;
+
+
+/// Extracts a boolean field's value from a flat JSON response body, e.g.
+/// ExtractJsonBool('{"isActive":true,"remoteControl":false}', 'remoteControl') returns False.
+/// DefaultVal is returned if the key is missing or malformed, so callers control fail-open
+/// vs fail-closed behavior per field.
+function ExtractJsonBool(const JsonText, Key: String; DefaultVal: Boolean): Boolean;
+var
+  SearchKey: String;
+  ValStart: Integer;
+begin
+  Result := DefaultVal;
+  SearchKey := '"' + Key + '"';
+  ValStart := Pos(SearchKey, JsonText);
+  if ValStart = 0 then Exit;
+
+  ValStart := ValStart + Length(SearchKey);
+  while (ValStart <= Length(JsonText)) and
+        ((JsonText[ValStart] = ':') or (JsonText[ValStart] = ' ')) do
+    ValStart := ValStart + 1;
+
+  if Copy(JsonText, ValStart, 4) = 'true' then
+    Result := True
+  else if Copy(JsonText, ValStart, 5) = 'false' then
+    Result := False;
+end;
+
+
 procedure CancelValidationClick(Sender: TObject);
 begin
   ValidationCancelled := True;
@@ -701,7 +819,7 @@ begin
   OsVer     := GetWmicValue('os get Caption');
   Log('[ZeManage] Machine ID generated: ' + MachineId);
   Log('[ZeManage] SID: ' + SidValue);
-  Log('[ZeManage] API URL: {#ApiBaseUrl}/api/v1/tenant/device/auth/register-device');
+  Log('[ZeManage] API URL: {#ApiBaseUrl}/api/v1/tenant/device/auth/register-or-validate-device');
 
   Body := '{' +
     '"licenseKey":"' + Token + '",' +
@@ -717,7 +835,7 @@ begin
     try
       Http := CreateOleObject('WinHttp.WinHttpRequest.5.1');
       Http.SetTimeouts(5000, 5000, 5000, 15000);
-      Http.Open('POST', '{#ApiBaseUrl}/api/v1/tenant/device/auth/register-device', False);
+      Http.Open('POST', '{#ApiBaseUrl}/api/v1/tenant/device/auth/register-or-validate-device', False);
       Http.SetRequestHeader('Content-Type', 'application/json');
       Http.Send(Body);
 
@@ -726,7 +844,8 @@ begin
       if Http.Status = 200 then
       begin
         Result := True;
-        Log('[ZeManage] License validation PASSED');
+        AgentInstallEnabled := ExtractJsonBool(Http.ResponseText, 'remoteControl', True);
+        Log('[ZeManage] License validation PASSED — remoteControl=' + IntToStr(Ord(AgentInstallEnabled)));
       end
       else
       begin
@@ -760,8 +879,8 @@ begin
 
   try
     Http := CreateOleObject('WinHttp.WinHttpRequest.5.1');
-    Http.SetTimeouts(5000, 5000, 5000, 15000);
-    Http.Open('POST', '{#ApiBaseUrl}/api/v1/tenant/device/auth/register-device', True);
+    Http.SetTimeouts(5000, 5000, 5000, 35000);
+    Http.Open('POST', '{#ApiBaseUrl}/api/v1/tenant/device/auth/register-or-validate-device', True);
     Http.SetRequestHeader('Content-Type', 'application/json');
 
     Log('[ZeManage] Sending validation request (async)');
@@ -771,7 +890,13 @@ begin
     Done := False;
     while (not Done) and (not ValidationCancelled) and (ElapsedSec < 30) do
     begin
-      Done := Http.WaitForResponse(1);
+      try
+        Done := Http.WaitForResponse(1);
+      except
+        Log('[ZeManage] WaitForResponse exception: ' + GetExceptionMessage);
+        Done := False;
+        ElapsedSec := 30;
+      end;
       ElapsedSec := ElapsedSec + 1;
       if not Done then
       begin
@@ -795,7 +920,8 @@ begin
       if Http.Status = 200 then
       begin
         Result := True;
-        Log('[ZeManage] License validation PASSED');
+        AgentInstallEnabled := ExtractJsonBool(Http.ResponseText, 'remoteControl', True);
+        Log('[ZeManage] License validation PASSED — remoteControl=' + IntToStr(Ord(AgentInstallEnabled)));
         LicenseStatus.Visible := False;
       end
       else
@@ -949,6 +1075,9 @@ begin
     PartialInstall := True;
 end;
 
+// Gates the Agent's [Files]/[Icons]/[Registry] entries — see AgentInstallEnabled above.
+function AgentShouldInstall: Boolean; begin Result := AgentInstallEnabled; end;
+
 function InstallR21: Boolean; begin Result := CheckedAndNotRunning(R21, '2021'); end;
 function InstallR22: Boolean; begin Result := CheckedAndNotRunning(R22, '2022'); end;
 function InstallR23: Boolean; begin Result := CheckedAndNotRunning(R23, '2023'); end;
@@ -1100,6 +1229,21 @@ begin
       Exit;
     end;
 
+    // Silent installs skip the wizard UI entirely, so NextButtonClick — which normally
+    // triggers RegisterLicense when the (unshown) License page would have been submitted —
+    // never fires. Register here instead, otherwise register-device is never called and the
+    // agent's first validate-device request 401s with "device not registered".
+    // NOTE: read the key straight from the command-line param, not LicenseEdit.Text — this
+    // runs inside InitializeSetup(), which fires BEFORE InitializeWizard() creates LicenseEdit.
+    if not RegisterLicense(Trim(ExpandConstant('{param:LICENSE|}'))) then
+    begin
+      Log('[ZeManage] ERROR: Silent license registration failed: ' + LastValidationMessage);
+      Result := False;
+      Exit;
+    end;
+    LicenseValidated := True;
+    Log('[ZeManage] Silent mode: license registered successfully');
+
     // Auto-upgrade: silently remove old version before installing new one
     if IsExistingInstall then
     begin
@@ -1124,6 +1268,7 @@ begin
 
   LicenseValidated := False;
   PrivacyAccepted := False;
+  AgentInstallEnabled := True;
 
 
   // ============================================================
@@ -1599,6 +1744,24 @@ var
 begin
   if CurStep = ssInstall then
   begin
+    // Marker the watchdog checks before relaunching the Agent — without this, killing the Agent
+    // below (to overwrite its files) could get raced by the watchdog restarting it mid-copy.
+    // Deleted again in ssPostInstall once the new files are fully in place.
+    ForceDirectories(ExpandConstant('{app}\Agent'));
+    SaveStringToFile(ExpandConstant('{app}\Agent\.installing'), '1', False);
+
+    // Ask both processes to exit themselves first — this is the path that actually works when
+    // this installer isn't elevated (per-user install). Give them a couple seconds to actually
+    // shut down before falling back to taskkill, which only succeeds when this installer IS
+    // elevated (ProcessProtection denies PROCESS_TERMINATE to non-admins on both processes).
+    SignalGracefulExit('ZeManageAgentWatchdog-RequestExit');
+    SignalGracefulExit('ZeManageAgent-RequestExit');
+    Sleep(2000);
+
+    // Stop Watchdog first — otherwise it just relaunches the Agent a few seconds after the next line
+    Exec('taskkill.exe', '/F /IM ZeManage.Agent.Watchdog.exe', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+    Log('[ZeManage] Watchdog process stopped (exit code: ' + IntToStr(ResultCode) + ')');
+
     // Stop Agent process before install so Agent files can be overwritten
     Exec('taskkill.exe', '/F /IM ZeManage.Agent.exe', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
     Log('[ZeManage] Agent process stopped (exit code: ' + IntToStr(ResultCode) + ')');
@@ -1622,43 +1785,54 @@ begin
 
   if CurStep = ssPostInstall then
   begin
-    // Write appsettings.json for Agent with the backend URL
-    // Silent install: use /BACKENDURL param, default to localhost
-    // Interactive install: use localhost (user can change later in config)
-    SaveStringToFile(
-      ExpandConstant('{app}\Agent\appsettings.json'),
-      '{' + #13#10 +
-      '  "Agent": {' + #13#10 +
-      '    "BackendBaseUrl": "' + ExpandConstant('{param:BACKENDURL|http://10.10.40.75:5000}') + '",' + #13#10 +
-      '    "AllowInsecureSsl": true' + #13#10 +
-      '  }' + #13#10 +
-      '}',
-      False);
-    Log('[ZeManage] Agent appsettings.json written with BackendBaseUrl=' +
-        ExpandConstant('{param:BACKENDURL|http://10.10.40.75:5000}'));
+    // New files are fully in place now — safe for the watchdog to relaunch the Agent again
+    DeleteFile(ExpandConstant('{app}\Agent\.installing'));
 
-    // Launch Agent via Task Scheduler as the current (non-elevated) user.
-    // /IT = interactive session required (runs as real logged-in user, not elevated admin).
-    // /RL LIMITED = non-elevated token. Delete task immediately after firing — it already ran.
-    AgentExe := ExpandConstant('{app}\Agent\ZeManage.Agent.exe');
-    if FileExists(AgentExe) then
+    // Agent-side setup (config + first launch) — skipped entirely for a remoteControl=False
+    // (Revit-only) install: no appsettings.json, no local capture, nothing to launch.
+    if AgentInstallEnabled then
     begin
-      Exec(ExpandConstant('{sys}\schtasks.exe'),
-           '/Create /F /SC ONCE /ST 00:00 /TN "ZeManageAgentStart" ' +
-           '/TR "\"' + AgentExe + '\" --minimized" /IT /RL LIMITED',
-           '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
-      Log('[ZeManage] Agent task created (code ' + IntToStr(ResultCode) + ')');
-      Exec(ExpandConstant('{sys}\schtasks.exe'),
-           '/Run /TN "ZeManageAgentStart"',
-           '', SW_HIDE, ewNoWait, ResultCode);
-      Log('[ZeManage] Agent task fired');
-      Exec(ExpandConstant('{sys}\schtasks.exe'),
-           '/Delete /F /TN "ZeManageAgentStart"',
-           '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
-      Log('[ZeManage] Agent task cleaned up');
+      // Write appsettings.json for Agent with the backend URL
+      // Silent install: use /BACKENDURL param, default to localhost
+      // Interactive install: use localhost (user can change later in config)
+      SaveStringToFile(
+        ExpandConstant('{app}\Agent\appsettings.json'),
+        '{' + #13#10 +
+        '  "Agent": {' + #13#10 +
+        '    "BackendBaseUrl": "' + ExpandConstant('{param:BACKENDURL|http://10.10.40.75:5000}') + '",' + #13#10 +
+        '    "AllowInsecureSsl": true,' + #13#10 +
+        '    "LicenseKey": "' + LicenseEdit.Text + '"' + #13#10 +
+        '  }' + #13#10 +
+        '}',
+        False);
+      Log('[ZeManage] Agent appsettings.json written with BackendBaseUrl=' +
+          ExpandConstant('{param:BACKENDURL|http://10.10.40.75:5000}'));
+
+      // Launch Agent via Task Scheduler as the current (non-elevated) user.
+      // /IT = interactive session required (runs as real logged-in user, not elevated admin).
+      // /RL LIMITED = non-elevated token. Delete task immediately after firing — it already ran.
+      AgentExe := ExpandConstant('{app}\Agent\ZeManage.Agent.exe');
+      if FileExists(AgentExe) then
+      begin
+        Exec(ExpandConstant('{sys}\schtasks.exe'),
+             '/Create /F /SC ONCE /ST 00:00 /TN "ZeManageAgentStart" ' +
+             '/TR "\"' + AgentExe + '\" --minimized" /IT /RL LIMITED',
+             '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+        Log('[ZeManage] Agent task created (code ' + IntToStr(ResultCode) + ')');
+        Exec(ExpandConstant('{sys}\schtasks.exe'),
+             '/Run /TN "ZeManageAgentStart"',
+             '', SW_HIDE, ewNoWait, ResultCode);
+        Log('[ZeManage] Agent task fired');
+        Exec(ExpandConstant('{sys}\schtasks.exe'),
+             '/Delete /F /TN "ZeManageAgentStart"',
+             '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+        Log('[ZeManage] Agent task cleaned up');
+      end
+      else
+        Log('[ZeManage] WARNING: Agent EXE not found at: ' + AgentExe);
     end
     else
-      Log('[ZeManage] WARNING: Agent EXE not found at: ' + AgentExe);
+      Log('[ZeManage] remoteControl=False — Revit-only install, Agent setup skipped');
   end;
 
   if CurStep = ssDone then
@@ -1680,8 +1854,20 @@ end;
 
 
 function InitializeUninstall(): Boolean;
+var
+  PreserveDb: Boolean;
+  MachineId, ApiMessage: String;
+  Http: Variant;
+  RequestOk: Boolean;
 begin
   Result := True;
+
+  // Ask the Agent/Watchdog to exit themselves before [UninstallRun]'s declarative taskkill
+  // entries run later — the primary path when this uninstaller isn't elevated (per-user
+  // install); taskkill alone only actually succeeds when elevated, per ProcessProtection's DACL.
+  SignalGracefulExit('ZeManageAgentWatchdog-RequestExit');
+  SignalGracefulExit('ZeManageAgent-RequestExit');
+  Sleep(2000);
 
   // Block uninstall if Revit is running — addin DLLs are locked by Revit
   // and cannot be deleted; partial uninstall would leave a broken state.
@@ -1710,13 +1896,69 @@ begin
       Exit;
     end;
   end;
+
+  // /PRESERVEDB=1 is set by the new installer's RunExistingUninstaller(True) when this
+  // uninstaller is invoked as part of an UPGRADE (not a real uninstall) — skip the server
+  // check entirely in that case, so a machine with no network access can still upgrade
+  // in place. (CurUninstallStepChanged still checks the same flag to skip DB/token deletion.)
+  PreserveDb := ExpandConstant('{param:PRESERVEDB|0}') = '1';
+  if PreserveDb then
+  begin
+    Log('[ZeManage] PRESERVEDB=1 detected — skipping server uninstall check (upgrade mode)');
+    Exit;
+  end;
+
+  // Confirm the uninstall with the server BEFORE removing anything — deliberately not
+  // best-effort. The device must only be uninstalled once the server confirms success;
+  // this is intentional (an employee shouldn't be able to remove the tracking agent by
+  // disconnecting from the network), not a bug. Any failure — an error response from
+  // the API, or the server being unreachable — shows the exact reason and aborts the
+  // uninstall with nothing deleted.
+  Log('[ZeManage] Uninstall requested - confirming with server before proceeding');
+  RequestOk := False;
+  ApiMessage := '';
+  try
+    MachineId := GetMachineId();
+    Http := CreateOleObject('WinHttp.WinHttpRequest.5.1');
+    Http.SetTimeouts(5000, 5000, 5000, 10000);
+    Http.Open('POST', '{#UninstallEndpoint}', False);
+    Http.SetRequestHeader('Content-Type', 'application/json');
+    Http.Send('{' +
+      '"machineId":"' + MachineId + '",' +
+      '"computerName":"' + ExpandConstant('{computername}') + '",' +
+      '"computerUserName":"' + ExpandConstant('{username}') + '"}');
+
+    Log('[ZeManage] Uninstall confirmation response: HTTP ' + IntToStr(Http.Status));
+    Log('[ZeManage] Response body: ' + Http.ResponseText);
+
+    if (Http.Status >= 200) and (Http.Status < 300) then
+      RequestOk := True
+    else
+    begin
+      ApiMessage := ExtractJsonValue(Http.ResponseText, 'message');
+      if ApiMessage = '' then
+        ApiMessage := 'Server rejected the uninstall request (HTTP ' + IntToStr(Http.Status) + ').';
+    end;
+  except
+    ApiMessage := 'Could not reach the ZeManage server. Please check your network connection and try again.';
+    Log('[ZeManage] Uninstall confirmation failed: ' + GetExceptionMessage);
+  end;
+
+  if not RequestOk then
+  begin
+    Log('[ZeManage] Uninstall BLOCKED - server did not confirm success: ' + ApiMessage);
+    if not UninstallSilent then
+      MsgBox('Unable to uninstall ZeManage:' + #13#10 + #13#10 + ApiMessage, mbError, MB_OK);
+    Result := False;
+    Exit;
+  end;
+
+  Log('[ZeManage] Server confirmed uninstall - proceeding');
 end;
 
 
 procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
 var
-  MachineId: String;
-  Http: Variant;
   Years: array of String;
   I: Integer;
   PreserveDb: Boolean;
@@ -1726,29 +1968,12 @@ begin
     // /PRESERVEDB=1 is set by the new installer's RunExistingUninstaller(True)
     // when this uninstaller is invoked as part of an UPGRADE (not a real uninstall).
     // In that case skip DB + auth-token deletion so the user's data survives the upgrade.
+    // Server uninstall confirmation now happens earlier, in InitializeUninstall — this
+    // step is only reached at all once that check has already passed (or was skipped
+    // here for PRESERVEDB upgrades), so there is nothing to notify at this point.
     PreserveDb := ExpandConstant('{param:PRESERVEDB|0}') = '1';
     if PreserveDb then
       Log('[ZeManage] PRESERVEDB=1 detected — skipping DB and auth token deletion (upgrade mode)');
-    // Notify server via WinHttp (no PowerShell dependency, no hang risk)
-    try
-      Log('[ZeManage] Uninstall started - notifying server');
-      MachineId := GetMachineId();
-      try
-        Http := CreateOleObject('WinHttp.WinHttpRequest.5.1');
-        Http.SetTimeouts(5000, 5000, 5000, 10000);
-        Http.Open('POST', '{#UninstallEndpoint}', False);
-        Http.SetRequestHeader('Content-Type', 'application/json');
-        Http.Send('{' +
-          '"machineId":"' + MachineId + '",' +
-          '"computerName":"' + ExpandConstant('{computername}') + '",' +
-          '"computerUserName":"' + ExpandConstant('{username}') + '"}');
-        Log('[ZeManage] Uninstall notification sent: HTTP ' + IntToStr(Http.Status));
-      except
-        Log('[ZeManage] Uninstall notification failed (non-blocking): ' + GetExceptionMessage);
-      end;
-    except
-      Log('[ZeManage] Machine ID generation failed (non-blocking): ' + GetExceptionMessage);
-    end;
 
     // Clean addin files and database.
     // When running as SYSTEM (ManageEngine), enumerate all user profiles;

@@ -15,7 +15,7 @@
           "Microsoft.CodeAnalysis.CSharp.Scripting": "4.8.0",
           "Nice3point.Revit.Toolkit": "2027.0.0",
           "System.Data.SQLite.Core": "1.0.118",
-          "System.Management": "9.0.0",
+          "System.Management": "10.0.0",
           "ZeManage.Agent.Core": "1.0.0"
         },
         "runtime": {
@@ -32,7 +32,7 @@
       },
       "FlaUI.Core/4.0.0": {
         "dependencies": {
-          "System.Management": "9.0.0"
+          "System.Management": "10.0.0"
         },
         "runtime": {
           "lib/net6.0-windows7.0/FlaUI.Core.dll": {
@@ -908,19 +908,19 @@
           "Stub.System.Data.SQLite.Core.NetStandard": "1.0.118"
         }
       },
-      "System.Management/9.0.0": {
+      "System.Management/10.0.0": {
         "runtime": {
-          "lib/net9.0/System.Management.dll": {
-            "assemblyVersion": "9.0.0.0",
-            "fileVersion": "9.0.24.52809"
+          "lib/net10.0/System.Management.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.52411"
           }
         },
         "runtimeTargets": {
-          "runtimes/win/lib/net9.0/System.Management.dll": {
+          "runtimes/win/lib/net10.0/System.Management.dll": {
             "rid": "win",
             "assetType": "runtime",
-            "assemblyVersion": "9.0.0.0",
-            "fileVersion": "9.0.24.52809"
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.52411"
           }
         }
       },
@@ -934,7 +934,7 @@
           "Microsoft.Extensions.Http": "9.0.0",
           "Microsoft.Extensions.Logging": "9.0.0",
           "Polly": "8.5.0",
-          "System.Management": "9.0.0"
+          "System.Management": "10.0.0"
         },
         "runtime": {
           "ZeManage.Agent.Core.dll": {
@@ -1406,12 +1406,12 @@
       "path": "system.data.sqlite.core/1.0.118",
       "hashPath": "system.data.sqlite.core.1.0.118.nupkg.sha512"
     },
-    "System.Management/9.0.0": {
+    "System.Management/10.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-bVh4xAMI5grY5GZoklKcMBLirhC8Lqzp63Ft3zXJacwGAlLyFdF4k0qz4pnKIlO6HyL2Z4zqmHm9UkzEo6FFsA==",
-      "path": "system.management/9.0.0",
-      "hashPath": "system.management.9.0.0.nupkg.sha512"
+      "sha512": "sha512-LE3rDZoPzulou78Tsq+3ALhUs4vatQ03v2QWbYVIenVPneUH/+LTUmHyyl098OxIFLQI6sNkZs8YHbUnT/sm3A==",
+      "path": "system.management/10.0.0",
+      "hashPath": "system.management.10.0.0.nupkg.sha512"
     },
     "ZeManage.Agent.Core/1.0.0": {
       "type": "project",

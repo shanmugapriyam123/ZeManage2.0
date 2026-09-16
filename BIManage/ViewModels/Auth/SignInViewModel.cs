@@ -109,6 +109,9 @@ namespace BIManage.ViewModels.Auth
                 Email = user?.Email ?? string.Empty;
                 CompanyDisplay = user?.CompanyName ?? string.Empty;
 
+                // Prefer the server's own stored role text (e.g. "Proj"); fall back to the
+                // boolean-derived label only if nothing was ever persisted. See SignInAsync
+                // for why the raw text is shown rather than a normalized literal.
                 var storedIdentity = secureStorage?.LoadUserIdentity();
                 RoleDisplay = !string.IsNullOrEmpty(storedIdentity?.RoleName)
                     ? storedIdentity.RoleName
@@ -151,6 +154,22 @@ namespace BIManage.ViewModels.Auth
                 var machineId = MachineIdentifier.GetMachineId(_logger);
                 _logger?.LogInfo($"Sign in attempt for: {Email} on device: {machineId}");
 
+                // admin-login requires this Revit session to already exist server-side
+                // (it resolves UserId via RevitSessions.SessionId). On a fresh launch the
+                // session-open sync can still be in flight in the background, so a login
+                // attempted too quickly used to fail with "Session not found or has no
+                // UserId" even though the session would have synced a moment later. Do a
+                // direct, synchronous sync attempt right here instead of hoping the
+                // background timer/immediate-trigger already won the race — this is a real
+                // HTTP call, not the queued/offline path, so it resolves in one round trip
+                // when the server is reachable.
+                if (_sessionSyncService != null && !string.IsNullOrEmpty(_sessionId)
+                    && !_sessionSyncService.IsSessionConfirmedOnServer(_sessionId))
+                {
+                    _logger?.LogInfo($"Session {_sessionId} not yet confirmed — syncing before admin-login");
+                    await _sessionSyncService.SyncSessionAsync(_sessionId);
+                }
+
                 var response = await _authApi.AdminLoginAsync(machineId, _sessionId ?? string.Empty, Email.Trim(), password);
 
                 if (response?.AccessToken != null)
@@ -161,14 +180,26 @@ namespace BIManage.ViewModels.Auth
                     var companyId = response.CompanyId ?? (response.Companies?.Count > 0 ? response.Companies[0].CompanyId : null);
                     var companyName = response.CompanyName ?? (response.Companies?.Count > 0 ? response.Companies[0].CompanyName : null);
 
-                    // Parse roleName from admin-login API response
+                    // Parse roleName from admin-login API response. The server stores some
+                    // roles as truncated codes (observed: RoleId "RLID006" → RoleName "Proj",
+                    // not "Project Admin") rather than always the full descriptive text, so
+                    // "company"/"project" must also match as a PREFIX of the role name (or
+                    // vice versa), not only as a substring alongside "admin" — "proj" contains
+                    // neither "project" nor "admin", so the old Contains-both check silently
+                    // classified it as a plain User and the signed-in panel never appeared.
                     var roleName = response.RoleName?.Trim().ToLowerInvariant() ?? "";
-                    var isCompanyAdmin = roleName.Contains("company") && roleName.Contains("admin");
-                    var isProjectAdmin = !isCompanyAdmin && (roleName.Contains("project") && roleName.Contains("admin"));
+                    var isCompanyAdmin = roleName.StartsWith("comp")
+                        || (roleName.Contains("company") && roleName.Contains("admin"));
+                    var isProjectAdmin = !isCompanyAdmin
+                        && (roleName.StartsWith("proj")
+                            || (roleName.Contains("project") && roleName.Contains("admin")));
 
-                    // Super Admin / any other admin role → treat as Company Admin
-                    if (!isCompanyAdmin && !isProjectAdmin && roleName.Contains("admin"))
-                        isCompanyAdmin = true;
+                    // Deliberately NOT falling back to "any role containing the word 'admin'
+                    // → Company Admin" — roles like "Superadmin" are a distinct internal tier,
+                    // not a tenant Company/Project Admin, and must NOT get the admin ribbon
+                    // panel or protection-bypass buttons. Only an explicit comp*/proj* (or
+                    // "company"+"admin" / "project"+"admin") match counts as admin; anything
+                    // else — including any other "...admin..." role name — is a normal user.
 
                     _logger?.LogInfo($"API roleName: \"{response.RoleName}\" → CompanyAdmin={isCompanyAdmin}, ProjectAdmin={isProjectAdmin}");
 
@@ -219,7 +250,15 @@ namespace BIManage.ViewModels.Auth
                     AuthenticatedUser = username;
                     Email = response.Email ?? response.User?.Email ?? Email;
                     CompanyDisplay = companyName ?? string.Empty;
-                    RoleDisplay = response.RoleName ?? GetRoleDisplayName(_userService?.CurrentUser);
+                    // Show the server's own role text verbatim (e.g. "Proj", "Company Admin")
+                    // rather than a hardcoded label — the isCompanyAdmin/isProjectAdmin flags
+                    // above already drive visibility/badge classification independently
+                    // (SwitchView/UpdateRoleBadge in SignInDialog.xaml.cs use prefix matching,
+                    // not an exact-text check), so this string only ever needs to be accurate,
+                    // not normalized to a specific literal.
+                    RoleDisplay = !string.IsNullOrWhiteSpace(response.RoleName)
+                        ? response.RoleName
+                        : (isCompanyAdmin ? "Company Admin" : isProjectAdmin ? "Project Admin" : "User");
 
                     HasError = false;
                     StatusMessage = "Signed in successfully";

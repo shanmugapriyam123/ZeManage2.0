@@ -13,9 +13,29 @@ public sealed class FileLoggerProvider : ILoggerProvider
     private readonly StreamWriter _writer;
     private readonly object _lock = new();
 
+    // Debug-level EF Core/HTTP tracing is extremely chatty — left unbounded, this file grows to
+    // multiple GB over a long-running install (confirmed: 2.7GB after repeated same-day restarts).
+    // Past a certain size, appending to it (combined with AutoFlush below) becomes slow enough to
+    // visibly starve whichever thread is waiting on the shared lock for its turn to write a line —
+    // including the UI thread, which can make the whole window appear hung even though it's really
+    // just queued behind logging I/O. Rotate out anything already oversized before opening.
+    private const long MaxLogSizeBytes = 20 * 1024 * 1024; // 20 MB
+
     public FileLoggerProvider(string logPath)
     {
         Directory.CreateDirectory(Path.GetDirectoryName(logPath)!);
+        try
+        {
+            var existing = new FileInfo(logPath);
+            if (existing.Exists && existing.Length > MaxLogSizeBytes)
+            {
+                var rotatedPath = Path.ChangeExtension(logPath, null) + ".previous.log";
+                File.Delete(rotatedPath);
+                File.Move(logPath, rotatedPath);
+            }
+        }
+        catch { /* best-effort — a rotation failure shouldn't block the agent from starting */ }
+
         _writer = new StreamWriter(logPath, append: true, Encoding.UTF8) { AutoFlush = true };
         _writer.WriteLine($"--- ZeManage Agent started {DateTime.Now:yyyy-MM-dd HH:mm:ss} ---");
     }

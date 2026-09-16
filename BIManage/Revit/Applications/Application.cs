@@ -1280,9 +1280,18 @@ namespace BIManageRevit.BIManage.Revit.Applications
                     Logger?.LogWarning($"Could not count loaded plugins: {ex.Message}");
                 }
 
+                // Distinguish "scan ran, found zero external add-ins" (send "[]") from
+                // "scan never completed" (externalAddinNamesList still null from the catch
+                // above — send null, meaning genuinely unknown). Previously both cases sent
+                // null, so a real zero-count session was indistinguishable from a failed scan
+                // in the DB/server — this collapsed two different situations into one signal.
                 string externalAddinNamesJson = null;
-                if (externalAddinNamesList != null && externalAddinNamesList.Count > 0)
+                if (externalAddinNamesList != null)
+                {
                     externalAddinNamesJson = System.Text.Json.JsonSerializer.Serialize(externalAddinNamesList);
+                    if (externalAddinNamesList.Count == 0)
+                        Logger?.LogInfo(">>> External add-in scan completed with zero external add-ins found (autodeskAddins=" + autodeskAddins + ")");
+                }
 
                 // Get journal file name
                 string journalFileName = null;
@@ -1346,7 +1355,19 @@ namespace BIManageRevit.BIManage.Revit.Applications
                         try
                         {
                             var syncResult = await sessionSyncService.SyncSessionAsync(sessionIdToSync);
-                            Logger?.LogInfo($"Session API sync: {(syncResult ? "Success" : "Failed")}");
+                            // SyncSessionAsync returns true both when the HTTP POST actually
+                            // reached the server AND when it merely got queued for later offline
+                            // retry (auth not ready, network error, etc.) — collapsing those into
+                            // one "Success" log line made a queued-but-undelivered session
+                            // indistinguishable from a genuinely delivered one. Check the
+                            // confirmed-on-server set (set only by a real 2xx response) to log
+                            // the true outcome.
+                            if (!syncResult)
+                                Logger?.LogWarning("Session API sync: Failed");
+                            else if (sessionSyncService.IsSessionConfirmedOnServer(sessionIdToSync))
+                                Logger?.LogInfo("Session API sync: Success (confirmed delivered to server)");
+                            else
+                                Logger?.LogWarning("Session API sync: Queued locally — NOT yet delivered to server (will retry via offline queue)");
                         }
                         catch (Exception syncEx)
                         {

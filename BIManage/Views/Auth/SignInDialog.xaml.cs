@@ -144,22 +144,20 @@ namespace BIManageRevit.BIManage.Views.Auth
 
         /// <summary>
         /// Switches between sign-in form and signed-in profile view.
-        /// The signed-in profile (welcome + role + sign-out) only renders for admins
-        /// (Company Admin / Project Admin). Regular Users land on the blank sign-in
-        /// form instead — per user request: "user login dont show it only company-admin,
-        /// project-admin login data; if sign-out blank show, dont show the user".
+        /// The signed-in profile (welcome + role + sign-out) renders for ANY successful
+        /// admin-login (i.e. IsAuthenticated is only ever true after entering credentials
+        /// through this form or restoring that state), regardless of which specific role
+        /// the server resolved — Company Admin, Project Admin, or any other named role
+        /// (e.g. "Superadmin") that has its own rule-based protections configured. A device
+        /// that was only ever validated by MachineId (never went through admin-login) has
+        /// IsAuthenticated=false and always lands on the blank form. Role-based admin
+        /// PRIVILEGES (ribbon buttons, protection bypass) are governed separately by
+        /// isCompanyAdmin/isProjectAdmin — this panel only decides what's DISPLAYED after
+        /// a real login, not what access the role grants.
         /// </summary>
         private void SwitchView()
         {
-            // Treat a logged-in regular User the same as not-authenticated for the
-            // purposes of UI rendering. RoleDisplay is the canonical 3-string label
-            // ("Company Admin" / "Project Admin" / "User") computed from the identity
-            // boolean flags in SignInViewModel.GetRoleDisplayName.
-            var role = _viewModel.RoleDisplay?.Trim() ?? "";
-            bool isAdmin = role.Equals("Company Admin", StringComparison.OrdinalIgnoreCase)
-                        || role.Equals("Project Admin", StringComparison.OrdinalIgnoreCase);
-
-            if (_viewModel.IsAuthenticated && isAdmin)
+            if (_viewModel.IsAuthenticated)
             {
                 FormPanel.Visibility = WpfVisibility.Collapsed;
                 SignedInPanel.Visibility = WpfVisibility.Visible;
@@ -196,13 +194,13 @@ namespace BIManageRevit.BIManage.Views.Auth
         {
             var role = _viewModel.RoleDisplay?.Trim().ToLowerInvariant() ?? "";
 
-            if (role.Contains("company") && role.Contains("admin"))
+            if (role.StartsWith("comp") || (role.Contains("company") && role.Contains("admin")))
             {
                 RoleBadge.Background = CompanyAdminBrush;
                 RoleInitial.Text = "C";
                 RoleDescription.Text = "Full access across all projects";
             }
-            else if (role.Contains("project") && role.Contains("admin"))
+            else if (role.StartsWith("proj") || (role.Contains("project") && role.Contains("admin")))
             {
                 RoleBadge.Background = ProjectAdminBrush;
                 RoleInitial.Text = "P";

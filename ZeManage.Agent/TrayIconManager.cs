@@ -26,6 +26,13 @@ public sealed class TrayIconManager : IDisposable
 
         _icon.ContextMenuStrip = menu;
         _icon.DoubleClick += (_, _) => ShowWindow();
+        // Left-click alone should also open it — right-click still opens the ContextMenuStrip
+        // above (WinForms handles that automatically, no extra wiring needed for it).
+        _icon.MouseClick += (_, e) =>
+        {
+            if (e.Button == WinForms.MouseButtons.Left)
+                ShowWindow();
+        };
 
         _window.Closing += (s, e) =>
         {
@@ -47,11 +54,17 @@ public sealed class TrayIconManager : IDisposable
         return SystemIcons.Application;
     }
 
+    // Topmost toggle forces Windows to actually raise the window above whatever else has focus —
+    // Activate() alone is unreliable when the caller (tray icon click) isn't already the
+    // foreground process, which is exactly the case here.
     private void ShowWindow()
     {
         _window.Show();
         _window.WindowState = WindowState.Normal;
         _window.Activate();
+        _window.Topmost = true;
+        _window.Topmost = false;
+        _window.Focus();
     }
 
     public void Dispose()

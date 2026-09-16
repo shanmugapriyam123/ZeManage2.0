@@ -34,6 +34,7 @@ namespace BIManage.Revit.Commands.Bindings
         private readonly Func<CommandProtectionBinding?> _commandProtectionGetter;
         private readonly Func<PinProtectionSyncService?>? _pinProtectionSyncGetter;
         private readonly IRuleCommandInterceptor? _ruleInterceptor;
+        private readonly BIManage.Core.Features.IFeatureToggleService? _featureToggleService;
         private AddInCommandBinding? _binding;
 
         public UnpinCommandBinding(
@@ -48,7 +49,8 @@ namespace BIManage.Revit.Commands.Bindings
             UnpinnedElementTracker? unpinnedElementTracker = null,
             Func<CommandProtectionBinding?>? commandProtectionGetter = null,
             Func<PinProtectionSyncService?>? pinProtectionSyncGetter = null,
-            IRuleCommandInterceptor? ruleInterceptor = null)
+            IRuleCommandInterceptor? ruleInterceptor = null,
+            BIManage.Core.Features.IFeatureToggleService? featureToggleService = null)
             : base(uiApp, logger)
         {
             _isAdminCheck = isAdminCheck ?? throw new ArgumentNullException(nameof(isAdminCheck));
@@ -61,6 +63,7 @@ namespace BIManage.Revit.Commands.Bindings
             _commandProtectionGetter = commandProtectionGetter ?? (() => null);
             _pinProtectionSyncGetter = pinProtectionSyncGetter;
             _ruleInterceptor = ruleInterceptor;
+            _featureToggleService = featureToggleService;
 
             // Unpin command ID: 33001
             CommandId = RevitCommandId.LookupPostableCommandId(PostableCommand.Unpin);
@@ -122,6 +125,9 @@ namespace BIManage.Revit.Commands.Bindings
         {
             try
             {
+                if (_featureToggleService?.IsGlobalPaused == true || _featureToggleService?.IsEmployeeCaptureDisabled == true)
+                    return;
+
                 // PRIORITY 0: Check command protection settings from command_settings table
                 var commandProtection = _commandProtectionGetter?.Invoke();
                 if (commandProtection != null)
@@ -172,6 +178,9 @@ namespace BIManage.Revit.Commands.Bindings
         {
             try
             {
+                if (_featureToggleService?.IsGlobalPaused == true || _featureToggleService?.IsEmployeeCaptureDisabled == true)
+                    return;
+
                 UIDocument uidoc = (sender as UIApplication)?.ActiveUIDocument;
                 if (uidoc == null)
                 {

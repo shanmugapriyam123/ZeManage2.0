@@ -20,8 +20,13 @@ namespace BIManage.Data.SQLite
         private readonly string _databasePath;
         private readonly ILogger? _logger;
 
-        /// <summary>Current target schema version.</summary>
-        private const int TargetVersion = 4;
+        /// <summary>Current target schema version. Bumped to 5: sessions.external_addin_names
+        /// was added to the EnsureColumnExists list without a version bump, so any install with
+        /// an existing fast-path marker (schema=4) never re-ran the migration and never got the
+        /// column — it just kept short-circuiting on every launch. Bumping forces one more full
+        /// migration pass on every existing install to pick it (and any other pending
+        /// EnsureColumnExists calls) up, then the fast path resumes as normal.</summary>
+        private const int TargetVersion = 5;
 
         /// <summary>Set to true after MigrateToLatest() succeeds so repositories can skip EnsureSchemaExists().</summary>
         internal static bool SchemaReady { get; private set; } = false;
@@ -1396,7 +1401,8 @@ namespace BIManage.Data.SQLite
         {
             using var connection = new SQLiteConnection(SqliteConnectionHelper.BuildConnectionString(_databasePath));
             connection.Open();
-            using var cmd = new SQLiteCommand(@"
+
+            using (var cmd = new SQLiteCommand(@"
                 CREATE TABLE IF NOT EXISTS ze_identity (
                     id            INTEGER PRIMARY KEY CHECK (id = 1),
                     machine_id    TEXT    NOT NULL,
@@ -1406,10 +1412,22 @@ namespace BIManage.Data.SQLite
                     ze_user_id    TEXT    NULL,
                     captured_at   TEXT    NULL,
                     registered_at TEXT    NULL
-                );
-                ALTER TABLE ze_identity ADD COLUMN IF NOT EXISTS captured_at TEXT NULL;
-                INSERT OR IGNORE INTO schema_version (version) VALUES (4);", connection);
-            cmd.ExecuteNonQuery();
+                );", connection))
+                cmd.ExecuteNonQuery();
+
+            // "ADD COLUMN IF NOT EXISTS" is not supported by the SQLite core version
+            // bundled with this build's System.Data.SQLite — it throws a syntax error
+            // and aborts the whole migration before schema_version ever gets bumped to
+            // 4, which in turn blocks every later migration/defensive-check step
+            // (including the external_addin_names backfill) forever. Use the same
+            // check-then-ALTER pattern as EnsureColumnExists instead — captured_at is
+            // already in the CREATE TABLE above for new installs; this only matters for
+            // pre-existing ze_identity tables from before that column was added.
+            EnsureColumnExists(connection, "ze_identity", "captured_at", "TEXT NULL");
+
+            using (var cmd = new SQLiteCommand(
+                "INSERT OR IGNORE INTO schema_version (version) VALUES (4);", connection))
+                cmd.ExecuteNonQuery();
         }
 
         #endregion

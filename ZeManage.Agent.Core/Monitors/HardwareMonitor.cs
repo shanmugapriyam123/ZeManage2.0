@@ -146,21 +146,47 @@ public sealed class HardwareMonitor : BackgroundService
         return (0, 0);
     }
 
+    // Root cause of a confirmed live hang: this used to call Thread.Sleep(100) INSIDE the loop,
+    // once per GPU Engine instance. "GPU Engine" instance count scales with however many
+    // processes currently have a 3D context open — a machine running several browsers/Teams/
+    // Revit/VS Code can easily have 100-400+ "engtype_3D" instances, turning this into a
+    // 10-40+ second blocking stall on every single hardware-snapshot tick. A memory dump taken
+    // during a live freeze showed the WPF UI thread itself stuck inside this exact call (see
+    // HardwareMonitor.ExecuteAsync's ConfigureAwait fix below for why it landed on the UI thread
+    // at all). PerformanceCounter's "first NextValue() primes it, second gives the real reading"
+    // behavior only needs ONE settling delay total, not one per instance — priming every counter
+    // first and sleeping once covers the exact same requirement.
     private static double ReadGpuPercent()
     {
         try
         {
             var cat = new PerformanceCounterCategory("GPU Engine");
             var names = cat.GetInstanceNames().Where(n => n.EndsWith("engtype_3D")).ToArray();
-            double total = 0;
-            foreach (var n in names)
+            if (names.Length == 0) return 0;
+
+            var counters = new List<PerformanceCounter>(names.Length);
+            try
             {
-                using var c = new PerformanceCounter("GPU Engine", "Utilization Percentage", n);
-                try { c.NextValue(); } catch { }
+                foreach (var n in names)
+                {
+                    var c = new PerformanceCounter("GPU Engine", "Utilization Percentage", n);
+                    try { c.NextValue(); } catch { }
+                    counters.Add(c);
+                }
+
                 Thread.Sleep(100);
-                total += c.NextValue();
+
+                double total = 0;
+                foreach (var c in counters)
+                {
+                    try { total += c.NextValue(); } catch { }
+                }
+                return Math.Min(100, total / counters.Count);
             }
-            return names.Length > 0 ? Math.Min(100, total / names.Length) : 0;
+            finally
+            {
+                foreach (var c in counters) c.Dispose();
+            }
         }
         catch { return 0; }
     }

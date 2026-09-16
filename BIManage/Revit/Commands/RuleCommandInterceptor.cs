@@ -122,6 +122,13 @@ namespace BIManage.Revit.Commands
         {
             try
             {
+                // Admin deactivated this employee — stop enforcing rules/protections entirely.
+                // This handler subscribes to Revit's BeforeExecuted event independently of
+                // CommandInterceptionService.OnBeforeCommandExecuted (same event, two separate
+                // handlers), so that gate alone doesn't cover this path.
+                if (_featureToggleService.IsGlobalPaused || _featureToggleService.IsEmployeeCaptureDisabled)
+                    return;
+
                 var document = e.ActiveDocument;
                 if (document == null)
                 {

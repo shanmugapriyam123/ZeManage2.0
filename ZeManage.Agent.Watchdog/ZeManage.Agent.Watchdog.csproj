@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>ZeManage.Agent.Watchdog</RootNamespace>
+    <AssemblyName>ZeManage.Agent.Watchdog</AssemblyName>
+    <UseWindowsForms>false</UseWindowsForms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ZeManage.Agent.Core\ZeManage.Agent.Core.csproj" />
+  </ItemGroup>
+
+</Project>
